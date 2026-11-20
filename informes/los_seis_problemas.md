@@ -1,8 +1,8 @@
 # Los seis problemas del caso 68
 
 **Qué contesta.** Qué modelo de disco sale más barato por terabyte y año contando las averías, a qué edad sube la tasa anual de fallo, qué centros de datos o tomos fallan de más y qué discos tienen más riesgo de fallar en 30 días (`negocio/cuestiones-pendientes.md`).
-**Con qué datos.** Backblaze Drive Stats, del 01/01/2020 al 30/06/2025: 14.851.669 fotos mensuales, cada una el estado de un disco un día del mes, y 17.960 fallos (`calidad-datos.md`). El año siguiente se apartó para la prueba final.
-**Con qué método.** Tasas anuales de fallo con su intervalo, y un HistGradientBoosting que ordena los discos por riesgo frente a la regla de los cinco avisos SMART (`modelado.md`). Esa regla marca un disco cuando pasa de cero alguno de los cinco contadores de avería (`negocio/reglas-negocio.md`).
+**Con qué datos.** Backblaze Drive Stats, del 01/01/2020 al 30/06/2025: 14.851.669 fotos mensuales (cada una, el estado de un disco un día del mes) y 17.960 fallos (`calidad-datos.md`). El año siguiente se apartó para la prueba final.
+**Con qué método.** Tasas anuales de fallo con su intervalo y un HistGradientBoosting que ordena los discos por riesgo frente a la regla de los cinco avisos SMART (`modelado.md`). Esa regla marca un disco cuando pasa de cero alguno de los cinco contadores de avería (`negocio/reglas-negocio.md`).
 
 Las fuentes están en `informes/` si no se nombra otra carpeta.
 
@@ -26,7 +26,7 @@ Las fuentes están en `informes/` si no se nombra otra carpeta.
 
 **Qué se encontró.** Los datos traen una foto por disco y mes, sin objetivo y con contadores acumulados.
 
-**Qué se hizo y por qué.** La tabla del modelo tiene 14.604.861 fotos, cada una con lo que se sabía ese día (`transformacion-datos.md`). Se construyeron la edad, si el disco avisa, cuántos contadores avisan, la suma de los contadores 5, 187, 197 y 198, y el cambio de cada contador desde la foto anterior. De las variables, 64 entran en el modelo y 71 no (`preparacion.json`, también las dos siguientes). Otras 9 quedan fuera desde el principio. La regresión logística recibe 62, en tramos de 0 y 1, sin escalar.
+**Qué se hizo y por qué.** La tabla del modelo tiene 14.604.861 fotos, cada una con lo que se sabía ese día (`transformacion-datos.md`). Se construyeron estas variables: la edad; si el disco avisa; cuántos contadores avisan; la suma de los contadores 5, 187, 197 y 198; el cambio de cada contador desde la foto anterior. De las variables, 64 entran en el modelo y 71 no (`preparacion.json`, también las dos siguientes). Otras 9 quedan fuera desde el principio. La regresión logística recibe 62, en tramos de 0 y 1, sin escalar.
 
 **Lo que queda abierto.** Hay 808 fallos de discos de datos que no aparecen como fallo en ninguna foto (`transformacion-datos.md`). La mayoría caen a más de 30 días de su última foto.
 
@@ -88,7 +88,7 @@ Entre los fallos a 90 días, el 39,7 % llega sin aviso en la última foto mensua
 - la lista de riesgo es «Actuar sobre los N primeros», medida en fallos encontrados frente a la regla y no en dinero;
 - la compra de modelos es «Informar sin decisión automática», con el coste por terabyte y año como la cifra que mide valor.
 
-Ese coste reparte el precio del disco entre su capacidad y su vida, y añade la tasa anual de fallo por el disco nuevo más el cambio (`negocio/reglas-negocio.md`). Datos de partida, decididos por el negocio:
+Ese coste reparte el precio del disco entre su capacidad y su vida. Después añade la tasa anual de fallo por el disco nuevo más el cambio (`negocio/reglas-negocio.md`). Datos de partida, decididos por el negocio:
 
 - el 17/11/2026: 37 $ por cambio, 6 años de vida y la garantía por familia de modelo;
 - el 16/11/2026: los precios inferidos de los discos sin precio publicado.

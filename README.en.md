@@ -2,11 +2,11 @@ Versión en español: [README.md](README.md)
 
 # Hard drive failure prediction and purchase cost (Backblaze, 2020-2026)
 
-A data analysis and machine learning project built on Backblaze's public hard drive records. Backblaze is a cloud storage provider. The project answers two operational questions: which drive model is cheapest per terabyte once failures are taken into account, and which drives should be checked each month before they fail.
+A data analysis and machine learning project built on Backblaze's public hard drive records. Backblaze is a cloud storage provider. The project answers two operational questions. Which drive model is cheapest per terabyte once failures are counted? Which drives should be checked each month before they fail?
 
 ## Key results
 
-- **Which model to buy:** the purchase price accounts for **93.56%** of the cost per terabyte per year, and failures for the rest. This is the median across 27 models, that is, the figure for the model in the middle when they are ranked. In all seven comparable purchase groups (same year, same capacity), the cheapest model per terabyte is also the one that fails least.
+- **Which model to buy:** the purchase price accounts for **93.56%** of the cost per terabyte per year; failures make up the rest. This is the median across 27 models, that is, the figure for the model in the middle when they are ranked. In all seven comparable purchase groups (same year, same capacity), the cheapest model per terabyte is also the one that fails least.
 - **Which drives to check:** a machine learning model produces a monthly list of the 100 drives most likely to fail in the next 30 days. On average it catches **22.6 failures a month**, **52% more** than the five SMART warnings rule, which ranks drives by how many failure counters are above zero. This was measured over the 11 months held back for the final test, July 2025 to May 2026.
 - **What to monitor:** the annualized failure rate rises with every year of age from the first to the fifth, from 0.79% to 2.58%. The sac2 data center in Sacramento fails 10% more than expected for its mix of models and ages.
 
@@ -16,16 +16,16 @@ A data analysis and machine learning project built on Backblaze's public hard dr
 
 A snapshot is the state of a drive on the first day of a month: its SMART counters, model, capacity and data center. Snapshots are the unit used throughout data cleaning and modeling.
 
-1. **Data quality:** issues were diagnosed and fixed before any analysis. For example, 2,729 snapshots with a capacity of -1 or 0.1 TB were given the capacity of their model, and four model names written with a double space were merged.
+1. **Data quality:** issues were diagnosed and fixed before any analysis. For example, 2,729 snapshots with a capacity of -1 or 0.1 TB were given the capacity of their model. Four model names written with a double space were also merged.
 2. **Cost analysis:** the cost per terabyte per year of each model has two parts. The first is the purchase price, spread over a 6-year service life. The second is the annualized failure rate multiplied by the cost of each replacement: a new drive plus $37 of labor. Prices are those published by Backblaze up to 2022 and estimated from 2023 onwards.
 3. **Feature preparation:** each snapshot carries the drive's age and how much each counter has changed since the previous month's snapshot.
-4. **Modeling and validation:** three model types were compared over five quarterly folds. The winner was a HistGradientBoosting model, a gradient-boosted decision tree ensemble. It was validated on the following twelve months, and the last year was kept untouched until the final test.
-5. **Production:** one monthly process scores the new snapshot without dropping any drive (drives that cannot be scored are kept with the reason), and another retrains the model on new data.
+4. **Modeling and validation:** three model types were compared over five quarterly folds. The winner was a HistGradientBoosting model, a gradient-boosted decision tree ensemble. It was validated on the following twelve months. The last year was kept untouched until the final test.
+5. **Production:** two processes. The monthly one scores the new snapshot without dropping any drive: drives that cannot be scored are kept with the reason. The other retrains the model on new data.
 
 ## Limitations
 
 - Estimated prices: drive prices from 2023 onwards are estimates, so the cost per terabyte is only as good as those estimates.
-- Failures without warning: 32% of the failures in the final-test year showed no warning at all on the first day of the month. The five SMART warnings rule cannot flag them, and they are the hardest cases for the risk list to anticipate.
+- Failures without warning: 32% of the failures in the final-test year showed no warning at all on the first day of the month. The five SMART warnings rule cannot flag them. They are also the hardest cases for the risk list to anticipate.
 - The last month: the data run to June 2026, but the list's final test ends in May. Knowing whether a June drive failed within the next 30 days would require July data, which do not exist yet.
 - Spare parts: forecasting by model and age does not beat simply repeating the previous quarter's failures. In the final-test year, its mean error was 31.8%, against 30.6%.
 - The model in use: it was retrained with one more year of data and measured on the final-test year before being approved. For that model, the year is no longer an independent test.
@@ -33,7 +33,7 @@ A snapshot is the state of a drive on the first day of a month: its SMART counte
 ## Outputs
 
 - **Final report:** ten pages for the head of operations, with five decisions for approval ([`informes/informe_final.html`](https://jleonceo.github.io/averias-discos-duros-ml/informes/informe_final.html)). In Spanish.
-- **Dashboard:** five tabs with filters by data center, manufacturer, capacity and age, plus the month's risk list as a CSV download ([`informes/cuadro_mando.html`](https://jleonceo.github.io/averias-discos-duros-ml/informes/cuadro_mando.html)). In Spanish.
+- **Dashboard:** five tabs with filters by data center, manufacturer, capacity and age. It includes the month's risk list as a CSV download ([`informes/cuadro_mando.html`](https://jleonceo.github.io/averias-discos-duros-ml/informes/cuadro_mando.html)). In Spanish.
 - **The six problems:** how this project dealt with the six problems that come up in every data project ([`informes/los_seis_problemas.md`](informes/los_seis_problemas.md)). In Spanish.
 
 ## Repository layout
@@ -44,7 +44,7 @@ A snapshot is the state of a drive on the first day of a month: its SMART counte
 - `produccion/`: the monthly scoring process and the retraining.
 - `modelos/`: the model in use and its metadata.
 - `informes/`: the final report, the dashboard, the six problems and the report from each step.
-- `config/`: the business and transformation rules, and the decisions the scripts read.
+- `config/`: the business rules, the transformation rules and the decisions the scripts read.
 
 ## The data
 
