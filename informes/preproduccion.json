@@ -1,0 +1,5201 @@
+{
+ "skill": "preproduccion",
+ "version_skill": "11/11/2026 (WF-85)",
+ "script": "scripts/18_contrato_produccion.py",
+ "fecha_datos": "2025-06-30",
+ "fecha_ejecucion": "2026-11-19T14:26:47",
+ "entradas": [
+  {
+   "ruta": "informes/modelado.json",
+   "sha256": "5fe4a2fa757f4da18b43e5869c4672aff5c5f478e7f4b63d5c9294afd2619f7e"
+  },
+  {
+   "ruta": "informes/preseleccion.json",
+   "sha256": "6d3939fc84f00276740c83971553ee5ce4faedd44aa00480684288bb2d615ac3"
+  },
+  {
+   "ruta": "contexto-proyecto/modelo/registro-transformaciones.md",
+   "sha256": "4a1757bf91016ed04fc8f9767a4195dc9bf4b520360175215b4df5af2a270ad3"
+  },
+  {
+   "ruta": "contexto-proyecto/negocio/reglas-transformacion.md",
+   "sha256": "490f1d20791ca034436242041d22e2053885cefe24a8af8940869ddd982f931e"
+  },
+  {
+   "ruta": "contexto-proyecto/modelo/matriz_transformaciones.md",
+   "sha256": "6d4df68ef6a182f27a3e18ec301f0bf8ef89fc131040febe097000acb9768f3e"
+  }
+ ],
+ "resultado": {
+  "estado": "OK",
+  "riesgo": "medio",
+  "resumen": "Contrato aprobado (Juan, 19/11/2026: «Sí, con el arreglo»). Las 11 validaciones, en verde.",
+  "artefactos": [
+   "contexto-proyecto/modelo/contrato_produccion.md",
+   "informes/preproduccion.json"
+  ],
+  "siguiente": "la parte 2: el Pipeline, reentrenar, ejecutar y la prueba por otro camino"
+ },
+ "pendientes": [],
+ "contrato": {
+  "ruta": "contexto-proyecto/modelo/contrato_produccion.md",
+  "aprobado_por": "Juan, 19/11/2026: «Sí, con el arreglo»",
+  "fecha": "2026-11-19"
+ },
+ "identificador": "serial_number y fecha: la foto: un disco (serial_number) el día de su foto mensual (fecha)",
+ "objetivo": "falla_30d",
+ "finalistas": [
+  {
+   "variable": "capacidad_tb",
+   "columnas_del_modelo": [
+    "capacidad_tb"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P07 · capacidad en TB",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "garantia_anos",
+   "columnas_del_modelo": [
+    "garantia_anos"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P09 · el fabricante",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P10 · la garantía",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_5_raw",
+   "columnas_del_modelo": [
+    "smart_5_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_187_raw",
+   "columnas_del_modelo": [
+    "smart_187_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_197_raw",
+   "columnas_del_modelo": [
+    "smart_197_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_198_raw",
+   "columnas_del_modelo": [
+    "smart_198_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_194_raw",
+   "columnas_del_modelo": [
+    "smart_194_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_199_raw",
+   "columnas_del_modelo": [
+    "smart_199_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_12_raw",
+   "columnas_del_modelo": [
+    "smart_12_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_192_raw",
+   "columnas_del_modelo": [
+    "smart_192_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_1_raw",
+   "columnas_del_modelo": [
+    "smart_1_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_7_raw",
+   "columnas_del_modelo": [
+    "smart_7_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "edad_anos",
+   "columnas_del_modelo": [
+    "edad_anos"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-007",
+     "paso": "P06 · la historia de las ventanas sin los días copiados",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»; «De qué se parte»",
+     "paso": "P12 · la edad",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "avisa",
+   "columnas_del_modelo": [
+    "avisa"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P13 · los avisos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "contadores_que_avisan",
+   "columnas_del_modelo": [
+    "contadores_que_avisan"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P13 · los avisos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "suma_contadores_sin_188",
+   "columnas_del_modelo": [
+    "suma_contadores_sin_188"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P13 · los avisos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_188_no_cero",
+   "columnas_del_modelo": [
+    "smart_188_no_cero"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P13 · los avisos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "cambio_smart_5",
+   "columnas_del_modelo": [
+    "cambio_smart_5"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P14 · los cambios contra la foto anterior",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "cambio_smart_187",
+   "columnas_del_modelo": [
+    "cambio_smart_187"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P14 · los cambios contra la foto anterior",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "cambio_smart_197",
+   "columnas_del_modelo": [
+    "cambio_smart_197"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P14 · los cambios contra la foto anterior",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "cambio_smart_198",
+   "columnas_del_modelo": [
+    "cambio_smart_198"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P14 · los cambios contra la foto anterior",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "meses_desde_foto_anterior",
+   "columnas_del_modelo": [
+    "meses_desde_foto_anterior"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P14 · los cambios contra la foto anterior",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_1_normalized",
+   "columnas_del_modelo": [
+    "smart_1_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_2_normalized",
+   "columnas_del_modelo": [
+    "smart_2_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_2_raw",
+   "columnas_del_modelo": [
+    "smart_2_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_3_normalized",
+   "columnas_del_modelo": [
+    "smart_3_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_3_raw",
+   "columnas_del_modelo": [
+    "smart_3_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_4_raw",
+   "columnas_del_modelo": [
+    "smart_4_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_5_normalized",
+   "columnas_del_modelo": [
+    "smart_5_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_7_normalized",
+   "columnas_del_modelo": [
+    "smart_7_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_8_normalized",
+   "columnas_del_modelo": [
+    "smart_8_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_8_raw",
+   "columnas_del_modelo": [
+    "smart_8_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_9_normalized",
+   "columnas_del_modelo": [
+    "smart_9_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_22_normalized",
+   "columnas_del_modelo": [
+    "smart_22_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_22_raw",
+   "columnas_del_modelo": [
+    "smart_22_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_24_normalized",
+   "columnas_del_modelo": [
+    "smart_24_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_90_raw",
+   "columnas_del_modelo": [
+    "smart_90_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_183_raw",
+   "columnas_del_modelo": [
+    "smart_183_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_184_raw",
+   "columnas_del_modelo": [
+    "smart_184_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_189_raw",
+   "columnas_del_modelo": [
+    "smart_189_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_191_normalized",
+   "columnas_del_modelo": [
+    "smart_191_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_191_raw",
+   "columnas_del_modelo": [
+    "smart_191_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_192_normalized",
+   "columnas_del_modelo": [
+    "smart_192_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_193_normalized",
+   "columnas_del_modelo": [
+    "smart_193_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_193_raw",
+   "columnas_del_modelo": [
+    "smart_193_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_194_normalized",
+   "columnas_del_modelo": [
+    "smart_194_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_195_normalized",
+   "columnas_del_modelo": [
+    "smart_195_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_195_raw",
+   "columnas_del_modelo": [
+    "smart_195_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_196_normalized",
+   "columnas_del_modelo": [
+    "smart_196_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_196_raw",
+   "columnas_del_modelo": [
+    "smart_196_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_198_normalized",
+   "columnas_del_modelo": [
+    "smart_198_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_199_normalized",
+   "columnas_del_modelo": [
+    "smart_199_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_200_normalized",
+   "columnas_del_modelo": [
+    "smart_200_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_220_raw",
+   "columnas_del_modelo": [
+    "smart_220_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_222_raw",
+   "columnas_del_modelo": [
+    "smart_222_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_223_raw",
+   "columnas_del_modelo": [
+    "smart_223_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_226_raw",
+   "columnas_del_modelo": [
+    "smart_226_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_240_raw",
+   "columnas_del_modelo": [
+    "smart_240_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_241_raw",
+   "columnas_del_modelo": [
+    "smart_241_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_242_raw",
+   "columnas_del_modelo": [
+    "smart_242_raw"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "smart_197_normalized",
+   "columnas_del_modelo": [
+    "smart_197_normalized"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-009",
+     "paso": "P05 · los contadores vacíos se quedan vacíos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P20 · las numéricas tal cual",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "model",
+   "columnas_del_modelo": [
+    "model"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P22 · las categorías raras",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "R-021",
+     "paso": "P23 · el código de categoría",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "fabricante",
+   "columnas_del_modelo": [
+    "fabricante"
+   ],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P09 · el fabricante",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P22 · las categorías raras",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "R-021",
+     "paso": "P23 · el código de categoría",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "datacenter",
+   "columnas_del_modelo": [],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-001",
+     "paso": "P02 · el centro como texto",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+     "paso": "P19 · la muestra",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-021; informes/modelado.json, ganador.datacenter y sitio",
+     "paso": "P21 · el centro se vacía",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-021, R-022",
+     "paso": "P22 · las categorías raras",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "R-021",
+     "paso": "P23 · el código de categoría",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador",
+     "paso": "P24 · el modelo",
+     "clase": "aprende"
+    },
+    {
+     "ficha": "informes/modelado.json, ganador.recalibracion",
+     "paso": "P25 · la recalibración",
+     "clase": "aprende"
+    }
+   ]
+  },
+  {
+   "variable": "serial_number",
+   "columnas_del_modelo": [],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    }
+   ]
+  },
+  {
+   "variable": "fecha",
+   "columnas_del_modelo": [],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P15 · lo que pasa sin cambios",
+     "clase": "no aprende"
+    }
+   ]
+  },
+  {
+   "variable": "falla_30d",
+   "columnas_del_modelo": [],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-010, R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P17 · el objetivo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    }
+   ]
+  },
+  {
+   "variable": "horizonte_hasta",
+   "columnas_del_modelo": [],
+   "cadena": [
+    {
+     "ficha": "R-008",
+     "paso": "P01 · leer la foto en un fichero",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-004",
+     "paso": "P03 · el nombre del modelo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-005",
+     "paso": "P04 · la capacidad del modelo",
+     "clase": "necesita otras filas"
+    },
+    {
+     "ficha": "R-011; reglas de transformación, «`dim_modelo`»",
+     "paso": "P08 · disco de arranque o de datos",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P11 · la población",
+     "clase": "quita filas"
+    },
+    {
+     "ficha": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+     "paso": "P16 · el horizonte del objetivo",
+     "clase": "no aprende"
+    },
+    {
+     "ficha": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+     "paso": "P18 · el objetivo conocido al entrenar",
+     "clase": "quita filas"
+    }
+   ]
+  }
+ ],
+ "receta": {
+  "algoritmo": "HistGradientBoostingClassifier",
+  "hiperparametros": {
+   "min_samples_leaf": "hoja",
+   "max_iter": 500,
+   "max_depth": null,
+   "learning_rate": 0.025,
+   "l2_regularization": 0.5
+  },
+  "fijos": {
+   "early_stopping": false,
+   "random_state": 42,
+   "categorical_features": [
+    "model_oe",
+    "fabricante_oe",
+    "datacenter_oe"
+   ]
+  },
+  "hoja": {
+   "regla": "max(20, 1 % de las filas que entrenan en el pliegue)",
+   "con_la_muestra_del_modelado": 232243,
+   "valor": 2322
+  },
+  "semilla": 42,
+  "muestra": {
+   "regla": "todas las fotos con fallo y el 2 % de las sanas de cada mes, semilla 42",
+   "fraccion_sanas": 0.02,
+   "en_el_modelado": {
+    "filas": 232243,
+    "fallos": 11962,
+    "sanas": 220281
+   }
+  },
+  "objetivo_conocido": {
+   "regla": "entrenan las fotos con fecha y horizonte_hasta anteriores a la fecha del entrenamiento",
+   "fecha_en_el_modelado": "2024-07-01",
+   "fotos_en_el_modelado": 11026052,
+   "fallos_en_el_modelado": 11962
+  },
+  "recalibracion": {
+   "metodo": "corrección del prior sobre el logit (desequilibrio.md, «Recalibrar»)",
+   "formula": "odds = p/(1-p) · [real/(1-real)] / [muestra/(1-muestra)]; probabilidad = odds/(1+odds)",
+   "tasa_muestra_en_el_modelado": 0.05150639631765005,
+   "tasa_real_en_el_modelado": 0.0010848851429323932
+  },
+  "corte": {
+   "como": "parte de cada grupo",
+   "valores": [
+    20,
+    100,
+    500,
+    1000
+   ],
+   "grupo": "fecha",
+   "principal": 100,
+   "desempate": "serial_number",
+   "regla": "cada foto mensual se ordena por la probabilidad, de mayor a menor; a igual probabilidad, por serial_number; cada lista marca los N primeros"
+  },
+  "fuente": "informes/modelado.json"
+ },
+ "codigo": {
+  "modulo": "scripts/pipeline_riesgo.py",
+  "reentrenar": "produccion/reentrenar.py",
+  "ejecutar": "produccion/ejecutar.py",
+  "prueba": "tests/comprobar_produccion_por_otro_camino.py"
+ },
+ "reentreno": {
+  "tabla": "data\\processed\\fotos_riesgo.parquet",
+  "filas_entrada": 14604861,
+  "filas_quitadas": [
+   {
+    "motivo": "disco de arranque",
+    "filas": 0,
+    "casos_del_evento": 0
+   },
+   {
+    "motivo": "fotos posteriores a la fecha del entrenamiento",
+    "filas": 0,
+    "casos_del_evento": 0
+   },
+   {
+    "motivo": "objetivo sin conocer",
+    "fecha": "2025-07-01",
+    "filas": 0,
+    "casos_del_evento": 0
+   },
+   {
+    "motivo": "sanas que no entran en la muestra",
+    "filas": 14296824,
+    "casos_del_evento": 0
+   }
+  ],
+  "modelo_en_uso": {
+   "existia": true,
+   "de_donde": "modelos/en_uso/modelo_riesgo.joblib"
+  },
+  "igual_bit_a_bit": null,
+  "ruta": "modelos\\reentrenos\\2026-11-19",
+  "comparacion_con_el_en_uso": {
+   "periodo": "2025-07-01 a 2026-05-01",
+   "filas": 3643207,
+   "medida": "media de los fallos en la lista de 100 de cada mes; AUC",
+   "en_uso": {
+    "lista_100": 22.636363636363637,
+    "auc": 0.8725293006211722
+   },
+   "reentrenado": {
+    "lista_100": 23.727272727272727,
+    "auc": 0.8959359886054553
+   }
+  }
+ },
+ "lote": {
+  "ruta": "data\\raw\\reserva\\fotos_mensuales\\2026-06.parquet",
+  "mes": "2026-06",
+  "filas_entrada": 353401,
+  "filas_salida": 353401,
+  "puntuadas": 349495,
+  "sin_puntuar": [
+   {
+    "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+    "filas": 3893
+   },
+   {
+    "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+    "filas": 13
+   }
+  ],
+  "salida": "data\\predicciones\\2026-11-20\\predicciones_2026-06.parquet",
+  "modelo": "modelos\\en_uso\\modelo_riesgo.joblib",
+  "historial": {
+   "ruta": {
+    "fotos": [
+     "data\\raw\\podado\\fotos_mensuales",
+     "data\\raw\\reserva\\fotos_mensuales"
+    ],
+    "ventanas": [
+     "data\\raw\\podado\\ventanas_fallo",
+     "data\\raw\\reserva\\ventanas_fallo"
+    ]
+   },
+   "filas": null,
+   "discos_con_foto_anterior": 349977,
+   "discos_con_ventana_ya_ocurrida": 22330
+  }
+ },
+ "prueba_por_otro_camino": {
+  "salida": "data/predicciones/2026-11-19/predicciones_2025-06.parquet",
+  "coincide": true,
+  "tolerancia": 1e-12,
+  "rojo_con_estropeada": true,
+  "filas": 318737,
+  "puntuadas": 314751,
+  "distintos": []
+ },
+ "validaciones": {
+  "cadenas_completas": true,
+  "pasos_con_clase": true,
+  "aprende_tras_la_particion": true,
+  "contrato_sin_vacios": true,
+  "columnas_del_contrato": true,
+  "filas_ejecucion": true,
+  "bit_a_bit": true,
+  "otro_camino": true,
+  "sin_quitar_filas_al_ejecutar": true,
+  "ficha_cuadra": true,
+  "cambia_con_datos_nuevos": true
+ },
+ "parametros": [
+  {
+   "nombre": "tolerancia de la prueba por otro camino",
+   "valor": 1e-12,
+   "origen": "preproduccion/parametros.md, por defecto"
+  },
+  {
+   "nombre": "semilla",
+   "valor": 42,
+   "origen": "informes/modelado.json, ganador.semilla"
+  },
+  {
+   "nombre": "corte",
+   "valor": "listas de 20, 100, 500, 1000 por foto mensual; principal 100",
+   "origen": "informes/modelado.json (validacion.por_mes y aprobado_antes); reglas §7, CP-010"
+  },
+  {
+   "nombre": "carpeta de reentrenos",
+   "valor": "modelos/reentrenos/AAAA-MM-DD/",
+   "origen": "preproduccion/parametros.md"
+  },
+  {
+   "nombre": "carpeta de predicciones",
+   "valor": "data/predicciones/AAAA-MM-DD/",
+   "origen": "preproduccion/parametros.md"
+  },
+  {
+   "nombre": "formato de guardado",
+   "valor": "joblib con el módulo .py",
+   "origen": "preproduccion/parametros.md"
+  }
+ ],
+ "teoria": [
+  "39.2, la preproducción: se tira del hilo hacia atrás desde el ganador y sus finalistas, y solo pasa a producción lo que transforma una finalista; el registro de transformaciones ya hace el primer filtro.",
+  "39.4, las reglas del pipeline: lo que quita filas va fuera del Pipeline y solo al reentrenar; lo que no aprende puede ir como función; lo que aprende, con fit en entrenamiento.",
+  "39.8, los dos scripts: al ejecutar no se tira ninguna fila; lo que no se puede puntuar sale con su motivo."
+ ],
+ "datos_personales": "Los datos son de discos: serial_number identifica un disco, no a una persona (reglas §9). El contrato no usa ni deja ninguna columna de datos personales. No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+ "limites": [
+  "El contrato describe la parte 2, que todavía no existe: nada de él se ha ejecutado sobre los datos.",
+  "La capacidad del modelo se toma al ejecutar de la historia de fotos y ventanas hasta el día de la foto. En el desarrollo salió de todo el periodo, también del recuento diario. Si algún modelo tiene su única capacidad válida solo en el recuento, NO SE PUEDE SABER sin medirlo; lo mide la parte 2 con las fotos de control.",
+  "La primera aparición de un disco sin horas encendido solo usa las ventanas de fallos ocurridos antes del día de la foto. El desarrollo usó también las de fallos posteriores: en una de las 2.735 fotos sin horas de fotos_riesgo la edad puede salir distinta, y la prueba del módulo la cuenta aparte.",
+  "En la validación, dos discos con la misma probabilidad cerca del borde de una lista se contaron con su valor esperado (por eso hay cifras con decimales); producción desempata por serial_number. Las listas pueden diferir en esos empates."
+ ],
+ "pasos": [
+  {
+   "orden": 1,
+   "id": "P01",
+   "nombre": "leer la foto en un fichero",
+   "fuente": "R-008",
+   "clase": "no aprende",
+   "que": "La foto mensual se lee como un solo fichero, con sus columnas por nombre; una columna que su pieza no trae queda vacía y no se rellena.",
+   "por_que": "Solo junta las piezas de un mes; no mira otras filas ni aprende nada.",
+   "reentrenar": "Ya está aplicado en la tabla de entrenamiento.",
+   "ejecutar": "La entrada es la foto de un mes; sus columnas se comprueban por nombre.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 2,
+   "id": "P02",
+   "nombre": "el centro como texto",
+   "fuente": "R-001",
+   "clase": "no aprende",
+   "que": "datacenter pasa a texto; donde no consta sigue vacío.",
+   "por_que": "Es un cambio de tipo de la propia fila.",
+   "reentrenar": "Ya está aplicado en la tabla de entrenamiento.",
+   "ejecutar": "Se aplica a la foto.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 3,
+   "id": "P03",
+   "nombre": "el nombre del modelo",
+   "fuente": "R-004",
+   "clase": "no aprende",
+   "que": "Los modelos escritos con dos espacios tras «WDC» pasan a su nombre con el mapeo cerrado de decisiones-correccion.json; lo que no está en el mapeo se queda como está.",
+   "por_que": "El mapeo es una lista fija aprobada por Juan, no algo aprendido de los datos.",
+   "reentrenar": "Ya está aplicado en la tabla de entrenamiento.",
+   "ejecutar": "Se aplica a la foto y a su historia.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 4,
+   "id": "P04",
+   "nombre": "la capacidad del modelo",
+   "fuente": "R-005",
+   "clase": "necesita otras filas",
+   "que": "Una capacidad no válida (-1 o 0,1 TB, por debajo del mínimo de decisiones-correccion.json) pasa a la única capacidad válida de su modelo.",
+   "por_que": "No aprende nada de la tabla de entrenamiento: aplica la regla §3, la capacidad de un disco es la de su modelo, y para saberla mira otras filas del mismo modelo con capacidad válida. En el desarrollo se miró todo el periodo y cada modelo tenía una sola; al ejecutar se mira solo lo que hay hasta el día de la foto, la propia foto incluida. Si un modelo no tiene ninguna capacidad válida hasta ese día, su fila sale sin puntuar y con su motivo.",
+   "reentrenar": "Ya está aplicado en la tabla de entrenamiento.",
+   "ejecutar": "Se calcula con la foto y su historia, modelo a modelo.",
+   "historia": [
+    "fotos mensuales anteriores y la propia foto",
+    "ventanas de fallo"
+   ]
+  },
+  {
+   "orden": 5,
+   "id": "P05",
+   "nombre": "los contadores vacíos se quedan vacíos",
+   "fuente": "R-009",
+   "clase": "no aprende",
+   "que": "Un contador vacío quiere decir que el modelo no lo apunta: no se rellena (C-12).",
+   "por_que": "No cambia ningún valor.",
+   "reentrenar": "Ya está así en la tabla de entrenamiento.",
+   "ejecutar": "No se rellena ningún vacío.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 6,
+   "id": "P06",
+   "nombre": "la historia de las ventanas sin los días copiados",
+   "fuente": "R-007",
+   "clase": "necesita otras filas",
+   "que": "De la historia de ventanas salen las filas cuya fecha no es la de su texto (date), que son copia del día siguiente, y las ventanas de fallos que no han ocurrido antes del día de la foto (dia_fallo igual o posterior a su fecha).",
+   "por_que": "Quita filas de la tabla de historia, nunca de la foto que se puntúa; por eso no es de la clase que quita filas. Sirve para la primera aparición de la edad y para la capacidad del modelo. Una ventana son los 30 días anteriores a un fallo: que exista una fila de ventana el día de la foto anuncia un fallo que ese día no se conoce (arreglo aprobado por Juan el 19/11/2026).",
+   "reentrenar": "Ya está aplicado en la tabla de entrenamiento.",
+   "ejecutar": "Se aplica a la historia de ventanas antes de usarla.",
+   "historia": [
+    "ventanas de fallo"
+   ]
+  },
+  {
+   "orden": 7,
+   "id": "P07",
+   "nombre": "capacidad en TB",
+   "fuente": "R-011; reglas de transformación, «`dim_modelo`»",
+   "clase": "no aprende",
+   "que": "capacidad_tb es la capacidad del modelo entre 10^12, redondeada a un decimal, con el medio hacia arriba.",
+   "por_que": "Con la capacidad del modelo ya puesta (P04) es una división y un redondeo de la propia fila.",
+   "reentrenar": "Llega hecha en la tabla de entrenamiento.",
+   "ejecutar": "Se calcula en la foto.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 8,
+   "id": "P08",
+   "nombre": "disco de arranque o de datos",
+   "fuente": "R-011; reglas de transformación, «`dim_modelo`»",
+   "clase": "no aprende",
+   "que": "tipo_disco es «arranque» si la capacidad del modelo no pasa del límite de las reglas §3 y §7 y «datos» si lo pasa.",
+   "por_que": "Es un corte fijo de las reglas sobre la capacidad del modelo, ya puesta en P04.",
+   "reentrenar": "Decide la población, ya aplicada en la tabla.",
+   "ejecutar": "Se calcula en la foto para el motivo de P11.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 9,
+   "id": "P09",
+   "nombre": "el fabricante",
+   "fuente": "R-011; reglas de transformación, «`dim_modelo`»",
+   "clase": "no aprende",
+   "que": "fabricante sale del nombre del modelo: «ST» es Seagate; TOSHIBA, WDC y HGST delante dan su nombre; dos excepciones escritas en las reglas §3.",
+   "por_que": "Es una regla fija sobre el nombre. En el desarrollo se guardó en dim_modelo, una tabla por modelo, pero esa tabla solo repite la regla: un modelo nuevo la cumple igual. Un modelo que no sigue ningún patrón queda vacío.",
+   "reentrenar": "Llega hecho en la tabla de entrenamiento.",
+   "ejecutar": "Se calcula en la foto.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 10,
+   "id": "P10",
+   "nombre": "la garantía",
+   "fuente": "R-011; reglas de transformación, «`dim_modelo`»",
+   "clase": "no aprende",
+   "que": "garantia_anos sale del nombre del modelo, solo en los discos de datos (reglas §6); un modelo sin garantía comprobada queda vacío.",
+   "por_que": "Igual que el fabricante: una regla fija sobre el nombre, que la tabla dim_modelo solo guarda.",
+   "reentrenar": "Llega hecha en la tabla de entrenamiento.",
+   "ejecutar": "Se calcula en la foto.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 11,
+   "id": "P11",
+   "nombre": "la población",
+   "fuente": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+   "clase": "quita filas",
+   "que": "Entran los discos de datos y sale la foto del día en que el disco falla (failure = 1).",
+   "por_que": "Son los discos del modelo (reglas §3 y §7); la foto del día del fallo ya está marcada como fallada.",
+   "reentrenar": "La tabla ya llega sin esas filas: se comprueba que no queda ninguna y se cuenta.",
+   "ejecutar": "No se quita ninguna: el disco de arranque y la foto del día del fallo salen con la puntuación vacía y su motivo.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 12,
+   "id": "P12",
+   "nombre": "la edad",
+   "fuente": "R-013; reglas de transformación, «3. `fotos_riesgo`»; «De qué se parte»",
+   "clase": "necesita otras filas",
+   "que": "edad_anos son las horas encendido entre 8.766; sin horas, los días desde la primera aparición del disco entre 365,25. Al ejecutar, la primera aparición solo usa las ventanas de fallos con dia_fallo anterior a la fecha de la foto.",
+   "por_que": "Con horas es la propia fila. Sin horas cuenta desde la primera aparición, que es su primera foto o, si sale antes, el primer día de una ventana suya: eso pide la historia del disco hasta el día de la foto, nunca después. La ventana de un fallo que aún no ha ocurrido no cuenta, porque anuncia ese fallo (arreglo de Juan, 19/11/2026). En el desarrollo sí contó: de las 2.735 fotos de fotos_riesgo sin horas, en una sola la primera aparición sale de una ventana, y esa foto puede salir distinta.",
+   "reentrenar": "Llega hecha en la tabla de entrenamiento.",
+   "ejecutar": "Se calcula con la foto y su historia.",
+   "historia": [
+    "fotos mensuales anteriores y la propia foto",
+    "ventanas de fallo"
+   ]
+  },
+  {
+   "orden": 13,
+   "id": "P13",
+   "nombre": "los avisos",
+   "fuente": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+   "clase": "no aprende",
+   "que": "avisa, contadores_que_avisan, suma_contadores_sin_188 y smart_188_no_cero salen de los cinco contadores de avería de la fila; un vacío no cuenta como aviso.",
+   "por_que": "Solo miran la propia fila.",
+   "reentrenar": "Llegan hechos en la tabla de entrenamiento.",
+   "ejecutar": "Se calculan en la foto.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 14,
+   "id": "P14",
+   "nombre": "los cambios contra la foto anterior",
+   "fuente": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+   "clase": "necesita otras filas",
+   "que": "cambio_smart_5, 187, 197 y 198 restan al contador de la fila el de la foto anterior del mismo disco; meses_desde_foto_anterior cuenta los meses entre las dos. Sin foto anterior, o con uno de los dos valores vacío, quedan vacíos.",
+   "por_que": "Necesitan la foto anterior del mismo disco, de cualquier mes anterior: una fila que no es la que se puntúa.",
+   "reentrenar": "Llegan hechos en la tabla de entrenamiento.",
+   "ejecutar": "Se calculan con la foto y su historia.",
+   "historia": [
+    "fotos mensuales anteriores"
+   ]
+  },
+  {
+   "orden": 15,
+   "id": "P15",
+   "nombre": "lo que pasa sin cambios",
+   "fuente": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+   "clase": "no aprende",
+   "que": "serial_number, fecha, model, datacenter y los contadores smart_* pasan tal como están en la fila.",
+   "por_que": "No se transforman.",
+   "reentrenar": "Llegan así en la tabla de entrenamiento.",
+   "ejecutar": "Se toman de la foto.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 16,
+   "id": "P16",
+   "nombre": "el horizonte del objetivo",
+   "fuente": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
+   "clase": "no aprende",
+   "que": "horizonte_hasta son 30 días después de la foto, recortado al final de su periodo.",
+   "por_que": "Es una cuenta de calendario sobre la fecha de la fila.",
+   "reentrenar": "Llega hecho en la tabla de entrenamiento y lo usa P18.",
+   "ejecutar": "No se usa.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 17,
+   "id": "P17",
+   "nombre": "el objetivo",
+   "fuente": "R-010, R-013; reglas de transformación, «3. `fotos_riesgo`»",
+   "clase": "necesita otras filas",
+   "que": "falla_30d vale 1 si el disco tiene un fallo de la lista del día siguiente a la foto a horizonte_hasta, con dia_fallo igualado a milisegundos antes de cruzar.",
+   "por_que": "Es el objetivo: mira los fallos posteriores a la foto, que al ejecutar no se conocen. Llega hecho en la tabla de entrenamiento; ejecutar no lo calcula ni lo usa.",
+   "reentrenar": "Llega hecho en la tabla de entrenamiento.",
+   "ejecutar": "No se calcula ni se usa: si llega, se ignora.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 18,
+   "id": "P18",
+   "nombre": "el objetivo conocido al entrenar",
+   "fuente": "R-020; informes/modelado.json, validacion_cruzada.objetivo_sin_conocer",
+   "clase": "quita filas",
+   "que": "Entrenan las fotos anteriores a la fecha del entrenamiento cuyo horizonte_hasta también es anterior a esa fecha; las demás se quitan y se cuentan, con los fallos que llevan.",
+   "por_que": "El objetivo tarda 30 días en saberse: es la regla del modelado (aprendizaje-automatico §3 y §7).",
+   "reentrenar": "Antes del Pipeline, contado.",
+   "ejecutar": "No aplica: no se quita ninguna fila.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 19,
+   "id": "P19",
+   "nombre": "la muestra",
+   "fuente": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
+   "clase": "quita filas",
+   "que": "Entrenan todas las fotos con fallo y una parte de las sanas de cada mes, sorteada con la semilla, como en el modelado.",
+   "por_que": "Es el tratamiento del desequilibrio, que se hace solo al entrenar (reglas §7).",
+   "reentrenar": "Antes del Pipeline, contado.",
+   "ejecutar": "No aplica: se puntúan todas las filas.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 20,
+   "id": "P20",
+   "nombre": "las numéricas tal cual",
+   "fuente": "R-021, R-022",
+   "clase": "no aprende",
+   "que": "Las numéricas entran al modelo tal cual, con el vacío como vacío (rama «numericas», passthrough).",
+   "por_que": "Los árboles cortan por orden: no hay escalado ni relleno.",
+   "reentrenar": "Dentro del Pipeline.",
+   "ejecutar": "Dentro del Pipeline.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 21,
+   "id": "P21",
+   "nombre": "el centro se vacía",
+   "fuente": "R-021; informes/modelado.json, ganador.datacenter y sitio",
+   "clase": "no aprende",
+   "que": "datacenter se lee y se vacía antes de codificarlo, porque el sitio no entró en el modelo.",
+   "por_que": "Pone un vacío fijo, sin mirar los datos.",
+   "reentrenar": "Dentro del Pipeline, como función.",
+   "ejecutar": "Dentro del Pipeline, como función.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 22,
+   "id": "P22",
+   "nombre": "las categorías raras",
+   "fuente": "R-021, R-022",
+   "clase": "aprende",
+   "que": "En model, fabricante y datacenter el vacío pasa a «sin dato» y las categorías con menos fotos, fallos o sanas que el mínimo de la matriz van a «otras»; una categoría que no estaba en el entrenamiento va a «otras» si existe y, si no, a la referencia (P-03 de la matriz).",
+   "por_que": "Qué categorías son raras se aprende de la tabla de entrenamiento, con el objetivo: va con fit.",
+   "reentrenar": "Dentro del Pipeline, con fit.",
+   "ejecutar": "Dentro del Pipeline, ya ajustado.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 23,
+   "id": "P23",
+   "nombre": "el código de categoría",
+   "fuente": "R-021",
+   "clase": "aprende",
+   "que": "Cada categoría pasa a un código ordinal, que el HistGradientBoosting trata como categórica nativa; lo que no conoce sale vacío.",
+   "por_que": "La lista de categorías se aprende en el entrenamiento: va con fit.",
+   "reentrenar": "Dentro del Pipeline, con fit.",
+   "ejecutar": "Dentro del Pipeline, ya ajustado.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 24,
+   "id": "P24",
+   "nombre": "el modelo",
+   "fuente": "informes/modelado.json, ganador",
+   "clase": "aprende",
+   "que": "El HistGradientBoosting con la receta fija del ganador.",
+   "por_que": "Es lo que se entrena.",
+   "reentrenar": "Dentro del Pipeline, con fit.",
+   "ejecutar": "Dentro del Pipeline, con predict_proba.",
+   "historia": [
+    "no necesita"
+   ]
+  },
+  {
+   "orden": 25,
+   "id": "P25",
+   "nombre": "la recalibración",
+   "fuente": "informes/modelado.json, ganador.recalibracion",
+   "clase": "aprende",
+   "que": "La probabilidad del modelo pasa a la escala real con la corrección del prior sobre el logit, con la tasa de fallo de la muestra y la real del entrenamiento.",
+   "por_que": "Las dos tasas se miden en cada reentreno, con su tabla: no se copian del modelado.",
+   "reentrenar": "Se miden las dos tasas al entrenar y viajan con el modelo.",
+   "ejecutar": "Se aplica a la probabilidad.",
+   "historia": [
+    "no necesita"
+   ]
+  }
+ ],
+ "historia_de_ejecutar": [
+  {
+   "tabla": "fotos mensuales anteriores y la propia foto",
+   "columnas": [
+    "serial_number",
+    "fecha",
+    "model",
+    "capacity_bytes",
+    "smart_9_raw"
+   ],
+   "hasta": "la fecha de la foto, incluida",
+   "pasos": [
+    "P04",
+    "P12"
+   ]
+  },
+  {
+   "tabla": "ventanas de fallo",
+   "columnas": [
+    "serial_number",
+    "fecha",
+    "date",
+    "dia_fallo",
+    "model",
+    "capacity_bytes"
+   ],
+   "hasta": "las ventanas de fallos ocurridos antes del día de la foto (dia_fallo anterior a su fecha)",
+   "pasos": [
+    "P04",
+    "P06",
+    "P12"
+   ]
+  },
+  {
+   "tabla": "fotos mensuales anteriores",
+   "columnas": [
+    "serial_number",
+    "fecha",
+    "smart_5_raw",
+    "smart_187_raw",
+    "smart_197_raw",
+    "smart_198_raw"
+   ],
+   "hasta": "el día anterior a la foto: la última foto del mismo disco, de cualquier mes anterior",
+   "pasos": [
+    "P14"
+   ]
+  }
+ ],
+ "entrada_de_ejecutar": {
+  "tabla": "una foto mensual con las columnas de data/raw/podado/fotos_mensuales/",
+  "columnas_que_lee": [
+   "serial_number",
+   "fecha",
+   "model",
+   "capacity_bytes",
+   "failure",
+   "datacenter",
+   "smart_5_raw",
+   "smart_187_raw",
+   "smart_197_raw",
+   "smart_198_raw",
+   "smart_194_raw",
+   "smart_199_raw",
+   "smart_12_raw",
+   "smart_192_raw",
+   "smart_1_raw",
+   "smart_7_raw",
+   "smart_9_raw",
+   "smart_188_raw",
+   "smart_1_normalized",
+   "smart_2_normalized",
+   "smart_2_raw",
+   "smart_3_normalized",
+   "smart_3_raw",
+   "smart_4_raw",
+   "smart_5_normalized",
+   "smart_7_normalized",
+   "smart_8_normalized",
+   "smart_8_raw",
+   "smart_9_normalized",
+   "smart_22_normalized",
+   "smart_22_raw",
+   "smart_24_normalized",
+   "smart_90_raw",
+   "smart_183_raw",
+   "smart_184_raw",
+   "smart_189_raw",
+   "smart_191_normalized",
+   "smart_191_raw",
+   "smart_192_normalized",
+   "smart_193_normalized",
+   "smart_193_raw",
+   "smart_194_normalized",
+   "smart_195_normalized",
+   "smart_195_raw",
+   "smart_196_normalized",
+   "smart_196_raw",
+   "smart_198_normalized",
+   "smart_199_normalized",
+   "smart_200_normalized",
+   "smart_220_raw",
+   "smart_222_raw",
+   "smart_223_raw",
+   "smart_226_raw",
+   "smart_240_raw",
+   "smart_241_raw",
+   "smart_242_raw",
+   "smart_197_normalized"
+  ],
+  "comprobaciones": "las columnas por nombre; los números no llegan como texto; la fecha de la foto es la del mes que se pide"
+ }
+}

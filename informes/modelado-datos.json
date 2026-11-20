@@ -1,0 +1,1085 @@
+{
+  "skill": "modelado-datos",
+  "version_skill": "31/10/2026 (WF-32)",
+  "script": "scripts/04_modelado_datos.py",
+  "fecha_datos": "2025-06-30",
+  "fecha_ejecucion": "2026-11-18T07:39:20",
+  "entradas": [
+    {
+      "ruta": "data/processed/fotos_mensuales_corregido.parquet",
+      "sha256": "998d1edec335d5cfefb6d8177a173b019f8983a519fa7353d754f0233efebedb",
+      "filas": 14851669,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/processed/ventanas_fallo_corregido.parquet",
+      "sha256": "63d4379a89b96f54984bb87ea73b4dfd292442d4c7efac05852bc6d5ca73d095",
+      "filas": 536597,
+      "columnas": 131
+    },
+    {
+      "ruta": "data/processed/recuento_diario_corregido.parquet",
+      "sha256": "320f487a6a82bbd173c4f4d2708fbbfc3319d005e1cc5740f19a05ec55477465",
+      "filas": 197871,
+      "columnas": 6
+    },
+    {
+      "ruta": "data/processed/fallos_corregido.parquet",
+      "sha256": "59e45676a6a7a2dae43d3645017b74710049c2187895b7973abaacd21815acbe",
+      "filas": 17960,
+      "columnas": 2
+    }
+  ],
+  "resultado": {
+    "estado": "OK",
+    "riesgo": "medio",
+    "resumen": "Diseño comprobado sobre las cuatro tablas: 15 cruces en el plan y 10 clases en el registro de exclusiones. Las cuatro claves de grano son únicas.",
+    "artefactos": [
+      "informes/modelado-datos.json",
+      "informes/modelado-datos.md",
+      "data/processed/calendario.parquet"
+    ],
+    "siguiente": "transformacion-datos, con el plan de cruces aprobado y los controles de integracion-datos"
+  },
+  "pendientes": [],
+  "diseno": "contexto-proyecto/modelo/modelo-datos.md",
+  "aprobado": {
+    "aprobado": true,
+    "fecha": "2026-11-17",
+    "quien": "Juan"
+  },
+  "parametros": {
+    "limite_arranque_bytes": 2048408248320,
+    "inicio_datos_bytes": 4000000000000,
+    "fin_construccion": "2024-06-30",
+    "fin_validacion": "2025-06-30",
+    "fin_reserva": "2026-06-30",
+    "inicio_sitio": "2023-07-01",
+    "horizonte_dias": 30,
+    "minimo_dias_ano": 50000,
+    "minimo_fallos_edad": 20,
+    "horas_ano": 8766.0,
+    "etiqueta_sin_dato": "sin dato"
+  },
+  "tablas": [
+    {
+      "tabla": "hechos_fotos",
+      "fichero": "data/processed/fotos_mensuales_corregido.parquet",
+      "grano": "un disco el día 1 de un mes: la foto mensual de cada disco en servicio",
+      "clave_grano": [
+        "serial_number",
+        "fecha"
+      ],
+      "tipo": "hechos",
+      "filas": 14851669,
+      "clave_unica": true,
+      "filas_repetidas": 0,
+      "nulos_en_clave": 0,
+      "nota": "date repite fecha; el modelo usa fecha"
+    },
+    {
+      "tabla": "hechos_ventanas",
+      "fichero": "data/processed/ventanas_fallo_corregido.parquet",
+      "grano": "un disco un día, dentro de los 30 días anteriores a uno de sus fallos o el del fallo",
+      "clave_grano": [
+        "serial_number",
+        "fecha"
+      ],
+      "tipo": "hechos",
+      "filas": 536597,
+      "clave_unica": true,
+      "filas_repetidas": 0,
+      "nulos_en_clave": 0,
+      "nota": "cada fila pertenece a la ventana de un fallo (serial_number, dia_fallo); date repite fecha"
+    },
+    {
+      "tabla": "hechos_recuento",
+      "fichero": "data/processed/recuento_diario_corregido.parquet",
+      "grano": "un día, un modelo, una capacidad y un centro: cuántos discos había y cuántos fallaron",
+      "clave_grano": [
+        "fecha",
+        "model",
+        "capacity_bytes",
+        "datacenter"
+      ],
+      "tipo": "hechos",
+      "filas": 197871,
+      "clave_unica": true,
+      "filas_repetidas": 0,
+      "nulos_en_clave": 0,
+      "nota": "«sin dato» es el centro que no consta"
+    },
+    {
+      "tabla": "hechos_fallos",
+      "fichero": "data/processed/fallos_corregido.parquet",
+      "grano": "un disco el día que Backblaze lo da por fallado",
+      "clave_grano": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "tipo": "hechos",
+      "filas": 17960,
+      "clave_unica": true,
+      "filas_repetidas": 0,
+      "nulos_en_clave": 0,
+      "nota": "no trae modelo: lo toma de la fila del día del fallo de su ventana"
+    },
+    {
+      "tabla": "dim_modelo",
+      "fichero": null,
+      "grano": "un modelo de disco",
+      "clave_grano": [
+        "model"
+      ],
+      "tipo": "dimension",
+      "filas": null,
+      "clave_unica": null,
+      "filas_repetidas": null,
+      "nulos_en_clave": null,
+      "nota": "la construye la transformación; tipo de la clave: string"
+    },
+    {
+      "tabla": "dim_precio_gb",
+      "fichero": null,
+      "grano": "una capacidad un año: lo que costaba el GB",
+      "clave_grano": [
+        "capacidad_tb",
+        "ano"
+      ],
+      "tipo": "dimension",
+      "filas": null,
+      "clave_unica": null,
+      "filas_repetidas": null,
+      "nulos_en_clave": null,
+      "nota": "la construye la transformación desde contexto-proyecto/sector/precios_de_coste_discos.md"
+    },
+    {
+      "tabla": "Calendario",
+      "fichero": null,
+      "grano": "un día, del primer al último día del recuento",
+      "clave_grano": [
+        "fecha"
+      ],
+      "tipo": "dimension",
+      "filas": null,
+      "clave_unica": null,
+      "filas_repetidas": null,
+      "nulos_en_clave": null,
+      "nota": "lo construye este script solo con el diseño aprobado"
+    }
+  ],
+  "relaciones": [
+    {
+      "desde": "hechos_fotos",
+      "hacia": "dim_modelo",
+      "clave_desde": [
+        "model"
+      ],
+      "clave_hacia": [
+        "model"
+      ],
+      "maestro": "dim_modelo",
+      "cardinalidad": "N:1",
+      "procedencia": "reglas §3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); como_estan_organizados_los_datos.md (dimensión modelo)",
+      "tipos": [
+        {
+          "desde": "model",
+          "hacia": "model",
+          "tipo_desde": "string",
+          "tipo_hacia": "string"
+        }
+      ],
+      "mismo_tipo": true
+    },
+    {
+      "desde": "hechos_ventanas",
+      "hacia": "dim_modelo",
+      "clave_desde": [
+        "model"
+      ],
+      "clave_hacia": [
+        "model"
+      ],
+      "maestro": "dim_modelo",
+      "cardinalidad": "N:1",
+      "procedencia": "reglas §3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); como_estan_organizados_los_datos.md (dimensión modelo)",
+      "tipos": [
+        {
+          "desde": "model",
+          "hacia": "model",
+          "tipo_desde": "string",
+          "tipo_hacia": "string"
+        }
+      ],
+      "mismo_tipo": true
+    },
+    {
+      "desde": "hechos_recuento",
+      "hacia": "dim_modelo",
+      "clave_desde": [
+        "model"
+      ],
+      "clave_hacia": [
+        "model"
+      ],
+      "maestro": "dim_modelo",
+      "cardinalidad": "N:1",
+      "procedencia": "reglas §3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); como_estan_organizados_los_datos.md (dimensión modelo)",
+      "tipos": [
+        {
+          "desde": "model",
+          "hacia": "model",
+          "tipo_desde": "string",
+          "tipo_hacia": "string"
+        }
+      ],
+      "mismo_tipo": true
+    },
+    {
+      "desde": "hechos_fotos",
+      "hacia": "Calendario",
+      "clave_desde": [
+        "fecha"
+      ],
+      "clave_hacia": [
+        "fecha"
+      ],
+      "maestro": "Calendario",
+      "cardinalidad": "N:1",
+      "procedencia": "reglas §5 (cada registro es el estado de un disco un día; un día de disco es un disco un día)",
+      "tipos": [
+        {
+          "desde": "fecha",
+          "hacia": "fecha",
+          "tipo_desde": "timestamp[ms]",
+          "tipo_hacia": "timestamp[ms]"
+        }
+      ],
+      "mismo_tipo": true
+    },
+    {
+      "desde": "hechos_ventanas",
+      "hacia": "Calendario",
+      "clave_desde": [
+        "fecha"
+      ],
+      "clave_hacia": [
+        "fecha"
+      ],
+      "maestro": "Calendario",
+      "cardinalidad": "N:1",
+      "procedencia": "reglas §5 (cada registro es el estado de un disco un día; un día de disco es un disco un día)",
+      "tipos": [
+        {
+          "desde": "fecha",
+          "hacia": "fecha",
+          "tipo_desde": "timestamp[ms]",
+          "tipo_hacia": "timestamp[ms]"
+        }
+      ],
+      "mismo_tipo": true
+    },
+    {
+      "desde": "hechos_recuento",
+      "hacia": "Calendario",
+      "clave_desde": [
+        "fecha"
+      ],
+      "clave_hacia": [
+        "fecha"
+      ],
+      "maestro": "Calendario",
+      "cardinalidad": "N:1",
+      "procedencia": "reglas §5 (cada registro es el estado de un disco un día; un día de disco es un disco un día)",
+      "tipos": [
+        {
+          "desde": "fecha",
+          "hacia": "fecha",
+          "tipo_desde": "timestamp[ms]",
+          "tipo_hacia": "timestamp[ms]"
+        }
+      ],
+      "mismo_tipo": true
+    },
+    {
+      "desde": "hechos_fallos",
+      "hacia": "Calendario",
+      "clave_desde": [
+        "dia_fallo"
+      ],
+      "clave_hacia": [
+        "fecha"
+      ],
+      "maestro": "Calendario",
+      "cardinalidad": "N:1",
+      "procedencia": "reglas §3 (un fallo es el día en que Backblaze da un disco por fallado)",
+      "tipos": [
+        {
+          "desde": "dia_fallo",
+          "hacia": "fecha",
+          "tipo_desde": "timestamp[ns]",
+          "tipo_hacia": "timestamp[ms]"
+        }
+      ],
+      "mismo_tipo": false
+    },
+    {
+      "desde": "hechos_ventanas",
+      "hacia": "hechos_fallos",
+      "clave_desde": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "clave_hacia": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "maestro": "hechos_fallos",
+      "cardinalidad": "N:1",
+      "procedencia": "como_estan_organizados_los_datos.md (una ventana son los 30 días antes de un fallo y el del fallo); reglas §5 («salvo los 30 días antes de un fallo, que van día a día»)",
+      "tipos": [
+        {
+          "desde": "serial_number",
+          "hacia": "serial_number",
+          "tipo_desde": "string",
+          "tipo_hacia": "string"
+        },
+        {
+          "desde": "dia_fallo",
+          "hacia": "dia_fallo",
+          "tipo_desde": "timestamp[ns]",
+          "tipo_hacia": "timestamp[ns]"
+        }
+      ],
+      "mismo_tipo": true
+    },
+    {
+      "desde": "hechos_fallos",
+      "hacia": "hechos_ventanas",
+      "clave_desde": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "clave_hacia": [
+        "serial_number",
+        "fecha"
+      ],
+      "maestro": "hechos_ventanas (su fila del día del fallo)",
+      "cardinalidad": "1:1",
+      "procedencia": "reglas §5 (un registro por disco y día, el del fallo incluido); como_estan_organizados_los_datos.md",
+      "tipos": [
+        {
+          "desde": "serial_number",
+          "hacia": "serial_number",
+          "tipo_desde": "string",
+          "tipo_hacia": "string"
+        },
+        {
+          "desde": "dia_fallo",
+          "hacia": "fecha",
+          "tipo_desde": "timestamp[ns]",
+          "tipo_hacia": "timestamp[ms]"
+        }
+      ],
+      "mismo_tipo": false
+    },
+    {
+      "desde": "hechos_fallos",
+      "hacia": "dim_modelo",
+      "clave_desde": [
+        "model"
+      ],
+      "clave_hacia": [
+        "model"
+      ],
+      "maestro": "dim_modelo",
+      "cardinalidad": "N:1",
+      "procedencia": "reglas §3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); como_estan_organizados_los_datos.md (dimensión modelo); el modelo es el de la fila del día del fallo",
+      "tipos": [
+        {
+          "desde": "model",
+          "hacia": "model",
+          "tipo_desde": "string",
+          "tipo_hacia": "string"
+        }
+      ],
+      "mismo_tipo": true
+    },
+    {
+      "desde": "hechos_fallos",
+      "hacia": "dim_precio_gb",
+      "clave_desde": [
+        "capacidad_tb",
+        "ano_fallo"
+      ],
+      "clave_hacia": [
+        "capacidad_tb",
+        "ano"
+      ],
+      "maestro": "dim_precio_gb",
+      "cardinalidad": "N:1",
+      "procedencia": "reglas §6 (el disco nuevo que sustituye a uno que falla, al coste por GB del año del fallo)",
+      "tipos": [
+        {
+          "desde": "capacidad_tb",
+          "hacia": "capacidad_tb",
+          "tipo_desde": null,
+          "tipo_hacia": null
+        },
+        {
+          "desde": "ano_fallo",
+          "hacia": "ano",
+          "tipo_desde": null,
+          "tipo_hacia": null
+        }
+      ],
+      "mismo_tipo": null,
+      "motivo_tipo": "una de las claves se calcula en la transformación y todavía no tiene tipo"
+    }
+  ],
+  "calendario": {
+    "periodo": "día",
+    "desde": "2020-01-01",
+    "hasta": "2025-06-30",
+    "primer_periodo_completo": true,
+    "ultimo_periodo_completo": true,
+    "fichero": "data/processed/calendario.parquet",
+    "dias": 2008,
+    "trimestres_parciales": [],
+    "anos_parciales": [
+      2025
+    ],
+    "fecha_de_union": {
+      "hechos_fotos": "fecha",
+      "hechos_ventanas": "fecha",
+      "hechos_recuento": "fecha",
+      "hechos_fallos": "dia_fallo"
+    }
+  },
+  "forma_entrega": "tablas_separadas",
+  "plan_cruces": [
+    {
+      "orden": 1,
+      "partida": "hechos_fallos",
+      "se_une": "hechos_ventanas",
+      "clave_partida": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "clave_une": [
+        "serial_number",
+        "fecha"
+      ],
+      "cardinalidad": "1:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "filas de hechos_fallos"
+      ],
+      "agregar_antes": "ventanas filtradas a la fila con fecha = dia_fallo: una por fallo",
+      "aporta": "modelo, capacidad y horas encendido del día del fallo (el modelo de cada fila es el que trae esa fila)",
+      "fecha_del_cruce": "el día del fallo"
+    },
+    {
+      "orden": 2,
+      "partida": "hechos_fallos",
+      "se_une": "hechos_ventanas",
+      "clave_partida": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "clave_une": [
+        "serial_number",
+        "fecha"
+      ],
+      "cardinalidad": "1:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "filas de hechos_fallos"
+      ],
+      "agregar_antes": "ventanas filtradas a la fila con fecha = dia_fallo - 1 día: una por fallo, o ninguna",
+      "aporta": "los cinco contadores de avería del día anterior (fallo sin aviso, reglas §6)",
+      "fecha_del_cruce": "el día anterior al fallo"
+    },
+    {
+      "orden": 3,
+      "partida": "hechos_fallos",
+      "se_une": "hechos_ventanas",
+      "clave_partida": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "clave_une": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "cardinalidad": "1:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "filas de hechos_fallos"
+      ],
+      "agregar_antes": "por fallo, la última fila de su ventana hasta el día del fallo que trae centro (para las tasas por centro) y la última que trae centro, vault, servidor y ranura (para el tomo): una por fallo",
+      "aporta": "el sitio del fallo (reglas §5)",
+      "fecha_del_cruce": "el último día con sitio, hasta el del fallo"
+    },
+    {
+      "orden": 4,
+      "partida": "hechos_fallos",
+      "se_une": "dim_modelo",
+      "clave_partida": [
+        "model"
+      ],
+      "clave_une": [
+        "model"
+      ],
+      "cardinalidad": "N:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "filas de hechos_fallos"
+      ],
+      "agregar_antes": null,
+      "aporta": "capacidad, fabricante, tipo de disco y garantía",
+      "fecha_del_cruce": null
+    },
+    {
+      "orden": 5,
+      "partida": "hechos_fallos",
+      "se_une": "dim_precio_gb",
+      "clave_partida": [
+        "capacidad_tb",
+        "ano_fallo"
+      ],
+      "clave_une": [
+        "capacidad_tb",
+        "ano"
+      ],
+      "cardinalidad": "N:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "filas de hechos_fallos"
+      ],
+      "agregar_antes": null,
+      "aporta": "precio del disco nuevo (reglas §6)",
+      "fecha_del_cruce": "el año del fallo"
+    },
+    {
+      "orden": 6,
+      "partida": "hechos_fallos",
+      "se_une": "Calendario",
+      "clave_partida": [
+        "dia_fallo"
+      ],
+      "clave_une": [
+        "fecha"
+      ],
+      "cardinalidad": "N:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "filas de hechos_fallos"
+      ],
+      "agregar_antes": null,
+      "aporta": "año, trimestre, mes y periodo del fallo",
+      "fecha_del_cruce": "el día del fallo"
+    },
+    {
+      "orden": 7,
+      "partida": "hechos_recuento",
+      "se_une": "dim_modelo",
+      "clave_partida": [
+        "model"
+      ],
+      "clave_une": [
+        "model"
+      ],
+      "cardinalidad": "N:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "discos",
+        "fallos"
+      ],
+      "agregar_antes": null,
+      "aporta": "tipo de disco, fabricante, capacidad y precio",
+      "fecha_del_cruce": null
+    },
+    {
+      "orden": 8,
+      "partida": "hechos_recuento",
+      "se_une": "Calendario",
+      "clave_partida": [
+        "fecha"
+      ],
+      "clave_une": [
+        "fecha"
+      ],
+      "cardinalidad": "N:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "discos",
+        "fallos"
+      ],
+      "agregar_antes": null,
+      "aporta": "año, trimestre, mes, periodo y marca de parcial",
+      "fecha_del_cruce": null
+    },
+    {
+      "orden": 9,
+      "partida": "hechos_fotos",
+      "se_une": "dim_modelo",
+      "clave_partida": [
+        "model"
+      ],
+      "clave_une": [
+        "model"
+      ],
+      "cardinalidad": "N:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "filas de hechos_fotos"
+      ],
+      "agregar_antes": null,
+      "aporta": "tipo de disco, fabricante, capacidad y garantía",
+      "fecha_del_cruce": null
+    },
+    {
+      "orden": 10,
+      "partida": "hechos_fotos",
+      "se_une": "Calendario",
+      "clave_partida": [
+        "fecha"
+      ],
+      "clave_une": [
+        "fecha"
+      ],
+      "cardinalidad": "N:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "filas de hechos_fotos"
+      ],
+      "agregar_antes": null,
+      "aporta": "año, trimestre, mes y periodo",
+      "fecha_del_cruce": null
+    },
+    {
+      "orden": 11,
+      "partida": "hechos_fotos",
+      "se_une": "hechos_recuento",
+      "clave_partida": [
+        "model",
+        "datacenter",
+        "mes"
+      ],
+      "clave_une": [
+        "model",
+        "datacenter",
+        "mes"
+      ],
+      "cardinalidad": "N:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "días de disco del recuento"
+      ],
+      "agregar_antes": "fotos: discos por modelo, centro (el vacío como «sin dato»), mes y tramo (edad, aviso), y su parte dentro de modelo, centro y mes; recuento: días de disco (discos sumados por día) y fallos por modelo, centro y mes. Los días de cada tramo son la parte de la foto por los días del recuento",
+      "aporta": "los días de disco de cada tramo (reglas §5, «Con qué se cuentan»)",
+      "fecha_del_cruce": "el mes de la foto"
+    },
+    {
+      "orden": 12,
+      "partida": "hechos_fotos",
+      "se_une": "hechos_fallos",
+      "clave_partida": [
+        "serial_number",
+        "fecha"
+      ],
+      "clave_une": [
+        "serial_number",
+        "fecha_foto"
+      ],
+      "cardinalidad": "N:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "filas del tablón de la pregunta 4",
+        "objetivo: pares foto-fallo distintos"
+      ],
+      "agregar_antes": "por fallo, las fechas de las fotos de su disco con fecha < dia_fallo <= fecha + 30 días, con el horizonte recortado al último día del periodo de la foto; una fila por (serial_number, fecha_foto)",
+      "aporta": "el objetivo de la pregunta 4 (reglas §7, CP-003 y CP-004)",
+      "fecha_del_cruce": "los 30 días siguientes a la foto"
+    },
+    {
+      "orden": 13,
+      "partida": "hechos_fallos",
+      "se_une": "hechos_fotos",
+      "clave_partida": [
+        "serial_number",
+        "fecha_foto"
+      ],
+      "clave_une": [
+        "serial_number",
+        "fecha"
+      ],
+      "cardinalidad": "N:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "filas de hechos_fallos"
+      ],
+      "agregar_antes": "a cada fallo, la fecha de la última foto de su disco anterior al fallo dentro de su horizonte",
+      "aporta": "el puesto del disco en la lista del mes, para los fallos señalados en tomos en peligro",
+      "fecha_del_cruce": "la última foto anterior al fallo"
+    },
+    {
+      "orden": 14,
+      "partida": "hechos_fotos",
+      "se_une": "hechos_recuento",
+      "clave_partida": [
+        "model",
+        "ano_edad",
+        "trimestre"
+      ],
+      "clave_une": [
+        "model",
+        "ano_edad",
+        "trimestre"
+      ],
+      "cardinalidad": "N:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "discos del primer día del trimestre"
+      ],
+      "agregar_antes": "fotos del primer día de cada trimestre (discos de datos), contadas por modelo y año de edad; tasas por modelo y año de edad con los días (cruce 11) y los fallos (cruces 1 y 4) hasta el día anterior al trimestre",
+      "aporta": "los fallos esperados del bloque 9 (reglas §7, previsión)",
+      "fecha_del_cruce": "el primer día del trimestre"
+    },
+    {
+      "orden": 15,
+      "partida": "hechos_recuento",
+      "se_une": "hechos_fallos",
+      "clave_partida": [
+        "model",
+        "datacenter",
+        "mes",
+        "tramo"
+      ],
+      "clave_une": [
+        "model",
+        "datacenter",
+        "mes",
+        "tramo"
+      ],
+      "cardinalidad": "1:1",
+      "tipo_cruce": "left",
+      "magnitudes_control": [
+        "días de disco",
+        "fallos"
+      ],
+      "agregar_antes": "días de disco repartidos (cruce 11) y fallos (cruces 1, 3 y 4) agregados al mismo grano; los fallos sin días en su celda son huérfanas que cuenta integracion-datos",
+      "aporta": "numerador y denominador de cada tasa por modelo, centro, mes y tramo, en tablas separadas",
+      "fecha_del_cruce": null
+    }
+  ],
+  "integracion_antes_de_transformar": false,
+  "motivo_integracion": "ningún cruce del plan se puede hacer con las tablas tal como están: todos piden una dimensión o el Calendario, que construye la transformación, o filtrar o agregar antes por una regla (el día del fallo, el día anterior, el último día con sitio, el horizonte, el reparto de días). Los hace la transformación con los controles de integracion-datos (transformacion-datos, SC-30)",
+  "datos_personales_texto": [
+    "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+    "No hay datos de personas (reglas §9): el número de serie identifica un disco, no a una persona.",
+    "Esta skill no usa ni deja ninguna columna de datos personales."
+  ],
+  "teoria": [
+    "9.5, granularidad y cardinalidad: el grano de cada tabla y la cardinalidad de cada relación salen de las reglas y de la organización de los datos, no de los datos que se validan.",
+    "12.5 y 12.6, cambiar el nivel: los días de disco se suman (flujo) y la foto del mes reparte (nivel); los hechos de grano distinto se llevan al grano común antes de unirse.",
+    "14.9, regularizar una serie: el Calendario es diario y continuo; el recuento no tiene días que falten."
+  ],
+  "limites": [
+    "El script comprueba el grano y los tipos de las claves; si las claves casan entre tablas lo mide integracion-datos o la transformación con sus controles.",
+    "En pandas, a diferencia de SQL, las claves vacías se emparejan entre sí al cruzar: el centro vacío de fotos y ventanas se iguala a «sin dato» antes de cruzar con el recuento.",
+    "Un maestro que cambia con el tiempo se modela con la versión que hay: la fecha de compra y el precio de cada modelo se calculan con todo el periodo, como una ficha de hoy.",
+    "La edad al fallar del registro de exclusiones usa las horas del día del fallo o del anterior y, sin ellas, la primera aparición; la regla exacta la fija la transformación."
+  ],
+  "exclusiones": [
+    {
+      "clase": "discos_de_arranque",
+      "que_sale": "los discos de 0,2 a 2 TB, con sus fotos, días de disco y fallos",
+      "sale_de": "todas las tasas, rankings, coste por terabyte, previsión y la pregunta 4",
+      "como_se_trata": "fuera de todo cálculo; se pueden contar aparte",
+      "por_que": "reglas §3: no guardan datos de clientes y Backblaze los quita de sus tasas",
+      "recuperable": "sí: siguen en las tablas y se cuentan aparte si una petición lo pide",
+      "recuentos": {
+        "modelos": 33,
+        "filas_fotos": 246280,
+        "filas_ventanas": 28546,
+        "dias_de_disco": 7500739,
+        "fallos_recuento": 964
+      }
+    },
+    {
+      "clase": "sitio_no_consta_antes",
+      "que_sale": "los días de disco y fallos de discos de datos antes del 01/07/2023, sin centro",
+      "sale_de": "tasas por centro y fallos del mismo tomo (pregunta 3)",
+      "como_se_trata": "fuera de las cifras por sitio; siguen en las demás",
+      "por_que": "reglas §4: el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás",
+      "recuperable": "no: el sitio no está en los datos",
+      "recuentos": {
+        "dias_de_disco": 238811405,
+        "fallos_recuento": 8362,
+        "fallos_lista": 8362,
+        "filas_fotos_sin_centro": 7821320
+      }
+    },
+    {
+      "clase": "sitio_no_consta_desde",
+      "que_sale": "los días de disco y fallos de discos de datos desde el 01/07/2023 con el centro «sin dato»",
+      "sale_de": "tasas por centro (pregunta 3)",
+      "como_se_trata": "se cuentan y se dicen (reglas §5)",
+      "por_que": "reglas §5 y §7: un dato de sitio vacío no consta",
+      "recuperable": "no, con estos datos",
+      "recuentos": {
+        "dias_de_disco": 6621213,
+        "fallos_recuento": 128,
+        "dias_de_disco_desde": 207297278,
+        "filas_fotos_sin_centro": 234446
+      }
+    },
+    {
+      "clase": "fallos_sin_ranura",
+      "que_sale": "los fallos de discos de datos desde el 01/07/2023 sin ningún día de su ventana, hasta el del fallo, con centro (sin centro) o con centro, vault y ranura (sin tomo)",
+      "sale_de": "tasas por centro (sin centro) y fallos del mismo tomo (sin tomo), pregunta 3 y aviso de tomos en peligro de la pregunta 4",
+      "como_se_trata": "se cuentan y se dicen (reglas §5)",
+      "por_que": "reglas §5: el sitio de un fallo es el del último día anterior que lo trae, dentro de su ventana",
+      "recuperable": "no, con estos datos",
+      "recuentos": {
+        "fallos_desde": 8634,
+        "fallos_sin_centro": 128,
+        "fallos_sin_tomo": 141
+      }
+    },
+    {
+      "clase": "fallos_sin_dia_anterior",
+      "que_sale": "los fallos de discos de datos cuya ventana no trae el día anterior al fallo",
+      "sale_de": "el indicador de fallos sin aviso",
+      "como_se_trata": "fuera del indicador; se cuentan y se dicen",
+      "por_que": "reglas §6: el fallo sin aviso se mira el día anterior; sin ese día no se sabe",
+      "recuperable": "no: el día no está en los datos",
+      "recuentos": {
+        "fallos_de_datos": 16996,
+        "fallos": 903
+      }
+    },
+    {
+      "clase": "modelos_bajo_minimo",
+      "que_sale": "los modelos de datos con menos de 50.000 días de disco en el año",
+      "sale_de": "los rankings de modelos (preguntas 1 y 2, bloque 2)",
+      "como_se_trata": "se enseñan aparte con su recuento (reglas §7)",
+      "por_que": "reglas §7: mínimo fijo para entrar en un ranking, el umbral anual de Backblaze",
+      "recuperable": "sí: se enseñan aparte; no entran en el ranking",
+      "recuentos": {
+        "minimo_dias_ano": 50000,
+        "modelos_de_datos": 61,
+        "modelos_que_pasan_algun_ano": 32,
+        "por_ano": {
+          "2020": {
+            "modelos_con_dias": 40,
+            "modelos_bajo_minimo": 23,
+            "dias_de_disco_bajo_minimo": 179804,
+            "fallos_bajo_minimo": 7,
+            "dias_de_disco_del_ano": 51345918,
+            "dias_del_ano_en_datos": 366
+          },
+          "2021": {
+            "modelos_con_dias": 46,
+            "modelos_bajo_minimo": 23,
+            "dias_de_disco_bajo_minimo": 168365,
+            "fallos_bajo_minimo": 13,
+            "dias_de_disco_del_ano": 66072034,
+            "dias_del_ano_en_datos": 365
+          },
+          "2022": {
+            "modelos_con_dias": 49,
+            "modelos_bajo_minimo": 23,
+            "dias_de_disco_bajo_minimo": 215789,
+            "fallos_bajo_minimo": 18,
+            "dias_de_disco_del_ano": 78890669,
+            "dias_del_ano_en_datos": 365
+          },
+          "2023": {
+            "modelos_con_dias": 57,
+            "modelos_bajo_minimo": 29,
+            "dias_de_disco_bajo_minimo": 256863,
+            "fallos_bajo_minimo": 33,
+            "dias_de_disco_del_ano": 90077756,
+            "dias_del_ano_en_datos": 365
+          },
+          "2024": {
+            "modelos_con_dias": 60,
+            "modelos_bajo_minimo": 29,
+            "dias_de_disco_bajo_minimo": 222848,
+            "fallos_bajo_minimo": 25,
+            "dias_de_disco_del_ano": 103839696,
+            "dias_del_ano_en_datos": 366
+          },
+          "2025": {
+            "modelos_con_dias": 47,
+            "modelos_bajo_minimo": 20,
+            "dias_de_disco_bajo_minimo": 238499,
+            "fallos_bajo_minimo": 5,
+            "dias_de_disco_del_ano": 55882610,
+            "dias_del_ano_en_datos": 181
+          }
+        }
+      }
+    },
+    {
+      "clase": "anos_de_edad_con_menos_de_20_fallos",
+      "que_sale": "los años de edad, de todos los discos o de un modelo, con menos de 20 fallos",
+      "sale_de": "la conclusión de la pregunta 2 (a qué edad sube la tasa)",
+      "como_se_trata": "se enseñan sin conclusión (reglas §7, CP-009)",
+      "por_que": "CP-009: con menos de 20 fallos el intervalo no permite concluir",
+      "recuperable": "sí: se enseñan, sin conclusión",
+      "recuentos": {
+        "todos_anos": 0,
+        "todos_fallos": 0,
+        "todos_anos_de_edad": {
+          "0": 2021,
+          "1": 2064,
+          "2": 2502,
+          "3": 2793,
+          "4": 2491,
+          "5": 2122,
+          "6": 1462,
+          "7": 1207,
+          "8": 334
+        },
+        "celdas_modelo_edad": 99,
+        "celdas_modelo_edad_total": 207,
+        "fallos_en_esas_celdas": 462,
+        "fallos_con_edad_por_primera_aparicion": 79
+      }
+    },
+    {
+      "clase": "p4_fotos_del_dia_del_fallo",
+      "que_sale": "las fotos de discos de datos con failure = 1, del mismo día del fallo",
+      "sale_de": "el tablón de la pregunta 4",
+      "como_se_trata": "fuera del tablón; su fallo sigue siendo objetivo de la foto anterior si cae en su horizonte",
+      "por_que": "ese día el disco ya está marcado como fallado (decisión de modelado, Claude)",
+      "recuperable": "no: no hay nada que predecir en ellas",
+      "recuentos": {
+        "filas": 528,
+        "construccion": 373,
+        "validacion": 155
+      }
+    },
+    {
+      "clase": "p4_horizonte_recortado",
+      "que_sale": "los fallos que caen después del último día del periodo de la foto",
+      "sale_de": "el objetivo de la pregunta 4",
+      "como_se_trata": "el horizonte se recorta al borde del periodo (reglas §7: «se recorta o se queda fuera»)",
+      "por_que": "un objetivo no puede mirar al periodo siguiente (decisión de modelado, Claude)",
+      "recuperable": "el de construcción, no sin mezclar periodos; el de validación, solo con la reserva",
+      "recuentos": {
+        "fotos": [
+          "2024-06-01",
+          "2025-06-01"
+        ],
+        "fallos_perdidos_disco_en_foto": [
+          16,
+          null
+        ]
+      }
+    },
+    {
+      "clase": "filas_del_10_12_2022",
+      "que_sale": "las 228 filas de las ventanas fechadas el 10/12/2022 que eran copia del 11/12/2022",
+      "sale_de": "las ventanas de fallo, ya en la corrección (R-007)",
+      "como_se_trata": "quitadas en la corrección; ninguna traía un fallo",
+      "por_que": "registro de transformaciones, R-007: no son datos de su fecha",
+      "recuperable": "no: eran copias; siguen en data/raw/",
+      "recuentos": {
+        "filas": 228,
+        "fecha": "2022-12-10",
+        "fuente": "informes/correccion-datos.json, controles"
+      }
+    }
+  ],
+  "pregunta_4": {
+    "filas_tablon": 14604861,
+    "filas_tablon_construccion": 11026052,
+    "filas_tablon_validacion": 3578809,
+    "horizonte_recortado": [
+      {
+        "periodo": "construcción",
+        "foto": "2024-06-01",
+        "horizonte_completo": "2024-07-01",
+        "corte": "2024-06-30",
+        "fallos_horizonte": 456,
+        "fallos_disco_en_foto": 401,
+        "fallos_perdidos": 16,
+        "fallos_perdidos_disco_en_foto": 16,
+        "nota": null
+      },
+      {
+        "periodo": "validación",
+        "foto": "2025-06-01",
+        "horizonte_completo": "2025-07-01",
+        "corte": "2025-06-30",
+        "fallos_horizonte": null,
+        "fallos_disco_en_foto": null,
+        "fallos_perdidos": null,
+        "fallos_perdidos_disco_en_foto": null,
+        "nota": "el horizonte entero pasa del último día de los datos: lo que se pierde no se puede saber hasta la prueba final"
+      }
+    ]
+  },
+  "cifras_de_control": {
+    "recuento.filas": 197871,
+    "recuento.primer_dia": "2020-01-01",
+    "recuento.ultimo_dia": "2025-06-30",
+    "recuento.dias": 2008,
+    "recuento.dias_que_faltan": 0,
+    "ventanas.date_distinta_de_fecha": 0,
+    "fallos.filas": 17960,
+    "ventanas.filas": 536597,
+    "fallos.discos_con_dos_fallos": 12,
+    "ventanas.dias": 2007,
+    "ventanas.dias_que_faltan_n": 1,
+    "ventanas.dias_que_faltan": [
+      "2022-12-10"
+    ],
+    "fallos.sin_ventana": 0,
+    "fallos.sin_fila_del_dia": 0,
+    "fallos.fila_del_dia_sin_failure_1": 0,
+    "fotos.filas": 14851669,
+    "fotos.date_distinta_de_fecha": 0,
+    "modelos.fotos": 94,
+    "modelos.recuento": 94,
+    "modelos.fotos_igual_recuento": true,
+    "modelos.ventanas": 71,
+    "modelos.ventanas_fuera_del_recuento": 0,
+    "modelos.con_mas_de_una_capacidad": 0,
+    "modelos.arranque": 33,
+    "modelos.datos": 61,
+    "modelos.entre_arranque_y_datos": 0,
+    "fotos.meses": 66,
+    "fotos.fechas_no_dia_1": 0,
+    "fotos.meses_que_faltan": 0,
+    "fotos.primera": "2020-01-01",
+    "fotos.ultima": "2025-06-01",
+    "fotos.filas_datos": 14605389,
+    "fotos.filas_datos_construccion": 11026425,
+    "fotos.filas_datos_validacion": 3578964,
+    "fotos.filas_datos_dia_del_fallo": 528,
+    "fallos.discos_sin_foto": 210,
+    "fallos.de_datos": 16996,
+    "fallos.datos_construccion": 12478,
+    "fallos.datos_validacion": 4518,
+    "fotos.clave_repetidas": 0,
+    "ventanas.clave_repetidas": 0,
+    "recuento.clave_repetidas": 0,
+    "fallos.clave_repetidas": 0
+  },
+  "tiempos_segundos": {
+    "recuento": 0.1,
+    "fallos_y_ventanas": 0.9,
+    "fotos_lectura": 0.3,
+    "fotos_grano": 3.1,
+    "fotos_cuentas": 1.4,
+    "fallos_de_datos": 3.8,
+    "pregunta_4": 3.4,
+    "total": 14.1
+  }
+}

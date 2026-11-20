@@ -1,0 +1,62 @@
+{
+ "tabla": "data\\processed\\fotos_riesgo.parquet",
+ "fecha_entrenamiento": "2025-07-01",
+ "filas_entrada": 14604861,
+ "filas_quitadas": [
+  {
+   "motivo": "disco de arranque",
+   "filas": 0,
+   "casos_del_evento": 0
+  },
+  {
+   "motivo": "fotos posteriores a la fecha del entrenamiento",
+   "filas": 0,
+   "casos_del_evento": 0
+  },
+  {
+   "motivo": "objetivo sin conocer",
+   "fecha": "2025-07-01",
+   "filas": 0,
+   "casos_del_evento": 0
+  },
+  {
+   "motivo": "sanas que no entran en la muestra",
+   "filas": 14296824,
+   "casos_del_evento": 0
+  }
+ ],
+ "filas_entrena": 14604861,
+ "fallos_entrena": 16266,
+ "tasa_real": 0.0011137387750557845,
+ "muestra": {
+  "filas": 308037,
+  "fallos": 16266,
+  "sanas": 291771
+ },
+ "hoja": 3080,
+ "columnas_del_contrato": true,
+ "ruta": "modelos\\reentrenos\\2026-11-19",
+ "lleva_filas_de_entrenamiento": [],
+ "igual_bit_a_bit": null,
+ "cambia_con_datos_nuevos": true,
+ "comparacion_con_el_modelado": null,
+ "comparacion_con_el_en_uso": {
+  "periodo": "2025-07-01 a 2026-05-01",
+  "filas": 3643207,
+  "medida": "media de los fallos en la lista de 100 de cada mes; AUC",
+  "en_uso": {
+   "lista_100": 22.636363636363637,
+   "auc": 0.8725293006211722
+  },
+  "reentrenado": {
+   "lista_100": 23.727272727272727,
+   "auc": 0.8959359886054553
+  }
+ },
+ "modelo_en_uso": {
+  "existia": true,
+  "de_donde": "modelos/en_uso/modelo_riesgo.joblib"
+ },
+ "estado": "OK",
+ "resumen": "Reentreno hecho con 14604861 fotos que entrenan y una muestra de 308037; guardado en modelos\\reentrenos\\2026-11-19, aparte del modelo en uso, que aprueba Juan."
+}

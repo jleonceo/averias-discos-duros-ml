@@ -1,0 +1,76 @@
+﻿pagina;grafico;grupo;medida;cifra;unidad
+4;fallos por trimestre;T1 2021, reales;fallos;350;fallos
+4;fallos por trimestre;T2 2021, reales;fallos;441;fallos
+4;fallos por trimestre;T3 2021, reales;fallos;510;fallos
+4;fallos por trimestre;T4 2021, reales;fallos;522;fallos
+4;fallos por trimestre;T1 2022, reales;fallos;618;fallos
+4;fallos por trimestre;T2 2022, reales;fallos;763;fallos
+4;fallos por trimestre;T3 2022, reales;fallos;916;fallos
+4;fallos por trimestre;T4 2022, reales;fallos;702;fallos
+4;fallos por trimestre;T1 2023, reales;fallos;892;fallos
+4;fallos por trimestre;T2 2023, reales;fallos;1341;fallos
+4;fallos por trimestre;T3 2023, reales;fallos;943;fallos
+4;fallos por trimestre;T4 2023, reales;fallos;1025;fallos
+4;fallos por trimestre;T1 2024, reales;fallos;949;fallos
+4;fallos por trimestre;T2 2024, reales;fallos;1199;fallos
+4;fallos por trimestre;T3 2024, reales;fallos;1389;fallos
+4;fallos por trimestre;T4 2024, reales;fallos;1001;fallos
+4;fallos por trimestre;T1 2025, reales;fallos;1067;fallos
+4;fallos por trimestre;T2 2025, reales;fallos;1061;fallos
+4;fallos por trimestre;T1 2021, por modelo y edad;fallos;418,4211;fallos
+4;fallos por trimestre;T2 2021, por modelo y edad;fallos;410,3985;fallos
+4;fallos por trimestre;T3 2021, por modelo y edad;fallos;437,8546;fallos
+4;fallos por trimestre;T4 2021, por modelo y edad;fallos;477,4461;fallos
+4;fallos por trimestre;T1 2022, por modelo y edad;fallos;526,9911;fallos
+4;fallos por trimestre;T2 2022, por modelo y edad;fallos;589,7123;fallos
+4;fallos por trimestre;T3 2022, por modelo y edad;fallos;766,31;fallos
+4;fallos por trimestre;T4 2022, por modelo y edad;fallos;862,0609;fallos
+4;fallos por trimestre;T1 2023, por modelo y edad;fallos;855,3409;fallos
+4;fallos por trimestre;T2 2023, por modelo y edad;fallos;976,9863;fallos
+4;fallos por trimestre;T3 2023, por modelo y edad;fallos;1303,938;fallos
+4;fallos por trimestre;T4 2023, por modelo y edad;fallos;1206,8695;fallos
+4;fallos por trimestre;T1 2024, por modelo y edad;fallos;1169,254;fallos
+4;fallos por trimestre;T2 2024, por modelo y edad;fallos;1128,4271;fallos
+4;fallos por trimestre;T3 2024, por modelo y edad;fallos;1291,126;fallos
+4;fallos por trimestre;T4 2024, por modelo y edad;fallos;1429,9573;fallos
+4;fallos por trimestre;T1 2025, por modelo y edad;fallos;1292,5033;fallos
+4;fallos por trimestre;T2 2025, por modelo y edad;fallos;1340,4004;fallos
+5;tasa por año de edad;0 años;tasa anual de fallo;0,7903;%
+5;tasa por año de edad;1 año;tasa anual de fallo;0,8597;%
+5;tasa por año de edad;2 años;tasa anual de fallo;1,2033;%
+5;tasa por año de edad;3 años;tasa anual de fallo;1,5943;%
+5;tasa por año de edad;4 años;tasa anual de fallo;1,921;%
+5;tasa por año de edad;5 años;tasa anual de fallo;2,5835;%
+5;tasa por año de edad;6 años;tasa anual de fallo;2,3948;%
+5;tasa por año de edad;7 años;tasa anual de fallo;2,4114;%
+5;tasa por año de edad;8 años;tasa anual de fallo;1,8986;%
+6;fallos frente a los esperados;ams5;razón;1,0697;veces
+6;fallos frente a los esperados;iad1;razón;0,997;veces
+6;fallos frente a los esperados;phx1;razón;1,0407;veces
+6;fallos frente a los esperados;sac0;razón;0,906;veces
+6;fallos frente a los esperados;sac2;razón;1,0995;veces
+7;tomos con dos fallos o más en 30 días;Lo que pasó;tomos;489;tomos
+7;tomos con dos fallos o más en 30 días;Media al azar;tomos;436,89;tomos
+7;tomos con dos fallos o más en 30 días;Máximo que daría el azar;tomos;456;tomos
+8;fallos en la lista de 100;2025-07, lista de riesgo;fallos;27;fallos
+8;fallos en la lista de 100;2025-07, regla;fallos;5;fallos
+8;fallos en la lista de 100;2025-08, lista de riesgo;fallos;22;fallos
+8;fallos en la lista de 100;2025-08, regla;fallos;18;fallos
+8;fallos en la lista de 100;2025-09, lista de riesgo;fallos;29;fallos
+8;fallos en la lista de 100;2025-09, regla;fallos;19;fallos
+8;fallos en la lista de 100;2025-10, lista de riesgo;fallos;25;fallos
+8;fallos en la lista de 100;2025-10, regla;fallos;13;fallos
+8;fallos en la lista de 100;2025-11, lista de riesgo;fallos;16;fallos
+8;fallos en la lista de 100;2025-11, regla;fallos;14;fallos
+8;fallos en la lista de 100;2025-12, lista de riesgo;fallos;15;fallos
+8;fallos en la lista de 100;2025-12, regla;fallos;7;fallos
+8;fallos en la lista de 100;2026-01, lista de riesgo;fallos;18;fallos
+8;fallos en la lista de 100;2026-01, regla;fallos;14;fallos
+8;fallos en la lista de 100;2026-02, lista de riesgo;fallos;20;fallos
+8;fallos en la lista de 100;2026-02, regla;fallos;19;fallos
+8;fallos en la lista de 100;2026-03, lista de riesgo;fallos;19;fallos
+8;fallos en la lista de 100;2026-03, regla;fallos;13;fallos
+8;fallos en la lista de 100;2026-04, lista de riesgo;fallos;28;fallos
+8;fallos en la lista de 100;2026-04, regla;fallos;20;fallos
+8;fallos en la lista de 100;2026-05, lista de riesgo;fallos;30;fallos
+8;fallos en la lista de 100;2026-05, regla;fallos;22;fallos

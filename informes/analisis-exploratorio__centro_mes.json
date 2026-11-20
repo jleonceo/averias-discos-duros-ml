@@ -1,0 +1,2999 @@
+{
+ "skill": "analisis-exploratorio",
+ "version_skill": "11/11/2026 (WF-87)",
+ "script": "scripts/06_analisis_exploratorio.py",
+ "encargo": "prompts/10_encargo_exploratorio.md",
+ "fecha_datos": "2025-06-30",
+ "fecha_ejecucion": "2026-11-17T21:05:33",
+ "tabla": "centro_mes",
+ "entradas": [
+  {
+   "ruta": "data/processed/centro_mes.parquet",
+   "sha256": "d6e8b53032fe7ff2be864922483b3a07a33fbf0fadbd20eca3b3c516a3b2fc57",
+   "filas": 186,
+   "columnas": 6
+  },
+  {
+   "ruta": "data/processed/dias_por_tramo.parquet",
+   "sha256": "a8f2230c04a3c9717bb4aa2a9792297ef3b0dd2d37b234178d949eadd7c38c66",
+   "filas": 13275,
+   "columnas": 8
+  },
+  {
+   "ruta": "data/processed/dim_modelo.parquet",
+   "sha256": "543441fa6c7c8bb023d40bfacd6357c85fd0cd37013a2305c3fe97bc9512a3af",
+   "filas": 94,
+   "columnas": 10
+  }
+ ],
+ "resultado": {
+  "estado": "AVISO",
+  "riesgo": "medio",
+  "resumen": "186 filas descritas: 0 hallazgos, 3 alertas y 1 hipótesis. Los dos periodos, enteros.",
+  "artefactos": [
+   "informes/analisis-exploratorio__centro_mes.json",
+   "informes/analisis-exploratorio__centro_mes.html"
+  ],
+  "siguiente": "paso 5: los bloques del plan de la analítica con esta tabla"
+ },
+ "pendientes": [
+  {
+   "id": "P-01",
+   "tabla": "centro_mes",
+   "columna": null,
+   "pregunta": "Observaciones de la persona sobre este exploratorio (comprobación 16)",
+   "opciones": [
+    "escribirlas en «observaciones» de este JSON y volver a ejecutar",
+    "ninguna"
+   ]
+  }
+ ],
+ "dataset": {
+  "ruta": "data/processed/centro_mes.parquet",
+  "sha256": "d6e8b53032fe7ff2be864922483b3a07a33fbf0fadbd20eca3b3c516a3b2fc57",
+  "bytes": 6310
+ },
+ "premisa": {
+  "afirmacion": null,
+  "la_sostienen_los_datos": null
+ },
+ "contexto": {
+  "limitaciones": [],
+  "que_es_una_fila": "un centro de datos en un mes, solo discos de datos",
+  "clave": [
+   "datacenter",
+   "mes"
+  ],
+  "granularidad": "un centro de datos en un mes",
+  "reglas": "reglas-transformacion.md §9",
+  "periodo": {
+   "desde": "2020-01-01",
+   "hasta": "2025-06-01"
+  }
+ },
+ "vision_general": {
+  "filas": 186,
+  "columnas": 6,
+  "tipos": {
+   "categorica": 2,
+   "continua": 2,
+   "fecha": 1,
+   "booleana": 1
+  },
+  "centros": [
+   "ams5",
+   "iad1",
+   "phx1",
+   "sac0",
+   "sac2",
+   "sin dato",
+   "yyz1"
+  ],
+  "meses": 66,
+  "filas_con_sitio": 144,
+  "dias_disco": 446108683,
+  "fallos": 16996,
+  "reparto_desde_sitio": [
+   {
+    "datacenter": "ams5",
+    "dias_disco": 12111055,
+    "fallos": 476,
+    "dias_pct": 5.8424
+   },
+   {
+    "datacenter": "iad1",
+    "dias_disco": 18007479,
+    "fallos": 512,
+    "dias_pct": 8.6868
+   },
+   {
+    "datacenter": "phx1",
+    "dias_disco": 65723705,
+    "fallos": 2160,
+    "dias_pct": 31.705
+   },
+   {
+    "datacenter": "sac0",
+    "dias_disco": 59117752,
+    "fallos": 2806,
+    "dias_pct": 28.5183
+   },
+   {
+    "datacenter": "sac2",
+    "dias_disco": 45064768,
+    "fallos": 2546,
+    "dias_pct": 21.7392
+   },
+   {
+    "datacenter": "sin dato",
+    "dias_disco": 6621213,
+    "fallos": 128,
+    "dias_pct": 3.1941
+   },
+   {
+    "datacenter": "yyz1",
+    "dias_disco": 651306,
+    "fallos": 6,
+    "dias_pct": 0.3142
+   }
+  ]
+ },
+ "tipificacion": [
+  {
+   "columna": "datacenter",
+   "tipo": "categorica",
+   "nivel": "fila",
+   "distintos": 7,
+   "entera": null,
+   "filas_del_nivel": 186
+  },
+  {
+   "columna": "mes",
+   "tipo": "fecha",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 186
+  },
+  {
+   "columna": "dias_disco",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 185,
+   "entera": true,
+   "filas_del_nivel": 186
+  },
+  {
+   "columna": "fallos",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 110,
+   "entera": true,
+   "filas_del_nivel": 186
+  },
+  {
+   "columna": "periodo",
+   "tipo": "categorica",
+   "nivel": "fila",
+   "distintos": 2,
+   "entera": null,
+   "filas_del_nivel": 186
+  },
+  {
+   "columna": "con_sitio",
+   "tipo": "booleana",
+   "nivel": "fila",
+   "distintos": 2,
+   "entera": null,
+   "filas_del_nivel": 186
+  }
+ ],
+ "numericas": [
+  {
+   "conteo": 186,
+   "nulos": 0,
+   "media": 2398433.77957,
+   "mediana": 2082138.0,
+   "desviacion": 2050101.001168,
+   "minimo": 23816.0,
+   "maximo": 7408966.0,
+   "p01": 66793.85,
+   "p05": 118208.25,
+   "p25": 633230.0,
+   "p75": 2961960.75,
+   "p95": 6695134.75,
+   "p99": 7242600.9,
+   "columna": "dias_disco",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "186 filas (fila)",
+   "senales": []
+  },
+  {
+   "conteo": 186,
+   "nulos": 0,
+   "media": 91.376344,
+   "mediana": 86.0,
+   "desviacion": 87.653607,
+   "minimo": 0.0,
+   "maximo": 565.0,
+   "p01": 0.0,
+   "p05": 1.0,
+   "p25": 21.0,
+   "p75": 122.0,
+   "p95": 265.0,
+   "p99": 379.65,
+   "columna": "fallos",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "186 filas (fila)",
+   "senales": []
+  }
+ ],
+ "categoricas": [
+  {
+   "cardinalidad": 7,
+   "nulos": 0,
+   "dominante": "sin dato",
+   "pct_dominante": 32.2581,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": "sin dato",
+     "filas": 60,
+     "pct": 32.2581
+    },
+    {
+     "valor": "ams5",
+     "filas": 24,
+     "pct": 12.9032
+    },
+    {
+     "valor": "iad1",
+     "filas": 24,
+     "pct": 12.9032
+    },
+    {
+     "valor": "phx1",
+     "filas": 24,
+     "pct": 12.9032
+    },
+    {
+     "valor": "sac0",
+     "filas": 24,
+     "pct": 12.9032
+    },
+    {
+     "valor": "sac2",
+     "filas": 24,
+     "pct": 12.9032
+    },
+    {
+     "valor": "yyz1",
+     "filas": 6,
+     "pct": 3.2258
+    }
+   ],
+   "total": 186,
+   "columna": "datacenter",
+   "tipo": "categorica",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 2,
+   "nulos": 0,
+   "dominante": "construcción",
+   "pct_dominante": 61.2903,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": "construcción",
+     "filas": 114,
+     "pct": 61.2903
+    },
+    {
+     "valor": "validación",
+     "filas": 72,
+     "pct": 38.7097
+    }
+   ],
+   "total": 186,
+   "columna": "periodo",
+   "tipo": "categorica",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 2,
+   "nulos": 0,
+   "dominante": true,
+   "pct_dominante": 77.4194,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": true,
+     "filas": 144,
+     "pct": 77.4194
+    },
+    {
+     "valor": false,
+     "filas": 42,
+     "pct": 22.5806
+    }
+   ],
+   "total": 186,
+   "columna": "con_sitio",
+   "tipo": "booleana",
+   "nivel": "fila"
+  }
+ ],
+ "fechas": [
+  {
+   "columna": "mes",
+   "minimo": "2020-01-01",
+   "maximo": "2025-06-01",
+   "nulos": 0
+  }
+ ],
+ "temporal": {},
+ "tasas": [
+  {
+   "nombre": "centro (centro_mes, desde que consta el sitio)",
+   "dimension": "datacenter",
+   "medida": {
+    "numerador": "fallos",
+    "denominador": "dias_disco",
+    "factor": 36500,
+    "minimo": 50000
+   },
+   "total": [
+    {
+     "categoria": "ams5",
+     "num": 476.0,
+     "den": 12111055.0,
+     "valor": 1.4345571050581474,
+     "comparada": true
+    },
+    {
+     "categoria": "iad1",
+     "num": 512.0,
+     "den": 18007479.0,
+     "valor": 1.03779102005339,
+     "comparada": true
+    },
+    {
+     "categoria": "phx1",
+     "num": 2160.0,
+     "den": 65723705.0,
+     "valor": 1.1995671881248935,
+     "comparada": true
+    },
+    {
+     "categoria": "sac0",
+     "num": 2806.0,
+     "den": 59117752.0,
+     "valor": 1.7324576211896556,
+     "comparada": true
+    },
+    {
+     "categoria": "sac2",
+     "num": 2546.0,
+     "den": 45064768.0,
+     "valor": 2.0621209011882633,
+     "comparada": true
+    },
+    {
+     "categoria": "sin dato",
+     "num": 128.0,
+     "den": 6621213.0,
+     "valor": 0.70561089033082,
+     "comparada": true
+    },
+    {
+     "categoria": "yyz1",
+     "num": 6.0,
+     "den": 651306.0,
+     "valor": 0.3362474781439139,
+     "comparada": true
+    }
+   ],
+   "par": [
+    "sac2",
+    "yyz1"
+   ],
+   "por_grupo": {},
+   "anidada": [],
+   "alertas": []
+  },
+  {
+   "nombre": "centro (dias_por_tramo, por fabricante y capacidad)",
+   "dimension": "datacenter",
+   "medida": {
+    "numerador": "fallos",
+    "denominador": "dias_disco",
+    "factor": 36500,
+    "minimo": 50000
+   },
+   "total": [
+    {
+     "categoria": "sac0",
+     "num": 2806.0,
+     "den": 59047948.0,
+     "valor": 1.7345056597055668,
+     "comparada": true
+    },
+    {
+     "categoria": "sin dato",
+     "num": 128.0,
+     "den": 6484566.0,
+     "valor": 0.7204799827775675,
+     "comparada": true
+    },
+    {
+     "categoria": "phx1",
+     "num": 2160.0,
+     "den": 65584363.0,
+     "valor": 1.2021158153201854,
+     "comparada": true
+    },
+    {
+     "categoria": "sac2",
+     "num": 2546.0,
+     "den": 44890413.0,
+     "valor": 2.0701302079800423,
+     "comparada": true
+    },
+    {
+     "categoria": "ams5",
+     "num": 476.0,
+     "den": 12081045.0,
+     "valor": 1.4381206261544428,
+     "comparada": true
+    },
+    {
+     "categoria": "iad1",
+     "num": 512.0,
+     "den": 17750649.0,
+     "valor": 1.0528065762553245,
+     "comparada": true
+    },
+    {
+     "categoria": "yyz1",
+     "num": 6.0,
+     "den": 651306.0,
+     "valor": 0.3362474781439139,
+     "comparada": true
+    }
+   ],
+   "par": [
+    "sac2",
+    "yyz1"
+   ],
+   "por_grupo": {
+    "fabricante": {
+     "HGST": [
+      {
+       "categoria": "sac0",
+       "num": 255.0,
+       "den": 6752703.0,
+       "valor": 1.3783369415180855,
+       "comparada": true
+      },
+      {
+       "categoria": "sin dato",
+       "num": 0.0,
+       "den": 1808.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": "phx1",
+       "num": 389.0,
+       "den": 6795680.0,
+       "valor": 2.0893420525981212,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 1106.0,
+       "den": 11238049.0,
+       "valor": 3.5921715593160344,
+       "comparada": true
+      },
+      {
+       "categoria": "ams5",
+       "num": 46.0,
+       "den": 1509554.0,
+       "valor": 1.1122490483944265,
+       "comparada": true
+      }
+     ],
+     "Seagate": [
+      {
+       "categoria": "sac0",
+       "num": 2273.0,
+       "den": 37728440.0,
+       "valor": 2.198990999892919,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 907.0,
+       "den": 13279878.0,
+       "valor": 2.492906937849881,
+       "comparada": true
+      },
+      {
+       "categoria": "phx1",
+       "num": 906.0,
+       "den": 25724279.0,
+       "valor": 1.2855170790209514,
+       "comparada": true
+      },
+      {
+       "categoria": "sin dato",
+       "num": 9.0,
+       "den": 2092732.0,
+       "valor": 0.15697184350408938,
+       "comparada": true
+      },
+      {
+       "categoria": "iad1",
+       "num": 30.0,
+       "den": 616255.0,
+       "valor": 1.7768618510194643,
+       "comparada": true
+      },
+      {
+       "categoria": "ams5",
+       "num": 4.0,
+       "den": 337911.0,
+       "valor": 0.43206643169355247,
+       "comparada": true
+      }
+     ],
+     "Toshiba": [
+      {
+       "categoria": "sac0",
+       "num": 208.0,
+       "den": 8633564.0,
+       "valor": 0.8793587445462847,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 405.0,
+       "den": 12911361.0,
+       "valor": 1.1449219025012158,
+       "comparada": true
+      },
+      {
+       "categoria": "phx1",
+       "num": 742.0,
+       "den": 23331241.0,
+       "valor": 1.1608040909611281,
+       "comparada": true
+      },
+      {
+       "categoria": "ams5",
+       "num": 317.0,
+       "den": 6305714.0,
+       "valor": 1.8349230555017244,
+       "comparada": true
+      },
+      {
+       "categoria": "iad1",
+       "num": 387.0,
+       "den": 11410951.0,
+       "valor": 1.2378898130401226,
+       "comparada": true
+      },
+      {
+       "categoria": "sin dato",
+       "num": 26.0,
+       "den": 1118016.0,
+       "valor": 0.8488250615375809,
+       "comparada": true
+      },
+      {
+       "categoria": "yyz1",
+       "num": 3.0,
+       "den": 216933.0,
+       "valor": 0.5047641437678915,
+       "comparada": true
+      }
+     ],
+     "WDC": [
+      {
+       "categoria": "sac0",
+       "num": 70.0,
+       "den": 5933241.0,
+       "valor": 0.4306246788222491,
+       "comparada": true
+      },
+      {
+       "categoria": "phx1",
+       "num": 123.0,
+       "den": 9733163.0,
+       "valor": 0.4612580720162603,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 128.0,
+       "den": 7461125.0,
+       "valor": 0.626179027961601,
+       "comparada": true
+      },
+      {
+       "categoria": "ams5",
+       "num": 109.0,
+       "den": 3927866.0,
+       "valor": 1.0128909692947774,
+       "comparada": true
+      },
+      {
+       "categoria": "iad1",
+       "num": 95.0,
+       "den": 5723443.0,
+       "valor": 0.605841623652057,
+       "comparada": true
+      },
+      {
+       "categoria": "sin dato",
+       "num": 93.0,
+       "den": 3272010.0,
+       "valor": 1.0374357046586042,
+       "comparada": true
+      },
+      {
+       "categoria": "yyz1",
+       "num": 3.0,
+       "den": 434373.0,
+       "valor": 0.25208749162586075,
+       "comparada": true
+      }
+     ]
+    },
+    "capacidad_tb": {
+     "4.0": [
+      {
+       "categoria": "sac0",
+       "num": 381.0,
+       "den": 7382184.0,
+       "valor": 1.8837921135533875,
+       "comparada": true
+      },
+      {
+       "categoria": "sin dato",
+       "num": 0.0,
+       "den": 18822.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": "phx1",
+       "num": 22.0,
+       "den": 2914632.0,
+       "valor": 0.2755064790340599,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 6.0,
+       "den": 145262.0,
+       "valor": 1.5076207129187262,
+       "comparada": true
+      }
+     ],
+     "6.0": [
+      {
+       "categoria": "sac0",
+       "num": 1.0,
+       "den": 262052.0,
+       "valor": 0.1392853326820631,
+       "comparada": true
+      }
+     ],
+     "8.0": [
+      {
+       "categoria": "sac0",
+       "num": 907.0,
+       "den": 14489156.0,
+       "valor": 2.2848466812007544,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 38.0,
+       "den": 733028.0,
+       "valor": 1.8921514594258337,
+       "comparada": true
+      },
+      {
+       "categoria": "phx1",
+       "num": 204.0,
+       "den": 2604293.0,
+       "valor": 2.859125298113538,
+       "comparada": true
+      }
+     ],
+     "10.0": [
+      {
+       "categoria": "sac0",
+       "num": 108.0,
+       "den": 815903.0,
+       "valor": 4.831456680512267,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 0.0,
+       "den": 208.0,
+       "valor": null,
+       "comparada": false
+      }
+     ],
+     "12.0": [
+      {
+       "categoria": "ams5",
+       "num": 46.0,
+       "den": 1509554.0,
+       "valor": 1.1122490483944265,
+       "comparada": true
+      },
+      {
+       "categoria": "phx1",
+       "num": 680.0,
+       "den": 9158479.0,
+       "valor": 2.7100569865367383,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 1637.0,
+       "den": 18382999.0,
+       "valor": 3.2503129658006293,
+       "comparada": true
+      },
+      {
+       "categoria": "sac0",
+       "num": 921.0,
+       "den": 14914527.0,
+       "valor": 2.2539434203981124,
+       "comparada": true
+      }
+     ],
+     "14.0": [
+      {
+       "categoria": "phx1",
+       "num": 637.0,
+       "den": 18311055.0,
+       "valor": 1.2697520705388083,
+       "comparada": true
+      },
+      {
+       "categoria": "sac0",
+       "num": 233.0,
+       "den": 9480228.0,
+       "valor": 0.8970775808345538,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 638.0,
+       "den": 15533528.0,
+       "valor": 1.4991443025692555,
+       "comparada": true
+      }
+     ],
+     "16.0": [
+      {
+       "categoria": "phx1",
+       "num": 587.0,
+       "den": 31138884.0,
+       "valor": 0.6880625522738708,
+       "comparada": true
+      },
+      {
+       "categoria": "sac0",
+       "num": 231.0,
+       "den": 11052891.0,
+       "valor": 0.7628320952409645,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 197.0,
+       "den": 8594275.0,
+       "valor": 0.8366616148540744,
+       "comparada": true
+      },
+      {
+       "categoria": "sin dato",
+       "num": 25.0,
+       "den": 3078921.0,
+       "valor": 0.29637005951110795,
+       "comparada": true
+      },
+      {
+       "categoria": "iad1",
+       "num": 408.0,
+       "den": 13562653.0,
+       "valor": 1.0980152629430244,
+       "comparada": true
+      },
+      {
+       "categoria": "ams5",
+       "num": 398.0,
+       "den": 8796194.0,
+       "valor": 1.651509732504763,
+       "comparada": true
+      }
+     ],
+     "18.0": [
+      {
+       "categoria": "sac2",
+       "num": 5.0,
+       "den": 43707.0,
+       "valor": null,
+       "comparada": false
+      }
+     ],
+     "20.0": [
+      {
+       "categoria": "ams5",
+       "num": 2.0,
+       "den": 35967.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": "iad1",
+       "num": 10.0,
+       "den": 431864.0,
+       "valor": 0.84517348054017,
+       "comparada": true
+      },
+      {
+       "categoria": "phx1",
+       "num": 6.0,
+       "den": 326096.0,
+       "valor": 0.6715813748098719,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 11.0,
+       "den": 809219.0,
+       "valor": 0.49615740609155246,
+       "comparada": true
+      },
+      {
+       "categoria": "sin dato",
+       "num": 14.0,
+       "den": 470507.0,
+       "valor": 1.086062481535875,
+       "comparada": true
+      },
+      {
+       "categoria": "yyz1",
+       "num": 3.0,
+       "den": 216933.0,
+       "valor": 0.5047641437678915,
+       "comparada": true
+      }
+     ],
+     "22.0": [
+      {
+       "categoria": "ams5",
+       "num": 30.0,
+       "den": 1739330.0,
+       "valor": 0.6295527588209253,
+       "comparada": true
+      },
+      {
+       "categoria": "iad1",
+       "num": 67.0,
+       "den": 3357080.0,
+       "valor": 0.7284604477700859,
+       "comparada": true
+      },
+      {
+       "categoria": "phx1",
+       "num": 24.0,
+       "den": 1130924.0,
+       "valor": 0.7745878591311176,
+       "comparada": true
+      },
+      {
+       "categoria": "sac0",
+       "num": 24.0,
+       "den": 651007.0,
+       "valor": 1.345607650916196,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 6.0,
+       "den": 432186.0,
+       "valor": 0.5067262706334773,
+       "comparada": true
+      },
+      {
+       "categoria": "sin dato",
+       "num": 89.0,
+       "den": 2916316.0,
+       "valor": 1.1139053518205846,
+       "comparada": true
+      },
+      {
+       "categoria": "yyz1",
+       "num": 3.0,
+       "den": 434373.0,
+       "valor": 0.25208749162586075,
+       "comparada": true
+      }
+     ],
+     "24.0": [
+      {
+       "categoria": "iad1",
+       "num": 27.0,
+       "den": 399052.0,
+       "valor": 2.4696029590128603,
+       "comparada": true
+      },
+      {
+       "categoria": "sac2",
+       "num": 8.0,
+       "den": 216001.0,
+       "valor": 1.3518455933074385,
+       "comparada": true
+      }
+     ]
+    }
+   },
+   "anidada": [],
+   "alertas": [
+    {
+     "grupo_dim": "fabricante",
+     "grupo": "Toshiba",
+     "a": "sac2",
+     "b": "yyz1",
+     "diferencia_total": 1.733883,
+     "diferencia_grupo": 0.640158,
+     "tipo": "cambia de tamaño"
+    },
+    {
+     "grupo_dim": "fabricante",
+     "grupo": "WDC",
+     "a": "sac2",
+     "b": "yyz1",
+     "diferencia_total": 1.733883,
+     "diferencia_grupo": 0.374092,
+     "tipo": "cambia de tamaño"
+    },
+    {
+     "grupo_dim": "capacidad_tb",
+     "grupo": "20.0",
+     "a": "sac2",
+     "b": "yyz1",
+     "diferencia_total": 1.733883,
+     "diferencia_grupo": -0.008607,
+     "tipo": "se invierte"
+    },
+    {
+     "grupo_dim": "capacidad_tb",
+     "grupo": "22.0",
+     "a": "sac2",
+     "b": "yyz1",
+     "diferencia_total": 1.733883,
+     "diferencia_grupo": 0.254639,
+     "tipo": "cambia de tamaño"
+    }
+   ]
+  },
+  {
+   "nombre": "periodo",
+   "dimension": "periodo",
+   "medida": {
+    "numerador": "fallos",
+    "denominador": "dias_disco",
+    "factor": 36500,
+    "minimo": 50000
+   },
+   "total": [
+    {
+     "categoria": "construcción",
+     "num": 12478.0,
+     "den": 336817718.0,
+     "valor": 1.3522061805549077,
+     "comparada": true
+    },
+    {
+     "categoria": "validación",
+     "num": 4518.0,
+     "den": 109290965.0,
+     "valor": 1.5088804458813223,
+     "comparada": true
+    }
+   ],
+   "par": [
+    "validación",
+    "construcción"
+   ],
+   "por_grupo": {},
+   "anidada": [],
+   "alertas": []
+  }
+ ],
+ "partes": [],
+ "pareto": [
+  {
+   "pareja": "fallos por centros",
+   "elemento": "centros",
+   "magnitud": "fallos",
+   "elementos": 7,
+   "total": 8634.0,
+   "pct_elementos_80": 42.8571,
+   "clases": {
+    "A": {
+     "elementos": 3,
+     "parte_pct": 87.0049
+    },
+    "B": {
+     "elementos": 2,
+     "parte_pct": 11.4431
+    },
+    "C": {
+     "elementos": 2,
+     "parte_pct": 1.552
+    }
+   },
+   "tabla": [
+    {
+     "elemento": "sac0",
+     "valor": 2806.0,
+     "acumulado_pct": 32.4994,
+     "clase": "A"
+    },
+    {
+     "elemento": "sac2",
+     "valor": 2546.0,
+     "acumulado_pct": 61.9875,
+     "clase": "A"
+    },
+    {
+     "elemento": "phx1",
+     "valor": 2160.0,
+     "acumulado_pct": 87.0049,
+     "clase": "A"
+    },
+    {
+     "elemento": "iad1",
+     "valor": 512.0,
+     "acumulado_pct": 92.9349,
+     "clase": "B"
+    },
+    {
+     "elemento": "ams5",
+     "valor": 476.0,
+     "acumulado_pct": 98.448,
+     "clase": "B"
+    },
+    {
+     "elemento": "sin dato",
+     "valor": 128.0,
+     "acumulado_pct": 99.9305,
+     "clase": "C"
+    },
+    {
+     "elemento": "yyz1",
+     "valor": 6.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    }
+   ],
+   "valores_ordenados": [
+    2806.0,
+    2546.0,
+    2160.0,
+    512.0,
+    476.0,
+    128.0,
+    6.0
+   ],
+   "pocos_elementos": true
+  }
+ ],
+ "series_negocio": [
+  {
+   "serie": "días de disco por mes",
+   "frecuencia": "mes",
+   "tipo": "flujo",
+   "periodos": 66,
+   "ventana_movil": 3,
+   "fuera": 0,
+   "detalle": [
+    {
+     "periodo": "2020-01-01",
+     "valor": 3816969.0,
+     "movil": null,
+     "var_anterior_pct": null,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-02-01",
+     "valor": 3618788.0,
+     "movil": null,
+     "var_anterior_pct": -5.1921,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-03-01",
+     "valor": 3957783.0,
+     "movil": 3797846.666667,
+     "var_anterior_pct": 9.3676,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-04-01",
+     "valor": 3943661.0,
+     "movil": 3840077.333333,
+     "var_anterior_pct": -0.3568,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-05-01",
+     "valor": 4187067.0,
+     "movil": 4029503.666667,
+     "var_anterior_pct": 6.1721,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-06-01",
+     "valor": 4142518.0,
+     "movil": 4091082.0,
+     "var_anterior_pct": -1.064,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-07-01",
+     "valor": 4372500.0,
+     "movil": 4234028.333333,
+     "var_anterior_pct": 5.5517,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-08-01",
+     "valor": 4480741.0,
+     "movil": 4331919.666667,
+     "var_anterior_pct": 2.4755,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-09-01",
+     "valor": 4456946.0,
+     "movil": 4436729.0,
+     "var_anterior_pct": -0.5311,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-10-01",
+     "valor": 4708811.0,
+     "movil": 4548832.666667,
+     "var_anterior_pct": 5.6511,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-11-01",
+     "valor": 4680873.0,
+     "movil": 4615543.333333,
+     "var_anterior_pct": -0.5933,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-12-01",
+     "valor": 4979261.0,
+     "movil": 4789648.333333,
+     "var_anterior_pct": 6.3746,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2021-01-01",
+     "valor": 5062185.0,
+     "movil": 4907439.666667,
+     "var_anterior_pct": 1.6654,
+     "interanual_pct": 32.6232
+    },
+    {
+     "periodo": "2021-02-01",
+     "valor": 4691974.0,
+     "movil": 4911140.0,
+     "var_anterior_pct": -7.3133,
+     "interanual_pct": 29.656
+    },
+    {
+     "periodo": "2021-03-01",
+     "valor": 5255856.0,
+     "movil": 5003338.333333,
+     "var_anterior_pct": 12.018,
+     "interanual_pct": 32.798
+    },
+    {
+     "periodo": "2021-04-01",
+     "valor": 5182193.0,
+     "movil": 5043341.0,
+     "var_anterior_pct": -1.4015,
+     "interanual_pct": 31.4056
+    },
+    {
+     "periodo": "2021-05-01",
+     "valor": 5398328.0,
+     "movil": 5278792.333333,
+     "var_anterior_pct": 4.1707,
+     "interanual_pct": 28.9286
+    },
+    {
+     "periodo": "2021-06-01",
+     "valor": 5351422.0,
+     "movil": 5310647.666667,
+     "var_anterior_pct": -0.8689,
+     "interanual_pct": 29.1828
+    },
+    {
+     "periodo": "2021-07-01",
+     "valor": 5586761.0,
+     "movil": 5445503.666667,
+     "var_anterior_pct": 4.3977,
+     "interanual_pct": 27.7704
+    },
+    {
+     "periodo": "2021-08-01",
+     "valor": 5781993.0,
+     "movil": 5573392.0,
+     "var_anterior_pct": 3.4945,
+     "interanual_pct": 29.041
+    },
+    {
+     "periodo": "2021-09-01",
+     "valor": 5710259.0,
+     "movil": 5693004.333333,
+     "var_anterior_pct": -1.2406,
+     "interanual_pct": 28.1204
+    },
+    {
+     "periodo": "2021-10-01",
+     "valor": 5960007.0,
+     "movil": 5817419.666667,
+     "var_anterior_pct": 4.3737,
+     "interanual_pct": 26.5714
+    },
+    {
+     "periodo": "2021-11-01",
+     "valor": 5857331.0,
+     "movil": 5842532.333333,
+     "var_anterior_pct": -1.7227,
+     "interanual_pct": 25.1333
+    },
+    {
+     "periodo": "2021-12-01",
+     "valor": 6233725.0,
+     "movil": 6017021.0,
+     "var_anterior_pct": 6.426,
+     "interanual_pct": 25.1938
+    },
+    {
+     "periodo": "2022-01-01",
+     "valor": 6299292.0,
+     "movil": 6130116.0,
+     "var_anterior_pct": 1.0518,
+     "interanual_pct": 24.4382
+    },
+    {
+     "periodo": "2022-02-01",
+     "valor": 5759946.0,
+     "movil": 6097654.333333,
+     "var_anterior_pct": -8.562,
+     "interanual_pct": 22.7617
+    },
+    {
+     "periodo": "2022-03-01",
+     "valor": 6443019.0,
+     "movil": 6167419.0,
+     "var_anterior_pct": 11.859,
+     "interanual_pct": 22.5874
+    },
+    {
+     "periodo": "2022-04-01",
+     "valor": 6277986.0,
+     "movil": 6160317.0,
+     "var_anterior_pct": -2.5614,
+     "interanual_pct": 21.1454
+    },
+    {
+     "periodo": "2022-05-01",
+     "valor": 6547809.0,
+     "movil": 6422938.0,
+     "var_anterior_pct": 4.2979,
+     "interanual_pct": 21.2933
+    },
+    {
+     "periodo": "2022-06-01",
+     "valor": 6243472.0,
+     "movil": 6356422.333333,
+     "var_anterior_pct": -4.6479,
+     "interanual_pct": 16.6694
+    },
+    {
+     "periodo": "2022-07-01",
+     "valor": 6695819.0,
+     "movil": 6495700.0,
+     "var_anterior_pct": 7.2451,
+     "interanual_pct": 19.8515
+    },
+    {
+     "periodo": "2022-08-01",
+     "valor": 6825807.0,
+     "movil": 6588366.0,
+     "var_anterior_pct": 1.9413,
+     "interanual_pct": 18.0528
+    },
+    {
+     "periodo": "2022-09-01",
+     "valor": 6693082.0,
+     "movil": 6738236.0,
+     "var_anterior_pct": -1.9445,
+     "interanual_pct": 17.2115
+    },
+    {
+     "periodo": "2022-10-01",
+     "valor": 7052158.0,
+     "movil": 6857015.666667,
+     "var_anterior_pct": 5.3649,
+     "interanual_pct": 18.3247
+    },
+    {
+     "periodo": "2022-11-01",
+     "valor": 6884138.0,
+     "movil": 6876459.333333,
+     "var_anterior_pct": -2.3825,
+     "interanual_pct": 17.5303
+    },
+    {
+     "periodo": "2022-12-01",
+     "valor": 7168141.0,
+     "movil": 7034812.333333,
+     "var_anterior_pct": 4.1255,
+     "interanual_pct": 14.9897
+    },
+    {
+     "periodo": "2023-01-01",
+     "valor": 7212200.0,
+     "movil": 7088159.666667,
+     "var_anterior_pct": 0.6147,
+     "interanual_pct": 14.4922
+    },
+    {
+     "periodo": "2023-02-01",
+     "valor": 6585871.0,
+     "movil": 6988737.333333,
+     "var_anterior_pct": -8.6843,
+     "interanual_pct": 14.3391
+    },
+    {
+     "periodo": "2023-03-01",
+     "valor": 7266134.0,
+     "movil": 7021401.666667,
+     "var_anterior_pct": 10.3291,
+     "interanual_pct": 12.7753
+    },
+    {
+     "periodo": "2023-04-01",
+     "valor": 6791165.0,
+     "movil": 6881056.666667,
+     "var_anterior_pct": -6.5367,
+     "interanual_pct": 8.1743
+    },
+    {
+     "periodo": "2023-05-01",
+     "valor": 7408966.0,
+     "movil": 7155421.666667,
+     "var_anterior_pct": 9.0971,
+     "interanual_pct": 13.1518
+    },
+    {
+     "periodo": "2023-06-01",
+     "valor": 7238448.0,
+     "movil": 7146193.0,
+     "var_anterior_pct": -2.3015,
+     "interanual_pct": 15.9363
+    },
+    {
+     "periodo": "2023-07-01",
+     "valor": 7561708.0,
+     "movil": 7403040.666667,
+     "var_anterior_pct": 4.4659,
+     "interanual_pct": 12.9318
+    },
+    {
+     "periodo": "2023-08-01",
+     "valor": 7917437.0,
+     "movil": 7572531.0,
+     "var_anterior_pct": 4.7043,
+     "interanual_pct": 15.9927
+    },
+    {
+     "periodo": "2023-09-01",
+     "valor": 7712804.0,
+     "movil": 7730649.666667,
+     "var_anterior_pct": -2.5846,
+     "interanual_pct": 15.2355
+    },
+    {
+     "periodo": "2023-10-01",
+     "valor": 8152829.0,
+     "movil": 7927690.0,
+     "var_anterior_pct": 5.7051,
+     "interanual_pct": 15.6076
+    },
+    {
+     "periodo": "2023-11-01",
+     "valor": 8005273.0,
+     "movil": 7956968.666667,
+     "var_anterior_pct": -1.8099,
+     "interanual_pct": 16.2858
+    },
+    {
+     "periodo": "2023-12-01",
+     "valor": 8224921.0,
+     "movil": 8127674.333333,
+     "var_anterior_pct": 2.7438,
+     "interanual_pct": 14.7427
+    },
+    {
+     "periodo": "2024-01-01",
+     "valor": 8331683.0,
+     "movil": 8187292.333333,
+     "var_anterior_pct": 1.298,
+     "interanual_pct": 15.5221
+    },
+    {
+     "periodo": "2024-02-01",
+     "valor": 7882330.0,
+     "movil": 8146311.333333,
+     "var_anterior_pct": -5.3933,
+     "interanual_pct": 19.6855
+    },
+    {
+     "periodo": "2024-03-01",
+     "valor": 8579698.0,
+     "movil": 8264570.333333,
+     "var_anterior_pct": 8.8472,
+     "interanual_pct": 18.0779
+    },
+    {
+     "periodo": "2024-04-01",
+     "valor": 8429715.0,
+     "movil": 8297247.666667,
+     "var_anterior_pct": -1.7481,
+     "interanual_pct": 24.1277
+    },
+    {
+     "periodo": "2024-05-01",
+     "valor": 8723775.0,
+     "movil": 8577729.333333,
+     "var_anterior_pct": 3.4884,
+     "interanual_pct": 17.7462
+    },
+    {
+     "periodo": "2024-06-01",
+     "valor": 8484140.0,
+     "movil": 8545876.666667,
+     "var_anterior_pct": -2.7469,
+     "interanual_pct": 17.2094
+    },
+    {
+     "periodo": "2024-07-01",
+     "valor": 8873473.0,
+     "movil": 8693796.0,
+     "var_anterior_pct": 4.589,
+     "interanual_pct": 17.3475
+    },
+    {
+     "periodo": "2024-08-01",
+     "valor": 8908790.0,
+     "movil": 8755467.666667,
+     "var_anterior_pct": 0.398,
+     "interanual_pct": 12.5211
+    },
+    {
+     "periodo": "2024-09-01",
+     "valor": 8656142.0,
+     "movil": 8812801.666667,
+     "var_anterior_pct": -2.8359,
+     "interanual_pct": 12.2308
+    },
+    {
+     "periodo": "2024-10-01",
+     "valor": 8956824.0,
+     "movil": 8840585.333333,
+     "var_anterior_pct": 3.4736,
+     "interanual_pct": 9.8615
+    },
+    {
+     "periodo": "2024-11-01",
+     "valor": 8766061.0,
+     "movil": 8793009.0,
+     "var_anterior_pct": -2.1298,
+     "interanual_pct": 9.5036
+    },
+    {
+     "periodo": "2024-12-01",
+     "valor": 9247065.0,
+     "movil": 8989983.333333,
+     "var_anterior_pct": 5.4871,
+     "interanual_pct": 12.4274
+    },
+    {
+     "periodo": "2025-01-01",
+     "valor": 9332637.0,
+     "movil": 9115254.333333,
+     "var_anterior_pct": 0.9254,
+     "interanual_pct": 12.0138
+    },
+    {
+     "periodo": "2025-02-01",
+     "valor": 8550097.0,
+     "movil": 9043266.333333,
+     "var_anterior_pct": -8.385,
+     "interanual_pct": 8.4717
+    },
+    {
+     "periodo": "2025-03-01",
+     "valor": 9552945.0,
+     "movil": 9145226.333333,
+     "var_anterior_pct": 11.7291,
+     "interanual_pct": 11.3436
+    },
+    {
+     "periodo": "2025-04-01",
+     "valor": 9309229.0,
+     "movil": 9137423.666667,
+     "var_anterior_pct": -2.5512,
+     "interanual_pct": 10.4335
+    },
+    {
+     "periodo": "2025-05-01",
+     "valor": 9638285.0,
+     "movil": 9500153.0,
+     "var_anterior_pct": 3.5347,
+     "interanual_pct": 10.483
+    },
+    {
+     "periodo": "2025-06-01",
+     "valor": 9499417.0,
+     "movil": 9482310.333333,
+     "var_anterior_pct": -1.4408,
+     "interanual_pct": 11.9668
+    }
+   ],
+   "anos_completos": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+   ],
+   "estacionalidad": [
+    {
+     "posicion": 1,
+     "media": 6144465.8
+    },
+    {
+     "posicion": 2,
+     "media": 5707781.8
+    },
+    {
+     "posicion": 3,
+     "media": 6300498.0
+    },
+    {
+     "posicion": 4,
+     "media": 6124944.0
+    },
+    {
+     "posicion": 5,
+     "media": 6453189.0
+    },
+    {
+     "posicion": 6,
+     "media": 6292000.0
+    },
+    {
+     "posicion": 7,
+     "media": 6618052.2
+    },
+    {
+     "posicion": 8,
+     "media": 6782953.6
+    },
+    {
+     "posicion": 9,
+     "media": 6645846.6
+    },
+    {
+     "posicion": 10,
+     "media": 6966125.8
+    },
+    {
+     "posicion": 11,
+     "media": 6838735.2
+    },
+    {
+     "posicion": 12,
+     "media": 7170622.6
+    }
+   ],
+   "cagr_pct": 19.2516,
+   "cagr_base": {
+    "desde": 2020,
+    "hasta": 2024,
+    "agregado": "suma"
+   },
+   "tendencia_lineal": {
+    "pendiente_por_periodo": 88957.757583,
+    "r2": 0.9837
+   },
+   "tendencia_exponencial": {
+    "crecimiento_por_periodo_pct": 1.393,
+    "r2": 0.9621
+   }
+  },
+  {
+   "serie": "fallos por mes",
+   "frecuencia": "mes",
+   "tipo": "flujo",
+   "periodos": 66,
+   "ventana_movil": 3,
+   "fuera": 0,
+   "detalle": [
+    {
+     "periodo": "2020-01-01",
+     "valor": 141.0,
+     "movil": null,
+     "var_anterior_pct": null,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-02-01",
+     "valor": 102.0,
+     "movil": null,
+     "var_anterior_pct": -27.6596,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-03-01",
+     "valor": 93.0,
+     "movil": 112.0,
+     "var_anterior_pct": -8.8235,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-04-01",
+     "valor": 95.0,
+     "movil": 96.666667,
+     "var_anterior_pct": 2.1505,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-05-01",
+     "valor": 104.0,
+     "movil": 97.333333,
+     "var_anterior_pct": 9.4737,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-06-01",
+     "valor": 73.0,
+     "movil": 90.666667,
+     "var_anterior_pct": -29.8077,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-07-01",
+     "valor": 117.0,
+     "movil": 98.0,
+     "var_anterior_pct": 60.274,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-08-01",
+     "valor": 106.0,
+     "movil": 98.666667,
+     "var_anterior_pct": -9.4017,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-09-01",
+     "valor": 104.0,
+     "movil": 109.0,
+     "var_anterior_pct": -1.8868,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-10-01",
+     "valor": 122.0,
+     "movil": 110.666667,
+     "var_anterior_pct": 17.3077,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-11-01",
+     "valor": 131.0,
+     "movil": 119.0,
+     "var_anterior_pct": 7.377,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-12-01",
+     "valor": 119.0,
+     "movil": 124.0,
+     "var_anterior_pct": -9.1603,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2021-01-01",
+     "valor": 122.0,
+     "movil": 124.0,
+     "var_anterior_pct": 2.521,
+     "interanual_pct": -13.4752
+    },
+    {
+     "periodo": "2021-02-01",
+     "valor": 122.0,
+     "movil": 121.0,
+     "var_anterior_pct": 0.0,
+     "interanual_pct": 19.6078
+    },
+    {
+     "periodo": "2021-03-01",
+     "valor": 106.0,
+     "movil": 116.666667,
+     "var_anterior_pct": -13.1148,
+     "interanual_pct": 13.9785
+    },
+    {
+     "periodo": "2021-04-01",
+     "valor": 144.0,
+     "movil": 124.0,
+     "var_anterior_pct": 35.8491,
+     "interanual_pct": 51.5789
+    },
+    {
+     "periodo": "2021-05-01",
+     "valor": 161.0,
+     "movil": 137.0,
+     "var_anterior_pct": 11.8056,
+     "interanual_pct": 54.8077
+    },
+    {
+     "periodo": "2021-06-01",
+     "valor": 136.0,
+     "movil": 147.0,
+     "var_anterior_pct": -15.528,
+     "interanual_pct": 86.3014
+    },
+    {
+     "periodo": "2021-07-01",
+     "valor": 172.0,
+     "movil": 156.333333,
+     "var_anterior_pct": 26.4706,
+     "interanual_pct": 47.0085
+    },
+    {
+     "periodo": "2021-08-01",
+     "valor": 180.0,
+     "movil": 162.666667,
+     "var_anterior_pct": 4.6512,
+     "interanual_pct": 69.8113
+    },
+    {
+     "periodo": "2021-09-01",
+     "valor": 158.0,
+     "movil": 170.0,
+     "var_anterior_pct": -12.2222,
+     "interanual_pct": 51.9231
+    },
+    {
+     "periodo": "2021-10-01",
+     "valor": 183.0,
+     "movil": 173.666667,
+     "var_anterior_pct": 15.8228,
+     "interanual_pct": 50.0
+    },
+    {
+     "periodo": "2021-11-01",
+     "valor": 170.0,
+     "movil": 170.333333,
+     "var_anterior_pct": -7.1038,
+     "interanual_pct": 29.771
+    },
+    {
+     "periodo": "2021-12-01",
+     "valor": 169.0,
+     "movil": 174.0,
+     "var_anterior_pct": -0.5882,
+     "interanual_pct": 42.0168
+    },
+    {
+     "periodo": "2022-01-01",
+     "valor": 190.0,
+     "movil": 176.333333,
+     "var_anterior_pct": 12.426,
+     "interanual_pct": 55.7377
+    },
+    {
+     "periodo": "2022-02-01",
+     "valor": 160.0,
+     "movil": 173.0,
+     "var_anterior_pct": -15.7895,
+     "interanual_pct": 31.1475
+    },
+    {
+     "periodo": "2022-03-01",
+     "valor": 268.0,
+     "movil": 206.0,
+     "var_anterior_pct": 67.5,
+     "interanual_pct": 152.8302
+    },
+    {
+     "periodo": "2022-04-01",
+     "valor": 232.0,
+     "movil": 220.0,
+     "var_anterior_pct": -13.4328,
+     "interanual_pct": 61.1111
+    },
+    {
+     "periodo": "2022-05-01",
+     "valor": 275.0,
+     "movil": 258.333333,
+     "var_anterior_pct": 18.5345,
+     "interanual_pct": 70.8075
+    },
+    {
+     "periodo": "2022-06-01",
+     "valor": 256.0,
+     "movil": 254.333333,
+     "var_anterior_pct": -6.9091,
+     "interanual_pct": 88.2353
+    },
+    {
+     "periodo": "2022-07-01",
+     "valor": 327.0,
+     "movil": 286.0,
+     "var_anterior_pct": 27.7344,
+     "interanual_pct": 90.1163
+    },
+    {
+     "periodo": "2022-08-01",
+     "valor": 290.0,
+     "movil": 291.0,
+     "var_anterior_pct": -11.315,
+     "interanual_pct": 61.1111
+    },
+    {
+     "periodo": "2022-09-01",
+     "valor": 299.0,
+     "movil": 305.333333,
+     "var_anterior_pct": 3.1034,
+     "interanual_pct": 89.2405
+    },
+    {
+     "periodo": "2022-10-01",
+     "valor": 251.0,
+     "movil": 280.0,
+     "var_anterior_pct": -16.0535,
+     "interanual_pct": 37.1585
+    },
+    {
+     "periodo": "2022-11-01",
+     "valor": 236.0,
+     "movil": 262.0,
+     "var_anterior_pct": -5.9761,
+     "interanual_pct": 38.8235
+    },
+    {
+     "periodo": "2022-12-01",
+     "valor": 215.0,
+     "movil": 234.0,
+     "var_anterior_pct": -8.8983,
+     "interanual_pct": 27.2189
+    },
+    {
+     "periodo": "2023-01-01",
+     "valor": 286.0,
+     "movil": 245.666667,
+     "var_anterior_pct": 33.0233,
+     "interanual_pct": 50.5263
+    },
+    {
+     "periodo": "2023-02-01",
+     "valor": 240.0,
+     "movil": 247.0,
+     "var_anterior_pct": -16.0839,
+     "interanual_pct": 50.0
+    },
+    {
+     "periodo": "2023-03-01",
+     "valor": 366.0,
+     "movil": 297.333333,
+     "var_anterior_pct": 52.5,
+     "interanual_pct": 36.5672
+    },
+    {
+     "periodo": "2023-04-01",
+     "valor": 565.0,
+     "movil": 390.333333,
+     "var_anterior_pct": 54.3716,
+     "interanual_pct": 143.5345
+    },
+    {
+     "periodo": "2023-05-01",
+     "valor": 457.0,
+     "movil": 462.666667,
+     "var_anterior_pct": -19.115,
+     "interanual_pct": 66.1818
+    },
+    {
+     "periodo": "2023-06-01",
+     "valor": 319.0,
+     "movil": 447.0,
+     "var_anterior_pct": -30.1969,
+     "interanual_pct": 24.6094
+    },
+    {
+     "periodo": "2023-07-01",
+     "valor": 287.0,
+     "movil": 354.333333,
+     "var_anterior_pct": -10.0313,
+     "interanual_pct": -12.2324
+    },
+    {
+     "periodo": "2023-08-01",
+     "valor": 361.0,
+     "movil": 322.333333,
+     "var_anterior_pct": 25.784,
+     "interanual_pct": 24.4828
+    },
+    {
+     "periodo": "2023-09-01",
+     "valor": 295.0,
+     "movil": 314.333333,
+     "var_anterior_pct": -18.2825,
+     "interanual_pct": -1.3378
+    },
+    {
+     "periodo": "2023-10-01",
+     "valor": 366.0,
+     "movil": 340.666667,
+     "var_anterior_pct": 24.0678,
+     "interanual_pct": 45.8167
+    },
+    {
+     "periodo": "2023-11-01",
+     "valor": 403.0,
+     "movil": 354.666667,
+     "var_anterior_pct": 10.1093,
+     "interanual_pct": 70.7627
+    },
+    {
+     "periodo": "2023-12-01",
+     "valor": 256.0,
+     "movil": 341.666667,
+     "var_anterior_pct": -36.4764,
+     "interanual_pct": 19.0698
+    },
+    {
+     "periodo": "2024-01-01",
+     "valor": 348.0,
+     "movil": 335.666667,
+     "var_anterior_pct": 35.9375,
+     "interanual_pct": 21.6783
+    },
+    {
+     "periodo": "2024-02-01",
+     "valor": 335.0,
+     "movil": 313.0,
+     "var_anterior_pct": -3.7356,
+     "interanual_pct": 39.5833
+    },
+    {
+     "periodo": "2024-03-01",
+     "valor": 266.0,
+     "movil": 316.333333,
+     "var_anterior_pct": -20.597,
+     "interanual_pct": -27.3224
+    },
+    {
+     "periodo": "2024-04-01",
+     "valor": 279.0,
+     "movil": 293.333333,
+     "var_anterior_pct": 4.8872,
+     "interanual_pct": -50.6195
+    },
+    {
+     "periodo": "2024-05-01",
+     "valor": 469.0,
+     "movil": 338.0,
+     "var_anterior_pct": 68.1004,
+     "interanual_pct": 2.6258
+    },
+    {
+     "periodo": "2024-06-01",
+     "valor": 451.0,
+     "movil": 399.666667,
+     "var_anterior_pct": -3.838,
+     "interanual_pct": 41.3793
+    },
+    {
+     "periodo": "2024-07-01",
+     "valor": 501.0,
+     "movil": 473.666667,
+     "var_anterior_pct": 11.0865,
+     "interanual_pct": 74.5645
+    },
+    {
+     "periodo": "2024-08-01",
+     "valor": 548.0,
+     "movil": 500.0,
+     "var_anterior_pct": 9.3812,
+     "interanual_pct": 51.8006
+    },
+    {
+     "periodo": "2024-09-01",
+     "valor": 340.0,
+     "movil": 463.0,
+     "var_anterior_pct": -37.9562,
+     "interanual_pct": 15.2542
+    },
+    {
+     "periodo": "2024-10-01",
+     "valor": 339.0,
+     "movil": 409.0,
+     "var_anterior_pct": -0.2941,
+     "interanual_pct": -7.377
+    },
+    {
+     "periodo": "2024-11-01",
+     "valor": 322.0,
+     "movil": 333.666667,
+     "var_anterior_pct": -5.0147,
+     "interanual_pct": -20.0993
+    },
+    {
+     "periodo": "2024-12-01",
+     "valor": 340.0,
+     "movil": 333.666667,
+     "var_anterior_pct": 5.5901,
+     "interanual_pct": 32.8125
+    },
+    {
+     "periodo": "2025-01-01",
+     "valor": 377.0,
+     "movil": 346.333333,
+     "var_anterior_pct": 10.8824,
+     "interanual_pct": 8.3333
+    },
+    {
+     "periodo": "2025-02-01",
+     "valor": 322.0,
+     "movil": 346.333333,
+     "var_anterior_pct": -14.5889,
+     "interanual_pct": -3.8806
+    },
+    {
+     "periodo": "2025-03-01",
+     "valor": 368.0,
+     "movil": 355.666667,
+     "var_anterior_pct": 14.2857,
+     "interanual_pct": 38.3459
+    },
+    {
+     "periodo": "2025-04-01",
+     "valor": 382.0,
+     "movil": 357.333333,
+     "var_anterior_pct": 3.8043,
+     "interanual_pct": 36.9176
+    },
+    {
+     "periodo": "2025-05-01",
+     "valor": 338.0,
+     "movil": 362.666667,
+     "var_anterior_pct": -11.5183,
+     "interanual_pct": -27.9318
+    },
+    {
+     "periodo": "2025-06-01",
+     "valor": 341.0,
+     "movil": 353.666667,
+     "var_anterior_pct": 0.8876,
+     "interanual_pct": -24.3902
+    }
+   ],
+   "anos_completos": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+   ],
+   "estacionalidad": [
+    {
+     "posicion": 1,
+     "media": 217.4
+    },
+    {
+     "posicion": 2,
+     "media": 191.8
+    },
+    {
+     "posicion": 3,
+     "media": 219.8
+    },
+    {
+     "posicion": 4,
+     "media": 263.0
+    },
+    {
+     "posicion": 5,
+     "media": 293.2
+    },
+    {
+     "posicion": 6,
+     "media": 247.0
+    },
+    {
+     "posicion": 7,
+     "media": 280.8
+    },
+    {
+     "posicion": 8,
+     "media": 297.0
+    },
+    {
+     "posicion": 9,
+     "media": 239.2
+    },
+    {
+     "posicion": 10,
+     "media": 252.2
+    },
+    {
+     "posicion": 11,
+     "media": 252.4
+    },
+    {
+     "posicion": 12,
+     "media": 219.8
+    }
+   ],
+   "cagr_pct": 36.5046,
+   "cagr_base": {
+    "desde": 2020,
+    "hasta": 2024,
+    "agregado": "suma"
+   },
+   "tendencia_lineal": {
+    "pendiente_por_periodo": 5.305041,
+    "r2": 0.705
+   },
+   "tendencia_exponencial": {
+    "crecimiento_por_periodo_pct": 2.4146,
+    "r2": 0.791
+   }
+  }
+ ],
+ "anomalias": [],
+ "frente_al_objetivo": null,
+ "hallazgos": [],
+ "alertas": [
+  {
+   "id": "A-01",
+   "tipo": "separar",
+   "origen": null,
+   "texto": "Tasa anual de fallo por centro: 2,07 % en sac2 (2.546 fallos en 44.890.413 días de disco) frente a 0,34 % en yyz1 (6 fallos en 651.306). Al separar por fabricante, capacidad_tb cambia: tasa anual de fallo por centro: la diferencia entre sac2 y yyz1 es de 1,73 puntos en el total y de 0,64 dentro de fabricante = Toshiba: cambia de tamaño.; tasa anual de fallo por centro: la diferencia entre sac2 y yyz1 es de 1,73 puntos en el total y de 0,37 dentro de fabricante = WDC: cambia de tamaño.; tasa anual de fallo por centro: la diferencia entre sac2 y yyz1 es de 1,73 puntos en el total y de −0,01 dentro de capacidad_tb = 20: se invierte. (y 1 más)",
+   "vista": "tasa anual de fallo por centro"
+  },
+  {
+   "id": "A-02",
+   "tipo": "limitacion",
+   "origen": "transformacion-datos, exclusiones",
+   "texto": "Desde el 01/07/2023, el centro «sin dato» suma 6.621.213 días de disco y 128 fallos, contados aparte. Antes, el centro no consta."
+  },
+  {
+   "id": "A-03",
+   "tipo": "limitacion",
+   "origen": null,
+   "texto": "La tasa por centro es bruta: mezcla modelos y edades. La ajustada es del paso 5 (reglas-negocio §7). La vista por fabricante y capacidad sale de dias_por_tramo, que deja fuera los días de disco sin foto (reglas-transformacion §6)."
+  }
+ ],
+ "hipotesis": [
+  {
+   "id": "Hi-01",
+   "texto": "El cambio de tasa anual de fallo por centro al separar puede venir de que cada grupo tiene otra mezcla de modelos y edades.",
+   "que_haria_falta": "compararla a igual modelo y edad, que es del paso 5 (reglas-negocio §7)",
+   "alternativas_repasadas": [
+    "el tamaño del grupo",
+    "el calendario",
+    "la regresión a la media",
+    "la causa al revés",
+    "una variable que no está en la tabla (edad, vault)"
+   ]
+  }
+ ],
+ "comprobaciones": [
+  {
+   "comprobacion": "1 Tiempo",
+   "estado": "aplicada_con_resultado",
+   "detalle": "ordenado por fecha; dos granularidades (mes o trimestre y año); periodos incompletos: ninguno; el primer mes de las fotos es ene 2020"
+  },
+  {
+   "comprobacion": "2 Pareto y ABC",
+   "estado": "aplicada_con_resultado",
+   "detalle": "fallos por centros: el 42,9 % de los elementos suma el 80 %"
+  },
+  {
+   "comprobacion": "3 Respaldo de cada cifra",
+   "estado": "aplicada_con_resultado",
+   "detalle": "cada hallazgo lleva su cifra, sus filas y sus columnas"
+  },
+  {
+   "comprobacion": "4 Datos personales en el informe",
+   "estado": "aplicada_sin_nada_relevante",
+   "detalle": "ninguna columna trae nombres, correos, teléfonos, documentos ni cuentas (reglas-negocio §9); el número de serie identifica un disco y no sale en ningún gráfico"
+  },
+  {
+   "comprobacion": "5 Códigos sin etiqueta",
+   "estado": "aplicada_sin_nada_relevante",
+   "detalle": "todas las columnas tienen su significado en las reglas de transformación"
+  },
+  {
+   "comprobacion": "6 Reproducibilidad",
+   "estado": "aplicada_con_resultado",
+   "detalle": "versiones, fecha de ejecución, tamaño y huella en «Contexto»"
+  },
+  {
+   "comprobacion": "7 Correlaciones",
+   "estado": "no_aplica",
+   "detalle": "esta tabla no lleva el objetivo y nadie pidió correlaciones"
+  },
+  {
+   "comprobacion": "8 Forma de las hipótesis",
+   "estado": "aplicada_con_resultado",
+   "detalle": "1 hipótesis, cada una con lo que haría falta y las cinco alternativas repasadas"
+  },
+  {
+   "comprobacion": "9 Variables asimétricas",
+   "estado": "aplicada_sin_nada_relevante",
+   "detalle": "ninguna numérica con la media lejos de la mediana"
+  },
+  {
+   "comprobacion": "10 Gráficos",
+   "estado": "aplicada_con_resultado",
+   "detalle": "un eje por gráfico, color por papel, meses con su nombre, títulos calculados del dato; gráficos repetidos quitados: ninguno"
+  },
+  {
+   "comprobacion": "11 Series de negocio",
+   "estado": "aplicada_con_resultado",
+   "detalle": "días de disco por mes: 66 periodos completos, CAGR 19,25 %; fallos por mes: 66 periodos completos, CAGR 36,50 %"
+  },
+  {
+   "comprobacion": "12 Frente al objetivo",
+   "estado": "no_aplica",
+   "detalle": "esta tabla no lleva el objetivo; se describe entera, con los dos periodos (reglas-negocio §7)"
+  },
+  {
+   "comprobacion": "13 Discreta o continua",
+   "estado": "aplicada_con_resultado",
+   "detalle": "discreta si es entera y tiene como mucho min(20, 5 % de las filas) valores distintos; 0 discretas y 2 continuas"
+  },
+  {
+   "comprobacion": "14 Texto",
+   "estado": "no_aplica",
+   "detalle": "no hay columnas de texto libre"
+  },
+  {
+   "comprobacion": "15 Alta cardinalidad",
+   "estado": "aplicada_sin_nada_relevante",
+   "detalle": "ninguna categórica pasa de 50 valores"
+  },
+  {
+   "comprobacion": "16 Observaciones de la persona",
+   "estado": "aplicada_sin_nada_relevante",
+   "detalle": "apartado vacío: la persona escribe sus observaciones y se vuelve a ejecutar"
+  },
+  {
+   "comprobacion": "17 La tabla de estadísticos se lee",
+   "estado": "aplicada_sin_nada_relevante",
+   "detalle": "ninguna de las cuatro señales"
+  },
+  {
+   "comprobacion": "18 Lo esperable",
+   "estado": "no_aplica",
+   "detalle": "las reglas de negocio no tienen la tabla «Lo esperable»"
+  }
+ ],
+ "observaciones": [],
+ "parametros": [
+  {
+   "nombre": "numérica discreta",
+   "valor": "entera y con como mucho min(20, 5 % de las filas) valores distintos",
+   "origen": "por defecto (parametros.md)"
+  },
+  {
+   "nombre": "filas mínimas para comparar una categoría frente al objetivo",
+   "valor": 30,
+   "origen": "por defecto (parametros.md)"
+  },
+  {
+   "nombre": "alta cardinalidad",
+   "valor": "más de 50 valores distintos",
+   "origen": "por defecto"
+  },
+  {
+   "nombre": "las más frecuentes en alta cardinalidad",
+   "valor": 10,
+   "origen": "por defecto"
+  },
+  {
+   "nombre": "texto muy corto",
+   "valor": "menos de 3 caracteres",
+   "origen": "por defecto; no hay texto libre"
+  },
+  {
+   "nombre": "diagrama de caja",
+   "valor": "no se dibuja ninguno: todas las tablas pasan de 1.000 filas o el histograma ya lo enseña",
+   "origen": "por defecto"
+  },
+  {
+   "nombre": "parte con que se cruza el objetivo",
+   "valor": "construcción",
+   "origen": "reglas-negocio §7, la partición por fecha"
+  },
+  {
+   "nombre": "muestra fija de fotos",
+   "valor": "400000 fotos, semilla 42",
+   "origen": "encargo y criterio de este análisis"
+  },
+  {
+   "nombre": "valores distintos que se siguen por columna al leer por bloques",
+   "valor": 60,
+   "origen": "criterio de este análisis, por encima del límite de discreta y del de alta cardinalidad"
+  },
+  {
+   "nombre": "diferencia frente al objetivo",
+   "valor": "|2·AUC − 1|; se dibujan las de 0.1 o más; posible fuga desde 0.9",
+   "origen": "criterio de este análisis, fijado antes de calcular"
+  },
+  {
+   "nombre": "cambio al separar",
+   "valor": "se invierte, o la diferencia del grupo es menos de 1/2 o más de 2 veces la del total",
+   "origen": "criterio de este análisis, fijado antes de calcular"
+  },
+  {
+   "nombre": "días mínimos para comparar una tasa anual",
+   "valor": 50000,
+   "origen": "reglas-negocio §7, mínimo del ranking"
+  },
+  {
+   "nombre": "fallos mínimos para concluir sobre un año de edad",
+   "valor": 20,
+   "origen": "reglas-negocio §7, CP-009"
+  },
+  {
+   "nombre": "señales de la tabla de estadísticos",
+   "valor": "media y mediana a más de 0.5 desviaciones; máximo / mínimo positivo de 1.000 o más",
+   "origen": "criterio de este análisis"
+  },
+  {
+   "nombre": "correlación fuerte",
+   "valor": "|r| ≥ 0.9",
+   "origen": "criterio de este análisis"
+  },
+  {
+   "nombre": "anomalía en una serie de volumen",
+   "valor": "un periodo fuera de 0.8 a 1.25 veces la mediana de los 3 periodos de cada lado",
+   "origen": "criterio de este análisis"
+  },
+  {
+   "nombre": "media móvil",
+   "valor": "3 meses o 4 trimestres",
+   "origen": "criterio de este análisis"
+  }
+ ],
+ "siguiente_paso": "con_esto_basta",
+ "graficos": [
+  {
+   "id": "cat-datacenter",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "datacenter: «sin dato» reúne el 32,3 % de las filas",
+   "subtitulo": "Filas de cada valor (7 valores)",
+   "fuente": "186 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "sin dato",
+     "ams5",
+     "iad1",
+     "phx1",
+     "sac0",
+     "sac2",
+     "yyz1"
+    ],
+    "series": {
+     "filas": [
+      60,
+      24,
+      24,
+      24,
+      24,
+      24,
+      6
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "num-dias_disco",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "dias_disco: mediana 2.082.138,00 y media 2.398.433,78",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "186 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     23816.0,
+     639245.1666666666,
+     1254674.3333333333,
+     1870103.5,
+     2485532.6666666665,
+     3100961.833333333,
+     3716391.0,
+     4331820.166666666,
+     4947249.333333333,
+     5562678.5,
+     6178107.666666666,
+     6793536.833333333,
+     7408966.0
+    ],
+    "cuentas": [
+     48,
+     22,
+     19,
+     25,
+     30,
+     1,
+     5,
+     6,
+     6,
+     6,
+     10,
+     8
+    ],
+    "log": false,
+    "etiqueta_x": "dias_disco"
+   }
+  },
+  {
+   "id": "num-fallos",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "fallos: mediana 86,00 y media 91,38",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "186 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     0.0,
+     47.083333333333336,
+     94.16666666666667,
+     141.25,
+     188.33333333333334,
+     235.41666666666669,
+     282.5,
+     329.58333333333337,
+     376.6666666666667,
+     423.75,
+     470.83333333333337,
+     517.9166666666667,
+     565.0
+    ],
+    "cuentas": [
+     72,
+     31,
+     48,
+     18,
+     3,
+     6,
+     5,
+     1,
+     0,
+     1,
+     0,
+     1
+    ],
+    "log": false,
+    "etiqueta_x": "fallos"
+   }
+  },
+  {
+   "id": "cat-periodo",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "periodo: «construcción» reúne el 61,3 % de las filas",
+   "subtitulo": "Filas de cada valor (2 valores)",
+   "fuente": "186 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "construcción",
+     "validación"
+    ],
+    "series": {
+     "filas": [
+      114,
+      72
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "cat-con_sitio",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "con_sitio: «True» reúne el 77,4 % de las filas",
+   "subtitulo": "Filas de cada valor (2 valores)",
+   "fuente": "186 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "True",
+     "False"
+    ],
+    "series": {
+     "filas": [
+      144,
+      42
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "tasa-centro (centro_mes, desde que consta el sitio)",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "La tasa anual de fallo más alta por centro es la de sac2: 2,06 %",
+   "subtitulo": "Tasa anual de fallo en %, con sus fallos (n); solo con 50.000 días de disco o más",
+   "fuente": "207.297.278 días de disco y 8.634 fallos",
+   "datos": {
+    "etiquetas": [
+     "ams5",
+     "iad1",
+     "phx1",
+     "sac0",
+     "sac2",
+     "sin dato",
+     "yyz1"
+    ],
+    "series": {
+     "tasa": [
+      1.4345571050581474,
+      1.03779102005339,
+      1.1995671881248935,
+      1.7324576211896556,
+      2.0621209011882633,
+      0.70561089033082,
+      0.3362474781439139
+     ]
+    },
+    "n": [
+     476,
+     512,
+     2160,
+     2806,
+     2546,
+     128,
+     6
+    ],
+    "decimales": 2,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "tmp-días de disco por mes",
+   "seccion": "temporal",
+   "tipo": "linea",
+   "ancho": "completo",
+   "titulo": "Días de disco por mes: el máximo es 9.638.285 en may 2025",
+   "subtitulo": "Días de disco por mes, por mes",
+   "fuente": "66 periodos",
+   "datos": {
+    "periodos": [
+     "ene 2020",
+     "feb 2020",
+     "mar 2020",
+     "abr 2020",
+     "may 2020",
+     "jun 2020",
+     "jul 2020",
+     "ago 2020",
+     "sep 2020",
+     "oct 2020",
+     "nov 2020",
+     "dic 2020",
+     "ene 2021",
+     "feb 2021",
+     "mar 2021",
+     "abr 2021",
+     "may 2021",
+     "jun 2021",
+     "jul 2021",
+     "ago 2021",
+     "sep 2021",
+     "oct 2021",
+     "nov 2021",
+     "dic 2021",
+     "ene 2022",
+     "feb 2022",
+     "mar 2022",
+     "abr 2022",
+     "may 2022",
+     "jun 2022",
+     "jul 2022",
+     "ago 2022",
+     "sep 2022",
+     "oct 2022",
+     "nov 2022",
+     "dic 2022",
+     "ene 2023",
+     "feb 2023",
+     "mar 2023",
+     "abr 2023",
+     "may 2023",
+     "jun 2023",
+     "jul 2023",
+     "ago 2023",
+     "sep 2023",
+     "oct 2023",
+     "nov 2023",
+     "dic 2023",
+     "ene 2024",
+     "feb 2024",
+     "mar 2024",
+     "abr 2024",
+     "may 2024",
+     "jun 2024",
+     "jul 2024",
+     "ago 2024",
+     "sep 2024",
+     "oct 2024",
+     "nov 2024",
+     "dic 2024",
+     "ene 2025",
+     "feb 2025",
+     "mar 2025",
+     "abr 2025",
+     "may 2025",
+     "jun 2025"
+    ],
+    "series": {
+     "días de disco por mes": [
+      3816969.0,
+      3618788.0,
+      3957783.0,
+      3943661.0,
+      4187067.0,
+      4142518.0,
+      4372500.0,
+      4480741.0,
+      4456946.0,
+      4708811.0,
+      4680873.0,
+      4979261.0,
+      5062185.0,
+      4691974.0,
+      5255856.0,
+      5182193.0,
+      5398328.0,
+      5351422.0,
+      5586761.0,
+      5781993.0,
+      5710259.0,
+      5960007.0,
+      5857331.0,
+      6233725.0,
+      6299292.0,
+      5759946.0,
+      6443019.0,
+      6277986.0,
+      6547809.0,
+      6243472.0,
+      6695819.0,
+      6825807.0,
+      6693082.0,
+      7052158.0,
+      6884138.0,
+      7168141.0,
+      7212200.0,
+      6585871.0,
+      7266134.0,
+      6791165.0,
+      7408966.0,
+      7238448.0,
+      7561708.0,
+      7917437.0,
+      7712804.0,
+      8152829.0,
+      8005273.0,
+      8224921.0,
+      8331683.0,
+      7882330.0,
+      8579698.0,
+      8429715.0,
+      8723775.0,
+      8484140.0,
+      8873473.0,
+      8908790.0,
+      8656142.0,
+      8956824.0,
+      8766061.0,
+      9247065.0,
+      9332637.0,
+      8550097.0,
+      9552945.0,
+      9309229.0,
+      9638285.0,
+      9499417.0
+     ]
+    },
+    "decimales": 0
+   }
+  },
+  {
+   "id": "tmp-fallos por mes",
+   "seccion": "temporal",
+   "tipo": "linea",
+   "ancho": "completo",
+   "titulo": "Fallos por mes: el máximo es 565 en abr 2023",
+   "subtitulo": "Fallos por mes, por mes",
+   "fuente": "66 periodos",
+   "datos": {
+    "periodos": [
+     "ene 2020",
+     "feb 2020",
+     "mar 2020",
+     "abr 2020",
+     "may 2020",
+     "jun 2020",
+     "jul 2020",
+     "ago 2020",
+     "sep 2020",
+     "oct 2020",
+     "nov 2020",
+     "dic 2020",
+     "ene 2021",
+     "feb 2021",
+     "mar 2021",
+     "abr 2021",
+     "may 2021",
+     "jun 2021",
+     "jul 2021",
+     "ago 2021",
+     "sep 2021",
+     "oct 2021",
+     "nov 2021",
+     "dic 2021",
+     "ene 2022",
+     "feb 2022",
+     "mar 2022",
+     "abr 2022",
+     "may 2022",
+     "jun 2022",
+     "jul 2022",
+     "ago 2022",
+     "sep 2022",
+     "oct 2022",
+     "nov 2022",
+     "dic 2022",
+     "ene 2023",
+     "feb 2023",
+     "mar 2023",
+     "abr 2023",
+     "may 2023",
+     "jun 2023",
+     "jul 2023",
+     "ago 2023",
+     "sep 2023",
+     "oct 2023",
+     "nov 2023",
+     "dic 2023",
+     "ene 2024",
+     "feb 2024",
+     "mar 2024",
+     "abr 2024",
+     "may 2024",
+     "jun 2024",
+     "jul 2024",
+     "ago 2024",
+     "sep 2024",
+     "oct 2024",
+     "nov 2024",
+     "dic 2024",
+     "ene 2025",
+     "feb 2025",
+     "mar 2025",
+     "abr 2025",
+     "may 2025",
+     "jun 2025"
+    ],
+    "series": {
+     "fallos por mes": [
+      141.0,
+      102.0,
+      93.0,
+      95.0,
+      104.0,
+      73.0,
+      117.0,
+      106.0,
+      104.0,
+      122.0,
+      131.0,
+      119.0,
+      122.0,
+      122.0,
+      106.0,
+      144.0,
+      161.0,
+      136.0,
+      172.0,
+      180.0,
+      158.0,
+      183.0,
+      170.0,
+      169.0,
+      190.0,
+      160.0,
+      268.0,
+      232.0,
+      275.0,
+      256.0,
+      327.0,
+      290.0,
+      299.0,
+      251.0,
+      236.0,
+      215.0,
+      286.0,
+      240.0,
+      366.0,
+      565.0,
+      457.0,
+      319.0,
+      287.0,
+      361.0,
+      295.0,
+      366.0,
+      403.0,
+      256.0,
+      348.0,
+      335.0,
+      266.0,
+      279.0,
+      469.0,
+      451.0,
+      501.0,
+      548.0,
+      340.0,
+      339.0,
+      322.0,
+      340.0,
+      377.0,
+      322.0,
+      368.0,
+      382.0,
+      338.0,
+      341.0
+     ]
+    },
+    "decimales": 0
+   }
+  }
+ ],
+ "graficos_no_dibujados": [],
+ "cifras_para_siguiente": {},
+ "cifras_de_control": {},
+ "teoria": [
+  "34.1 y 34.2, qué es y el esquema: cada columna se tipifica por su papel y cada análisis es una función que se aplica a todo el bloque.",
+  "3.1, descriptiva: el informe describe estos datos y no extrapola; no se dan intervalos ni contrastes.",
+  "34.3, 34.4, 3.5 y 3.6: frecuencias y cardinalidad en las categóricas; describe con la mediana al lado y la tabla leída con sus cuatro señales en las numéricas.",
+  "34.5, 34.6 y 10.6: barras para categóricas y discretas, histograma para continuas, sin cajas; la escala logarítmica se dice en el eje.",
+  "34.7 y 13.14: el cruce con el objetivo solo con la construcción; describe y no elige variables.",
+  "5.4, 5.5 y 5.6: cada tasa con su base, la tasa de un grupo como suma entre suma y cada comparación repetida por fabricante y capacidad, por si se invierte (paradoja de Simpson).",
+  "34.8, 34.9 y 34.10: hallazgo, alerta, anomalía e hipótesis separados; Pareto, ABC y series de negocio."
+ ],
+ "versiones": {
+  "python": "3.13.15",
+  "pandas": "3.0.6",
+  "numpy": "2.5.3",
+  "pyarrow": "24.0.0",
+  "matplotlib": "3.11.2"
+ },
+ "datos_personales_texto": [
+  "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+  "No hay datos de personas (reglas-negocio §9): el número de serie identifica un disco, no a una persona.",
+  "Este exploratorio no usa ni deja ninguna columna de datos personales."
+ ],
+ "huellas": [
+  {
+   "tabla": "dim_modelo",
+   "antes": "543441fa6c7c8bb023d40bfacd6357c85fd0cd37013a2305c3fe97bc9512a3af",
+   "despues": "543441fa6c7c8bb023d40bfacd6357c85fd0cd37013a2305c3fe97bc9512a3af",
+   "iguales": true
+  },
+  {
+   "tabla": "dim_precio_gb",
+   "antes": "c2a444fbc373fc42d05364ad47e251a646415e7d7fc38f82f2096261894cd2a8",
+   "despues": "c2a444fbc373fc42d05364ad47e251a646415e7d7fc38f82f2096261894cd2a8",
+   "iguales": true
+  },
+  {
+   "tabla": "fotos_riesgo",
+   "antes": "5a84a6ae35d20108e94875f87d0ec9f35c8ac71f9e67aab4444f919dde354a71",
+   "despues": "5a84a6ae35d20108e94875f87d0ec9f35c8ac71f9e67aab4444f919dde354a71",
+   "iguales": true
+  },
+  {
+   "tabla": "fallos_detalle",
+   "antes": "ff67f9a515527ffb6e1dd6b7474067836c1d401c3e1a33901f290f1b56c236ad",
+   "despues": "ff67f9a515527ffb6e1dd6b7474067836c1d401c3e1a33901f290f1b56c236ad",
+   "iguales": true
+  },
+  {
+   "tabla": "vida_discos",
+   "antes": "af034d17ebc92a1ff22e3c2e1688a585d39383cb8e2f94106ea4e0ffc709d504",
+   "despues": "af034d17ebc92a1ff22e3c2e1688a585d39383cb8e2f94106ea4e0ffc709d504",
+   "iguales": true
+  },
+  {
+   "tabla": "dias_por_tramo",
+   "antes": "a8f2230c04a3c9717bb4aa2a9792297ef3b0dd2d37b234178d949eadd7c38c66",
+   "despues": "a8f2230c04a3c9717bb4aa2a9792297ef3b0dd2d37b234178d949eadd7c38c66",
+   "iguales": true
+  },
+  {
+   "tabla": "inicio_trimestre",
+   "antes": "86169128b7862e772d1e1e6a755d8df287c74a4da7e469257b57b0b0ed14a03e",
+   "despues": "86169128b7862e772d1e1e6a755d8df287c74a4da7e469257b57b0b0ed14a03e",
+   "iguales": true
+  },
+  {
+   "tabla": "modelo_trimestre",
+   "antes": "82be69d656509c36760f705d0d2bd21801702ddbf33795056e5cc92c7fff76cf",
+   "despues": "82be69d656509c36760f705d0d2bd21801702ddbf33795056e5cc92c7fff76cf",
+   "iguales": true
+  },
+  {
+   "tabla": "centro_mes",
+   "antes": "d6e8b53032fe7ff2be864922483b3a07a33fbf0fadbd20eca3b3c516a3b2fc57",
+   "despues": "d6e8b53032fe7ff2be864922483b3a07a33fbf0fadbd20eca3b3c516a3b2fc57",
+   "iguales": true
+  }
+ ],
+ "ejecucion": {
+  "segundos_total": 111.3
+ }
+}

@@ -1,0 +1,3202 @@
+{
+  "skill": "correccion-datos",
+  "version_skill": "06/11/2026 (WF-59)",
+  "script": "scripts/03_correccion_datos.py",
+  "fecha_datos": "2025-06-30",
+  "fecha_ejecucion": "2026-11-17T17:01:20",
+  "entradas": [
+    {
+      "ruta": "data/raw/Drive_Stats_Schema_Current.csv",
+      "sha256": "365cf50ad5ebfc3e20d0959337d9877ce9539e0432955bda836b7482cd0f5358",
+      "filas": 198,
+      "columnas": 1
+    },
+    {
+      "ruta": "data/raw/podado/fallos.parquet",
+      "sha256": "901e8e07fc0d89f5969af23787c46abfaa502b98139c169cef12f234ada5b2e5",
+      "filas": 17960,
+      "columnas": 2
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2020-01.parquet",
+      "sha256": "714ffd21e62005b93547c968167881b3d8f9db78a7c9cb845ca29594227f4905",
+      "filas": 124955,
+      "columnas": 101
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2020-02.parquet",
+      "sha256": "52aec6ef67a158c845f81e1d7451e6d6874907e5c06e17d94018f2fcb20435b4",
+      "filas": 126240,
+      "columnas": 101
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2020-03.parquet",
+      "sha256": "1b89a7418d5b18ce2f54853afb9bc214b3be2fdd57f855d5f783b9ed9d92cab8",
+      "filas": 127460,
+      "columnas": 101
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2020-04.parquet",
+      "sha256": "72540d1143caf380c753cf7eb653af928eafbddb9fc3fffa6031b3516499d9ec",
+      "filas": 132340,
+      "columnas": 101
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2020-05.parquet",
+      "sha256": "36914b9b1f3cf31659b32553c82003337eda479398f1ab3548e1fd86783578c8",
+      "filas": 136540,
+      "columnas": 101
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2020-06.parquet",
+      "sha256": "aadebe5a41ea1b1dc8e2fc7787b4432a9794faa456148bd6d7aaf923c6c117db",
+      "filas": 139286,
+      "columnas": 101
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2020-07.parquet",
+      "sha256": "b1cf19de9e152cf279c2a32d3a2524b8ffa7503ed064d672fabc83fed9fa6e77",
+      "filas": 142507,
+      "columnas": 101
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2020-08.parquet",
+      "sha256": "237ac878c08c46be705c16ffb6486a2857ad8e60e93a7b33842d311ad57ed26d",
+      "filas": 145070,
+      "columnas": 101
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2020-09.parquet",
+      "sha256": "50608349524ed852a72c10b7f1398e3883187b7cd23be354e472ad04e663432b",
+      "filas": 149767,
+      "columnas": 101
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2020-10.parquet",
+      "sha256": "48d94898144ef303fb37cbc42d1f3f1dd0c5bafa1fc0a12c5d7634ea743dd1dd",
+      "filas": 153725,
+      "columnas": 111
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2020-11.parquet",
+      "sha256": "99a1f4402d79f3040f3c4c4ee83632418b3aef08b9f12d3240e85e42c0715c89",
+      "filas": 156097,
+      "columnas": 111
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2020-12.parquet",
+      "sha256": "5dfba9da34655d56f313493408cb487e9cc52a7993c77910366543051e244a1b",
+      "filas": 162190,
+      "columnas": 111
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2021-01.parquet",
+      "sha256": "a312a18118fc2dad91e7905271d3fa174c6c97dbff2e03683d2c9825a650fe70",
+      "filas": 165512,
+      "columnas": 111
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2021-02.parquet",
+      "sha256": "5f5b551e26abd02bbd6ddbe14a381073945f7cf35d50e3319287eabce3c99158",
+      "filas": 169740,
+      "columnas": 111
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2021-03.parquet",
+      "sha256": "2febcbb6b0b53316c382abeaaec34b0847b2c35bc1cc1b8943bc443eaef1c397",
+      "filas": 170936,
+      "columnas": 111
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2021-04.parquet",
+      "sha256": "48cc07a00e2a8a5a88fd3c80292ff5c0077513eea132d7ed6e986a48ed5786e5",
+      "filas": 175626,
+      "columnas": 111
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2021-05.parquet",
+      "sha256": "b841eaaa269c821a15dadd15f11aa1aeae518671b3f671f534c59895b13859f4",
+      "filas": 176780,
+      "columnas": 111
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2021-06.parquet",
+      "sha256": "22b049f9e1456cbb766d0bb15478e529d0167da188e3eeebb15e37aad302c7d4",
+      "filas": 180256,
+      "columnas": 111
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2021-07.parquet",
+      "sha256": "61cfa623c06f35ab451dd2b5f98c626a4f9949a4bf7c81774788cbf2a636d414",
+      "filas": 182264,
+      "columnas": 115
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2021-08.parquet",
+      "sha256": "47ffdb35d7266c53609041633d0f711f8a5f06455eaf40da95bf3bbf29af369e",
+      "filas": 185676,
+      "columnas": 115
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2021-09.parquet",
+      "sha256": "cd41f9300ecb298d3003d783a33feb35f6a548e0bd9b119f580d05941e935af9",
+      "filas": 192312,
+      "columnas": 115
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2021-10.parquet",
+      "sha256": "2589a02aa5a60b39f447da665c11ddf6590f102afe8ee40bc359606d121d2fdd",
+      "filas": 194812,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2021-11.parquet",
+      "sha256": "390f4f8b8d6e90d893ec0fd0ce3057822877ccb5d04a6daac2044f05a4ec5e4e",
+      "filas": 197066,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2021-12.parquet",
+      "sha256": "2a68c918f7e415cbcfce25e8220ac1968320378557e91259fd96fc845c806da4",
+      "filas": 199674,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2022-01.parquet",
+      "sha256": "571814bf664508feab8535301496657ccb59f5916be00fe397a90d0145802f0c",
+      "filas": 206954,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2022-02.parquet",
+      "sha256": "ee708d6ab81f300b4e8eb1b7873b72019bed47e00e7d8e5495b74dada8345de7",
+      "filas": 206994,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2022-03.parquet",
+      "sha256": "c0172dabe18fc4121f1ffc069ae2b3c502c21e87fcde7fad39346158572d89e7",
+      "filas": 211725,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2022-04.parquet",
+      "sha256": "b4314da509723e063c1343caa9b423b58df13def804d9f6a5d090f0d6dcec445",
+      "filas": 211735,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2022-05.parquet",
+      "sha256": "21341aec0d475dbf32737d49bd734de564d02972f52400d1765159aa00601887",
+      "filas": 214706,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2022-06.parquet",
+      "sha256": "6ff1436692fa7ca5b255de948f8c119b76c2e97796ec6a44fcfcbff5270141bc",
+      "filas": 215249,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2022-07.parquet",
+      "sha256": "7e3e8ea665eb1a44eb174b84757813c5e2ddfcf34ad1d6674772e6ee06f33aca",
+      "filas": 219443,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2022-08.parquet",
+      "sha256": "67f82baa58b9c3c6f1a5482ee8ae8633e3624da73ad84b8e788a792f7f65c743",
+      "filas": 221105,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2022-09.parquet",
+      "sha256": "107aaabca8efc436054e33a6d7f5f5a69c185cf4df9a8c6fd3ff5200c16b34f5",
+      "filas": 227295,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2022-10.parquet",
+      "sha256": "d9d344a379715b9593100690087eed3824de07037d8aab38bbbf89cade0c5278",
+      "filas": 230896,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2022-11.parquet",
+      "sha256": "d33d6d306463a6a5e48b6ba0c85974d3116cfb75071bc32acacc4ddce95a4f02",
+      "filas": 232655,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2022-12.parquet",
+      "sha256": "06c8ffcbc991d243d148fa9579bff452d66c9c39b0b15255d271d9b3b95c83df",
+      "filas": 234423,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2023-01.parquet",
+      "sha256": "a2b12aa1d977f2f138c8a05cd753a76d5e3a7c7b04f9f7a6778db741d15ba9ff",
+      "filas": 235597,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2023-02.parquet",
+      "sha256": "3327f672ed7a936f74dfd2dc593c14677b33b65aa9e4cc9f9e94893b9ad0e042",
+      "filas": 238028,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2023-03.parquet",
+      "sha256": "048dc81d137af5b76d9e91a3a3b75aaa7ccf4a8fb5ceda28877cb4b2b9348797",
+      "filas": 241719,
+      "columnas": 122
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2023-04.parquet",
+      "sha256": "2b8b5cf8eddc6ccf7923224db0baba463035748719bd6feda4b60e10d6f35ba9",
+      "filas": 241681,
+      "columnas": 125
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2023-05.parquet",
+      "sha256": "41efce10b240c4a2d35988fab1690f847709df01e2b7fd9b207ddbe040fe2e60",
+      "filas": 243248,
+      "columnas": 125
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2023-06.parquet",
+      "sha256": "2e26f721c773486d1b65b16e709ccb1e43664b02ef8892912f1ea157b9626fa3",
+      "filas": 245708,
+      "columnas": 125
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2023-07.parquet",
+      "sha256": "283783eb341513d27d098d1434acb440539b406269ba0d16688f643e0ccb47e4",
+      "filas": 245757,
+      "columnas": 128
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2023-08.parquet",
+      "sha256": "1149936f0403156d9168a5e153a08844ae3c4b648216b95d0ede58c8137a68cd",
+      "filas": 258976,
+      "columnas": 128
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2023-09.parquet",
+      "sha256": "749408ffc8c60be87faefd9c86086aa5b396542c591d5cf6e63ef45b90279125",
+      "filas": 260779,
+      "columnas": 128
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2023-10.parquet",
+      "sha256": "f774e4694beed59eb863a7ffe5fc28bdca678ed97ea659d0b22c32936f22d584",
+      "filas": 265193,
+      "columnas": 128
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2023-11.parquet",
+      "sha256": "986b57252fd3412cf03b6c44e21526d89d3a7ad3a608626ff032eba9b9a62781",
+      "filas": 269692,
+      "columnas": 128
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2023-12.parquet",
+      "sha256": "4d6e8affbdb1f84ea56b25297ec4e5448c96e4f695f2ac91dd32ba0959341f3a",
+      "filas": 273559,
+      "columnas": 128
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2024-01.parquet",
+      "sha256": "3d8d9e4e671c39d8007750104533f33531eba0e54b74bf10a02536dd41f765d9",
+      "filas": 274660,
+      "columnas": 128
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2024-02.parquet",
+      "sha256": "1150b676670eb5725197d726f8709590b57042e504af9d8cb0c1ab427c8c25d7",
+      "filas": 275700,
+      "columnas": 128
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2024-03.parquet",
+      "sha256": "b461537508baf24f150b721a16a18bcedd324288b0dacf7fa05fb9bc28c0e659",
+      "filas": 277183,
+      "columnas": 128
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2024-04.parquet",
+      "sha256": "f8addbcebd787e870d459632f473aca35c65a96506e9d75dd4ae8e70a2ed0024",
+      "filas": 283855,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2024-05.parquet",
+      "sha256": "8b889c279cee7b4de0a054a6a11d43b9b1cb789a76bb4275ea84847304a3c34d",
+      "filas": 285604,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2024-06.parquet",
+      "sha256": "8d29368842f3c5e83c29933da8a438756664c274b44ef85dfd7229d6eed5b162",
+      "filas": 286791,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2024-07.parquet",
+      "sha256": "562e89ea077718c893398d3f3071b2411affe89de77eb0042ec8ff1b7a254906",
+      "filas": 289096,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2024-08.parquet",
+      "sha256": "fae3a1231d46e70ad866fb47e174055611dc6f11dcc97d7ab99b2f99f553fd68",
+      "filas": 292729,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2024-09.parquet",
+      "sha256": "bb8cbb738602ad6bb3a7aa44f937d85d026cd19866ab76e495554c97afa5f7e7",
+      "filas": 291715,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2024-10.parquet",
+      "sha256": "78a0857e2f322de09477db31f0cfda127006d2aeac6ab0650e434be44bc3b32b",
+      "filas": 292679,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2024-11.parquet",
+      "sha256": "4062b14828a5f6379ef4fcfb49b42a050d285b54059333ed82fd328ef5a53278",
+      "filas": 294174,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2024-12.parquet",
+      "sha256": "7467f9c8cb2d0a5441870ce7c875c7d33804e735c64b88e99807448a17b73b78",
+      "filas": 297672,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2025-01.parquet",
+      "sha256": "017a9ef630a626b871432a6192156b20e797039f27c7a29fa4e4958c35962efb",
+      "filas": 304957,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2025-02.parquet",
+      "sha256": "a1ff41f835434d0ca681357e2617c85a779b02aa7d91849c06bf4c6e15ffdd8a",
+      "filas": 305149,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2025-03.parquet",
+      "sha256": "92c07e9267279ed901ab680bd71057304def770348fc67233a5bcd2437b9e375",
+      "filas": 312834,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2025-04.parquet",
+      "sha256": "b5481bfb936200ecf5a634758ab3e64082d793b767d8375c092f75361c1d5f0e",
+      "filas": 312812,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2025-05.parquet",
+      "sha256": "eb1bda3699854c919eb2a4a78ceee2a81fda4094753c4ba20d8456cf7bc1ed6a",
+      "filas": 315374,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/fotos_mensuales/2025-06.parquet",
+      "sha256": "a7e3f8c58af7120e3883c6602b00f1248cbf380a77e3a6a47289a0cc7e6664f6",
+      "filas": 318737,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/raw/podado/recuento_diario.parquet",
+      "sha256": "42295d6c2f4b851a4d10e8475afbed52ac83dd2898587acd922d68742383b732",
+      "filas": 201502,
+      "columnas": 6
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q1_2020.parquet",
+      "sha256": "816d8d8964036bffbb9d6251a21289876e327df60c3dc30a73680b1b1e5e11ff",
+      "filas": 11578,
+      "columnas": 102
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q1_2021.parquet",
+      "sha256": "a4d1eb5fb8f6b67f72ba32b6880b361503b8724b044abcd2ec9684a907594b9e",
+      "filas": 12208,
+      "columnas": 112
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q1_2022.parquet",
+      "sha256": "d850e09c59b764b4ffbda0a25a957d2013677f1191f9942a07e8f7264279447c",
+      "filas": 20020,
+      "columnas": 123
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q1_2023.parquet",
+      "sha256": "e049cec1440f26916b3a3bf4bc537843fea11c931f1f48c74da7c2a1c94d72f0",
+      "filas": 32632,
+      "columnas": 123
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q1_2024.parquet",
+      "sha256": "7f681dcc2d54129dc72b6a59e85caddd3b4bd8f5163a9bd4f5a7e706d044674b",
+      "filas": 28603,
+      "columnas": 129
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q1_2025.parquet",
+      "sha256": "62553cfd53ab7160c2af0802b739ce3046a395d29141a69f7615f075c8745904",
+      "filas": 33078,
+      "columnas": 131
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q2_2020.parquet",
+      "sha256": "39f768812005133572a8dd7e5e407625c3d24fed116e9f23d039a1d129a6ae1d",
+      "filas": 9623,
+      "columnas": 102
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q2_2021.parquet",
+      "sha256": "dcc83737ed8f7d4133b6c525d80c16f0c9bd22435d248c9ec56372983daff60c",
+      "filas": 15600,
+      "columnas": 112
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q2_2022.parquet",
+      "sha256": "c7bd0710e22587c720713988dbd5164e9d1eccc3f89975ed0cfec633c8fbe112",
+      "filas": 25711,
+      "columnas": 123
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q2_2023.parquet",
+      "sha256": "9fcb82f203809d2d65a002cc18370c24735f9884b75006e3c3048f3887dd75e0",
+      "filas": 36315,
+      "columnas": 126
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q2_2024.parquet",
+      "sha256": "b84b65f5b195f3dc0cf793d9b8c81ce5afffbd15d67fc46fe739466c4297be09",
+      "filas": 38361,
+      "columnas": 131
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q2_2025.parquet",
+      "sha256": "759d6646073cd317fd8a3e31ad3b02c29bced95839f2bdaddbb324241601ea83",
+      "filas": 25101,
+      "columnas": 131
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q3_2020.parquet",
+      "sha256": "a6cb913944dca41e34fa47bcb0bb187fb0d674ffbb339bd944a187d405480586",
+      "filas": 11007,
+      "columnas": 102
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q3_2021.parquet",
+      "sha256": "a626de3113fc60d56c06c8a255de74aea9de8799a5eae535afa206c33e8efb45",
+      "filas": 17430,
+      "columnas": 116
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q3_2022.parquet",
+      "sha256": "a43c8085d0166d6c1ebd5b281f274e827dffcd283d00949861c7003e94349800",
+      "filas": 28266,
+      "columnas": 123
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q3_2023.parquet",
+      "sha256": "adc7c9c909630cdcecc0fc92792594879add7af30b2f2c426581368afd14ca6c",
+      "filas": 31363,
+      "columnas": 129
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q3_2024.parquet",
+      "sha256": "504d886516821cd6318f3f0bf6c8eb6851b5b2088ecdc0057271062b7dd4f054",
+      "filas": 41420,
+      "columnas": 131
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q4_2020.parquet",
+      "sha256": "636e808b6c8fa003bc4e05c919308d3b498660f042c92fbbb0a8cc6953eb882c",
+      "filas": 12527,
+      "columnas": 112
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q4_2021.parquet",
+      "sha256": "af3ef0ca0220901278f4bd72da205e54bd3951efc081443b35940a50a393019d",
+      "filas": 19870,
+      "columnas": 123
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q4_2022.parquet",
+      "sha256": "21a99ded7bd17a641dbda3264f556530bfa4826c978d6f5cf01f9e2c1c745eee",
+      "filas": 22955,
+      "columnas": 123
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q4_2023.parquet",
+      "sha256": "947dc2fda0cf12524f00ca9eeee15dd851dcc6eb6e841f969635a4cb51017ea8",
+      "filas": 31707,
+      "columnas": 129
+    },
+    {
+      "ruta": "data/raw/podado/ventanas_fallo/data_Q4_2024.parquet",
+      "sha256": "90edb9d585fcf5929045fcd0c760162dd5627adaaaa24860e508aa67a1f697ab",
+      "filas": 31450,
+      "columnas": 131
+    }
+  ],
+  "resultado": {
+    "estado": "AVISO",
+    "riesgo": "medio",
+    "resumen": "Los cuatro datasets corregidos, uno por tabla en data/processed/: 16 correcciones con cambio y 23 problemas que se dejan como están, con su motivo, para que los lea la skill siguiente. Ningún vacío rellenado y ninguna fila perdida sin explicar.",
+    "artefactos": [
+      "data/processed/fotos_mensuales_corregido.parquet",
+      "data/processed/ventanas_fallo_corregido.parquet",
+      "data/processed/recuento_diario_corregido.parquet",
+      "data/processed/fallos_corregido.parquet",
+      "informes/correccion-datos.json",
+      "informes/correccion-datos.md",
+      "contexto-proyecto/modelo/registro-transformaciones.md"
+    ],
+    "siguiente": "modelado-datos: el diseño del modelo de datos, que aprueba Juan"
+  },
+  "pendientes": [],
+  "salidas": [
+    {
+      "tabla": "fotos_mensuales",
+      "ruta": "data/processed/fotos_mensuales_corregido.parquet",
+      "sha256": "998d1edec335d5cfefb6d8177a173b019f8983a519fa7353d754f0233efebedb",
+      "filas": 14851669,
+      "columnas": 130,
+      "campos_salida": [
+        {
+          "columna": "fecha",
+          "tipo": "timestamp[ms]",
+          "nulos": 0,
+          "distintos": 66,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "date",
+          "tipo": "timestamp[ms]",
+          "nulos": 0,
+          "distintos": 66,
+          "regla_aplicada": "R-003"
+        },
+        {
+          "columna": "serial_number",
+          "tipo": "string",
+          "nulos": 0,
+          "distintos": 408208,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "model",
+          "tipo": "string",
+          "nulos": 0,
+          "distintos": 94,
+          "regla_aplicada": "R-004"
+        },
+        {
+          "columna": "capacity_bytes",
+          "tipo": "int64",
+          "nulos": 0,
+          "distintos": 20,
+          "regla_aplicada": "R-005"
+        },
+        {
+          "columna": "failure",
+          "tipo": "int64",
+          "nulos": 0,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "datacenter",
+          "tipo": "string",
+          "nulos": 8201764,
+          "distintos": 6,
+          "regla_aplicada": "R-001"
+        },
+        {
+          "columna": "cluster_id",
+          "tipo": "int64",
+          "nulos": 7965992,
+          "distintos": 7,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "vault_id",
+          "tipo": "int64",
+          "nulos": 7235355,
+          "distintos": 248,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "pod_id",
+          "tipo": "int64",
+          "nulos": 7235355,
+          "distintos": 20,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "pod_slot_num",
+          "tipo": "int64",
+          "nulos": 8069213,
+          "distintos": 60,
+          "regla_aplicada": "R-002"
+        },
+        {
+          "columna": "smart_1_normalized",
+          "tipo": "double",
+          "nulos": 30292,
+          "distintos": 89,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_1_raw",
+          "tipo": "double",
+          "nulos": 30292,
+          "distintos": 6224023,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_2_normalized",
+          "tipo": "double",
+          "nulos": 7123216,
+          "distintos": 92,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_2_raw",
+          "tipo": "double",
+          "nulos": 7123216,
+          "distintos": 293,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_3_normalized",
+          "tipo": "double",
+          "nulos": 160073,
+          "distintos": 158,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_3_raw",
+          "tipo": "double",
+          "nulos": 160073,
+          "distintos": 8110,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_4_normalized",
+          "tipo": "double",
+          "nulos": 160073,
+          "distintos": 13,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_4_raw",
+          "tipo": "double",
+          "nulos": 160073,
+          "distintos": 1713,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_5_normalized",
+          "tipo": "double",
+          "nulos": 124743,
+          "distintos": 114,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_5_raw",
+          "tipo": "double",
+          "nulos": 124743,
+          "distintos": 8339,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_7_normalized",
+          "tipo": "double",
+          "nulos": 160073,
+          "distintos": 72,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_7_raw",
+          "tipo": "double",
+          "nulos": 160073,
+          "distintos": 6930811,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_8_normalized",
+          "tipo": "double",
+          "nulos": 7123216,
+          "distintos": 42,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_8_raw",
+          "tipo": "double",
+          "nulos": 7123216,
+          "distintos": 66,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_9_normalized",
+          "tipo": "double",
+          "nulos": 22486,
+          "distintos": 100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_9_raw",
+          "tipo": "double",
+          "nulos": 22486,
+          "distintos": 80358,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_10_normalized",
+          "tipo": "double",
+          "nulos": 160073,
+          "distintos": 18,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_10_raw",
+          "tipo": "double",
+          "nulos": 160073,
+          "distintos": 19,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_11_normalized",
+          "tipo": "double",
+          "nulos": 14814093,
+          "distintos": 18,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_11_raw",
+          "tipo": "double",
+          "nulos": 14814093,
+          "distintos": 4907,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_12_normalized",
+          "tipo": "double",
+          "nulos": 22486,
+          "distintos": 10,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_12_raw",
+          "tipo": "double",
+          "nulos": 22486,
+          "distintos": 859,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_13_normalized",
+          "tipo": "double",
+          "nulos": 14846778,
+          "distintos": 11,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_13_raw",
+          "tipo": "double",
+          "nulos": 14846778,
+          "distintos": 33,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_16_raw",
+          "tipo": "double",
+          "nulos": 14749412,
+          "distintos": 297,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_17_raw",
+          "tipo": "double",
+          "nulos": 14749412,
+          "distintos": 323,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_22_normalized",
+          "tipo": "double",
+          "nulos": 11625045,
+          "distintos": 97,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_22_raw",
+          "tipo": "double",
+          "nulos": 11625045,
+          "distintos": 91,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_24_normalized",
+          "tipo": "double",
+          "nulos": 11303841,
+          "distintos": 30,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_27_raw",
+          "tipo": "double",
+          "nulos": 14775800,
+          "distintos": 14629,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_90_raw",
+          "tipo": "double",
+          "nulos": 14506695,
+          "distintos": 92,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_165_raw",
+          "tipo": "double",
+          "nulos": 14843733,
+          "distintos": 7910,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_166_raw",
+          "tipo": "double",
+          "nulos": 14843733,
+          "distintos": 637,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_167_raw",
+          "tipo": "double",
+          "nulos": 14843733,
+          "distintos": 134,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_168_raw",
+          "tipo": "double",
+          "nulos": 14741476,
+          "distintos": 776,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_169_raw",
+          "tipo": "double",
+          "nulos": 14843733,
+          "distintos": 124,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_170_normalized",
+          "tipo": "double",
+          "nulos": 14741552,
+          "distintos": 48,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_170_raw",
+          "tipo": "double",
+          "nulos": 14741552,
+          "distintos": 988,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_171_raw",
+          "tipo": "double",
+          "nulos": 14821386,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_172_normalized",
+          "tipo": "double",
+          "nulos": 14821386,
+          "distintos": 5,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_172_raw",
+          "tipo": "double",
+          "nulos": 14821386,
+          "distintos": 5,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_173_normalized",
+          "tipo": "double",
+          "nulos": 14719103,
+          "distintos": 255,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_173_raw",
+          "tipo": "double",
+          "nulos": 14719103,
+          "distintos": 51079,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_174_raw",
+          "tipo": "double",
+          "nulos": 14719103,
+          "distintos": 95,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_177_normalized",
+          "tipo": "double",
+          "nulos": 14749228,
+          "distintos": 4,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_177_raw",
+          "tipo": "double",
+          "nulos": 14749228,
+          "distintos": 33,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_179_raw",
+          "tipo": "double",
+          "nulos": 14846751,
+          "distintos": 6,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_180_normalized",
+          "tipo": "double",
+          "nulos": 14824302,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_180_raw",
+          "tipo": "double",
+          "nulos": 14824302,
+          "distintos": 53,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_181_raw",
+          "tipo": "double",
+          "nulos": 14846594,
+          "distintos": 3,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_183_normalized",
+          "tipo": "double",
+          "nulos": 13850850,
+          "distintos": 100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_183_raw",
+          "tipo": "double",
+          "nulos": 13850850,
+          "distintos": 394,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_184_normalized",
+          "tipo": "double",
+          "nulos": 12187051,
+          "distintos": 67,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_184_raw",
+          "tipo": "double",
+          "nulos": 12187051,
+          "distintos": 82,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_187_normalized",
+          "tipo": "double",
+          "nulos": 7872897,
+          "distintos": 100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_187_raw",
+          "tipo": "double",
+          "nulos": 7872897,
+          "distintos": 1070,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_188_normalized",
+          "tipo": "double",
+          "nulos": 7893938,
+          "distintos": 17,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_188_raw",
+          "tipo": "double",
+          "nulos": 7893938,
+          "distintos": 6301,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_189_normalized",
+          "tipo": "double",
+          "nulos": 12218771,
+          "distintos": 100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_189_raw",
+          "tipo": "double",
+          "nulos": 12218771,
+          "distintos": 1132,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_190_normalized",
+          "tipo": "double",
+          "nulos": 7903152,
+          "distintos": 52,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_190_raw",
+          "tipo": "double",
+          "nulos": 7903152,
+          "distintos": 52,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_191_normalized",
+          "tipo": "double",
+          "nulos": 8850232,
+          "distintos": 101,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_191_raw",
+          "tipo": "double",
+          "nulos": 8850232,
+          "distintos": 204291,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_192_normalized",
+          "tipo": "double",
+          "nulos": 57659,
+          "distintos": 40,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_192_raw",
+          "tipo": "double",
+          "nulos": 57659,
+          "distintos": 14382,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_193_normalized",
+          "tipo": "double",
+          "nulos": 182996,
+          "distintos": 159,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_193_raw",
+          "tipo": "double",
+          "nulos": 182996,
+          "distintos": 160121,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_194_normalized",
+          "tipo": "double",
+          "nulos": 22513,
+          "distintos": 141,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_194_raw",
+          "tipo": "double",
+          "nulos": 22513,
+          "distintos": 58,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_195_normalized",
+          "tipo": "double",
+          "nulos": 11266375,
+          "distintos": 106,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_195_raw",
+          "tipo": "double",
+          "nulos": 11266375,
+          "distintos": 3354814,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_196_normalized",
+          "tipo": "double",
+          "nulos": 7085918,
+          "distintos": 111,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_196_raw",
+          "tipo": "double",
+          "nulos": 7085918,
+          "distintos": 1352,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_197_normalized",
+          "tipo": "double",
+          "nulos": 387813,
+          "distintos": 59,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_197_raw",
+          "tipo": "double",
+          "nulos": 387813,
+          "distintos": 1377,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_198_normalized",
+          "tipo": "double",
+          "nulos": 132549,
+          "distintos": 55,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_198_raw",
+          "tipo": "double",
+          "nulos": 132549,
+          "distintos": 1015,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_199_normalized",
+          "tipo": "double",
+          "nulos": 124743,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_199_raw",
+          "tipo": "double",
+          "nulos": 124743,
+          "distintos": 1345,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_200_normalized",
+          "tipo": "double",
+          "nulos": 10429957,
+          "distintos": 14,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_200_raw",
+          "tipo": "double",
+          "nulos": 10429957,
+          "distintos": 19030,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_201_raw",
+          "tipo": "double",
+          "nulos": 14846778,
+          "distintos": 18,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_202_normalized",
+          "tipo": "double",
+          "nulos": 14824302,
+          "distintos": 255,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_202_raw",
+          "tipo": "double",
+          "nulos": 14824302,
+          "distintos": 318,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_206_raw",
+          "tipo": "double",
+          "nulos": 14829181,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_211_raw",
+          "tipo": "double",
+          "nulos": 14851630,
+          "distintos": 29,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_212_raw",
+          "tipo": "double",
+          "nulos": 14851630,
+          "distintos": 12,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_218_raw",
+          "tipo": "double",
+          "nulos": 14749412,
+          "distintos": 28,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_220_normalized",
+          "tipo": "double",
+          "nulos": 11511833,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_220_raw",
+          "tipo": "double",
+          "nulos": 11511833,
+          "distintos": 25561,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_222_normalized",
+          "tipo": "double",
+          "nulos": 11511833,
+          "distintos": 100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_222_raw",
+          "tipo": "double",
+          "nulos": 11511833,
+          "distintos": 56945,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_223_normalized",
+          "tipo": "double",
+          "nulos": 11272282,
+          "distintos": 20,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_223_raw",
+          "tipo": "double",
+          "nulos": 11272282,
+          "distintos": 4982,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_225_normalized",
+          "tipo": "double",
+          "nulos": 14828746,
+          "distintos": 76,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_225_raw",
+          "tipo": "double",
+          "nulos": 14828746,
+          "distintos": 14188,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_226_raw",
+          "tipo": "double",
+          "nulos": 11511833,
+          "distintos": 441,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_230_normalized",
+          "tipo": "double",
+          "nulos": 14843890,
+          "distintos": 91,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_230_raw",
+          "tipo": "double",
+          "nulos": 14843890,
+          "distintos": 5734,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_231_raw",
+          "tipo": "double",
+          "nulos": 14749412,
+          "distintos": 202,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_232_raw",
+          "tipo": "double",
+          "nulos": 14741476,
+          "distintos": 350,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_233_raw",
+          "tipo": "double",
+          "nulos": 14736742,
+          "distintos": 93915,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_234_raw",
+          "tipo": "double",
+          "nulos": 14823466,
+          "distintos": 27921,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_235_normalized",
+          "tipo": "double",
+          "nulos": 14749331,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_235_raw",
+          "tipo": "double",
+          "nulos": 14749331,
+          "distintos": 102309,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_240_normalized",
+          "tipo": "double",
+          "nulos": 4559540,
+          "distintos": 96,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_240_raw",
+          "tipo": "double",
+          "nulos": 4559540,
+          "distintos": 78284,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_241_normalized",
+          "tipo": "double",
+          "nulos": 7171162,
+          "distintos": 4,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_241_raw",
+          "tipo": "double",
+          "nulos": 7171162,
+          "distintos": 7636940,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_242_normalized",
+          "tipo": "double",
+          "nulos": 7171201,
+          "distintos": 3,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_242_raw",
+          "tipo": "double",
+          "nulos": 7171201,
+          "distintos": 7629862,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_244_normalized",
+          "tipo": "double",
+          "nulos": 14843890,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_245_normalized",
+          "tipo": "double",
+          "nulos": 14846621,
+          "distintos": 47,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_245_raw",
+          "tipo": "double",
+          "nulos": 14846621,
+          "distintos": 204,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_246_raw",
+          "tipo": "double",
+          "nulos": 14829193,
+          "distintos": 22469,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_247_raw",
+          "tipo": "double",
+          "nulos": 14829181,
+          "distintos": 22481,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_248_raw",
+          "tipo": "double",
+          "nulos": 14829181,
+          "distintos": 22481,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_254_normalized",
+          "tipo": "double",
+          "nulos": 14834762,
+          "distintos": 2,
+          "regla_aplicada": null
+        }
+      ]
+    },
+    {
+      "tabla": "ventanas_fallo",
+      "ruta": "data/processed/ventanas_fallo_corregido.parquet",
+      "sha256": "63d4379a89b96f54984bb87ea73b4dfd292442d4c7efac05852bc6d5ca73d095",
+      "filas": 536597,
+      "columnas": 131,
+      "campos_salida": [
+        {
+          "columna": "fecha",
+          "tipo": "timestamp[ms]",
+          "nulos": 0,
+          "distintos": 2007,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "date",
+          "tipo": "timestamp[ms]",
+          "nulos": 0,
+          "distintos": 2007,
+          "regla_aplicada": "R-003"
+        },
+        {
+          "columna": "dia_fallo",
+          "tipo": "timestamp[ns]",
+          "nulos": 0,
+          "distintos": 1964,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "serial_number",
+          "tipo": "string",
+          "nulos": 0,
+          "distintos": 17948,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "model",
+          "tipo": "string",
+          "nulos": 0,
+          "distintos": 71,
+          "regla_aplicada": "R-004"
+        },
+        {
+          "columna": "capacity_bytes",
+          "tipo": "int64",
+          "nulos": 0,
+          "distintos": 17,
+          "regla_aplicada": "R-005"
+        },
+        {
+          "columna": "failure",
+          "tipo": "int64",
+          "nulos": 0,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "datacenter",
+          "tipo": "string",
+          "nulos": 279356,
+          "distintos": 6,
+          "regla_aplicada": "R-001"
+        },
+        {
+          "columna": "cluster_id",
+          "tipo": "int64",
+          "nulos": 275514,
+          "distintos": 7,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "vault_id",
+          "tipo": "int64",
+          "nulos": 239199,
+          "distintos": 245,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "pod_id",
+          "tipo": "int64",
+          "nulos": 239199,
+          "distintos": 20,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "pod_slot_num",
+          "tipo": "int64",
+          "nulos": 286803,
+          "distintos": 60,
+          "regla_aplicada": "R-002"
+        },
+        {
+          "columna": "smart_1_normalized",
+          "tipo": "double",
+          "nulos": 1078,
+          "distintos": 105,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_1_raw",
+          "tipo": "double",
+          "nulos": 1078,
+          "distintos": 314309,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_2_normalized",
+          "tipo": "double",
+          "nulos": 318923,
+          "distintos": 82,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_2_raw",
+          "tipo": "double",
+          "nulos": 318923,
+          "distintos": 221,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_3_normalized",
+          "tipo": "double",
+          "nulos": 6768,
+          "distintos": 113,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_3_raw",
+          "tipo": "double",
+          "nulos": 6768,
+          "distintos": 2100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_4_normalized",
+          "tipo": "double",
+          "nulos": 6768,
+          "distintos": 5,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_4_raw",
+          "tipo": "double",
+          "nulos": 6768,
+          "distintos": 675,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_5_normalized",
+          "tipo": "double",
+          "nulos": 2441,
+          "distintos": 104,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_5_raw",
+          "tipo": "double",
+          "nulos": 2441,
+          "distintos": 12512,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_7_normalized",
+          "tipo": "double",
+          "nulos": 6768,
+          "distintos": 66,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_7_raw",
+          "tipo": "double",
+          "nulos": 6768,
+          "distintos": 309876,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_8_normalized",
+          "tipo": "double",
+          "nulos": 318923,
+          "distintos": 23,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_8_raw",
+          "tipo": "double",
+          "nulos": 318923,
+          "distintos": 24,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_9_normalized",
+          "tipo": "double",
+          "nulos": 564,
+          "distintos": 100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_9_raw",
+          "tipo": "double",
+          "nulos": 564,
+          "distintos": 74479,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_10_normalized",
+          "tipo": "double",
+          "nulos": 6768,
+          "distintos": 11,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_10_raw",
+          "tipo": "double",
+          "nulos": 6768,
+          "distintos": 9,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_11_normalized",
+          "tipo": "double",
+          "nulos": 531717,
+          "distintos": 11,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_11_raw",
+          "tipo": "double",
+          "nulos": 531717,
+          "distintos": 913,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_12_normalized",
+          "tipo": "double",
+          "nulos": 564,
+          "distintos": 6,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_12_raw",
+          "tipo": "double",
+          "nulos": 564,
+          "distintos": 646,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_13_normalized",
+          "tipo": "double",
+          "nulos": 536208,
+          "distintos": 10,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_13_raw",
+          "tipo": "double",
+          "nulos": 536208,
+          "distintos": 20,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_16_raw",
+          "tipo": "double",
+          "nulos": 534720,
+          "distintos": 42,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_17_raw",
+          "tipo": "double",
+          "nulos": 534720,
+          "distintos": 106,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_22_normalized",
+          "tipo": "double",
+          "nulos": 443093,
+          "distintos": 100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_22_raw",
+          "tipo": "double",
+          "nulos": 443093,
+          "distintos": 116,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_24_normalized",
+          "tipo": "double",
+          "nulos": 439620,
+          "distintos": 51,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_27_raw",
+          "tipo": "double",
+          "nulos": 535402,
+          "distintos": 222,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_90_raw",
+          "tipo": "double",
+          "nulos": 529655,
+          "distintos": 40,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_165_raw",
+          "tipo": "double",
+          "nulos": 533057,
+          "distintos": 2099,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_166_raw",
+          "tipo": "double",
+          "nulos": 533057,
+          "distintos": 236,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_167_raw",
+          "tipo": "double",
+          "nulos": 533057,
+          "distintos": 513,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_168_raw",
+          "tipo": "double",
+          "nulos": 531180,
+          "distintos": 229,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_169_raw",
+          "tipo": "double",
+          "nulos": 533057,
+          "distintos": 40,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_170_normalized",
+          "tipo": "double",
+          "nulos": 534186,
+          "distintos": 72,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_170_raw",
+          "tipo": "double",
+          "nulos": 534186,
+          "distintos": 293,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_171_raw",
+          "tipo": "double",
+          "nulos": 535685,
+          "distintos": 1,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_172_normalized",
+          "tipo": "double",
+          "nulos": 535685,
+          "distintos": 5,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_172_raw",
+          "tipo": "double",
+          "nulos": 535685,
+          "distintos": 7,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_173_normalized",
+          "tipo": "double",
+          "nulos": 533727,
+          "distintos": 130,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_173_raw",
+          "tipo": "double",
+          "nulos": 533727,
+          "distintos": 2015,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_174_raw",
+          "tipo": "double",
+          "nulos": 533727,
+          "distintos": 37,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_177_normalized",
+          "tipo": "double",
+          "nulos": 531694,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_177_raw",
+          "tipo": "double",
+          "nulos": 531694,
+          "distintos": 11,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_179_raw",
+          "tipo": "double",
+          "nulos": 536208,
+          "distintos": 1,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_180_normalized",
+          "tipo": "double",
+          "nulos": 535810,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_180_raw",
+          "tipo": "double",
+          "nulos": 535810,
+          "distintos": 17,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_181_raw",
+          "tipo": "double",
+          "nulos": 533182,
+          "distintos": 1,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_183_normalized",
+          "tipo": "double",
+          "nulos": 476421,
+          "distintos": 100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_183_raw",
+          "tipo": "double",
+          "nulos": 476421,
+          "distintos": 376,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_184_normalized",
+          "tipo": "double",
+          "nulos": 382990,
+          "distintos": 94,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_184_raw",
+          "tipo": "double",
+          "nulos": 382990,
+          "distintos": 160,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_187_normalized",
+          "tipo": "double",
+          "nulos": 224558,
+          "distintos": 100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_187_raw",
+          "tipo": "double",
+          "nulos": 224558,
+          "distintos": 2552,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_188_normalized",
+          "tipo": "double",
+          "nulos": 224750,
+          "distintos": 60,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_188_raw",
+          "tipo": "double",
+          "nulos": 224750,
+          "distintos": 1919,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_189_normalized",
+          "tipo": "double",
+          "nulos": 384126,
+          "distintos": 86,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_189_raw",
+          "tipo": "double",
+          "nulos": 384126,
+          "distintos": 147,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_190_normalized",
+          "tipo": "double",
+          "nulos": 225470,
+          "distintos": 58,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_190_raw",
+          "tipo": "double",
+          "nulos": 225470,
+          "distintos": 58,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_191_normalized",
+          "tipo": "double",
+          "nulos": 275377,
+          "distintos": 100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_191_raw",
+          "tipo": "double",
+          "nulos": 275377,
+          "distintos": 47729,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_192_normalized",
+          "tipo": "double",
+          "nulos": 1865,
+          "distintos": 32,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_192_raw",
+          "tipo": "double",
+          "nulos": 1865,
+          "distintos": 6107,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_193_normalized",
+          "tipo": "double",
+          "nulos": 10620,
+          "distintos": 114,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_193_raw",
+          "tipo": "double",
+          "nulos": 10620,
+          "distintos": 56567,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_194_normalized",
+          "tipo": "double",
+          "nulos": 564,
+          "distintos": 135,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_194_raw",
+          "tipo": "double",
+          "nulos": 564,
+          "distintos": 66,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_195_normalized",
+          "tipo": "double",
+          "nulos": 338738,
+          "distintos": 75,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_195_raw",
+          "tipo": "double",
+          "nulos": 338738,
+          "distintos": 188760,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_196_normalized",
+          "tipo": "double",
+          "nulos": 314409,
+          "distintos": 75,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_196_raw",
+          "tipo": "double",
+          "nulos": 314409,
+          "distintos": 1641,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_197_normalized",
+          "tipo": "double",
+          "nulos": 11253,
+          "distintos": 100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_197_raw",
+          "tipo": "double",
+          "nulos": 11253,
+          "distintos": 3322,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_198_normalized",
+          "tipo": "double",
+          "nulos": 2955,
+          "distintos": 98,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_198_raw",
+          "tipo": "double",
+          "nulos": 2955,
+          "distintos": 2567,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_199_normalized",
+          "tipo": "double",
+          "nulos": 2441,
+          "distintos": 5,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_199_raw",
+          "tipo": "double",
+          "nulos": 2441,
+          "distintos": 339,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_200_normalized",
+          "tipo": "double",
+          "nulos": 365690,
+          "distintos": 46,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_200_raw",
+          "tipo": "double",
+          "nulos": 365690,
+          "distintos": 2783,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_201_raw",
+          "tipo": "double",
+          "nulos": 536208,
+          "distintos": 3,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_202_normalized",
+          "tipo": "double",
+          "nulos": 535810,
+          "distintos": 136,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_202_raw",
+          "tipo": "double",
+          "nulos": 535810,
+          "distintos": 141,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_206_raw",
+          "tipo": "double",
+          "nulos": 536137,
+          "distintos": 1,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_211_raw",
+          "tipo": "double",
+          "nulos": 536596,
+          "distintos": 1,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_212_raw",
+          "tipo": "double",
+          "nulos": 536596,
+          "distintos": 1,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_218_raw",
+          "tipo": "double",
+          "nulos": 534720,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_220_normalized",
+          "tipo": "double",
+          "nulos": 432102,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_220_raw",
+          "tipo": "double",
+          "nulos": 432102,
+          "distintos": 4815,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_222_normalized",
+          "tipo": "double",
+          "nulos": 432102,
+          "distintos": 100,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_222_raw",
+          "tipo": "double",
+          "nulos": 432102,
+          "distintos": 45059,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_223_normalized",
+          "tipo": "double",
+          "nulos": 424742,
+          "distintos": 12,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_223_raw",
+          "tipo": "double",
+          "nulos": 424742,
+          "distintos": 937,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_225_normalized",
+          "tipo": "double",
+          "nulos": 532745,
+          "distintos": 45,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_225_raw",
+          "tipo": "double",
+          "nulos": 532745,
+          "distintos": 1019,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_226_raw",
+          "tipo": "double",
+          "nulos": 432102,
+          "distintos": 221,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_230_normalized",
+          "tipo": "double",
+          "nulos": 536083,
+          "distintos": 11,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_230_raw",
+          "tipo": "double",
+          "nulos": 536083,
+          "distintos": 489,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_231_raw",
+          "tipo": "double",
+          "nulos": 534720,
+          "distintos": 101,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_232_raw",
+          "tipo": "double",
+          "nulos": 531180,
+          "distintos": 222,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_233_raw",
+          "tipo": "double",
+          "nulos": 533817,
+          "distintos": 2508,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_234_raw",
+          "tipo": "double",
+          "nulos": 535852,
+          "distintos": 717,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_235_normalized",
+          "tipo": "double",
+          "nulos": 534639,
+          "distintos": 1,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_235_raw",
+          "tipo": "double",
+          "nulos": 534639,
+          "distintos": 1950,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_240_normalized",
+          "tipo": "double",
+          "nulos": 120789,
+          "distintos": 18,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_240_raw",
+          "tipo": "double",
+          "nulos": 120789,
+          "distintos": 73041,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_241_normalized",
+          "tipo": "double",
+          "nulos": 205905,
+          "distintos": 3,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_241_raw",
+          "tipo": "double",
+          "nulos": 205905,
+          "distintos": 326231,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_242_normalized",
+          "tipo": "double",
+          "nulos": 205967,
+          "distintos": 3,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_242_raw",
+          "tipo": "double",
+          "nulos": 205967,
+          "distintos": 328543,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_244_normalized",
+          "tipo": "double",
+          "nulos": 536083,
+          "distintos": 2,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_245_normalized",
+          "tipo": "double",
+          "nulos": 533182,
+          "distintos": 21,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_245_raw",
+          "tipo": "double",
+          "nulos": 533182,
+          "distintos": 2949,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_246_raw",
+          "tipo": "double",
+          "nulos": 536199,
+          "distintos": 396,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_247_raw",
+          "tipo": "double",
+          "nulos": 536137,
+          "distintos": 458,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_248_raw",
+          "tipo": "double",
+          "nulos": 536137,
+          "distintos": 458,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "smart_254_normalized",
+          "tipo": "double",
+          "nulos": 534124,
+          "distintos": 2,
+          "regla_aplicada": null
+        }
+      ]
+    },
+    {
+      "tabla": "recuento_diario",
+      "ruta": "data/processed/recuento_diario_corregido.parquet",
+      "sha256": "320f487a6a82bbd173c4f4d2708fbbfc3319d005e1cc5740f19a05ec55477465",
+      "filas": 197871,
+      "columnas": 6,
+      "campos_salida": [
+        {
+          "columna": "fecha",
+          "tipo": "timestamp[ms]",
+          "nulos": 0,
+          "distintos": 2008,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "model",
+          "tipo": "string",
+          "nulos": 0,
+          "distintos": 94,
+          "regla_aplicada": "R-004"
+        },
+        {
+          "columna": "capacity_bytes",
+          "tipo": "int64",
+          "nulos": 0,
+          "distintos": 20,
+          "regla_aplicada": "R-005"
+        },
+        {
+          "columna": "datacenter",
+          "tipo": "string",
+          "nulos": 0,
+          "distintos": 7,
+          "regla_aplicada": null,
+          "nota": "«sin dato» quiere decir que el centro no consta (reglas §4 y §5); es la etiqueta del vacío en una categórica de correccion-datos"
+        },
+        {
+          "columna": "discos",
+          "tipo": "int64",
+          "nulos": 0,
+          "distintos": 9547,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "fallos",
+          "tipo": "int64",
+          "nulos": 0,
+          "distintos": 16,
+          "regla_aplicada": null
+        }
+      ]
+    },
+    {
+      "tabla": "fallos",
+      "ruta": "data/processed/fallos_corregido.parquet",
+      "sha256": "59e45676a6a7a2dae43d3645017b74710049c2187895b7973abaacd21815acbe",
+      "filas": 17960,
+      "columnas": 2,
+      "campos_salida": [
+        {
+          "columna": "serial_number",
+          "tipo": "string",
+          "nulos": 0,
+          "distintos": 17948,
+          "regla_aplicada": null
+        },
+        {
+          "columna": "dia_fallo",
+          "tipo": "timestamp[ns]",
+          "nulos": 0,
+          "distintos": 1964,
+          "regla_aplicada": null
+        }
+      ]
+    }
+  ],
+  "correcciones": [
+    {
+      "id": "K-01",
+      "problema_calidad": "C-03",
+      "tabla": "fotos_mensuales",
+      "columna": "datacenter",
+      "correccion": "El centro se lee como texto en todas las fotos.",
+      "criterio": "tecnicamente_inequivoca",
+      "criterio_texto": "técnicamente inequívoca: el rol del diccionario es categórica y el tipo nulo es la forma de un centro vacío entero",
+      "motivo": null,
+      "ficha": "R-001",
+      "antes": 42,
+      "despues": 0,
+      "unidad": "ficheros sin tipo"
+    },
+    {
+      "id": "K-02",
+      "problema_calidad": "C-03",
+      "tabla": "ventanas_fallo",
+      "columna": "datacenter",
+      "correccion": "El centro se lee como texto en todas las ventanas.",
+      "criterio": "tecnicamente_inequivoca",
+      "criterio_texto": "técnicamente inequívoca, como en las fotos",
+      "motivo": null,
+      "ficha": "R-001",
+      "antes": 14,
+      "despues": 0,
+      "unidad": "ficheros sin tipo"
+    },
+    {
+      "id": "K-03",
+      "problema_calidad": "C-04",
+      "tabla": "fotos_mensuales",
+      "columna": "pod_slot_num",
+      "correccion": "La ranura pasa de decimal a entero, y sus vacíos se quedan vacíos.",
+      "criterio": "tecnicamente_inequivoca",
+      "criterio_texto": "técnicamente inequívoca: todos sus valores con dato son enteros (la conversión segura falla si alguno no lo es)",
+      "motivo": null,
+      "ficha": "R-002",
+      "antes": 6885677,
+      "despues": 0,
+      "unidad": "filas leídas como decimal"
+    },
+    {
+      "id": "K-04",
+      "problema_calidad": "C-04",
+      "tabla": "ventanas_fallo",
+      "columna": "pod_slot_num",
+      "correccion": "La ranura pasa de decimal a entero, y sus vacíos se quedan vacíos.",
+      "criterio": "tecnicamente_inequivoca",
+      "criterio_texto": "técnicamente inequívoca, como en las fotos",
+      "motivo": null,
+      "ficha": "R-002",
+      "antes": 261083,
+      "despues": 0,
+      "unidad": "filas leídas como decimal"
+    },
+    {
+      "id": "K-05",
+      "problema_calidad": null,
+      "tabla": "fotos_mensuales",
+      "columna": "date",
+      "correccion": "El texto de la fecha pasa a fecha, leído con el patrón %Y-%m-%d.",
+      "criterio": "usuario",
+      "criterio_texto": "usuario: el encargo 07 pide las fechas como fecha, que es el rol de date en el diccionario",
+      "motivo": "el rol de date en el diccionario es fecha y llega como texto ISO; el encargo 07 pide las fechas como fecha",
+      "ficha": "R-003",
+      "antes": 14851669,
+      "despues": 0,
+      "unidad": "filas con la fecha como texto"
+    },
+    {
+      "id": "K-06",
+      "problema_calidad": null,
+      "tabla": "ventanas_fallo",
+      "columna": "date",
+      "correccion": "El texto de la fecha pasa a fecha, leído con el patrón %Y-%m-%d.",
+      "criterio": "usuario",
+      "criterio_texto": "usuario: el encargo 07 pide las fechas como fecha",
+      "motivo": "el rol de date en el diccionario es fecha y llega como texto ISO; el encargo 07 pide las fechas como fecha",
+      "ficha": "R-003",
+      "antes": 536597,
+      "despues": 0,
+      "unidad": "filas con la fecha como texto"
+    },
+    {
+      "id": "K-07",
+      "problema_calidad": "C-13",
+      "tabla": "fotos_mensuales",
+      "columna": "model",
+      "correccion": "Los modelos escritos con dos espacios tras «WDC» pasan a su nombre con uno, con el mapeo cerrado de D1 (3.896 filas cambiadas).",
+      "criterio": "usuario",
+      "criterio_texto": "usuario: D1, cerrada por Juan el 17/11/2026 en el plan de calidad",
+      "motivo": null,
+      "ficha": "R-004",
+      "antes": 4,
+      "despues": 0,
+      "unidad": "nombres con dos espacios"
+    },
+    {
+      "id": "K-08",
+      "problema_calidad": "C-13",
+      "tabla": "ventanas_fallo",
+      "columna": "model",
+      "correccion": "Los modelos escritos con dos espacios tras «WDC» pasan a su nombre con uno, con el mapeo cerrado de D1 (25 filas cambiadas).",
+      "criterio": "usuario",
+      "criterio_texto": "usuario: D1, cerrada por Juan el 17/11/2026 en el plan de calidad",
+      "motivo": null,
+      "ficha": "R-004",
+      "antes": 2,
+      "despues": 0,
+      "unidad": "nombres con dos espacios"
+    },
+    {
+      "id": "K-09",
+      "problema_calidad": "C-13",
+      "tabla": "recuento_diario",
+      "columna": "model",
+      "correccion": "Los modelos escritos con dos espacios tras «WDC» pasan a su nombre con uno, con el mapeo cerrado de D1 (1.536 filas cambiadas).",
+      "criterio": "usuario",
+      "criterio_texto": "usuario: D1, cerrada por Juan el 17/11/2026 en el plan de calidad",
+      "motivo": null,
+      "ficha": "R-004",
+      "antes": 4,
+      "despues": 0,
+      "unidad": "nombres con dos espacios"
+    },
+    {
+      "id": "K-10",
+      "problema_calidad": "C-05",
+      "tabla": "fotos_mensuales",
+      "columna": "capacity_bytes",
+      "correccion": "Las filas con capacidad -1 o 0,1 TB toman la única capacidad válida de su modelo.",
+      "criterio": "regla_documentada",
+      "criterio_texto": "regla documentada: reglas de negocio §3",
+      "motivo": null,
+      "ficha": "R-005",
+      "antes": 2729,
+      "despues": 0,
+      "unidad": "filas con capacidad -1 o 0,1 TB"
+    },
+    {
+      "id": "K-11",
+      "problema_calidad": "C-06",
+      "tabla": "ventanas_fallo",
+      "columna": "capacity_bytes",
+      "correccion": "Las filas con capacidad -1 o 0,1 TB toman la única capacidad válida de su modelo.",
+      "criterio": "regla_documentada",
+      "criterio_texto": "regla documentada: reglas de negocio §3",
+      "motivo": null,
+      "ficha": "R-005",
+      "antes": 165,
+      "despues": 0,
+      "unidad": "filas con capacidad -1 o 0,1 TB"
+    },
+    {
+      "id": "K-12",
+      "problema_calidad": "C-07",
+      "tabla": "recuento_diario",
+      "columna": "capacity_bytes",
+      "correccion": "Las filas con capacidad -1 o 0,1 TB toman la única capacidad válida de su modelo.",
+      "criterio": "regla_documentada",
+      "criterio_texto": "regla documentada: reglas de negocio §3",
+      "motivo": null,
+      "ficha": "R-005",
+      "antes": 2102,
+      "despues": 0,
+      "unidad": "filas con capacidad -1 o 0,1 TB"
+    },
+    {
+      "id": "K-13",
+      "problema_calidad": "C-07",
+      "tabla": "recuento_diario",
+      "columna": "(fila)",
+      "correccion": "Las filas que quedan con la misma clave (fecha, modelo, capacidad y centro) se suman en una: discos y fallos.",
+      "criterio": "regla_documentada",
+      "criterio_texto": "regla documentada: reglas de negocio §3, con el orden del encargo 07 (nombre, capacidad y suma)",
+      "motivo": null,
+      "ficha": "R-006",
+      "antes": 201502,
+      "despues": 197871,
+      "unidad": "filas"
+    },
+    {
+      "id": "K-14",
+      "problema_calidad": "C-17",
+      "tabla": "ventanas_fallo",
+      "columna": "(fila)",
+      "correccion": "Salen las filas cuya fecha no es la de su texto: traen las horas encendido del día siguiente y no tienen datos propios.",
+      "criterio": "usuario",
+      "criterio_texto": "usuario: el encargo 07 resuelve P-01; quitarlas no cambia ninguna respuesta (CLAUDE.md, «Datos que no sirven o están mal»; criterios.md §2)",
+      "motivo": null,
+      "ficha": "R-007",
+      "antes": 536825,
+      "despues": 536597,
+      "unidad": "filas"
+    },
+    {
+      "id": "K-15",
+      "problema_calidad": null,
+      "tabla": "fotos_mensuales",
+      "columna": "(fichero)",
+      "correccion": "Las 66 fotos mensuales se juntan en un solo Parquet con las 130 columnas que trae alguna; donde una pieza no trae una columna, queda vacía.",
+      "criterio": "usuario",
+      "criterio_texto": "usuario: el encargo 07 y metodo/como_estan_organizados_los_datos.md (las filas son las mismas: solo cambia el fichero)",
+      "motivo": null,
+      "ficha": "R-008",
+      "antes": 66,
+      "despues": 1,
+      "unidad": "ficheros"
+    },
+    {
+      "id": "K-16",
+      "problema_calidad": null,
+      "tabla": "ventanas_fallo",
+      "columna": "(fichero)",
+      "correccion": "Las 22 ventanas se juntan en un solo Parquet con las 131 columnas que trae alguna; donde una pieza no trae una columna, queda vacía.",
+      "criterio": "usuario",
+      "criterio_texto": "usuario: el encargo 07 y metodo/como_estan_organizados_los_datos.md",
+      "motivo": null,
+      "ficha": "R-008",
+      "antes": 22,
+      "despues": 1,
+      "unidad": "ficheros"
+    }
+  ],
+  "sin_cambios": [
+    {
+      "problema_calidad": "C-01",
+      "resultado_calidad": "49 columnas vacías en más del 99 % de las filas que las traen",
+      "motivo": "ninguna de las 49 columnas casi vacías es de los cinco contadores de avería; si entran al modelo lo decide la preselección"
+    },
+    {
+      "problema_calidad": "C-02",
+      "resultado_calidad": "2 nombres con errata en el esquema",
+      "motivo": "las erratas están en el esquema, no en los datos"
+    },
+    {
+      "problema_calidad": "C-08",
+      "resultado_calidad": "84.647 filas con centro «sin dato», 4.551 desde el 01/07/2023",
+      "motivo": "el sitio que falta se cuenta y se dice (reglas §5 y §7); en el recuento, «sin dato» se queda como etiqueta del centro que no consta, la de correccion-datos/parametros.md"
+    },
+    {
+      "problema_calidad": "C-09",
+      "resultado_calidad": "235.772 filas sin dato desde el 01/07/2023; de discos de datos, 234.446",
+      "motivo": "el sitio que falta se cuenta y se dice (reglas §5 y §7)"
+    },
+    {
+      "problema_calidad": "C-10",
+      "resultado_calidad": "103.221 filas sin dato desde el 01/07/2023; de discos de datos, 1.613",
+      "motivo": "el sitio que falta se cuenta y se dice (reglas §5 y §7)"
+    },
+    {
+      "problema_calidad": "C-11",
+      "resultado_calidad": "vale 0 en 4.781.548 de 6.885.677 filas que traen la columna",
+      "motivo": "D4: ninguna pregunta usa cluster_id"
+    },
+    {
+      "problema_calidad": "C-12",
+      "resultado_calidad": "82 variables con los vacíos concentrados en algún segmento",
+      "motivo": "un contador vacío quiere decir que el modelo no lo apunta y no se rellena (reglas §5)"
+    },
+    {
+      "problema_calidad": "C-14",
+      "resultado_calidad": "192.593 filas de discos de datos por encima de mil millones",
+      "motivo": "D2, cerrada en el plan de calidad («Lo aprobado»)"
+    },
+    {
+      "problema_calidad": "C-15",
+      "resultado_calidad": "el 187 en 65.535 en 221 filas; el 5 llega a 65.529 en las fotos",
+      "motivo": "D3, cerrada en el plan de calidad («Lo aprobado»)"
+    },
+    {
+      "problema_calidad": "C-16",
+      "resultado_calidad": "9 filas por encima de 70 grados, con máximo de 117",
+      "motivo": "ninguna pregunta usa la temperatura de las ventanas"
+    },
+    {
+      "problema_calidad": "C-18",
+      "resultado_calidad": "RC-01 incumplida: 3.468 veces bajan las horas entre dos fotos seguidas; 3.468 más de un día",
+      "motivo": "la edad la calcula la transformación con la regla de las reglas §3 (horas encendido y, sin ellas, primera aparición, también en las ventanas); las horas que bajan afectan a 3.443 discos y 52 fallos de 17.960 (cifras del encargo 07)"
+    },
+    {
+      "problema_calidad": "C-19",
+      "resultado_calidad": "RC-02 incumplida: el modelo cambia 7.372 veces (1 sin contar las variantes de espacios) y la capacidad 3.854 (0 entre capacidades válidas)",
+      "motivo": "tras corregir el nombre del modelo (C-13) y la capacidad (C-05) queda 1 cambio(s) de modelo real(es) entre dos fotos seguidas de un disco y 0 de capacidad, medidos en las fotos corregidas"
+    },
+    {
+      "problema_calidad": "C-20",
+      "resultado_calidad": "RC-03 incumplida: smart_5_raw baja 575 veces en 413 discos; smart_187_raw baja 12 veces en 12 discos; smart_188_raw baja 1.650 veces en 1.650 discos; smart_197_raw baja 24.477 veces en 11.547 discos; smart_198_raw baja 10.055 veces en 5.517 discos",
+      "motivo": "el aviso mira si un contador pasa de cero el día anterior (reglas §6), no si sube"
+    },
+    {
+      "problema_calidad": "C-21",
+      "resultado_calidad": "2.738 filas de discos de datos sin horas encendido",
+      "motivo": "la edad la calcula la transformación con la regla de las reglas §3 (horas encendido y, sin ellas, primera aparición, también en las ventanas)"
+    },
+    {
+      "problema_calidad": "C-22",
+      "resultado_calidad": "67 fallos antes de la primera foto de su disco",
+      "motivo": "la edad la calcula la transformación con la regla de las reglas §3 (horas encendido y, sin ellas, primera aparición, también en las ventanas)"
+    },
+    {
+      "problema_calidad": "C-23",
+      "resultado_calidad": "210 fallos de 210 discos que no salen en ninguna foto",
+      "motivo": "la edad la calcula la transformación con la regla de las reglas §3 (horas encendido y, sin ellas, primera aparición, también en las ventanas)"
+    },
+    {
+      "problema_calidad": "C-24",
+      "resultado_calidad": "161 discos salen en alguna foto después de su fallo",
+      "motivo": "reglas §3: un disco puede seguir en servicio tras un fallo y sus días siguen contando"
+    },
+    {
+      "problema_calidad": "C-25",
+      "resultado_calidad": "7.798 discos de datos faltan en alguna foto y vuelven",
+      "motivo": "reglas §3: un disco que falta en una foto y vuelve no ha desaparecido"
+    },
+    {
+      "problema_calidad": "C-26",
+      "resultado_calidad": "163 pares de modelo y contador con vacíos solo en parte de sus filas; suman 2.789.298 filas vacías",
+      "motivo": "de 16.101 fallos de discos de datos con día anterior, 4.049 llegan sin aviso y solo 69 tienen un contador vacío que su modelo sí apunta; aunque contaran como aviso, la parte sin aviso pasa del 25,1 % al 24,7 % (cifras del encargo 07)"
+    },
+    {
+      "problema_calidad": "C-27",
+      "resultado_calidad": "13 fallos de discos de datos desde el 01/07/2023 sin ranura ningún día de su ventana",
+      "motivo": "el sitio que falta se cuenta y se dice (reglas §5 y §7)"
+    },
+    {
+      "problema_calidad": "C-28",
+      "resultado_calidad": "141 fallos de discos de datos desde el 01/07/2023 sin tomo completo ningún día de su ventana",
+      "motivo": "el sitio que falta se cuenta y se dice (reglas §5 y §7)"
+    },
+    {
+      "problema_calidad": "C-29",
+      "resultado_calidad": "896 fallos de discos de datos sin el día anterior en su ventana",
+      "motivo": "el sitio que falta se cuenta y se dice (reglas §5 y §7); al quitar las filas de C-17 pasan de 896 a 903 fallos de discos de datos sin el día anterior en su ventana"
+    },
+    {
+      "problema_calidad": "C-30",
+      "resultado_calidad": "7 días hundidos del reconocimiento con discos de menos frente a sus vecinos",
+      "motivo": "ninguna pregunta usa la tasa de un día"
+    }
+  ],
+  "decisiones_usuario": [
+    {
+      "pendiente": "P-01",
+      "decision": "son una copia del día que dice el texto: su fecha no tiene datos propios y sus filas sobran. Quitarlas no cambia ninguna respuesta (CLAUDE.md, «Datos que no sirven o están mal»; criterios.md §2); el recuento de ese día se queda como está",
+      "quien": "Juan, con el encargo 07",
+      "fecha": "2026-11-17",
+      "fuente": "prompts/07_encargo_correccion.md"
+    },
+    {
+      "pendiente": "D1",
+      "decision": "los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo, porque son los mismos discos, con el mismo número de serie, escritos de dos formas; la corrección los junta (Juan, 17/11/2026, plan de calidad, «Lo aprobado»)",
+      "quien": "Juan",
+      "fecha": "2026-11-17",
+      "fuente": "informes/plan_calidad_datos.md, «Lo aprobado»"
+    },
+    {
+      "pendiente": "tipos de fecha",
+      "decision": "las fechas como fecha: el texto date pasa a fecha",
+      "quien": "Juan, con el encargo 07",
+      "fecha": "2026-11-17",
+      "fuente": "prompts/07_encargo_correccion.md"
+    },
+    {
+      "pendiente": "juntar las piezas",
+      "decision": "las 66 fotos en un Parquet y las 22 ventanas en otro, con todas las columnas",
+      "quien": "Juan, con el encargo 07",
+      "fecha": "2026-11-17",
+      "fuente": "prompts/07_encargo_correccion.md; contexto-proyecto/metodo/como_estan_organizados_los_datos.md"
+    }
+  ],
+  "sumas_control": [
+    {
+      "tabla": "recuento_diario",
+      "columna": "discos",
+      "via": "pandas, en memoria",
+      "antes": 453609422,
+      "despues": 453609422,
+      "coincide": true
+    },
+    {
+      "tabla": "recuento_diario",
+      "columna": "discos",
+      "via": "pyarrow, sobre los ficheros en disco",
+      "antes": 453609422,
+      "despues": 453609422,
+      "coincide": true
+    },
+    {
+      "tabla": "recuento_diario",
+      "columna": "fallos",
+      "via": "pandas, en memoria",
+      "antes": 17960,
+      "despues": 17960,
+      "coincide": true
+    },
+    {
+      "tabla": "recuento_diario",
+      "columna": "fallos",
+      "via": "pyarrow, sobre los ficheros en disco",
+      "antes": 17960,
+      "despues": 17960,
+      "coincide": true
+    },
+    {
+      "tabla": "fotos_mensuales",
+      "columna": "failure",
+      "via": "pyarrow, pieza a pieza, en las filas que se quedan",
+      "antes": 563,
+      "despues": 563,
+      "coincide": true
+    },
+    {
+      "tabla": "fotos_mensuales",
+      "columna": "smart_9_raw",
+      "via": "pyarrow, pieza a pieza, en las filas que se quedan",
+      "antes": 382275882788,
+      "despues": 382275882788,
+      "coincide": true
+    },
+    {
+      "tabla": "ventanas_fallo",
+      "columna": "failure",
+      "via": "pyarrow, pieza a pieza, en las filas que se quedan",
+      "antes": 17960,
+      "despues": 17960,
+      "coincide": true
+    },
+    {
+      "tabla": "ventanas_fallo",
+      "columna": "smart_9_raw",
+      "via": "pyarrow, pieza a pieza, en las filas que se quedan",
+      "antes": 17754344516,
+      "despues": 17754344516,
+      "coincide": true
+    }
+  ],
+  "comprobaciones": {
+    "completitud": "pasa",
+    "consistencia": "pasa",
+    "utilidad": "pasa",
+    "datos_personales": "pasa"
+  },
+  "nombres": [],
+  "va_a_modelo": true,
+  "parametros": [
+    {
+      "nombre": "forma de los nombres de columna",
+      "valor": "minúsculas, sin tildes ni eñes, guion bajo",
+      "origen": "por defecto; los nombres ya llegan así y no se cambia ninguno"
+    },
+    {
+      "nombre": "etiqueta del vacío en una categórica",
+      "valor": "sin dato",
+      "origen": "por defecto; coincide con la del centro que no consta en el recuento (reglas §4 y §5)"
+    },
+    {
+      "nombre": "marca de lo imputado",
+      "valor": "<campo>_faltante, 0 y 1",
+      "origen": "por defecto; no se usa: no se imputa nada"
+    },
+    {
+      "nombre": "si los datos van a un modelo",
+      "valor": "no se imputa aquí",
+      "origen": "por defecto; reglas §7, el caso entrena un modelo"
+    },
+    {
+      "nombre": "formato de la tabla corregida",
+      "valor": "Parquet",
+      "origen": "por defecto"
+    }
+  ],
+  "controles": {
+    "fotos.ficheros": 66,
+    "ventanas.ficheros": 22,
+    "fotos.filas": {
+      "antes": 14851669,
+      "despues": 14851669
+    },
+    "ventanas.filas": {
+      "antes": 536825,
+      "despues": 536597
+    },
+    "recuento.filas": {
+      "antes": 201502,
+      "despues": 197871
+    },
+    "fallos.filas": {
+      "antes": 17960,
+      "despues": 17960
+    },
+    "fotos.capacidad_no_valida": {
+      "antes": 2729,
+      "despues": 0
+    },
+    "ventanas.capacidad_no_valida": {
+      "antes": 165,
+      "despues": 0
+    },
+    "recuento.capacidad_no_valida": {
+      "antes": 2102,
+      "despues": 0
+    },
+    "recuento.discos": {
+      "antes": 453609422,
+      "despues": 453609422
+    },
+    "recuento.fallos": {
+      "antes": 17960,
+      "despues": 17960
+    },
+    "modelos_dos_espacios": {
+      "antes": 4,
+      "despues": 0
+    },
+    "fotos.modelos_dos_espacios": {
+      "antes": 4,
+      "despues": 0
+    },
+    "ventanas.modelos_dos_espacios": {
+      "antes": 2,
+      "despues": 0
+    },
+    "recuento.modelos_dos_espacios": {
+      "antes": 4,
+      "despues": 0
+    },
+    "ventanas.fallos_datos_sin_dia_anterior": {
+      "antes": 896,
+      "despues": 903
+    },
+    "ventanas.filas_quitadas": 228,
+    "ventanas.fechas_quitadas": [
+      "2022-12-10"
+    ],
+    "ventanas.textos_de_las_quitadas": [
+      "2022-12-11"
+    ],
+    "fotos.cambios_de_modelo": {
+      "antes": 7372,
+      "despues": 1
+    },
+    "fotos.cambios_de_capacidad": {
+      "antes": 3854,
+      "despues": 0
+    },
+    "modelos_con_dos_capacidades_validas": 0,
+    "modelos_con_capacidad": 94,
+    "filas_modelo_cambiadas": {
+      "fotos": 3896,
+      "ventanas": 25,
+      "recuento": 1536
+    }
+  },
+  "validacion": [
+    {
+      "comprobacion": "fotos: las mismas filas a la entrada y a la salida",
+      "ok": true
+    },
+    {
+      "comprobacion": "ventanas: salen solo las filas cuya fecha no es la de su texto, ninguna con un fallo",
+      "ok": true
+    },
+    {
+      "comprobacion": "fotos: ninguna fila con la fecha distinta de su texto, que no se quita",
+      "ok": true
+    },
+    {
+      "comprobacion": "recuento: discos y fallos suman lo mismo por las dos vías",
+      "ok": true
+    },
+    {
+      "comprobacion": "recuento: discos y fallos de cada día suman lo mismo",
+      "ok": true
+    },
+    {
+      "comprobacion": "recuento: la clave queda única",
+      "ok": true
+    },
+    {
+      "comprobacion": "lista de fallos: las mismas filas",
+      "ok": true
+    },
+    {
+      "comprobacion": "ninguna capacidad -1 o 0,1 TB después",
+      "ok": true
+    },
+    {
+      "comprobacion": "ningún modelo del mapeo queda con dos espacios",
+      "ok": true
+    },
+    {
+      "comprobacion": "ningún vacío nuevo ni rellenado en fotos y ventanas",
+      "ok": true
+    },
+    {
+      "comprobacion": "los fallos de fotos y ventanas se conservan",
+      "ok": true
+    },
+    {
+      "comprobacion": "los contadores en bruto suman lo mismo en las filas que se quedan",
+      "ok": true
+    },
+    {
+      "comprobacion": "tipos de salida: centro texto, ranura entera y date fecha",
+      "ok": true
+    },
+    {
+      "comprobacion": "ningún modelo con dos capacidades válidas",
+      "ok": true
+    },
+    {
+      "comprobacion": "data/raw intacto: la misma huella al empezar y al terminar",
+      "ok": true
+    }
+  ],
+  "teoria": "Manual 8.1 antes de corregir (cada corrección responde a un problema diagnosticado, con su regla y su recuento); 8.3 para los tipos (la fecha del texto con el patrón explícito %Y-%m-%d, contando los vacíos que crea); 8.7 para el nombre del modelo (mapeo cerrado con replace, que deja como está lo que no encuentra); 8.6 para el recuento (se suman las filas con la misma clave porque la granularidad documentada da una fila por clave); 8.4 y 33.4 para las filas quitadas de las ventanas (se cuentan, y la regla se puede aplicar siempre); 8.10 para el cierre (filas, vacíos y sumas antes y después). Los apartados 4.5 y 4.6 no se aplican: las filas quitadas repiten el día siguiente y no tienen datos propios, así que no cambian ninguna comparación entre grupos.",
+  "datos_personales_texto": [
+    "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+    "No hay datos de personas (reglas §9): el paso de protección se saltó el 17/11/2026 con el sí de Juan.",
+    "Ninguna columna de los datos tiene el papel de dato personal en el diccionario del origen. El número de serie identifica un disco, no a una persona.",
+    "Antes de corregir se buscaron correos, documentos de identidad, cuentas bancarias y teléfonos en los textos (número de serie, modelo y centro): 0 columnas con alguno.",
+    "Esta skill no usa ni deja ninguna columna de datos personales."
+  ],
+  "limites": [
+    "La corrección mira una tabla cada vez. Una clave huérfana o repetida al otro lado de un cruce no se ve ni se corrige aquí.",
+    "No se repite aquí el diagnóstico completo sobre las tablas corregidas (manual 8.10, paso 1); se comprueban las cifras de cada corrección, los vacíos y las sumas.",
+    "Las cifras de los motivos de C-18 y C-26 son las del encargo 07 y no se vuelven a medir en esta ejecución.",
+    "Los contadores siguen como decimales (ver «Elementos mantenidos sin cambios»).",
+    "Las fechas fecha y dia_fallo ya llegan como fecha y no se cambian; date pasa a fecha con la misma precisión que fecha."
+  ],
+  "calidad_usada": {
+    "ruta": "informes/calidad-datos.json",
+    "estado": "AVISO",
+    "fecha_ejecucion": "2026-11-17T16:01:35"
+  },
+  "variantes_fuera_del_mapeo": [],
+  "tipos_sin_cambiar": "Los contadores (smart_N_raw y smart_N_normalized) siguen como decimales: el encargo 07 nombra como correcciones de tipo solo el centro, la ranura y las fechas, y un decimal es un tipo válido para una magnitud. La calidad los marcó como «toca entero» sin abrir ningún problema; si se quieren enteros, es una decisión para el paso siguiente.",
+  "metricas": [
+    {
+      "tabla": "fotos_mensuales",
+      "filas_antes": 14851669,
+      "filas_despues": 14851669,
+      "capacidad_no_valida_antes": 2729,
+      "capacidad_no_valida_despues": 0,
+      "modelos_dos_espacios_antes": 4,
+      "modelos_dos_espacios_despues": 0
+    },
+    {
+      "tabla": "ventanas_fallo",
+      "filas_antes": 536825,
+      "filas_despues": 536597,
+      "capacidad_no_valida_antes": 165,
+      "capacidad_no_valida_despues": 0,
+      "modelos_dos_espacios_antes": 2,
+      "modelos_dos_espacios_despues": 0
+    },
+    {
+      "tabla": "recuento_diario",
+      "filas_antes": 201502,
+      "filas_despues": 197871,
+      "capacidad_no_valida_antes": 2102,
+      "capacidad_no_valida_despues": 0,
+      "modelos_dos_espacios_antes": 4,
+      "modelos_dos_espacios_despues": 0
+    },
+    {
+      "tabla": "fallos",
+      "filas_antes": 17960,
+      "filas_despues": 17960,
+      "capacidad_no_valida_antes": null,
+      "capacidad_no_valida_despues": null,
+      "modelos_dos_espacios_antes": null,
+      "modelos_dos_espacios_despues": null
+    }
+  ],
+  "huella_raw": {
+    "ficheros": 91,
+    "iguales_al_empezar_y_al_terminar": true
+  },
+  "ejecucion": {
+    "python": "3.13.15",
+    "pandas": "3.0.6",
+    "pyarrow": "24.0.0",
+    "numpy": "2.5.3",
+    "segundos_por_parte": {
+      "huellas, diagnóstico y decisiones": 1,
+      "primera pasada": 21,
+      "fotos: corregir y escribir": 500.5,
+      "ventanas: corregir y escribir": 17.9,
+      "recuento y lista de fallos": 0.2,
+      "comprobar las salidas": 5.3,
+      "diccionario de las salidas": 44,
+      "total": 590.7
+    }
+  },
+  "fichas_nuevas": [
+    "R-001",
+    "R-002",
+    "R-003",
+    "R-004",
+    "R-005",
+    "R-006",
+    "R-007",
+    "R-008",
+    "R-009"
+  ]
+}

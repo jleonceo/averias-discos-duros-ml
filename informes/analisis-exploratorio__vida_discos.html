@@ -1,0 +1,2733 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Exploratorio · vida_discos</title><style>/* Hoja de estilos de los informes de los casos de uso. Valores de reglas_de_salida.md §7 (E1 a E8).
+   informe.py la mete dentro del HTML: el informe no carga nada de fuera.
+   Plantilla copiada el 04/10/2026 de fuentes con licencia abierta: la ficha de gráficos de la ONS (título, subtítulo,
+   dibujo y fuente en su propia línea debajo), la escala de espacios de GOV.UK (30 px entre bloques), los huecos del CSS
+   de Observable Framework (4 px bajo el título, 16 antes del dibujo) y las tablas del Gobierno británico (sin rayas
+   entre filas). */
+
+/* E1: fondo siempre blanco. E3: texto #0b0b0b. */
+html, body { margin: 0; background: #ffffff; color: #0b0b0b; }
+
+/* E4: letra. E5: texto a 15 px con interlineado 1,5. TB2: cifras de ancho fijo. */
+body { font-family: "Segoe UI", system-ui, sans-serif; font-size: 15px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+
+/* S1: panel fijo a la izquierda con la lista de páginas; compacto para que quepa entero en 650 px. */
+nav { position: fixed; top: 0; left: 0; bottom: 0; width: 240px; box-sizing: border-box; padding: 24px 16px; border-right: 1px solid #e1e0d9; overflow-y: auto; background: #ffffff; }
+.informe-titulo { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
+.informe-fecha { font-size: 13px; color: #52514e; margin: 0 0 12px; }
+nav button { display: block; width: 100%; text-align: left; font: 15px "Segoe UI", system-ui, sans-serif; line-height: 1.3; color: #0b0b0b; background: #ffffff; border: 0; padding: 3px 0; cursor: pointer; }
+nav button[aria-current="page"] { font-weight: 700; text-decoration: underline; }
+/* S2: las páginas de cada pregunta, los límites y la decisión van juntas bajo su rótulo, sin número delante. */
+nav .grupo { font-size: 13px; font-weight: 700; color: #52514e; margin: 8px 0 0; }
+nav button.sub { padding-left: 12px; }
+
+/* Zona de las páginas. */
+main { margin-left: 240px; padding: 24px 40px 0; max-width: 1100px; }
+/* Un solo ancho para todo lo de la página, el de dos gráficos en fila. */
+.pagina { max-width: 1024px; }
+/* El documento acaba donde acaba el contenido: sin margen debajo del último bloque, la página no se desplaza. */
+.pagina > :last-child { margin-bottom: 0; }
+
+/* E5: título de página 28 px y sección 20 px, en negrita. */
+h1 { font-size: 28px; font-weight: 700; line-height: 1.25; margin: 0 0 12px; }
+h2 { font-size: 20px; font-weight: 700; line-height: 1.3; margin: 20px 0 8px; }
+
+/* T2: párrafos cortos, unos 75 caracteres por línea. */
+.pagina p { max-width: 75ch; margin: 0 0 12px; }
+
+/* S2: la pregunta que contesta la página, debajo del título, en negro y seminegrita para que se vea. */
+.pagina p.pregunta { color: #0b0b0b; font-weight: 600; }
+
+/* C1 y C2: cifras clave en fila, sin icono, borde ni fondo. E5: número a 28 px en negrita, etiqueta a 13.
+   Cuatro casillas iguales: con dos o tres cifras quedan juntas a la izquierda. */
+.cifras { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; margin: 15px 0 30px; }
+.cifra-clave p { margin: 0; }
+.cifra-clave .numero { font-size: 28px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+.cifra-clave .etiqueta { font-size: 13px; }
+.cifra-clave .contexto { font-size: 13px; color: #52514e; }
+
+/* G1 y G2, como la ficha de gráficos de la ONS: título que dice la conclusión a 20 px, subtítulo con la medida a 16,
+   el dibujo y la fuente en su propia línea debajo, a 13. 30 px entre bloques (GOV.UK). G7: el SVG va dentro. */
+.grafico { margin: 30px 0; }
+.g-titulo { font-size: 20px; font-weight: 700; line-height: 1.3; margin: 0 0 4px; }
+.g-subtitulo { font-size: 16px; color: #52514e; line-height: 1.5; margin: 0 0 16px; }
+.g-fuente { font-size: 13px; color: #52514e; line-height: 1.5; margin: 8px 0 0; }
+.grafico svg { display: block; max-width: 100%; height: auto; }
+
+/* S3: dos gráficos lado a lado, de 500 px cada uno; con el mismo subtítulo y la misma fuente, van una vez. */
+.fila-bloque { margin: 30px 0; }
+.fila { display: grid; grid-template-columns: repeat(2, minmax(0, 500px)); gap: 24px; }
+.fila .grafico { margin: 0; }
+
+/* Texto con un solo gráfico o una sola tabla: el texto a la izquierda y lo otro a la derecha, con el ancho que le
+   pone informe.py en --ancho-otro. */
+.lado { display: grid; grid-template-columns: minmax(0, 1fr) var(--ancho-otro); gap: 32px; align-items: start; margin: 30px 0; }
+.lado .grafico { margin: 0; }
+.lado table { margin-top: 0; }
+.lado .fuente { margin-bottom: 0; }
+/* Un apartado que abre la columna de texto empieza a la altura del gráfico o de la tabla de al lado. */
+.lado-texto > h2:first-child { margin-top: 0; }
+
+/* TB2 y TB4, como las tablas del Gobierno británico: números y sus cabeceras a la derecha, una línea bajo la cabecera
+   y sobre el total, sin rayas entre filas, total en negrita. E5: tabla a 13 px. */
+table { border-collapse: collapse; font-size: 13px; margin: 30px 0 0; }
+th { text-align: left; font-weight: 700; padding: 6px 16px 6px 0; border-bottom: 1px solid #0b0b0b; vertical-align: bottom; }
+td { text-align: left; padding: 6px 16px 6px 0; vertical-align: top; }
+th.num, td.num { text-align: right; }
+tr.total td { font-weight: 700; border-top: 1px solid #0b0b0b; }
+/* Una tabla sin cifras es texto para leer: a 15 px y a todo el ancho. */
+table.texto { font-size: 15px; width: 100%; }
+table.texto td:first-child { font-weight: 600; }
+
+/* F1: la fuente debajo de la tabla, a 13 px. */
+.fuente { font-size: 13px; color: #52514e; margin: 8px 0 30px; }
+
+/* G20: la etiqueta de cada valor al pasar el ratón o con el tabulador. Fondo blanco, borde fino, sin sombra (E6, E8).
+   Los valores reciben el ratón aunque su marca no se vea (los puntos de una línea). */
+svg g.dato { pointer-events: all; }
+svg g.dato:focus { outline: 2px solid #0b0b0b; }
+.etiqueta-dato { position: fixed; z-index: 10; max-width: 320px; padding: 4px 8px; font-size: 13px; line-height: 1.4; color: #0b0b0b; background: #ffffff; border: 1px solid #0b0b0b; pointer-events: none; }
+.etiqueta-dato[hidden] { display: none; }
+
+/* En una ventana estrecha, lo lado a lado y los gráficos en fila van uno debajo de otro, y las cifras, de dos en dos. */
+@media (max-width: 1180px) {
+  .lado { grid-template-columns: 1fr; }
+  .fila { grid-template-columns: 1fr; }
+  .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Al imprimir, sin panel, con todas las páginas y cada una en su hoja. */
+@media print {
+  nav { display: none; }
+  .etiqueta-dato { display: none; }
+  main { margin-left: 0; }
+  section[hidden] { display: block; }
+  section + section { break-before: page; }
+}
+
+main { margin-left: 0; }</style></head><body><main><div class="pagina"><h1>Análisis exploratorio de datos · vida_discos</h1>
+<h2>Resumen ejecutivo</h2><ul>
+<li>Acaba en «desaparece» el 35,5 % de los discos de HGST (46.395) y el 0,2 % de los de WDC (74.848). No es una tasa anual: mezcla edades y años observados.</li>
+<li>Acaba en «fallo» el 5,9 % de los discos de Seagate (173.921) y el 1,0 % de los de WDC (74.848). No es una tasa anual: mezcla edades y años observados. Al separar por capacidad_tb cambia: parte «fallo» por fabricante: la diferencia entre Seagate y WDC es de 4,93 puntos en el total y de 0,96 dentro de capacidad_tb = 16: cambia de tamaño.</li>
+<li>Siguiente paso: paso 5: los bloques del plan de la analítica con esta tabla.</li></ul>
+<h2>Contexto</h2>
+<p>Una fila es un disco de datos que sale en alguna foto o en alguna ventana, con clave serial_number. La tabla tiene 402.643 filas y 11 columnas. Periodo: de 2020-01-01 a 2025-06-30. Fecha de los datos: 2025-06-30. Reglas: reglas-transformacion.md §5.</p>
+<p>Reproducibilidad: ejecutado el 2026-11-17T21:05:33 con Python 3.13.15, pandas 3.0.6, numpy 2.5.3, pyarrow 24.0.0 y matplotlib 3.11.2. Fichero de 4.671.568 bytes, huella af034d17ebc92a1ff22e3c2e1688a585d39383cb8e2f94106ea4e0ffc709d504.</p>
+<p>Teoría del manual aplicada:</p><ul><li>34.1 y 34.2, qué es y el esquema: cada columna se tipifica por su papel y cada análisis es una función que se aplica a todo el bloque.</li><li>3.1, descriptiva: el informe describe estos datos y no extrapola; no se dan intervalos ni contrastes.</li><li>34.3, 34.4, 3.5 y 3.6: frecuencias y cardinalidad en las categóricas; describe con la mediana al lado y la tabla leída con sus cuatro señales en las numéricas.</li><li>34.5, 34.6 y 10.6: barras para categóricas y discretas, histograma para continuas, sin cajas; la escala logarítmica se dice en el eje.</li><li>34.7 y 13.14: el cruce con el objetivo solo con la construcción; describe y no elige variables.</li><li>5.4, 5.5 y 5.6: cada tasa con su base, la tasa de un grupo como suma entre suma y cada comparación repetida por fabricante y capacidad, por si se invierte (paradoja de Simpson).</li><li>34.8, 34.9 y 34.10: hallazgo, alerta, anomalía e hipótesis separados; Pareto, ABC y series de negocio.</li></ul>
+<h2>Visión general</h2>
+<table><thead><tr><th>medida</th><th class="num">valor</th></tr></thead><tbody><tr><td>filas</td><td class="num">402.643</td></tr><tr><td>columnas</td><td class="num">11</td></tr><tr><td>discos</td><td class="num">402.643</td></tr><tr><td>desaparecen_avisando</td><td class="num">6.557</td></tr></tbody></table>
+<table><thead><tr><th>tipo de columna</th><th class="num">columnas</th></tr></thead><tbody><tr><td>fecha</td><td class="num">4</td></tr><tr><td>continua</td><td class="num">2</td></tr><tr><td>booleana</td><td class="num">2</td></tr><tr><td>identificador</td><td class="num">1</td></tr><tr><td>alta_cardinalidad</td><td class="num">1</td></tr><tr><td>categorica</td><td class="num">1</td></tr></tbody></table>
+<h2>Variables numéricas</h2>
+<table><thead><tr><th>columna</th><th>tipo</th><th class="num">conteo</th><th class="num">vacíos</th><th class="num">media</th><th class="num">mediana</th><th class="num">desviación</th><th class="num">mínimo</th><th class="num">p25</th><th class="num">p75</th><th class="num">máximo</th><th>señales</th></tr></thead><tbody><tr><td>edad_entrada_anos</td><td>continua</td><td class="num">402.643</td><td class="num">0</td><td class="num">0,78</td><td class="num">0,10</td><td class="num">1,26</td><td class="num">0,00</td><td class="num">0,05</td><td class="num">0,92</td><td class="num">6,61</td><td>media lejos de la mediana</td></tr><tr><td>edad_fin_anos</td><td>continua</td><td class="num">402.643</td><td class="num">0</td><td class="num">3,65</td><td class="num">3,47</td><td class="num">2,37</td><td class="num">0,00</td><td class="num">1,71</td><td class="num">4,92</td><td class="num">10,46</td><td>ninguna</td></tr></tbody></table>
+<p class="fuente">Base: 402.643 filas (fila).</p>
+<div class="fila-bloque"><div class="fila"><div class="grafico"><p class="g-titulo">edad_entrada_anos: mediana 0,10 y media 0,78</p><p class="g-subtitulo">Cuántas filas caen en cada tramo</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="320" viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="g777511_figure_1">
+  <g id="g777511_patch_1">
+   <path d="M 0 320 
+L 640 320 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="g777511_axes_1">
+   <g id="g777511_patch_2">
+    <path d="M 12.5 283.563965 
+L 627.5 283.563965 
+L 627.5 4 
+L 12.5 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="g777511_dato0" class="dato" tabindex="0"><title>edad_entrada_anos de 0,0 a 0,6: 282.141</title>
+    <path d="M 12.5 283.563965 
+L 63.75 283.563965 
+L 63.75 40.464865 
+L 12.5 40.464865 
+z
+" clip-path="url(#g777511_pa33cee87a4)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g777511_dato1" class="dato" tabindex="0"><title>edad_entrada_anos de 0,6 a 1,1: 27.864</title>
+    <path d="M 63.75 283.563965 
+L 115 283.563965 
+L 115 259.555709 
+L 63.75 259.555709 
+z
+" clip-path="url(#g777511_pa33cee87a4)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g777511_dato2" class="dato" tabindex="0"><title>edad_entrada_anos de 1,1 a 1,7: 11.307</title>
+    <path d="M 115 283.563965 
+L 166.25 283.563965 
+L 166.25 273.821597 
+L 115 273.821597 
+z
+" clip-path="url(#g777511_pa33cee87a4)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g777511_dato3" class="dato" tabindex="0"><title>edad_entrada_anos de 1,7 a 2,2: 18.311</title>
+    <path d="M 166.25 283.563965 
+L 217.5 283.563965 
+L 217.5 267.786791 
+L 166.25 267.786791 
+z
+" clip-path="url(#g777511_pa33cee87a4)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g777511_dato4" class="dato" tabindex="0"><title>edad_entrada_anos de 2,2 a 2,8: 15.373</title>
+    <path d="M 217.5 283.563965 
+L 268.75 283.563965 
+L 268.75 270.318239 
+L 217.5 270.318239 
+z
+" clip-path="url(#g777511_pa33cee87a4)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g777511_dato5" class="dato" tabindex="0"><title>edad_entrada_anos de 2,8 a 3,3: 15.004</title>
+    <path d="M 268.75 283.563965 
+L 320 283.563965 
+L 320 270.636177 
+L 268.75 270.636177 
+z
+" clip-path="url(#g777511_pa33cee87a4)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g777511_dato6" class="dato" tabindex="0"><title>edad_entrada_anos de 3,3 a 3,9: 12.364</title>
+    <path d="M 320 283.563965 
+L 371.25 283.563965 
+L 371.25 272.910861 
+L 320 272.910861 
+z
+" clip-path="url(#g777511_pa33cee87a4)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g777511_dato7" class="dato" tabindex="0"><title>edad_entrada_anos de 3,9 a 4,4: 12.214</title>
+    <path d="M 371.25 283.563965 
+L 422.5 283.563965 
+L 422.5 273.040105 
+L 371.25 273.040105 
+z
+" clip-path="url(#g777511_pa33cee87a4)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g777511_dato8" class="dato" tabindex="0"><title>edad_entrada_anos de 4,4 a 5,0: 7.003</title>
+    <path d="M 422.5 283.563965 
+L 473.75 283.563965 
+L 473.75 277.530021 
+L 422.5 277.530021 
+z
+" clip-path="url(#g777511_pa33cee87a4)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g777511_dato9" class="dato" tabindex="0"><title>edad_entrada_anos de 5,0 a 5,5: 355</title>
+    <path d="M 473.75 283.563965 
+L 525 283.563965 
+L 525 283.258089 
+L 473.75 283.258089 
+z
+" clip-path="url(#g777511_pa33cee87a4)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g777511_dato10" class="dato" tabindex="0"><title>edad_entrada_anos de 5,5 a 6,1: 701</title>
+    <path d="M 525 283.563965 
+L 576.25 283.563965 
+L 576.25 282.959967 
+L 525 282.959967 
+z
+" clip-path="url(#g777511_pa33cee87a4)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g777511_dato11" class="dato" tabindex="0"><title>edad_entrada_anos de 6,1 a 6,6: 6</title>
+    <path d="M 576.25 283.563965 
+L 627.5 283.563965 
+L 627.5 283.558795 
+L 576.25 283.558795 
+z
+" clip-path="url(#g777511_pa33cee87a4)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g777511_matplotlib.axis_1">
+    <g id="g777511_xtick_1">
+     <g id="g777511_line2d_1"/>
+     <g id="g777511_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="12.5" y="296.52832" transform="rotate(-0 12.5 296.52832)">0,0</text>
+     </g>
+    </g>
+    <g id="g777511_xtick_2">
+     <g id="g777511_line2d_2"/>
+     <g id="g777511_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="63.75" y="296.52832" transform="rotate(-0 63.75 296.52832)">0,6</text>
+     </g>
+    </g>
+    <g id="g777511_xtick_3">
+     <g id="g777511_line2d_3"/>
+     <g id="g777511_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="115" y="296.52832" transform="rotate(-0 115 296.52832)">1,1</text>
+     </g>
+    </g>
+    <g id="g777511_xtick_4">
+     <g id="g777511_line2d_4"/>
+     <g id="g777511_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="166.25" y="296.52832" transform="rotate(-0 166.25 296.52832)">1,7</text>
+     </g>
+    </g>
+    <g id="g777511_xtick_5">
+     <g id="g777511_line2d_5"/>
+     <g id="g777511_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="217.5" y="296.52832" transform="rotate(-0 217.5 296.52832)">2,2</text>
+     </g>
+    </g>
+    <g id="g777511_xtick_6">
+     <g id="g777511_line2d_6"/>
+     <g id="g777511_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="268.75" y="296.52832" transform="rotate(-0 268.75 296.52832)">2,8</text>
+     </g>
+    </g>
+    <g id="g777511_xtick_7">
+     <g id="g777511_line2d_7"/>
+     <g id="g777511_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="320" y="296.52832" transform="rotate(-0 320 296.52832)">3,3</text>
+     </g>
+    </g>
+    <g id="g777511_xtick_8">
+     <g id="g777511_line2d_8"/>
+     <g id="g777511_text_8">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="371.25" y="296.52832" transform="rotate(-0 371.25 296.52832)">3,9</text>
+     </g>
+    </g>
+    <g id="g777511_xtick_9">
+     <g id="g777511_line2d_9"/>
+     <g id="g777511_text_9">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="422.5" y="296.52832" transform="rotate(-0 422.5 296.52832)">4,4</text>
+     </g>
+    </g>
+    <g id="g777511_xtick_10">
+     <g id="g777511_line2d_10"/>
+     <g id="g777511_text_10">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="473.75" y="296.52832" transform="rotate(-0 473.75 296.52832)">5,0</text>
+     </g>
+    </g>
+    <g id="g777511_xtick_11">
+     <g id="g777511_line2d_11"/>
+     <g id="g777511_text_11">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="525" y="296.52832" transform="rotate(-0 525 296.52832)">5,5</text>
+     </g>
+    </g>
+    <g id="g777511_xtick_12">
+     <g id="g777511_line2d_12"/>
+     <g id="g777511_text_12">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="576.25" y="296.52832" transform="rotate(-0 576.25 296.52832)">6,1</text>
+     </g>
+    </g>
+    <g id="g777511_xtick_13">
+     <g id="g777511_line2d_13"/>
+     <g id="g777511_text_13">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="627.5" y="296.52832" transform="rotate(-0 627.5 296.52832)">6,6</text>
+     </g>
+    </g>
+    <g id="g777511_text_14">
+     <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="320" y="312.888223" transform="rotate(-0 320 312.888223)">edad_entrada_anos</text>
+    </g>
+   </g>
+   <g id="g777511_patch_3">
+    <path d="M 12.5 283.563965 
+L 627.5 283.563965 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="g777511_text_15">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="38.125" y="32.867043" transform="rotate(-0 38.125 32.867043)">282.141</text>
+   </g>
+   <g id="g777511_text_16">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="89.375" y="251.957887" transform="rotate(-0 89.375 251.957887)">27.864</text>
+   </g>
+   <g id="g777511_text_17">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="140.625" y="266.223775" transform="rotate(-0 140.625 266.223775)">11.307</text>
+   </g>
+   <g id="g777511_text_18">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="191.875" y="260.188969" transform="rotate(-0 191.875 260.188969)">18.311</text>
+   </g>
+   <g id="g777511_text_19">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="243.125" y="262.720417" transform="rotate(-0 243.125 262.720417)">15.373</text>
+   </g>
+   <g id="g777511_text_20">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="294.375" y="263.038355" transform="rotate(-0 294.375 263.038355)">15.004</text>
+   </g>
+   <g id="g777511_text_21">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="345.625" y="265.31304" transform="rotate(-0 345.625 265.31304)">12.364</text>
+   </g>
+   <g id="g777511_text_22">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="396.875" y="265.442283" transform="rotate(-0 396.875 265.442283)">12.214</text>
+   </g>
+   <g id="g777511_text_23">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="448.125" y="269.932199" transform="rotate(-0 448.125 269.932199)">7.003</text>
+   </g>
+   <g id="g777511_text_24">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="499.375" y="275.660267" transform="rotate(-0 499.375 275.660267)">355</text>
+   </g>
+   <g id="g777511_text_25">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="550.625" y="275.362145" transform="rotate(-0 550.625 275.362145)">701</text>
+   </g>
+   <g id="g777511_text_26">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="601.875" y="275.960973" transform="rotate(-0 601.875 275.960973)">6</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="g777511_pa33cee87a4">
+   <rect x="12.5" y="4" width="615" height="279.563965"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 402.643 valores, uno por fila</p></div><div class="grafico"><p class="g-titulo">edad_fin_anos: mediana 3,47 y media 3,65</p><p class="g-subtitulo">Cuántas filas caen en cada tramo</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="320" viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="g75781d_figure_1">
+  <g id="g75781d_patch_1">
+   <path d="M 0 320 
+L 640 320 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="g75781d_axes_1">
+   <g id="g75781d_patch_2">
+    <path d="M 12.5 283.563965 
+L 624 283.563965 
+L 624 4 
+L 12.5 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="g75781d_dato0" class="dato" tabindex="0"><title>edad_fin_anos de 0,0 a 0,9: 48.560</title>
+    <path d="M 12.5 283.563965 
+L 63.458333 283.563965 
+L 63.458333 92.34517 
+L 12.5 92.34517 
+z
+" clip-path="url(#g75781d_pcb8527a446)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g75781d_dato1" class="dato" tabindex="0"><title>edad_fin_anos de 0,9 a 1,7: 54.417</title>
+    <path d="M 63.458333 283.563965 
+L 114.416667 283.563965 
+L 114.416667 69.281569 
+L 63.458333 69.281569 
+z
+" clip-path="url(#g75781d_pcb8527a446)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g75781d_dato2" class="dato" tabindex="0"><title>edad_fin_anos de 1,7 a 2,6: 49.772</title>
+    <path d="M 114.416667 283.563965 
+L 165.375 283.563965 
+L 165.375 87.572576 
+L 114.416667 87.572576 
+z
+" clip-path="url(#g75781d_pcb8527a446)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g75781d_dato3" class="dato" tabindex="0"><title>edad_fin_anos de 2,6 a 3,5: 49.902</title>
+    <path d="M 165.375 283.563965 
+L 216.333333 283.563965 
+L 216.333333 87.060664 
+L 165.375 87.060664 
+z
+" clip-path="url(#g75781d_pcb8527a446)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g75781d_dato4" class="dato" tabindex="0"><title>edad_fin_anos de 3,5 a 4,4: 61.735</title>
+    <path d="M 216.333333 283.563965 
+L 267.291667 283.563965 
+L 267.291667 40.464865 
+L 216.333333 40.464865 
+z
+" clip-path="url(#g75781d_pcb8527a446)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g75781d_dato5" class="dato" tabindex="0"><title>edad_fin_anos de 4,4 a 5,2: 52.103</title>
+    <path d="M 267.291667 283.563965 
+L 318.25 283.563965 
+L 318.25 78.393601 
+L 267.291667 78.393601 
+z
+" clip-path="url(#g75781d_pcb8527a446)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g75781d_dato6" class="dato" tabindex="0"><title>edad_fin_anos de 5,2 a 6,1: 22.119</title>
+    <path d="M 318.25 283.563965 
+L 369.208333 283.563965 
+L 369.208333 196.464119 
+L 318.25 196.464119 
+z
+" clip-path="url(#g75781d_pcb8527a446)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g75781d_dato7" class="dato" tabindex="0"><title>edad_fin_anos de 6,1 a 7,0: 11.734</title>
+    <path d="M 369.208333 283.563965 
+L 420.166667 283.563965 
+L 420.166667 237.358007 
+L 369.208333 237.358007 
+z
+" clip-path="url(#g75781d_pcb8527a446)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g75781d_dato8" class="dato" tabindex="0"><title>edad_fin_anos de 7,0 a 7,8: 13.127</title>
+    <path d="M 420.166667 283.563965 
+L 471.125 283.563965 
+L 471.125 231.872673 
+L 420.166667 231.872673 
+z
+" clip-path="url(#g75781d_pcb8527a446)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g75781d_dato9" class="dato" tabindex="0"><title>edad_fin_anos de 7,8 a 8,7: 35.063</title>
+    <path d="M 471.125 283.563965 
+L 522.083333 283.563965 
+L 522.083333 145.493442 
+L 471.125 145.493442 
+z
+" clip-path="url(#g75781d_pcb8527a446)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g75781d_dato10" class="dato" tabindex="0"><title>edad_fin_anos de 8,7 a 9,6: 4.043</title>
+    <path d="M 522.083333 283.563965 
+L 573.041667 283.563965 
+L 573.041667 267.643504 
+L 522.083333 267.643504 
+z
+" clip-path="url(#g75781d_pcb8527a446)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g75781d_dato11" class="dato" tabindex="0"><title>edad_fin_anos de 9,6 a 10,5: 68</title>
+    <path d="M 573.041667 283.563965 
+L 624 283.563965 
+L 624 283.296196 
+L 573.041667 283.296196 
+z
+" clip-path="url(#g75781d_pcb8527a446)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="g75781d_matplotlib.axis_1">
+    <g id="g75781d_xtick_1">
+     <g id="g75781d_line2d_1"/>
+     <g id="g75781d_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="12.5" y="296.52832" transform="rotate(-0 12.5 296.52832)">0,0</text>
+     </g>
+    </g>
+    <g id="g75781d_xtick_2">
+     <g id="g75781d_line2d_2"/>
+     <g id="g75781d_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="63.458333" y="296.52832" transform="rotate(-0 63.458333 296.52832)">0,9</text>
+     </g>
+    </g>
+    <g id="g75781d_xtick_3">
+     <g id="g75781d_line2d_3"/>
+     <g id="g75781d_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="114.416667" y="296.52832" transform="rotate(-0 114.416667 296.52832)">1,7</text>
+     </g>
+    </g>
+    <g id="g75781d_xtick_4">
+     <g id="g75781d_line2d_4"/>
+     <g id="g75781d_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="165.375" y="296.52832" transform="rotate(-0 165.375 296.52832)">2,6</text>
+     </g>
+    </g>
+    <g id="g75781d_xtick_5">
+     <g id="g75781d_line2d_5"/>
+     <g id="g75781d_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="216.333333" y="296.52832" transform="rotate(-0 216.333333 296.52832)">3,5</text>
+     </g>
+    </g>
+    <g id="g75781d_xtick_6">
+     <g id="g75781d_line2d_6"/>
+     <g id="g75781d_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="267.291667" y="296.52832" transform="rotate(-0 267.291667 296.52832)">4,4</text>
+     </g>
+    </g>
+    <g id="g75781d_xtick_7">
+     <g id="g75781d_line2d_7"/>
+     <g id="g75781d_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="318.25" y="296.52832" transform="rotate(-0 318.25 296.52832)">5,2</text>
+     </g>
+    </g>
+    <g id="g75781d_xtick_8">
+     <g id="g75781d_line2d_8"/>
+     <g id="g75781d_text_8">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="369.208333" y="296.52832" transform="rotate(-0 369.208333 296.52832)">6,1</text>
+     </g>
+    </g>
+    <g id="g75781d_xtick_9">
+     <g id="g75781d_line2d_9"/>
+     <g id="g75781d_text_9">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="420.166667" y="296.52832" transform="rotate(-0 420.166667 296.52832)">7,0</text>
+     </g>
+    </g>
+    <g id="g75781d_xtick_10">
+     <g id="g75781d_line2d_10"/>
+     <g id="g75781d_text_10">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="471.125" y="296.52832" transform="rotate(-0 471.125 296.52832)">7,8</text>
+     </g>
+    </g>
+    <g id="g75781d_xtick_11">
+     <g id="g75781d_line2d_11"/>
+     <g id="g75781d_text_11">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="522.083333" y="296.52832" transform="rotate(-0 522.083333 296.52832)">8,7</text>
+     </g>
+    </g>
+    <g id="g75781d_xtick_12">
+     <g id="g75781d_line2d_12"/>
+     <g id="g75781d_text_12">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="573.041667" y="296.52832" transform="rotate(-0 573.041667 296.52832)">9,6</text>
+     </g>
+    </g>
+    <g id="g75781d_xtick_13">
+     <g id="g75781d_line2d_13"/>
+     <g id="g75781d_text_13">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="624" y="296.52832" transform="rotate(-0 624 296.52832)">10,5</text>
+     </g>
+    </g>
+    <g id="g75781d_text_14">
+     <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="318.25" y="313.026348" transform="rotate(-0 318.25 313.026348)">edad_fin_anos</text>
+    </g>
+   </g>
+   <g id="g75781d_patch_3">
+    <path d="M 12.5 283.563965 
+L 624 283.563965 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="g75781d_text_15">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="37.979167" y="84.747348" transform="rotate(-0 37.979167 84.747348)">48.560</text>
+   </g>
+   <g id="g75781d_text_16">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="88.9375" y="61.683747" transform="rotate(-0 88.9375 61.683747)">54.417</text>
+   </g>
+   <g id="g75781d_text_17">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="139.895833" y="79.974754" transform="rotate(-0 139.895833 79.974754)">49.772</text>
+   </g>
+   <g id="g75781d_text_18">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="190.854167" y="79.462842" transform="rotate(-0 190.854167 79.462842)">49.902</text>
+   </g>
+   <g id="g75781d_text_19">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="241.8125" y="32.867043" transform="rotate(-0 241.8125 32.867043)">61.735</text>
+   </g>
+   <g id="g75781d_text_20">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="292.770833" y="70.795779" transform="rotate(-0 292.770833 70.795779)">52.103</text>
+   </g>
+   <g id="g75781d_text_21">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="343.729167" y="188.866297" transform="rotate(-0 343.729167 188.866297)">22.119</text>
+   </g>
+   <g id="g75781d_text_22">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="394.6875" y="229.760185" transform="rotate(-0 394.6875 229.760185)">11.734</text>
+   </g>
+   <g id="g75781d_text_23">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="445.645833" y="224.274851" transform="rotate(-0 445.645833 224.274851)">13.127</text>
+   </g>
+   <g id="g75781d_text_24">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="496.604167" y="137.89562" transform="rotate(-0 496.604167 137.89562)">35.063</text>
+   </g>
+   <g id="g75781d_text_25">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="547.5625" y="260.045682" transform="rotate(-0 547.5625 260.045682)">4.043</text>
+   </g>
+   <g id="g75781d_text_26">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="598.520833" y="275.698374" transform="rotate(-0 598.520833 275.698374)">68</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="g75781d_pcb8527a446">
+   <rect x="12.5" y="4" width="611.5" height="279.563965"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 402.643 valores, uno por fila</p></div></div></div>
+<h2>Variables categóricas</h2>
+<table><thead><tr><th>columna</th><th>tipo</th><th class="num">valores</th><th class="num">vacíos</th><th>dominante</th><th class="num">% dominante</th><th class="num">% de las 10 más frecuentes</th></tr></thead><tbody><tr><td>model</td><td>alta_cardinalidad</td><td class="num">61</td><td class="num">0</td><td>TOSHIBA MG08ACA16TA</td><td class="num">10,2</td><td class="num">70,9</td></tr><tr><td>evento</td><td>categorica</td><td class="num">3</td><td class="num">0</td><td>sigue</td><td class="num">78,1</td><td class="num">100,0</td></tr><tr><td>avisa_ultima_foto</td><td>booleana</td><td class="num">2</td><td class="num">193</td><td>False</td><td class="num">89,8</td><td class="num">100,0</td></tr><tr><td>desaparece_avisando</td><td>booleana</td><td class="num">2</td><td class="num">0</td><td>False</td><td class="num">98,4</td><td class="num">100,0</td></tr></tbody></table>
+<div class="fila-bloque"><div class="fila"><div class="grafico"><p class="g-titulo">model: «TOSHIBA MG08ACA16TA» reúne el 10,2 % de las filas</p><p class="g-subtitulo">Filas de cada valor (los 15 más frecuentes de 61 valores)</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="600" viewBox="0 0 640 600" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="gfa0bda_figure_1">
+  <g id="gfa0bda_patch_1">
+   <path d="M 0 600 
+L 640 600 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="gfa0bda_axes_1">
+   <g id="gfa0bda_patch_2">
+    <path d="M 157.5 596 
+L 636 596 
+L 636 4 
+L 157.5 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="gfa0bda_dato0" class="dato" tabindex="0"><title>TOSHIBA MG08ACA16TA · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 40.976</title>
+    <path d="M 157.5 57.233202 
+L 556.25 57.233202 
+L 556.25 30.909091 
+L 157.5 30.909091 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato1" class="dato" tabindex="0"><title>TOSHIBA MG07ACA14TA · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 39.297</title>
+    <path d="M 157.5 93.794466 
+L 539.911137 93.794466 
+L 539.911137 67.470356 
+L 157.5 67.470356 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato2" class="dato" tabindex="0"><title>ST12000NM0007 · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 37.355</title>
+    <path d="M 157.5 130.355731 
+L 521.012941 130.355731 
+L 521.012941 104.031621 
+L 157.5 104.031621 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato3" class="dato" tabindex="0"><title>WDC WUH722222ALE6L4 · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 36.239</title>
+    <path d="M 157.5 166.916996 
+L 510.152803 166.916996 
+L 510.152803 140.592885 
+L 157.5 140.592885 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato4" class="dato" tabindex="0"><title>ST16000NM001G · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 34.710</title>
+    <path d="M 157.5 203.478261 
+L 495.273636 203.478261 
+L 495.273636 177.15415 
+L 157.5 177.15415 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato5" class="dato" tabindex="0"><title>WDC WUH721816ALE6L4 · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 26.588</title>
+    <path d="M 157.5 240.039526 
+L 416.235967 240.039526 
+L 416.235967 213.715415 
+L 157.5 213.715415 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato6" class="dato" tabindex="0"><title>ST12000NM0008 · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 21.024</title>
+    <path d="M 157.5 276.600791 
+L 362.09098 276.600791 
+L 362.09098 250.27668 
+L 157.5 250.27668 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato7" class="dato" tabindex="0"><title>ST4000DM000 · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 19.506</title>
+    <path d="M 157.5 313.162055 
+L 347.318857 313.162055 
+L 347.318857 286.837945 
+L 157.5 286.837945 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato8" class="dato" tabindex="0"><title>ST8000NM0055 · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 15.231</title>
+    <path d="M 157.5 349.72332 
+L 305.717524 349.72332 
+L 305.717524 323.399209 
+L 157.5 323.399209 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato9" class="dato" tabindex="0"><title>TOSHIBA MG10ACA20TE · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 14.441</title>
+    <path d="M 157.5 386.284585 
+L 298.029792 386.284585 
+L 298.029792 359.960474 
+L 157.5 359.960474 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato10" class="dato" tabindex="0"><title>HGST HUH721212ALE604 · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 14.216</title>
+    <path d="M 157.5 422.84585 
+L 295.840248 422.84585 
+L 295.840248 396.521739 
+L 157.5 396.521739 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato11" class="dato" tabindex="0"><title>ST12000NM001G · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 13.827</title>
+    <path d="M 157.5 459.407115 
+L 292.05477 459.407115 
+L 292.05477 433.083004 
+L 157.5 433.083004 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato12" class="dato" tabindex="0"><title>HGST HMS5C4040BLE640 · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 12.920</title>
+    <path d="M 157.5 495.968379 
+L 283.228475 495.968379 
+L 283.228475 469.644269 
+L 157.5 469.644269 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato13" class="dato" tabindex="0"><title>HGST HUH721212ALN604 · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 11.403</title>
+    <path d="M 157.5 532.529644 
+L 268.466084 532.529644 
+L 268.466084 506.205534 
+L 157.5 506.205534 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_dato14" class="dato" tabindex="0"><title>ST14000NM001G · filas · model: «TOSHIBA MG08ACA16TA» reúne el 10: 11.218</title>
+    <path d="M 157.5 569.090909 
+L 266.665792 569.090909 
+L 266.665792 542.766798 
+L 157.5 542.766798 
+z
+" clip-path="url(#gfa0bda_pc48cb7a9c5)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gfa0bda_matplotlib.axis_1">
+    <g id="gfa0bda_ytick_1">
+     <g id="gfa0bda_line2d_1"/>
+     <g id="gfa0bda_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="48.803324" transform="rotate(-0 154 48.803324)">TOSHIBA MG08ACA16TA</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_2">
+     <g id="gfa0bda_line2d_2"/>
+     <g id="gfa0bda_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="85.364589" transform="rotate(-0 154 85.364589)">TOSHIBA MG07ACA14TA</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_3">
+     <g id="gfa0bda_line2d_3"/>
+     <g id="gfa0bda_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="121.925854" transform="rotate(-0 154 121.925854)">ST12000NM0007</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_4">
+     <g id="gfa0bda_line2d_4"/>
+     <g id="gfa0bda_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="158.487118" transform="rotate(-0 154 158.487118)">WDC WUH722222ALE6L4</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_5">
+     <g id="gfa0bda_line2d_5"/>
+     <g id="gfa0bda_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="195.048383" transform="rotate(-0 154 195.048383)">ST16000NM001G</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_6">
+     <g id="gfa0bda_line2d_6"/>
+     <g id="gfa0bda_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="231.609648" transform="rotate(-0 154 231.609648)">WDC WUH721816ALE6L4</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_7">
+     <g id="gfa0bda_line2d_7"/>
+     <g id="gfa0bda_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="268.170913" transform="rotate(-0 154 268.170913)">ST12000NM0008</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_8">
+     <g id="gfa0bda_line2d_8"/>
+     <g id="gfa0bda_text_8">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="304.732178" transform="rotate(-0 154 304.732178)">ST4000DM000</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_9">
+     <g id="gfa0bda_line2d_9"/>
+     <g id="gfa0bda_text_9">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="341.293443" transform="rotate(-0 154 341.293443)">ST8000NM0055</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_10">
+     <g id="gfa0bda_line2d_10"/>
+     <g id="gfa0bda_text_10">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="377.854707" transform="rotate(-0 154 377.854707)">TOSHIBA MG10ACA20TE</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_11">
+     <g id="gfa0bda_line2d_11"/>
+     <g id="gfa0bda_text_11">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="414.415972" transform="rotate(-0 154 414.415972)">HGST HUH721212ALE604</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_12">
+     <g id="gfa0bda_line2d_12"/>
+     <g id="gfa0bda_text_12">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="450.977237" transform="rotate(-0 154 450.977237)">ST12000NM001G</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_13">
+     <g id="gfa0bda_line2d_13"/>
+     <g id="gfa0bda_text_13">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="487.538502" transform="rotate(-0 154 487.538502)">HGST HMS5C4040BLE640</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_14">
+     <g id="gfa0bda_line2d_14"/>
+     <g id="gfa0bda_text_14">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="524.099767" transform="rotate(-0 154 524.099767)">HGST HUH721212ALN604</text>
+     </g>
+    </g>
+    <g id="gfa0bda_ytick_15">
+     <g id="gfa0bda_line2d_15"/>
+     <g id="gfa0bda_text_15">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="560.661031" transform="rotate(-0 154 560.661031)">ST14000NM001G</text>
+     </g>
+    </g>
+   </g>
+   <g id="gfa0bda_patch_3">
+    <path d="M 157.5 596 
+L 157.5 4 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="gfa0bda_text_16">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="560.2375" y="47.435404" transform="rotate(-0 560.2375 47.435404)">40.976</text>
+   </g>
+   <g id="gfa0bda_text_17">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="543.898637" y="83.996669" transform="rotate(-0 543.898637 83.996669)">39.297</text>
+   </g>
+   <g id="gfa0bda_text_18">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="525.000441" y="120.557934" transform="rotate(-0 525.000441 120.557934)">37.355</text>
+   </g>
+   <g id="gfa0bda_text_19">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="514.140303" y="157.119199" transform="rotate(-0 514.140303 157.119199)">36.239</text>
+   </g>
+   <g id="gfa0bda_text_20">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="499.261136" y="193.680463" transform="rotate(-0 499.261136 193.680463)">34.710</text>
+   </g>
+   <g id="gfa0bda_text_21">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="420.223467" y="230.241728" transform="rotate(-0 420.223467 230.241728)">26.588</text>
+   </g>
+   <g id="gfa0bda_text_22">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="366.07848" y="266.802993" transform="rotate(-0 366.07848 266.802993)">21.024</text>
+   </g>
+   <g id="gfa0bda_text_23">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="351.306357" y="303.364258" transform="rotate(-0 351.306357 303.364258)">19.506</text>
+   </g>
+   <g id="gfa0bda_text_24">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="309.705024" y="339.925523" transform="rotate(-0 309.705024 339.925523)">15.231</text>
+   </g>
+   <g id="gfa0bda_text_25">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="302.017292" y="376.486787" transform="rotate(-0 302.017292 376.486787)">14.441</text>
+   </g>
+   <g id="gfa0bda_text_26">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="299.827748" y="413.048052" transform="rotate(-0 299.827748 413.048052)">14.216</text>
+   </g>
+   <g id="gfa0bda_text_27">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="296.04227" y="449.609317" transform="rotate(-0 296.04227 449.609317)">13.827</text>
+   </g>
+   <g id="gfa0bda_text_28">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="287.215975" y="486.170582" transform="rotate(-0 287.215975 486.170582)">12.920</text>
+   </g>
+   <g id="gfa0bda_text_29">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="272.453584" y="522.731847" transform="rotate(-0 272.453584 522.731847)">11.403</text>
+   </g>
+   <g id="gfa0bda_text_30">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="270.653292" y="559.293112" transform="rotate(-0 270.653292 559.293112)">11.218</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="gfa0bda_pc48cb7a9c5">
+   <rect x="157.5" y="4" width="478.5" height="592"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 402.643 filas, una por fila</p></div><div class="grafico"><p class="g-titulo">evento: «sigue» reúne el 78,1 % de las filas</p><p class="g-subtitulo">Filas de cada valor (3 valores)</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="144" viewBox="0 0 640 144" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="gafa848_figure_1">
+  <g id="gafa848_patch_1">
+   <path d="M 0 144 
+L 640 144 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="gafa848_axes_1">
+   <g id="gafa848_patch_2">
+    <path d="M 120 140 
+L 636 140 
+L 636 4 
+L 120 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="gafa848_dato0" class="dato" tabindex="0"><title>sigue · filas · evento: «sigue» reúne el 78,1 % de las f: 314.331</title>
+    <path d="M 120 42.909091 
+L 550 42.909091 
+L 550 10.181818 
+L 120 10.181818 
+z
+" clip-path="url(#gafa848_pde2f729f9d)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gafa848_dato1" class="dato" tabindex="0"><title>desaparece · filas · evento: «sigue» reúne el 78,1 % de las f: 71.328</title>
+    <path d="M 120 88.363636 
+L 217.575613 88.363636 
+L 217.575613 55.636364 
+L 120 55.636364 
+z
+" clip-path="url(#gafa848_pde2f729f9d)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gafa848_dato2" class="dato" tabindex="0"><title>fallo · filas · evento: «sigue» reúne el 78,1 % de las f: 16.984</title>
+    <path d="M 120 133.818182 
+L 143.233852 133.818182 
+L 143.233852 101.090909 
+L 120 101.090909 
+z
+" clip-path="url(#gafa848_pde2f729f9d)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gafa848_matplotlib.axis_1">
+    <g id="gafa848_ytick_1">
+     <g id="gafa848_line2d_1"/>
+     <g id="gafa848_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="31.296548" transform="rotate(-0 116.5 31.296548)">sigue</text>
+     </g>
+    </g>
+    <g id="gafa848_ytick_2">
+     <g id="gafa848_line2d_2"/>
+     <g id="gafa848_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="76.812031" transform="rotate(-0 116.5 76.812031)">desaparece</text>
+     </g>
+    </g>
+    <g id="gafa848_ytick_3">
+     <g id="gafa848_line2d_3"/>
+     <g id="gafa848_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="122.335639" transform="rotate(-0 116.5 122.335639)">fallo</text>
+     </g>
+    </g>
+   </g>
+   <g id="gafa848_patch_3">
+    <path d="M 120 140 
+L 120 4 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="gafa848_text_4">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="554.3" y="29.909712" transform="rotate(-0 554.3 29.909712)">314.331</text>
+   </g>
+   <g id="gafa848_text_5">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="221.875613" y="75.364258" transform="rotate(-0 221.875613 75.364258)">71.328</text>
+   </g>
+   <g id="gafa848_text_6">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="147.533852" y="120.818803" transform="rotate(-0 147.533852 120.818803)">16.984</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="gafa848_pde2f729f9d">
+   <rect x="120" y="4" width="516" height="136"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 402.643 filas, una por fila</p></div></div></div><div class="fila-bloque"><div class="fila"><div class="grafico"><p class="g-titulo">avisa_ultima_foto: «False» reúne el 89,8 % de las filas</p><p class="g-subtitulo">Filas de cada valor (2 valores)</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="144" viewBox="0 0 640 144" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="gd5cff7_figure_1">
+  <g id="gd5cff7_patch_1">
+   <path d="M 0 144 
+L 640 144 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="gd5cff7_axes_1">
+   <g id="gd5cff7_patch_2">
+    <path d="M 120 140 
+L 636 140 
+L 636 4 
+L 120 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="gd5cff7_dato0" class="dato" tabindex="0"><title>False · filas · avisa_ultima_foto: «False» reúne el 89,8: 361.572</title>
+    <path d="M 120 42.909091 
+L 550 42.909091 
+L 550 10.181818 
+L 120 10.181818 
+z
+" clip-path="url(#gd5cff7_pde2f729f9d)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gd5cff7_dato1" class="dato" tabindex="0"><title>True · filas · avisa_ultima_foto: «False» reúne el 89,8: 40.878</title>
+    <path d="M 120 88.363636 
+L 168.614218 88.363636 
+L 168.614218 55.636364 
+L 120 55.636364 
+z
+" clip-path="url(#gd5cff7_pde2f729f9d)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gd5cff7_dato2" class="dato" tabindex="0"><title>(vacío) · filas · avisa_ultima_foto: «False» reúne el 89,8: 193</title>
+    <path d="M 120 133.818182 
+L 120.229526 133.818182 
+L 120.229526 101.090909 
+L 120 101.090909 
+z
+" clip-path="url(#gd5cff7_pde2f729f9d)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gd5cff7_matplotlib.axis_1">
+    <g id="gd5cff7_ytick_1">
+     <g id="gd5cff7_line2d_1"/>
+     <g id="gd5cff7_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="31.357486" transform="rotate(-0 116.5 31.357486)">False</text>
+     </g>
+    </g>
+    <g id="gd5cff7_ytick_2">
+     <g id="gd5cff7_line2d_2"/>
+     <g id="gd5cff7_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="76.732178" transform="rotate(-0 116.5 76.732178)">True</text>
+     </g>
+    </g>
+    <g id="gd5cff7_ytick_3">
+     <g id="gd5cff7_line2d_3"/>
+     <g id="gd5cff7_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="122.36103" transform="rotate(-0 116.5 122.36103)">(vacío)</text>
+     </g>
+    </g>
+   </g>
+   <g id="gd5cff7_patch_3">
+    <path d="M 120 140 
+L 120 4 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="gd5cff7_text_4">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="554.3" y="29.909712" transform="rotate(-0 554.3 29.909712)">361.572</text>
+   </g>
+   <g id="gd5cff7_text_5">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="172.914218" y="75.364258" transform="rotate(-0 172.914218 75.364258)">40.878</text>
+   </g>
+   <g id="gd5cff7_text_6">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="124.529526" y="120.818803" transform="rotate(-0 124.529526 120.818803)">193</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="gd5cff7_pde2f729f9d">
+   <rect x="120" y="4" width="516" height="136"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 402.643 filas, una por fila</p></div><div class="grafico"><p class="g-titulo">desaparece_avisando: «False» reúne el 98,4 % de las filas</p><p class="g-subtitulo">Filas de cada valor (2 valores)</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="106" viewBox="0 0 640 106" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="gb91166_figure_1">
+  <g id="gb91166_patch_1">
+   <path d="M 0 106 
+L 640 106 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="gb91166_axes_1">
+   <g id="gb91166_patch_2">
+    <path d="M 120 102 
+L 636 102 
+L 636 4 
+L 120 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="gb91166_dato0" class="dato" tabindex="0"><title>False · filas · desaparece_avisando: «False» reúne el 98: 396.086</title>
+    <path d="M 120 45.748414 
+L 550 45.748414 
+L 550 8.454545 
+L 120 8.454545 
+z
+" clip-path="url(#gb91166_p0c72dcd2a0)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gb91166_dato1" class="dato" tabindex="0"><title>True · filas · desaparece_avisando: «False» reúne el 98: 6.557</title>
+    <path d="M 120 97.545455 
+L 127.118429 97.545455 
+L 127.118429 60.251586 
+L 120 60.251586 
+z
+" clip-path="url(#gb91166_p0c72dcd2a0)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gb91166_matplotlib.axis_1">
+    <g id="gb91166_ytick_1">
+     <g id="gb91166_line2d_1"/>
+     <g id="gb91166_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="31.913511" transform="rotate(-0 116.5 31.913511)">False</text>
+     </g>
+    </g>
+    <g id="gb91166_ytick_2">
+     <g id="gb91166_line2d_2"/>
+     <g id="gb91166_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="83.630698" transform="rotate(-0 116.5 83.630698)">True</text>
+     </g>
+    </g>
+   </g>
+   <g id="gb91166_patch_3">
+    <path d="M 120 102 
+L 120 4 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="gb91166_text_3">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="554.3" y="30.465738" transform="rotate(-0 554.3 30.465738)">396.086</text>
+   </g>
+   <g id="gb91166_text_4">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="131.418429" y="82.262778" transform="rotate(-0 131.418429 82.262778)">6.557</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="gb91166_p0c72dcd2a0">
+   <rect x="120" y="4" width="516" height="98"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 402.643 filas, una por fila</p></div></div></div>
+<p>Vista por grupos de fabricante: Seagate frente a WDC.</p><table><thead><tr><th>grupo</th><th class="num">Seagate</th><th class="num">WDC</th></tr></thead><tbody><tr><td>total</td><td class="num">5,9</td><td class="num">1,0</td></tr><tr><td>capacidad_tb = 4.0</td><td class="num">10,0</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 6.0</td><td class="num">1,7</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 8.0</td><td class="num">10,8</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 10.0</td><td class="num">18,9</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 12.0</td><td class="num">4,8</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 14.0</td><td class="num">8,1</td><td class="num">2,2</td></tr><tr><td>capacidad_tb = 16.0</td><td class="num">2,0</td><td class="num">1,0</td></tr><tr><td>capacidad_tb = 18.0</td><td class="num">15,5</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 20.0</td><td class="num">no se compara</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 22.0</td><td class="num">no se compara</td><td class="num">0,7</td></tr><tr><td>capacidad_tb = 24.0</td><td class="num">0,7</td><td class="num">no se compara</td></tr></tbody></table>
+<h2>Análisis temporal</h2>
+<p>Periodos incompletos: 2020-01-01 (primer mes de los datos: junta todos los discos que ya estaban). El primer mes de las fotos es ene 2020.</p>
+<div class="grafico"><p class="g-titulo">Altas por mes: el máximo es 122.699 en ene 2020</p><p class="g-subtitulo">Altas por mes, por mes</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="320" viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="g49c428_figure_1">
+  <g id="g49c428_patch_1">
+   <path d="M 0 320 
+L 1000 320 
+L 1000 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="g49c428_axes_1">
+   <g id="g49c428_patch_2">
+    <path d="M 52.5 299.5 
+L 897.752747 299.5 
+L 897.752747 4 
+L 52.5 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="g49c428_matplotlib.axis_1">
+    <g id="g49c428_xtick_1">
+     <g id="g49c428_line2d_1"/>
+     <g id="g49c428_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="55.038297" y="312.464355" transform="rotate(-0 55.038297 312.464355)">ene 2020</text>
+     </g>
+    </g>
+    <g id="g49c428_xtick_2">
+     <g id="g49c428_line2d_2"/>
+     <g id="g49c428_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="131.187193" y="312.624062" transform="rotate(-0 131.187193 312.624062)">jul 2020</text>
+     </g>
+    </g>
+    <g id="g49c428_xtick_3">
+     <g id="g49c428_line2d_3"/>
+     <g id="g49c428_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="207.336089" y="312.464355" transform="rotate(-0 207.336089 312.464355)">ene 2021</text>
+     </g>
+    </g>
+    <g id="g49c428_xtick_4">
+     <g id="g49c428_line2d_4"/>
+     <g id="g49c428_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="283.484985" y="312.624062" transform="rotate(-0 283.484985 312.624062)">jul 2021</text>
+     </g>
+    </g>
+    <g id="g49c428_xtick_5">
+     <g id="g49c428_line2d_5"/>
+     <g id="g49c428_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="359.633881" y="312.464355" transform="rotate(-0 359.633881 312.464355)">ene 2022</text>
+     </g>
+    </g>
+    <g id="g49c428_xtick_6">
+     <g id="g49c428_line2d_6"/>
+     <g id="g49c428_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="435.782777" y="312.624062" transform="rotate(-0 435.782777 312.624062)">jul 2022</text>
+     </g>
+    </g>
+    <g id="g49c428_xtick_7">
+     <g id="g49c428_line2d_7"/>
+     <g id="g49c428_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="511.931673" y="312.464355" transform="rotate(-0 511.931673 312.464355)">ene 2023</text>
+     </g>
+    </g>
+    <g id="g49c428_xtick_8">
+     <g id="g49c428_line2d_8"/>
+     <g id="g49c428_text_8">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="588.080569" y="312.624062" transform="rotate(-0 588.080569 312.624062)">jul 2023</text>
+     </g>
+    </g>
+    <g id="g49c428_xtick_9">
+     <g id="g49c428_line2d_9"/>
+     <g id="g49c428_text_9">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="664.229465" y="312.464355" transform="rotate(-0 664.229465 312.464355)">ene 2024</text>
+     </g>
+    </g>
+    <g id="g49c428_xtick_10">
+     <g id="g49c428_line2d_10"/>
+     <g id="g49c428_text_10">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="740.378361" y="312.624062" transform="rotate(-0 740.378361 312.624062)">jul 2024</text>
+     </g>
+    </g>
+    <g id="g49c428_xtick_11">
+     <g id="g49c428_line2d_11"/>
+     <g id="g49c428_text_11">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="816.527257" y="312.464355" transform="rotate(-0 816.527257 312.464355)">ene 2025</text>
+     </g>
+    </g>
+   </g>
+   <g id="g49c428_matplotlib.axis_2">
+    <g id="g49c428_ytick_1">
+     <g id="g49c428_line2d_12">
+      <path d="M 52.5 286.484812 
+L 897.752747 286.484812 
+" clip-path="url(#g49c428_p028b4060c6)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="g49c428_line2d_13"/>
+     <g id="g49c428_text_12">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="49" y="291.216989" transform="rotate(-0 49 291.216989)">0</text>
+     </g>
+    </g>
+    <g id="g49c428_ytick_2">
+     <g id="g49c428_line2d_14">
+      <path d="M 52.5 176.845371 
+L 897.752747 176.845371 
+" clip-path="url(#g49c428_p028b4060c6)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="g49c428_line2d_15"/>
+     <g id="g49c428_text_13">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="49" y="181.577549" transform="rotate(-0 49 181.577549)">50.000</text>
+     </g>
+    </g>
+    <g id="g49c428_ytick_3">
+     <g id="g49c428_line2d_16">
+      <path d="M 52.5 67.205931 
+L 897.752747 67.205931 
+" clip-path="url(#g49c428_p028b4060c6)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="g49c428_line2d_17"/>
+     <g id="g49c428_text_14">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="49" y="71.938109" transform="rotate(-0 49 71.938109)">100.000</text>
+     </g>
+    </g>
+   </g>
+   <g id="g49c428_line2d_18">
+    <path d="M 55.038297 17.431818 
+L 67.729779 283.397365 
+L 80.421262 281.007225 
+L 93.112745 278.3693 
+L 105.804227 277.106254 
+L 118.49571 278.941618 
+L 131.187193 276.327814 
+L 143.878675 276.748829 
+L 156.570158 271.301942 
+L 169.261641 273.249138 
+L 181.953123 273.931096 
+L 194.644606 269.321854 
+L 207.336089 276.937409 
+L 220.027571 272.687785 
+L 232.719054 275.457277 
+L 245.410537 268.253966 
+L 258.102019 274.7205 
+L 270.793502 271.141868 
+L 283.484985 276.312464 
+L 296.176467 276.897939 
+L 308.86795 270.668226 
+L 321.559433 279.566563 
+L 334.250916 280.735319 
+L 346.942398 280.662957 
+L 359.633881 270.341501 
+L 372.325364 286.068182 
+L 385.016846 275.917762 
+L 397.708329 285.930036 
+L 410.399812 279.597262 
+L 423.091294 282.138704 
+L 435.782777 276.873818 
+L 448.47426 284.623134 
+L 461.165742 272.567181 
+L 473.857225 277.930743 
+L 486.548708 282.180367 
+L 499.24019 279.599455 
+L 511.931673 285.971699 
+L 524.623156 280.700235 
+L 537.314638 278.071081 
+L 550.006121 285.594539 
+L 562.697604 279.94153 
+L 575.389086 280.099411 
+L 588.080569 285.739263 
+L 600.772052 256.939175 
+L 613.463534 277.786019 
+L 626.155017 270.043281 
+L 638.8465 274.025386 
+L 651.537983 275.086695 
+L 664.229465 275.382722 
+L 676.920948 277.821103 
+L 689.612431 280.445871 
+L 702.303913 264.850757 
+L 714.995396 270.181427 
+L 727.686879 282.836011 
+L 740.378361 280.279219 
+L 753.069844 277.671993 
+L 765.761327 280.136688 
+L 778.452809 275.229227 
+L 791.144292 280.537968 
+L 803.835775 278.055732 
+L 816.527257 267.486489 
+L 829.21874 285.568226 
+L 841.910223 269.006092 
+L 854.601705 276.336585 
+L 867.293188 280.415172 
+L 879.984671 277.902236 
+" clip-path="url(#g49c428_p028b4060c6)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="g49c428_dato0" class="dato" tabindex="0"><title>ene 2020 · altas por mes: 122.699</title>
+    <defs>
+     <path id="g49c428_me6bf60eb94" d="M 0 5 
+C 1.326016 5 2.597899 4.473168 3.535534 3.535534 
+C 4.473168 2.597899 5 1.326016 5 0 
+C 5 -1.326016 4.473168 -2.597899 3.535534 -3.535534 
+C 2.597899 -4.473168 1.326016 -5 0 -5 
+C -1.326016 -5 -2.597899 -4.473168 -3.535534 -3.535534 
+C -4.473168 -2.597899 -5 -1.326016 -5 0 
+C -5 1.326016 -4.473168 2.597899 -3.535534 3.535534 
+C -2.597899 4.473168 -1.326016 5 0 5 
+z
+" style="stroke: #2a78d6; stroke-opacity: 0"/>
+    </defs>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="55.038297" y="17.431818" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato1" class="dato" tabindex="0"><title>feb 2020 · altas por mes: 1.408</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="67.729779" y="283.397365" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato2" class="dato" tabindex="0"><title>mar 2020 · altas por mes: 2.498</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="80.421262" y="281.007225" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato3" class="dato" tabindex="0"><title>abr 2020 · altas por mes: 3.701</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="93.112745" y="278.3693" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato4" class="dato" tabindex="0"><title>may 2020 · altas por mes: 4.277</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="105.804227" y="277.106254" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato5" class="dato" tabindex="0"><title>jun 2020 · altas por mes: 3.440</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="118.49571" y="278.941618" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato6" class="dato" tabindex="0"><title>jul 2020 · altas por mes: 4.632</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="131.187193" y="276.327814" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato7" class="dato" tabindex="0"><title>ago 2020 · altas por mes: 4.440</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="143.878675" y="276.748829" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato8" class="dato" tabindex="0"><title>sep 2020 · altas por mes: 6.924</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="156.570158" y="271.301942" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato9" class="dato" tabindex="0"><title>oct 2020 · altas por mes: 6.036</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="169.261641" y="273.249138" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato10" class="dato" tabindex="0"><title>nov 2020 · altas por mes: 5.725</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="181.953123" y="273.931096" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato11" class="dato" tabindex="0"><title>dic 2020 · altas por mes: 7.827</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="194.644606" y="269.321854" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato12" class="dato" tabindex="0"><title>ene 2021 · altas por mes: 4.354</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="207.336089" y="276.937409" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato13" class="dato" tabindex="0"><title>feb 2021 · altas por mes: 6.292</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="220.027571" y="272.687785" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato14" class="dato" tabindex="0"><title>mar 2021 · altas por mes: 5.029</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="232.719054" y="275.457277" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato15" class="dato" tabindex="0"><title>abr 2021 · altas por mes: 8.314</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="245.410537" y="268.253966" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato16" class="dato" tabindex="0"><title>may 2021 · altas por mes: 5.365</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="258.102019" y="274.7205" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato17" class="dato" tabindex="0"><title>jun 2021 · altas por mes: 6.997</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="270.793502" y="271.141868" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato18" class="dato" tabindex="0"><title>jul 2021 · altas por mes: 4.639</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="283.484985" y="276.312464" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato19" class="dato" tabindex="0"><title>ago 2021 · altas por mes: 4.372</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="296.176467" y="276.897939" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato20" class="dato" tabindex="0"><title>sep 2021 · altas por mes: 7.213</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="308.86795" y="270.668226" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato21" class="dato" tabindex="0"><title>oct 2021 · altas por mes: 3.155</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="321.559433" y="279.566563" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato22" class="dato" tabindex="0"><title>nov 2021 · altas por mes: 2.622</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="334.250916" y="280.735319" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato23" class="dato" tabindex="0"><title>dic 2021 · altas por mes: 2.655</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="346.942398" y="280.662957" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato24" class="dato" tabindex="0"><title>ene 2022 · altas por mes: 7.362</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="359.633881" y="270.341501" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato25" class="dato" tabindex="0"><title>feb 2022 · altas por mes: 190</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="372.325364" y="286.068182" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato26" class="dato" tabindex="0"><title>mar 2022 · altas por mes: 4.819</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="385.016846" y="275.917762" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato27" class="dato" tabindex="0"><title>abr 2022 · altas por mes: 253</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="397.708329" y="285.930036" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato28" class="dato" tabindex="0"><title>may 2022 · altas por mes: 3.141</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="410.399812" y="279.597262" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato29" class="dato" tabindex="0"><title>jun 2022 · altas por mes: 1.982</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="423.091294" y="282.138704" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato30" class="dato" tabindex="0"><title>jul 2022 · altas por mes: 4.383</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="435.782777" y="276.873818" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato31" class="dato" tabindex="0"><title>ago 2022 · altas por mes: 849</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="448.47426" y="284.623134" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato32" class="dato" tabindex="0"><title>sep 2022 · altas por mes: 6.347</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="461.165742" y="272.567181" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato33" class="dato" tabindex="0"><title>oct 2022 · altas por mes: 3.901</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="473.857225" y="277.930743" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato34" class="dato" tabindex="0"><title>nov 2022 · altas por mes: 1.963</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="486.548708" y="282.180367" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato35" class="dato" tabindex="0"><title>dic 2022 · altas por mes: 3.140</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="499.24019" y="279.599455" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato36" class="dato" tabindex="0"><title>ene 2023 · altas por mes: 234</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="511.931673" y="285.971699" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato37" class="dato" tabindex="0"><title>feb 2023 · altas por mes: 2.638</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="524.623156" y="280.700235" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato38" class="dato" tabindex="0"><title>mar 2023 · altas por mes: 3.837</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="537.314638" y="278.071081" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato39" class="dato" tabindex="0"><title>abr 2023 · altas por mes: 406</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="550.006121" y="285.594539" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato40" class="dato" tabindex="0"><title>may 2023 · altas por mes: 2.984</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="562.697604" y="279.94153" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato41" class="dato" tabindex="0"><title>jun 2023 · altas por mes: 2.912</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="575.389086" y="280.099411" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato42" class="dato" tabindex="0"><title>jul 2023 · altas por mes: 340</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="588.080569" y="285.739263" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato43" class="dato" tabindex="0"><title>ago 2023 · altas por mes: 13.474</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="600.772052" y="256.939175" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato44" class="dato" tabindex="0"><title>sep 2023 · altas por mes: 3.967</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="613.463534" y="277.786019" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato45" class="dato" tabindex="0"><title>oct 2023 · altas por mes: 7.498</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="626.155017" y="270.043281" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato46" class="dato" tabindex="0"><title>nov 2023 · altas por mes: 5.682</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="638.8465" y="274.025386" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato47" class="dato" tabindex="0"><title>dic 2023 · altas por mes: 5.198</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="651.537983" y="275.086695" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato48" class="dato" tabindex="0"><title>ene 2024 · altas por mes: 5.063</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="664.229465" y="275.382722" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato49" class="dato" tabindex="0"><title>feb 2024 · altas por mes: 3.951</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="676.920948" y="277.821103" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato50" class="dato" tabindex="0"><title>mar 2024 · altas por mes: 2.754</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="689.612431" y="280.445871" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato51" class="dato" tabindex="0"><title>abr 2024 · altas por mes: 9.866</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="702.303913" y="264.850757" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato52" class="dato" tabindex="0"><title>may 2024 · altas por mes: 7.435</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="714.995396" y="270.181427" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato53" class="dato" tabindex="0"><title>jun 2024 · altas por mes: 1.664</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="727.686879" y="282.836011" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato54" class="dato" tabindex="0"><title>jul 2024 · altas por mes: 2.830</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="740.378361" y="280.279219" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato55" class="dato" tabindex="0"><title>ago 2024 · altas por mes: 4.019</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="753.069844" y="277.671993" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato56" class="dato" tabindex="0"><title>sep 2024 · altas por mes: 2.895</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="765.761327" y="280.136688" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato57" class="dato" tabindex="0"><title>oct 2024 · altas por mes: 5.133</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="778.452809" y="275.229227" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato58" class="dato" tabindex="0"><title>nov 2024 · altas por mes: 2.712</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="791.144292" y="280.537968" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato59" class="dato" tabindex="0"><title>dic 2024 · altas por mes: 3.844</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="803.835775" y="278.055732" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato60" class="dato" tabindex="0"><title>ene 2025 · altas por mes: 8.664</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="816.527257" y="267.486489" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato61" class="dato" tabindex="0"><title>feb 2025 · altas por mes: 418</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="829.21874" y="285.568226" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato62" class="dato" tabindex="0"><title>mar 2025 · altas por mes: 7.971</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="841.910223" y="269.006092" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato63" class="dato" tabindex="0"><title>abr 2025 · altas por mes: 4.628</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="854.601705" y="276.336585" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato64" class="dato" tabindex="0"><title>may 2025 · altas por mes: 2.768</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="867.293188" y="280.415172" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_dato65" class="dato" tabindex="0"><title>jun 2025 · altas por mes: 3.914</title>
+    <g clip-path="url(#g49c428_p028b4060c6)">
+     <use xlink:href="#g49c428_me6bf60eb94" x="879.984671" y="277.902236" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g49c428_patch_3">
+    <path d="M 52.5 299.5 
+L 897.752747 299.5 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="g49c428_text_15">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="880.999989" y="281.219268" transform="rotate(-0 880.999989 281.219268)">altas por mes 3.914</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="g49c428_p028b4060c6">
+   <rect x="52.5" y="4" width="845.252747" height="295.5"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 66 periodos</p></div><div class="grafico"><p class="g-titulo">Las bajas por mes llegan a 5.291</p><p class="g-subtitulo">Discos que acaban en fallo o desaparecen, por el mes de su fecha de fin</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="320" viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="gb8e86b_figure_1">
+  <g id="gb8e86b_patch_1">
+   <path d="M 0 320 
+L 1000 320 
+L 1000 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="gb8e86b_axes_1">
+   <g id="gb8e86b_patch_2">
+    <path d="M 48 299.5 
+L 934.571674 299.5 
+L 934.571674 4 
+L 48 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="gb8e86b_matplotlib.axis_1">
+    <g id="gb8e86b_xtick_1">
+     <g id="gb8e86b_line2d_1"/>
+     <g id="gb8e86b_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="50.662377" y="312.464355" transform="rotate(-0 50.662377 312.464355)">ene 2020</text>
+     </g>
+    </g>
+    <g id="gb8e86b_xtick_2">
+     <g id="gb8e86b_line2d_2"/>
+     <g id="gb8e86b_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="130.533699" y="312.624062" transform="rotate(-0 130.533699 312.624062)">jul 2020</text>
+     </g>
+    </g>
+    <g id="gb8e86b_xtick_3">
+     <g id="gb8e86b_line2d_3"/>
+     <g id="gb8e86b_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="210.405021" y="312.464355" transform="rotate(-0 210.405021 312.464355)">ene 2021</text>
+     </g>
+    </g>
+    <g id="gb8e86b_xtick_4">
+     <g id="gb8e86b_line2d_4"/>
+     <g id="gb8e86b_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="290.276343" y="312.624062" transform="rotate(-0 290.276343 312.624062)">jul 2021</text>
+     </g>
+    </g>
+    <g id="gb8e86b_xtick_5">
+     <g id="gb8e86b_line2d_5"/>
+     <g id="gb8e86b_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="370.147665" y="312.464355" transform="rotate(-0 370.147665 312.464355)">ene 2022</text>
+     </g>
+    </g>
+    <g id="gb8e86b_xtick_6">
+     <g id="gb8e86b_line2d_6"/>
+     <g id="gb8e86b_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="450.018987" y="312.624062" transform="rotate(-0 450.018987 312.624062)">jul 2022</text>
+     </g>
+    </g>
+    <g id="gb8e86b_xtick_7">
+     <g id="gb8e86b_line2d_7"/>
+     <g id="gb8e86b_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="529.890309" y="312.464355" transform="rotate(-0 529.890309 312.464355)">ene 2023</text>
+     </g>
+    </g>
+    <g id="gb8e86b_xtick_8">
+     <g id="gb8e86b_line2d_8"/>
+     <g id="gb8e86b_text_8">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="609.761631" y="312.624062" transform="rotate(-0 609.761631 312.624062)">jul 2023</text>
+     </g>
+    </g>
+    <g id="gb8e86b_xtick_9">
+     <g id="gb8e86b_line2d_9"/>
+     <g id="gb8e86b_text_9">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="689.632953" y="312.464355" transform="rotate(-0 689.632953 312.464355)">ene 2024</text>
+     </g>
+    </g>
+    <g id="gb8e86b_xtick_10">
+     <g id="gb8e86b_line2d_10"/>
+     <g id="gb8e86b_text_10">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="769.504275" y="312.624062" transform="rotate(-0 769.504275 312.624062)">jul 2024</text>
+     </g>
+    </g>
+    <g id="gb8e86b_xtick_11">
+     <g id="gb8e86b_line2d_11"/>
+     <g id="gb8e86b_text_11">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="849.375597" y="312.464355" transform="rotate(-0 849.375597 312.464355)">ene 2025</text>
+     </g>
+    </g>
+   </g>
+   <g id="gb8e86b_matplotlib.axis_2">
+    <g id="gb8e86b_ytick_1">
+     <g id="gb8e86b_line2d_12">
+      <path d="M 48 286.068182 
+L 934.571674 286.068182 
+" clip-path="url(#gb8e86b_p1d83723e7a)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gb8e86b_line2d_13"/>
+     <g id="gb8e86b_text_12">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="290.80036" transform="rotate(-0 44.5 290.80036)">0</text>
+     </g>
+    </g>
+    <g id="gb8e86b_ytick_2">
+     <g id="gb8e86b_line2d_14">
+      <path d="M 48 235.295858 
+L 934.571674 235.295858 
+" clip-path="url(#gb8e86b_p1d83723e7a)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gb8e86b_line2d_15"/>
+     <g id="gb8e86b_text_13">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="240.028036" transform="rotate(-0 44.5 240.028036)">1.000</text>
+     </g>
+    </g>
+    <g id="gb8e86b_ytick_3">
+     <g id="gb8e86b_line2d_16">
+      <path d="M 48 184.523535 
+L 934.571674 184.523535 
+" clip-path="url(#gb8e86b_p1d83723e7a)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gb8e86b_line2d_17"/>
+     <g id="gb8e86b_text_14">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="189.255713" transform="rotate(-0 44.5 189.255713)">2.000</text>
+     </g>
+    </g>
+    <g id="gb8e86b_ytick_4">
+     <g id="gb8e86b_line2d_18">
+      <path d="M 48 133.751211 
+L 934.571674 133.751211 
+" clip-path="url(#gb8e86b_p1d83723e7a)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gb8e86b_line2d_19"/>
+     <g id="gb8e86b_text_15">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="138.483389" transform="rotate(-0 44.5 138.483389)">3.000</text>
+     </g>
+    </g>
+    <g id="gb8e86b_ytick_5">
+     <g id="gb8e86b_line2d_20">
+      <path d="M 48 82.978888 
+L 934.571674 82.978888 
+" clip-path="url(#gb8e86b_p1d83723e7a)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gb8e86b_line2d_21"/>
+     <g id="gb8e86b_text_16">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="87.711066" transform="rotate(-0 44.5 87.711066)">4.000</text>
+     </g>
+    </g>
+    <g id="gb8e86b_ytick_6">
+     <g id="gb8e86b_line2d_22">
+      <path d="M 48 32.206564 
+L 934.571674 32.206564 
+" clip-path="url(#gb8e86b_p1d83723e7a)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gb8e86b_line2d_23"/>
+     <g id="gb8e86b_text_17">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="36.938742" transform="rotate(-0 44.5 36.938742)">5.000</text>
+     </g>
+    </g>
+   </g>
+   <g id="gb8e86b_line2d_24">
+    <path d="M 50.662377 286.068182 
+L 63.974264 286.068182 
+L 77.286151 285.915865 
+L 90.598038 283.021842 
+L 103.909925 255.757105 
+L 117.221812 213.209898 
+L 130.533699 195.439584 
+L 143.845586 174.318298 
+L 157.157473 182.492642 
+L 170.46936 122.5813 
+L 183.781247 214.123799 
+L 197.093134 228.086188 
+L 210.405021 183.406544 
+L 223.716908 150.252216 
+L 237.028795 44.544239 
+L 250.340682 77.952428 
+L 263.652569 111.309844 
+L 276.964456 160.762087 
+L 290.276343 235.955899 
+L 303.58823 259.818891 
+L 316.900117 258.600355 
+L 330.212004 277.233798 
+L 343.523891 286.068182 
+L 356.835778 285.966637 
+L 370.147665 286.068182 
+L 383.459552 286.017409 
+L 396.771439 285.662003 
+L 410.083326 286.068182 
+L 423.395213 286.017409 
+L 436.7071 285.205052 
+L 450.018987 285.966637 
+L 463.330874 286.017409 
+L 476.642761 285.408142 
+L 489.954648 286.017409 
+L 503.266535 285.966637 
+L 516.578422 285.205052 
+L 529.890309 285.763548 
+L 543.202196 285.915865 
+L 556.514083 282.260258 
+L 569.82597 239.306872 
+L 583.137857 285.763548 
+L 596.449744 285.81432 
+L 609.761631 286.068182 
+L 623.073518 194.627227 
+L 636.385405 150.201444 
+L 649.697292 241.89626 
+L 663.009179 240.677725 
+L 676.321066 106.791108 
+L 689.632953 157.055708 
+L 702.94484 240.57618 
+L 716.256727 144.261082 
+L 729.568614 17.431818 
+L 742.880501 286.017409 
+L 756.192388 283.935744 
+L 769.504275 285.712776 
+L 782.816162 124.256787 
+L 796.128049 91.610183 
+L 809.439936 240.068457 
+L 822.751823 285.81432 
+L 836.06371 238.596059 
+L 849.375597 285.966637 
+L 862.687484 285.966637 
+L 875.999371 72.722878 
+L 889.311258 285.662003 
+L 902.623145 273.628963 
+L 915.935032 286.068182 
+" clip-path="url(#gb8e86b_p1d83723e7a)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="gb8e86b_dato0" class="dato" tabindex="0"><title>ene 2020 · desaparece: 0</title>
+    <defs>
+     <path id="gb8e86b_me6bf60eb94" d="M 0 5 
+C 1.326016 5 2.597899 4.473168 3.535534 3.535534 
+C 4.473168 2.597899 5 1.326016 5 0 
+C 5 -1.326016 4.473168 -2.597899 3.535534 -3.535534 
+C 2.597899 -4.473168 1.326016 -5 0 -5 
+C -1.326016 -5 -2.597899 -4.473168 -3.535534 -3.535534 
+C -4.473168 -2.597899 -5 -1.326016 -5 0 
+C -5 1.326016 -4.473168 2.597899 -3.535534 3.535534 
+C -2.597899 4.473168 -1.326016 5 0 5 
+z
+" style="stroke: #2a78d6; stroke-opacity: 0"/>
+    </defs>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="50.662377" y="286.068182" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato1" class="dato" tabindex="0"><title>feb 2020 · desaparece: 0</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="63.974264" y="286.068182" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato2" class="dato" tabindex="0"><title>mar 2020 · desaparece: 3</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="77.286151" y="285.915865" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato3" class="dato" tabindex="0"><title>abr 2020 · desaparece: 60</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="90.598038" y="283.021842" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato4" class="dato" tabindex="0"><title>may 2020 · desaparece: 597</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="103.909925" y="255.757105" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato5" class="dato" tabindex="0"><title>jun 2020 · desaparece: 1.435</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="117.221812" y="213.209898" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato6" class="dato" tabindex="0"><title>jul 2020 · desaparece: 1.785</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="130.533699" y="195.439584" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato7" class="dato" tabindex="0"><title>ago 2020 · desaparece: 2.201</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="143.845586" y="174.318298" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato8" class="dato" tabindex="0"><title>sep 2020 · desaparece: 2.040</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="157.157473" y="182.492642" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato9" class="dato" tabindex="0"><title>oct 2020 · desaparece: 3.220</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="170.46936" y="122.5813" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato10" class="dato" tabindex="0"><title>nov 2020 · desaparece: 1.417</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="183.781247" y="214.123799" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato11" class="dato" tabindex="0"><title>dic 2020 · desaparece: 1.142</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="197.093134" y="228.086188" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato12" class="dato" tabindex="0"><title>ene 2021 · desaparece: 2.022</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="210.405021" y="183.406544" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato13" class="dato" tabindex="0"><title>feb 2021 · desaparece: 2.675</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="223.716908" y="150.252216" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato14" class="dato" tabindex="0"><title>mar 2021 · desaparece: 4.757</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="237.028795" y="44.544239" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato15" class="dato" tabindex="0"><title>abr 2021 · desaparece: 4.099</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="250.340682" y="77.952428" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato16" class="dato" tabindex="0"><title>may 2021 · desaparece: 3.442</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="263.652569" y="111.309844" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato17" class="dato" tabindex="0"><title>jun 2021 · desaparece: 2.468</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="276.964456" y="160.762087" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato18" class="dato" tabindex="0"><title>jul 2021 · desaparece: 987</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="290.276343" y="235.955899" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato19" class="dato" tabindex="0"><title>ago 2021 · desaparece: 517</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="303.58823" y="259.818891" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato20" class="dato" tabindex="0"><title>sep 2021 · desaparece: 541</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="316.900117" y="258.600355" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato21" class="dato" tabindex="0"><title>oct 2021 · desaparece: 174</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="330.212004" y="277.233798" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato22" class="dato" tabindex="0"><title>nov 2021 · desaparece: 0</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="343.523891" y="286.068182" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato23" class="dato" tabindex="0"><title>dic 2021 · desaparece: 2</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="356.835778" y="285.966637" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato24" class="dato" tabindex="0"><title>ene 2022 · desaparece: 0</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="370.147665" y="286.068182" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato25" class="dato" tabindex="0"><title>feb 2022 · desaparece: 1</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="383.459552" y="286.017409" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato26" class="dato" tabindex="0"><title>mar 2022 · desaparece: 8</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="396.771439" y="285.662003" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato27" class="dato" tabindex="0"><title>abr 2022 · desaparece: 0</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="410.083326" y="286.068182" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato28" class="dato" tabindex="0"><title>may 2022 · desaparece: 1</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="423.395213" y="286.017409" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato29" class="dato" tabindex="0"><title>jun 2022 · desaparece: 17</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="436.7071" y="285.205052" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato30" class="dato" tabindex="0"><title>jul 2022 · desaparece: 2</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="450.018987" y="285.966637" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato31" class="dato" tabindex="0"><title>ago 2022 · desaparece: 1</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="463.330874" y="286.017409" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato32" class="dato" tabindex="0"><title>sep 2022 · desaparece: 13</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="476.642761" y="285.408142" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato33" class="dato" tabindex="0"><title>oct 2022 · desaparece: 1</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="489.954648" y="286.017409" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato34" class="dato" tabindex="0"><title>nov 2022 · desaparece: 2</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="503.266535" y="285.966637" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato35" class="dato" tabindex="0"><title>dic 2022 · desaparece: 17</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="516.578422" y="285.205052" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato36" class="dato" tabindex="0"><title>ene 2023 · desaparece: 6</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="529.890309" y="285.763548" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato37" class="dato" tabindex="0"><title>feb 2023 · desaparece: 3</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="543.202196" y="285.915865" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato38" class="dato" tabindex="0"><title>mar 2023 · desaparece: 75</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="556.514083" y="282.260258" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato39" class="dato" tabindex="0"><title>abr 2023 · desaparece: 921</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="569.82597" y="239.306872" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato40" class="dato" tabindex="0"><title>may 2023 · desaparece: 6</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="583.137857" y="285.763548" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato41" class="dato" tabindex="0"><title>jun 2023 · desaparece: 5</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="596.449744" y="285.81432" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato42" class="dato" tabindex="0"><title>jul 2023 · desaparece: 0</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="609.761631" y="286.068182" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato43" class="dato" tabindex="0"><title>ago 2023 · desaparece: 1.801</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="623.073518" y="194.627227" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato44" class="dato" tabindex="0"><title>sep 2023 · desaparece: 2.676</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="636.385405" y="150.201444" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato45" class="dato" tabindex="0"><title>oct 2023 · desaparece: 870</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="649.697292" y="241.89626" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato46" class="dato" tabindex="0"><title>nov 2023 · desaparece: 894</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="663.009179" y="240.677725" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato47" class="dato" tabindex="0"><title>dic 2023 · desaparece: 3.531</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="676.321066" y="106.791108" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato48" class="dato" tabindex="0"><title>ene 2024 · desaparece: 2.541</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="689.632953" y="157.055708" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato49" class="dato" tabindex="0"><title>feb 2024 · desaparece: 896</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="702.94484" y="240.57618" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato50" class="dato" tabindex="0"><title>mar 2024 · desaparece: 2.793</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="716.256727" y="144.261082" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato51" class="dato" tabindex="0"><title>abr 2024 · desaparece: 5.291</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="729.568614" y="17.431818" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato52" class="dato" tabindex="0"><title>may 2024 · desaparece: 1</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="742.880501" y="286.017409" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato53" class="dato" tabindex="0"><title>jun 2024 · desaparece: 42</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="756.192388" y="283.935744" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato54" class="dato" tabindex="0"><title>jul 2024 · desaparece: 7</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="769.504275" y="285.712776" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato55" class="dato" tabindex="0"><title>ago 2024 · desaparece: 3.187</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="782.816162" y="124.256787" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato56" class="dato" tabindex="0"><title>sep 2024 · desaparece: 3.830</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="796.128049" y="91.610183" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato57" class="dato" tabindex="0"><title>oct 2024 · desaparece: 906</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="809.439936" y="240.068457" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato58" class="dato" tabindex="0"><title>nov 2024 · desaparece: 5</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="822.751823" y="285.81432" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato59" class="dato" tabindex="0"><title>dic 2024 · desaparece: 935</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="836.06371" y="238.596059" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato60" class="dato" tabindex="0"><title>ene 2025 · desaparece: 2</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="849.375597" y="285.966637" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato61" class="dato" tabindex="0"><title>feb 2025 · desaparece: 2</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="862.687484" y="285.966637" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato62" class="dato" tabindex="0"><title>mar 2025 · desaparece: 4.202</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="875.999371" y="72.722878" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato63" class="dato" tabindex="0"><title>abr 2025 · desaparece: 8</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="889.311258" y="285.662003" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato64" class="dato" tabindex="0"><title>may 2025 · desaparece: 245</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="902.623145" y="273.628963" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato65" class="dato" tabindex="0"><title>jun 2025 · desaparece: 0</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="915.935032" y="286.068182" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_line2d_25">
+    <path d="M 50.662377 278.909284 
+L 63.974264 280.889405 
+L 77.286151 281.346356 
+L 90.598038 281.244811 
+L 103.909925 280.78786 
+L 117.221812 282.361802 
+L 130.533699 280.12782 
+L 143.845586 280.686316 
+L 157.157473 280.78786 
+L 170.46936 279.873958 
+L 183.781247 279.417007 
+L 197.093134 280.026275 
+L 210.405021 279.873958 
+L 223.716908 279.873958 
+L 237.028795 280.686316 
+L 250.340682 278.756967 
+L 263.652569 277.893838 
+L 276.964456 279.163146 
+L 290.276343 277.335342 
+L 303.58823 276.929164 
+L 316.900117 278.046155 
+L 330.212004 276.776847 
+L 343.523891 277.436887 
+L 356.835778 277.487659 
+L 370.147665 276.42144 
+L 383.459552 277.94461 
+L 396.771439 272.461199 
+L 410.083326 274.289003 
+L 423.395213 272.105793 
+L 436.7071 273.070467 
+L 450.018987 269.465632 
+L 463.330874 271.39498 
+L 476.642761 270.938029 
+L 489.954648 273.425873 
+L 503.266535 274.085913 
+L 516.578422 275.152132 
+L 529.890309 271.547297 
+L 543.202196 273.882824 
+L 556.514083 267.485511 
+L 569.82597 257.381819 
+L 583.137857 262.86523 
+L 596.449744 269.871811 
+L 609.761631 271.496525 
+L 623.073518 267.739373 
+L 636.385405 271.141119 
+L 649.697292 267.485511 
+L 663.009179 265.606935 
+L 676.321066 273.121239 
+L 689.632953 268.399413 
+L 702.94484 269.059453 
+L 716.256727 272.562744 
+L 729.568614 271.902704 
+L 742.880501 262.255962 
+L 756.192388 263.169864 
+L 769.504275 260.68202 
+L 782.816162 258.244949 
+L 796.128049 268.856364 
+L 809.439936 268.856364 
+L 822.751823 269.719494 
+L 836.06371 268.805592 
+L 849.375597 266.927016 
+L 862.687484 269.770266 
+L 875.999371 267.383967 
+L 889.311258 266.673154 
+L 902.623145 268.957909 
+L 915.935032 268.856364 
+" clip-path="url(#gb8e86b_p1d83723e7a)" style="fill: none; stroke: #eb6834; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="gb8e86b_dato66" class="dato" tabindex="0"><title>ene 2020 · fallo: 141</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="50.662377" y="278.909284" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato67" class="dato" tabindex="0"><title>feb 2020 · fallo: 102</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="63.974264" y="280.889405" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato68" class="dato" tabindex="0"><title>mar 2020 · fallo: 93</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="77.286151" y="281.346356" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato69" class="dato" tabindex="0"><title>abr 2020 · fallo: 95</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="90.598038" y="281.244811" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato70" class="dato" tabindex="0"><title>may 2020 · fallo: 104</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="103.909925" y="280.78786" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato71" class="dato" tabindex="0"><title>jun 2020 · fallo: 73</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="117.221812" y="282.361802" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato72" class="dato" tabindex="0"><title>jul 2020 · fallo: 117</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="130.533699" y="280.12782" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato73" class="dato" tabindex="0"><title>ago 2020 · fallo: 106</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="143.845586" y="280.686316" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato74" class="dato" tabindex="0"><title>sep 2020 · fallo: 104</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="157.157473" y="280.78786" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato75" class="dato" tabindex="0"><title>oct 2020 · fallo: 122</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="170.46936" y="279.873958" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato76" class="dato" tabindex="0"><title>nov 2020 · fallo: 131</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="183.781247" y="279.417007" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato77" class="dato" tabindex="0"><title>dic 2020 · fallo: 119</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="197.093134" y="280.026275" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato78" class="dato" tabindex="0"><title>ene 2021 · fallo: 122</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="210.405021" y="279.873958" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato79" class="dato" tabindex="0"><title>feb 2021 · fallo: 122</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="223.716908" y="279.873958" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato80" class="dato" tabindex="0"><title>mar 2021 · fallo: 106</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="237.028795" y="280.686316" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato81" class="dato" tabindex="0"><title>abr 2021 · fallo: 144</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="250.340682" y="278.756967" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato82" class="dato" tabindex="0"><title>may 2021 · fallo: 161</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="263.652569" y="277.893838" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato83" class="dato" tabindex="0"><title>jun 2021 · fallo: 136</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="276.964456" y="279.163146" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato84" class="dato" tabindex="0"><title>jul 2021 · fallo: 172</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="290.276343" y="277.335342" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato85" class="dato" tabindex="0"><title>ago 2021 · fallo: 180</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="303.58823" y="276.929164" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato86" class="dato" tabindex="0"><title>sep 2021 · fallo: 158</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="316.900117" y="278.046155" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato87" class="dato" tabindex="0"><title>oct 2021 · fallo: 183</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="330.212004" y="276.776847" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato88" class="dato" tabindex="0"><title>nov 2021 · fallo: 170</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="343.523891" y="277.436887" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato89" class="dato" tabindex="0"><title>dic 2021 · fallo: 169</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="356.835778" y="277.487659" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato90" class="dato" tabindex="0"><title>ene 2022 · fallo: 190</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="370.147665" y="276.42144" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato91" class="dato" tabindex="0"><title>feb 2022 · fallo: 160</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="383.459552" y="277.94461" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato92" class="dato" tabindex="0"><title>mar 2022 · fallo: 268</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="396.771439" y="272.461199" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato93" class="dato" tabindex="0"><title>abr 2022 · fallo: 232</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="410.083326" y="274.289003" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato94" class="dato" tabindex="0"><title>may 2022 · fallo: 275</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="423.395213" y="272.105793" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato95" class="dato" tabindex="0"><title>jun 2022 · fallo: 256</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="436.7071" y="273.070467" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato96" class="dato" tabindex="0"><title>jul 2022 · fallo: 327</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="450.018987" y="269.465632" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato97" class="dato" tabindex="0"><title>ago 2022 · fallo: 289</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="463.330874" y="271.39498" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato98" class="dato" tabindex="0"><title>sep 2022 · fallo: 298</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="476.642761" y="270.938029" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato99" class="dato" tabindex="0"><title>oct 2022 · fallo: 249</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="489.954648" y="273.425873" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato100" class="dato" tabindex="0"><title>nov 2022 · fallo: 236</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="503.266535" y="274.085913" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato101" class="dato" tabindex="0"><title>dic 2022 · fallo: 215</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="516.578422" y="275.152132" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato102" class="dato" tabindex="0"><title>ene 2023 · fallo: 286</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="529.890309" y="271.547297" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato103" class="dato" tabindex="0"><title>feb 2023 · fallo: 240</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="543.202196" y="273.882824" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato104" class="dato" tabindex="0"><title>mar 2023 · fallo: 366</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="556.514083" y="267.485511" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato105" class="dato" tabindex="0"><title>abr 2023 · fallo: 565</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="569.82597" y="257.381819" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato106" class="dato" tabindex="0"><title>may 2023 · fallo: 457</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="583.137857" y="262.86523" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato107" class="dato" tabindex="0"><title>jun 2023 · fallo: 319</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="596.449744" y="269.871811" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato108" class="dato" tabindex="0"><title>jul 2023 · fallo: 287</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="609.761631" y="271.496525" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato109" class="dato" tabindex="0"><title>ago 2023 · fallo: 361</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="623.073518" y="267.739373" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato110" class="dato" tabindex="0"><title>sep 2023 · fallo: 294</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="636.385405" y="271.141119" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato111" class="dato" tabindex="0"><title>oct 2023 · fallo: 366</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="649.697292" y="267.485511" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato112" class="dato" tabindex="0"><title>nov 2023 · fallo: 403</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="663.009179" y="265.606935" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato113" class="dato" tabindex="0"><title>dic 2023 · fallo: 255</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="676.321066" y="273.121239" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato114" class="dato" tabindex="0"><title>ene 2024 · fallo: 348</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="689.632953" y="268.399413" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato115" class="dato" tabindex="0"><title>feb 2024 · fallo: 335</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="702.94484" y="269.059453" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato116" class="dato" tabindex="0"><title>mar 2024 · fallo: 266</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="716.256727" y="272.562744" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato117" class="dato" tabindex="0"><title>abr 2024 · fallo: 279</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="729.568614" y="271.902704" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato118" class="dato" tabindex="0"><title>may 2024 · fallo: 469</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="742.880501" y="262.255962" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato119" class="dato" tabindex="0"><title>jun 2024 · fallo: 451</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="756.192388" y="263.169864" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato120" class="dato" tabindex="0"><title>jul 2024 · fallo: 500</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="769.504275" y="260.68202" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato121" class="dato" tabindex="0"><title>ago 2024 · fallo: 548</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="782.816162" y="258.244949" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato122" class="dato" tabindex="0"><title>sep 2024 · fallo: 339</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="796.128049" y="268.856364" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato123" class="dato" tabindex="0"><title>oct 2024 · fallo: 339</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="809.439936" y="268.856364" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato124" class="dato" tabindex="0"><title>nov 2024 · fallo: 322</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="822.751823" y="269.719494" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato125" class="dato" tabindex="0"><title>dic 2024 · fallo: 340</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="836.06371" y="268.805592" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato126" class="dato" tabindex="0"><title>ene 2025 · fallo: 377</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="849.375597" y="266.927016" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato127" class="dato" tabindex="0"><title>feb 2025 · fallo: 321</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="862.687484" y="269.770266" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato128" class="dato" tabindex="0"><title>mar 2025 · fallo: 368</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="875.999371" y="267.383967" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato129" class="dato" tabindex="0"><title>abr 2025 · fallo: 382</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="889.311258" y="266.673154" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato130" class="dato" tabindex="0"><title>may 2025 · fallo: 337</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="902.623145" y="268.957909" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_dato131" class="dato" tabindex="0"><title>jun 2025 · fallo: 339</title>
+    <g clip-path="url(#gb8e86b_p1d83723e7a)">
+     <use xlink:href="#gb8e86b_me6bf60eb94" x="915.935032" y="268.856364" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb8e86b_patch_3">
+    <path d="M 48 299.5 
+L 934.571674 299.5 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="gb8e86b_text_18">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="916.999983" y="289.385213" transform="rotate(-0 916.999983 289.385213)">desaparece 0</text>
+   </g>
+   <g id="gb8e86b_text_19">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="916.999983" y="265.83582" transform="rotate(-0 916.999983 265.83582)">fallo 339</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="gb8e86b_p1d83723e7a">
+   <rect x="48" y="4" width="886.571674" height="295.5"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 88.312 discos</p></div>
+<table><thead><tr><th>serie</th><th class="num">periodos completos</th><th class="num">pendiente por periodo</th><th class="num">R² lineal</th><th class="num">crecimiento exponencial</th><th class="num">R² exponencial</th><th class="num">CAGR</th><th>años completos</th></tr></thead><tbody><tr><td>altas por mes</td><td class="num">65</td><td class="num">−3,2</td><td class="num">0,001</td><td class="num">−0,30 %</td><td class="num">0,004</td><td class="num">−5,08 %</td><td>2021, 2022, 2023, 2024</td></tr></tbody></table>
+<h2>Frente al objetivo</h2>
+<p>No aplica: esta tabla no lleva el objetivo. Se describe entera, con los dos periodos, porque la parte analítica usa todos los datos de trabajo (reglas-negocio §7).</p>
+<h2>Hallazgos principales</h2>
+<ul><li>H-01. Acaba en «desaparece» el 35,5 % de los discos de HGST (46.395) y el 0,2 % de los de WDC (74.848). No es una tasa anual: mezcla edades y años observados. Columnas: evento, fabricante; comprobado por capacidad_tb.</li></ul>
+<p>Cada hallazgo remite a su gráfico de arriba: cat-evento.</p>
+<h2>Alertas y limitaciones</h2><ul>
+<li>A-01. Acaba en «fallo» el 5,9 % de los discos de Seagate (173.921) y el 1,0 % de los de WDC (74.848). No es una tasa anual: mezcla edades y años observados. Al separar por capacidad_tb cambia: parte «fallo» por fabricante: la diferencia entre Seagate y WDC es de 4,93 puntos en el total y de 0,96 dentro de capacidad_tb = 16: cambia de tamaño.</li>
+<li>A-02. Un disco que desaparece se va en algún día del mes siguiente a su última foto, que no se sabe (reglas-transformacion §5). La supervivencia, con su censura, es del paso 5.</li>
+<li>A-03. Comparar fabricantes o capacidades mezcla discos de edades y modelos distintos (reglas-negocio §7): la diferencia no es de la marca ni de la capacidad.</li>
+</ul>
+<h2>Hipótesis y preguntas abiertas</h2>
+<ul><li>Hi-01. El cambio de parte «fallo» por fabricante al separar puede venir de que cada grupo tiene otra mezcla de modelos y edades. Haría falta compararla a igual modelo y edad, que es del paso 5 (reglas-negocio §7). Alternativas repasadas: el tamaño del grupo, el calendario, la regresión a la media, la causa al revés, una variable que no está en la tabla (edad, vault).</li></ul>
+<h2>Observaciones de la persona</h2>
+<p>Todavía no hay observaciones. La persona las escribe en «observaciones» del JSON y se vuelve a ejecutar.</p>
+<h2>Comprobaciones aplicadas</h2>
+<table><thead><tr><th>comprobación</th><th>estado</th><th>detalle</th></tr></thead><tbody><tr><td>1 Tiempo</td><td>aplicada con resultado</td><td>ordenado por fecha; dos granularidades (mes o trimestre y año); periodos incompletos: 2020-01-01; el primer mes de las fotos es ene 2020</td></tr><tr><td>2 Pareto y ABC</td><td>no aplica</td><td>la tabla no tiene una magnitud que se sume por elemento fuera de lo ya descrito en otro informe</td></tr><tr><td>3 Respaldo de cada cifra</td><td>aplicada con resultado</td><td>cada hallazgo lleva su cifra, sus filas y sus columnas</td></tr><tr><td>4 Datos personales en el informe</td><td>aplicada sin nada relevante</td><td>ninguna columna trae nombres, correos, teléfonos, documentos ni cuentas (reglas-negocio §9); el número de serie identifica un disco y no sale en ningún gráfico</td></tr><tr><td>5 Códigos sin etiqueta</td><td>aplicada sin nada relevante</td><td>todas las columnas tienen su significado en las reglas de transformación</td></tr><tr><td>6 Reproducibilidad</td><td>aplicada con resultado</td><td>versiones, fecha de ejecución, tamaño y huella en «Contexto»</td></tr><tr><td>7 Correlaciones</td><td>no aplica</td><td>esta tabla no lleva el objetivo y nadie pidió correlaciones</td></tr><tr><td>8 Forma de las hipótesis</td><td>aplicada con resultado</td><td>1 hipótesis, cada una con lo que haría falta y las cinco alternativas repasadas</td></tr><tr><td>9 Variables asimétricas</td><td>aplicada con resultado</td><td>muy asimétricas, que se comparan con la mediana: edad_entrada_anos</td></tr><tr><td>10 Gráficos</td><td>aplicada con resultado</td><td>un eje por gráfico, color por papel, meses con su nombre, títulos calculados del dato; gráficos repetidos quitados: ninguno</td></tr><tr><td>11 Series de negocio</td><td>aplicada con resultado</td><td>altas por mes: 65 periodos completos, CAGR −5,08 %</td></tr><tr><td>12 Frente al objetivo</td><td>no aplica</td><td>esta tabla no lleva el objetivo; se describe entera, con los dos periodos (reglas-negocio §7)</td></tr><tr><td>13 Discreta o continua</td><td>aplicada con resultado</td><td>discreta si es entera y tiene como mucho min(20, 5 % de las filas) valores distintos; 0 discretas y 2 continuas</td></tr><tr><td>14 Texto</td><td>no aplica</td><td>no hay columnas de texto libre</td></tr><tr><td>15 Alta cardinalidad</td><td>aplicada con resultado</td><td>model: 61 valores, las 10 más frecuentes reúnen el 70,9 %</td></tr><tr><td>16 Observaciones de la persona</td><td>aplicada sin nada relevante</td><td>apartado vacío: la persona escribe sus observaciones y se vuelve a ejecutar</td></tr><tr><td>17 La tabla de estadísticos se lee</td><td>aplicada con resultado</td><td>edad_entrada_anos (media lejos de la mediana)</td></tr><tr><td>18 Lo esperable</td><td>no aplica</td><td>las reglas de negocio no tienen la tabla «Lo esperable»</td></tr></tbody></table>
+<h2>Parámetros usados</h2>
+<table><thead><tr><th>parámetro</th><th>valor</th><th>de dónde sale</th></tr></thead><tbody><tr><td>numérica discreta</td><td>entera y con como mucho min(20, 5 % de las filas) valores distintos</td><td>por defecto (parametros.md)</td></tr><tr><td>filas mínimas para comparar una categoría frente al objetivo</td><td>30</td><td>por defecto (parametros.md)</td></tr><tr><td>alta cardinalidad</td><td>más de 50 valores distintos</td><td>por defecto</td></tr><tr><td>las más frecuentes en alta cardinalidad</td><td>10</td><td>por defecto</td></tr><tr><td>texto muy corto</td><td>menos de 3 caracteres</td><td>por defecto; no hay texto libre</td></tr><tr><td>diagrama de caja</td><td>no se dibuja ninguno: todas las tablas pasan de 1.000 filas o el histograma ya lo enseña</td><td>por defecto</td></tr><tr><td>parte con que se cruza el objetivo</td><td>construcción</td><td>reglas-negocio §7, la partición por fecha</td></tr><tr><td>muestra fija de fotos</td><td>400000 fotos, semilla 42</td><td>encargo y criterio de este análisis</td></tr><tr><td>valores distintos que se siguen por columna al leer por bloques</td><td>60</td><td>criterio de este análisis, por encima del límite de discreta y del de alta cardinalidad</td></tr><tr><td>diferencia frente al objetivo</td><td>|2·AUC − 1|; se dibujan las de 0.1 o más; posible fuga desde 0.9</td><td>criterio de este análisis, fijado antes de calcular</td></tr><tr><td>cambio al separar</td><td>se invierte, o la diferencia del grupo es menos de 1/2 o más de 2 veces la del total</td><td>criterio de este análisis, fijado antes de calcular</td></tr><tr><td>días mínimos para comparar una tasa anual</td><td>50000</td><td>reglas-negocio §7, mínimo del ranking</td></tr><tr><td>fallos mínimos para concluir sobre un año de edad</td><td>20</td><td>reglas-negocio §7, CP-009</td></tr><tr><td>señales de la tabla de estadísticos</td><td>media y mediana a más de 0.5 desviaciones; máximo / mínimo positivo de 1.000 o más</td><td>criterio de este análisis</td></tr><tr><td>correlación fuerte</td><td>|r| ≥ 0.9</td><td>criterio de este análisis</td></tr><tr><td>anomalía en una serie de volumen</td><td>un periodo fuera de 0.8 a 1.25 veces la mediana de los 3 periodos de cada lado</td><td>criterio de este análisis</td></tr><tr><td>media móvil</td><td>3 meses o 4 trimestres</td><td>criterio de este análisis</td></tr></tbody></table>
+<h2>Datos personales</h2><p>No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.</p><p>No hay datos de personas (reglas-negocio §9): el número de serie identifica un disco, no a una persona.</p><p>Este exploratorio no usa ni deja ninguna columna de datos personales.</p>
+<h2>Siguiente paso</h2>
+<p>Con esto basta: paso 5: los bloques del plan de la analítica con esta tabla.</p></div></main></body></html>

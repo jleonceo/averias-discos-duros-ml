@@ -1,0 +1,5636 @@
+{
+ "skill": "analisis-exploratorio",
+ "version_skill": "11/11/2026 (WF-87)",
+ "script": "scripts/06_analisis_exploratorio.py",
+ "encargo": "prompts/10_encargo_exploratorio.md",
+ "fecha_datos": "2025-06-30",
+ "fecha_ejecucion": "2026-11-17T21:05:33",
+ "tabla": "fallos_detalle",
+ "entradas": [
+  {
+   "ruta": "data/processed/fallos_detalle.parquet",
+   "sha256": "ff67f9a515527ffb6e1dd6b7474067836c1d401c3e1a33901f290f1b56c236ad",
+   "filas": 17960,
+   "columnas": 32
+  }
+ ],
+ "resultado": {
+  "estado": "AVISO",
+  "riesgo": "medio",
+  "resumen": "16.996 filas descritas: 1 hallazgos, 8 alertas y 3 hipótesis. Los dos periodos, enteros.",
+  "artefactos": [
+   "informes/analisis-exploratorio__fallos_detalle.json",
+   "informes/analisis-exploratorio__fallos_detalle.html"
+  ],
+  "siguiente": "paso 5: los bloques del plan de la analítica con esta tabla"
+ },
+ "pendientes": [
+  {
+   "id": "P-01",
+   "tabla": "fallos_detalle",
+   "columna": null,
+   "pregunta": "Observaciones de la persona sobre este exploratorio (comprobación 16)",
+   "opciones": [
+    "escribirlas en «observaciones» de este JSON y volver a ejecutar",
+    "ninguna"
+   ]
+  }
+ ],
+ "dataset": {
+  "ruta": "data/processed/fallos_detalle.parquet",
+  "sha256": "ff67f9a515527ffb6e1dd6b7474067836c1d401c3e1a33901f290f1b56c236ad",
+  "bytes": 648738
+ },
+ "premisa": {
+  "afirmacion": null,
+  "la_sostienen_los_datos": null
+ },
+ "contexto": {
+  "limitaciones": [],
+  "que_es_una_fila": "un fallo de la lista: un disco el día que Backblaze lo da por fallado",
+  "clave": [
+   "serial_number",
+   "dia_fallo"
+  ],
+  "granularidad": "un fallo",
+  "reglas": "reglas-transformacion.md §4",
+  "periodo": {
+   "desde": "2020-01-01",
+   "hasta": "2025-06-30"
+  },
+  "poblacion": "discos de datos; los de arranque se cuentan aparte (reglas-negocio §3)"
+ },
+ "vision_general": {
+  "filas": 16996,
+  "columnas": 32,
+  "tipos": {
+   "booleana": 8,
+   "continua": 6,
+   "categorica": 5,
+   "discreta": 3,
+   "codigo": 3,
+   "temporal": 3,
+   "identificador": 2,
+   "fecha": 2
+  },
+  "fallos": 17960,
+  "datos": 16996,
+  "arranque": 964,
+  "discos": 16984,
+  "por_periodo": {
+   "construcción": 12478,
+   "validación": 4518
+  },
+  "desde_sitio": {
+   "fallos": 8634,
+   "sin_centro": 128,
+   "sin_tomo": 141,
+   "tomos": 5404,
+   "coinciden_con_anterior": 262
+  }
+ },
+ "tipificacion": [
+  {
+   "columna": "serial_number",
+   "tipo": "identificador",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "dia_fallo",
+   "tipo": "fecha",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "model",
+   "tipo": "categorica",
+   "nivel": "fila",
+   "distintos": 49,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "capacidad_tb",
+   "tipo": "discreta",
+   "nivel": "fila",
+   "distintos": 11,
+   "entera": true,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "fabricante",
+   "tipo": "categorica",
+   "nivel": "fila",
+   "distintos": 4,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "tipo_disco",
+   "tipo": "categorica",
+   "nivel": "fila",
+   "distintos": 1,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "garantia_anos",
+   "tipo": "discreta",
+   "nivel": "fila",
+   "distintos": 3,
+   "entera": true,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "horas_al_fallar",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 14918,
+   "entera": true,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "edad_al_fallar_anos",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 14962,
+   "entera": false,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "edad_de_horas",
+   "tipo": "booleana",
+   "nivel": "fila",
+   "distintos": 2,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "en_garantia",
+   "tipo": "booleana",
+   "nivel": "fila",
+   "distintos": 2,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "hay_dia_anterior",
+   "tipo": "booleana",
+   "nivel": "fila",
+   "distintos": 2,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "avisa_dia_anterior",
+   "tipo": "booleana",
+   "nivel": "fila",
+   "distintos": 2,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "sin_aviso",
+   "tipo": "booleana",
+   "nivel": "fila",
+   "distintos": 2,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "datacenter",
+   "tipo": "categorica",
+   "nivel": "fila",
+   "distintos": 6,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "vault_id",
+   "tipo": "codigo",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "pod_id",
+   "tipo": "codigo",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "pod_slot_num",
+   "tipo": "codigo",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "tomo",
+   "tipo": "identificador",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "plazo_reconstruccion_dias",
+   "tipo": "discreta",
+   "nivel": "fila",
+   "distintos": 11,
+   "entera": true,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "dias_desde_anterior_del_tomo",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 554,
+   "entera": true,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "coincide_con_anterior",
+   "tipo": "booleana",
+   "nivel": "fila",
+   "distintos": 2,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "precio_nuevo_usd",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 52,
+   "entera": false,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "coste_fallo_usd",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 52,
+   "entera": false,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "coste_fallo_garantia_usd",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 27,
+   "entera": false,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "ultima_foto_anterior",
+   "tipo": "fecha",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "objetivo_de_alguna_foto",
+   "tipo": "booleana",
+   "nivel": "fila",
+   "distintos": 2,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "periodo",
+   "tipo": "categorica",
+   "nivel": "fila",
+   "distintos": 2,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "ano",
+   "tipo": "temporal",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "trimestre",
+   "tipo": "temporal",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "mes",
+   "tipo": "temporal",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 16996
+  },
+  {
+   "columna": "primer_fallo_del_disco",
+   "tipo": "booleana",
+   "nivel": "fila",
+   "distintos": 2,
+   "entera": null,
+   "filas_del_nivel": 16996
+  }
+ ],
+ "numericas": [
+  {
+   "conteo": 16996,
+   "nulos": 0,
+   "media": 11.350671,
+   "mediana": 12.0,
+   "desviacion": 3.958493,
+   "minimo": 4.0,
+   "maximo": 24.0,
+   "p01": 4.0,
+   "p05": 4.0,
+   "p25": 8.0,
+   "p75": 14.0,
+   "p95": 16.0,
+   "p99": 22.0,
+   "columna": "capacidad_tb",
+   "tipo": "discreta",
+   "nivel": "fila",
+   "base": "16.996 filas (fila)",
+   "senales": []
+  },
+  {
+   "conteo": 16961,
+   "nulos": 35,
+   "media": 4.455692,
+   "mediana": 5.0,
+   "desviacion": 1.14175,
+   "minimo": 2.0,
+   "maximo": 5.0,
+   "p01": 2.0,
+   "p05": 2.0,
+   "p25": 5.0,
+   "p75": 5.0,
+   "p95": 5.0,
+   "p99": 5.0,
+   "columna": "garantia_anos",
+   "tipo": "discreta",
+   "nivel": "fila",
+   "base": "16.996 filas (fila)",
+   "senales": [
+    "cuartiles 25 y 75 iguales, en 5,00"
+   ]
+  },
+  {
+   "conteo": 16917,
+   "nulos": 79,
+   "media": 33170.083466,
+   "mediana": 32422.0,
+   "desviacion": 18963.110209,
+   "minimo": 0.0,
+   "maximo": 78184.0,
+   "p01": 381.16,
+   "p05": 3048.6,
+   "p25": 18321.0,
+   "p75": 47190.0,
+   "p95": 66046.6,
+   "p99": 71982.36,
+   "columna": "horas_al_fallar",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "16.996 filas (fila)",
+   "senales": []
+  },
+  {
+   "conteo": 16996,
+   "nulos": 0,
+   "media": 3.773806,
+   "mediana": 3.687543,
+   "desviacion": 2.165735,
+   "minimo": 0.0,
+   "maximo": 8.919005,
+   "p01": 0.039345,
+   "p05": 0.33744,
+   "p25": 2.072867,
+   "p75": 5.373289,
+   "p95": 7.532113,
+   "p99": 8.21118,
+   "columna": "edad_al_fallar_anos",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "16.996 filas (fila)",
+   "senales": []
+  },
+  {
+   "conteo": 16996,
+   "nulos": 0,
+   "media": 12.350671,
+   "mediana": 13.0,
+   "desviacion": 3.958493,
+   "minimo": 5.0,
+   "maximo": 25.0,
+   "p01": 5.0,
+   "p05": 5.0,
+   "p25": 9.0,
+   "p75": 15.0,
+   "p95": 17.0,
+   "p99": 23.0,
+   "columna": "plazo_reconstruccion_dias",
+   "tipo": "discreta",
+   "nivel": "fila",
+   "base": "16.996 filas (fila)",
+   "senales": []
+  },
+  {
+   "conteo": 3089,
+   "nulos": 13907,
+   "media": 169.082227,
+   "mediana": 126.0,
+   "desviacion": 150.176586,
+   "minimo": 0.0,
+   "maximo": 726.0,
+   "p01": 1.0,
+   "p05": 7.0,
+   "p25": 45.0,
+   "p75": 262.0,
+   "p95": 472.6,
+   "p99": 602.24,
+   "columna": "dias_desde_anterior_del_tomo",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "16.996 filas (fila)",
+   "senales": []
+  },
+  {
+   "conteo": 16996,
+   "nulos": 0,
+   "media": 146.837118,
+   "mediana": 158.4,
+   "desviacion": 50.52645,
+   "minimo": 40.0,
+   "maximo": 292.5,
+   "p01": 52.8,
+   "p05": 60.413187,
+   "p25": 120.0,
+   "p75": 184.8,
+   "p95": 213.519231,
+   "p99": 253.0,
+   "columna": "precio_nuevo_usd",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "16.996 filas (fila)",
+   "senales": []
+  },
+  {
+   "conteo": 16996,
+   "nulos": 0,
+   "media": 183.837118,
+   "mediana": 195.4,
+   "desviacion": 50.52645,
+   "minimo": 77.0,
+   "maximo": 329.5,
+   "p01": 89.8,
+   "p05": 97.413187,
+   "p25": 157.0,
+   "p75": 221.8,
+   "p95": 250.519231,
+   "p99": 290.0,
+   "columna": "coste_fallo_usd",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "16.996 filas (fila)",
+   "senales": []
+  },
+  {
+   "conteo": 16996,
+   "nulos": 0,
+   "media": 67.674318,
+   "mediana": 37.0,
+   "desviacion": 46.940388,
+   "minimo": 37.0,
+   "maximo": 221.8,
+   "p01": 37.0,
+   "p05": 37.0,
+   "p25": 37.0,
+   "p75": 97.413187,
+   "p95": 167.0,
+   "p99": 177.0,
+   "columna": "coste_fallo_garantia_usd",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "16.996 filas (fila)",
+   "senales": [
+    "media lejos de la mediana"
+   ]
+  }
+ ],
+ "categoricas": [
+  {
+   "cardinalidad": 49,
+   "nulos": 0,
+   "dominante": "ST12000NM0008",
+   "pct_dominante": 12.2617,
+   "pct_10_mas_frecuentes": 77.6241,
+   "frecuencias": [
+    {
+     "valor": "ST12000NM0008",
+     "filas": 2084,
+     "pct": 12.2617
+    },
+    {
+     "valor": "ST4000DM000",
+     "filas": 1942,
+     "pct": 11.4262
+    },
+    {
+     "valor": "ST8000NM0055",
+     "filas": 1819,
+     "pct": 10.7025
+    },
+    {
+     "valor": "TOSHIBA MG07ACA14TA",
+     "filas": 1811,
+     "pct": 10.6554
+    },
+    {
+     "valor": "HGST HUH721212ALN604",
+     "filas": 1367,
+     "pct": 8.0431
+    },
+    {
+     "valor": "ST8000DM002",
+     "filas": 937,
+     "pct": 5.5131
+    },
+    {
+     "valor": "HGST HUH721212ALE604",
+     "filas": 878,
+     "pct": 5.1659
+    },
+    {
+     "valor": "TOSHIBA MG08ACA16TA",
+     "filas": 858,
+     "pct": 5.0482
+    },
+    {
+     "valor": "ST12000NM0007",
+     "filas": 813,
+     "pct": 4.7835
+    },
+    {
+     "valor": "ST16000NM001G",
+     "filas": 684,
+     "pct": 4.0245
+    },
+    {
+     "valor": "ST14000NM001G",
+     "filas": 663,
+     "pct": 3.9009
+    },
+    {
+     "valor": "ST12000NM001G",
+     "filas": 584,
+     "pct": 3.4361
+    },
+    {
+     "valor": "ST14000NM0138",
+     "filas": 391,
+     "pct": 2.3005
+    },
+    {
+     "valor": "TOSHIBA MG08ACA16TE",
+     "filas": 279,
+     "pct": 1.6416
+    },
+    {
+     "valor": "ST10000NM0086",
+     "filas": 243,
+     "pct": 1.4297
+    }
+   ],
+   "total": 16996,
+   "columna": "model",
+   "tipo": "categorica",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 11,
+   "nulos": 0,
+   "dominante": 12.0,
+   "pct_dominante": 34.2728,
+   "pct_10_mas_frecuentes": 99.9353,
+   "frecuencias": [
+    {
+     "valor": 12.0,
+     "filas": 5825,
+     "pct": 34.2728
+    },
+    {
+     "valor": 14.0,
+     "filas": 3114,
+     "pct": 18.322
+    },
+    {
+     "valor": 8.0,
+     "filas": 2870,
+     "pct": 16.8863
+    },
+    {
+     "valor": 16.0,
+     "filas": 2354,
+     "pct": 13.8503
+    },
+    {
+     "valor": 4.0,
+     "filas": 2238,
+     "pct": 13.1678
+    },
+    {
+     "valor": 10.0,
+     "filas": 245,
+     "pct": 1.4415
+    },
+    {
+     "valor": 22.0,
+     "filas": 243,
+     "pct": 1.4297
+    },
+    {
+     "valor": 20.0,
+     "filas": 46,
+     "pct": 0.2707
+    },
+    {
+     "valor": 24.0,
+     "filas": 35,
+     "pct": 0.2059
+    },
+    {
+     "valor": 6.0,
+     "filas": 15,
+     "pct": 0.0883
+    },
+    {
+     "valor": 18.0,
+     "filas": 11,
+     "pct": 0.0647
+    }
+   ],
+   "total": 16996,
+   "columna": "capacidad_tb",
+   "tipo": "discreta",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 4,
+   "nulos": 0,
+   "dominante": "Seagate",
+   "pct_dominante": 60.5084,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": "Seagate",
+     "filas": 10284,
+     "pct": 60.5084
+    },
+    {
+     "valor": "Toshiba",
+     "filas": 3279,
+     "pct": 19.2928
+    },
+    {
+     "valor": "HGST",
+     "filas": 2702,
+     "pct": 15.8979
+    },
+    {
+     "valor": "WDC",
+     "filas": 731,
+     "pct": 4.301
+    }
+   ],
+   "total": 16996,
+   "columna": "fabricante",
+   "tipo": "categorica",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 1,
+   "nulos": 0,
+   "dominante": "datos",
+   "pct_dominante": 100.0,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": "datos",
+     "filas": 16996,
+     "pct": 100.0
+    }
+   ],
+   "total": 16996,
+   "columna": "tipo_disco",
+   "tipo": "categorica",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 3,
+   "nulos": 35,
+   "dominante": 5,
+   "pct_dominante": 81.1367,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": 5,
+     "filas": 13790,
+     "pct": 81.1367
+    },
+    {
+     "valor": 2,
+     "filas": 2890,
+     "pct": 17.004
+    },
+    {
+     "valor": 3,
+     "filas": 281,
+     "pct": 1.6533
+    },
+    {
+     "valor": "(vacío)",
+     "filas": 35,
+     "pct": 0.2059
+    }
+   ],
+   "total": 16996,
+   "columna": "garantia_anos",
+   "tipo": "discreta",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 2,
+   "nulos": 0,
+   "dominante": true,
+   "pct_dominante": 99.5352,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": true,
+     "filas": 16917,
+     "pct": 99.5352
+    },
+    {
+     "valor": false,
+     "filas": 79,
+     "pct": 0.4648
+    }
+   ],
+   "total": 16996,
+   "columna": "edad_de_horas",
+   "tipo": "booleana",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 2,
+   "nulos": 0,
+   "dominante": true,
+   "pct_dominante": 66.6392,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": true,
+     "filas": 11326,
+     "pct": 66.6392
+    },
+    {
+     "valor": false,
+     "filas": 5670,
+     "pct": 33.3608
+    }
+   ],
+   "total": 16996,
+   "columna": "en_garantia",
+   "tipo": "booleana",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 2,
+   "nulos": 0,
+   "dominante": true,
+   "pct_dominante": 94.687,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": true,
+     "filas": 16093,
+     "pct": 94.687
+    },
+    {
+     "valor": false,
+     "filas": 903,
+     "pct": 5.313
+    }
+   ],
+   "total": 16996,
+   "columna": "hay_dia_anterior",
+   "tipo": "booleana",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 2,
+   "nulos": 903,
+   "dominante": true,
+   "pct_dominante": 70.8814,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": true,
+     "filas": 12047,
+     "pct": 70.8814
+    },
+    {
+     "valor": false,
+     "filas": 4046,
+     "pct": 23.8056
+    },
+    {
+     "valor": "(vacío)",
+     "filas": 903,
+     "pct": 5.313
+    }
+   ],
+   "total": 16996,
+   "columna": "avisa_dia_anterior",
+   "tipo": "booleana",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 2,
+   "nulos": 903,
+   "dominante": false,
+   "pct_dominante": 70.8814,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": false,
+     "filas": 12047,
+     "pct": 70.8814
+    },
+    {
+     "valor": true,
+     "filas": 4046,
+     "pct": 23.8056
+    },
+    {
+     "valor": "(vacío)",
+     "filas": 903,
+     "pct": 5.313
+    }
+   ],
+   "total": 16996,
+   "columna": "sin_aviso",
+   "tipo": "booleana",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 6,
+   "nulos": 8490,
+   "dominante": "(vacío)",
+   "pct_dominante": 49.9529,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": "(vacío)",
+     "filas": 8490,
+     "pct": 49.9529
+    },
+    {
+     "valor": "sac0",
+     "filas": 2806,
+     "pct": 16.5098
+    },
+    {
+     "valor": "sac2",
+     "filas": 2546,
+     "pct": 14.98
+    },
+    {
+     "valor": "phx1",
+     "filas": 2160,
+     "pct": 12.7089
+    },
+    {
+     "valor": "iad1",
+     "filas": 512,
+     "pct": 3.0125
+    },
+    {
+     "valor": "ams5",
+     "filas": 476,
+     "pct": 2.8007
+    },
+    {
+     "valor": "yyz1",
+     "filas": 6,
+     "pct": 0.0353
+    }
+   ],
+   "total": 16996,
+   "columna": "datacenter",
+   "tipo": "categorica",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 240,
+   "nulos": 8503,
+   "dominante": "(vacío)",
+   "pct_dominante": 50.0294,
+   "pct_10_mas_frecuentes": 57.6783,
+   "frecuencias": [
+    {
+     "valor": "(vacío)",
+     "filas": 8503,
+     "pct": 50.0294
+    },
+    {
+     "valor": 1128,
+     "filas": 196,
+     "pct": 1.1532
+    },
+    {
+     "valor": 1063,
+     "filas": 175,
+     "pct": 1.0297
+    },
+    {
+     "valor": 1124,
+     "filas": 172,
+     "pct": 1.012
+    },
+    {
+     "valor": 1127,
+     "filas": 151,
+     "pct": 0.8884
+    },
+    {
+     "valor": 1118,
+     "filas": 141,
+     "pct": 0.8296
+    },
+    {
+     "valor": 1135,
+     "filas": 123,
+     "pct": 0.7237
+    },
+    {
+     "valor": 1066,
+     "filas": 117,
+     "pct": 0.6884
+    },
+    {
+     "valor": 1123,
+     "filas": 115,
+     "pct": 0.6766
+    },
+    {
+     "valor": 1022,
+     "filas": 110,
+     "pct": 0.6472
+    },
+    {
+     "valor": 1122,
+     "filas": 110,
+     "pct": 0.6472
+    },
+    {
+     "valor": 1093,
+     "filas": 107,
+     "pct": 0.6296
+    },
+    {
+     "valor": 1120,
+     "filas": 89,
+     "pct": 0.5237
+    },
+    {
+     "valor": 1059,
+     "filas": 88,
+     "pct": 0.5178
+    },
+    {
+     "valor": 1148,
+     "filas": 87,
+     "pct": 0.5119
+    }
+   ],
+   "total": 16996,
+   "columna": "vault_id",
+   "tipo": "codigo",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 20,
+   "nulos": 8503,
+   "dominante": "(vacío)",
+   "pct_dominante": 50.0294,
+   "pct_10_mas_frecuentes": 73.3937,
+   "frecuencias": [
+    {
+     "valor": "(vacío)",
+     "filas": 8503,
+     "pct": 50.0294
+    },
+    {
+     "valor": 8,
+     "filas": 459,
+     "pct": 2.7006
+    },
+    {
+     "valor": 17,
+     "filas": 453,
+     "pct": 2.6653
+    },
+    {
+     "valor": 10,
+     "filas": 445,
+     "pct": 2.6183
+    },
+    {
+     "valor": 6,
+     "filas": 442,
+     "pct": 2.6006
+    },
+    {
+     "valor": 15,
+     "filas": 437,
+     "pct": 2.5712
+    },
+    {
+     "valor": 0,
+     "filas": 437,
+     "pct": 2.5712
+    },
+    {
+     "valor": 7,
+     "filas": 434,
+     "pct": 2.5535
+    },
+    {
+     "valor": 14,
+     "filas": 433,
+     "pct": 2.5477
+    },
+    {
+     "valor": 1,
+     "filas": 431,
+     "pct": 2.5359
+    },
+    {
+     "valor": 12,
+     "filas": 426,
+     "pct": 2.5065
+    },
+    {
+     "valor": 18,
+     "filas": 424,
+     "pct": 2.4947
+    },
+    {
+     "valor": 16,
+     "filas": 421,
+     "pct": 2.4771
+    },
+    {
+     "valor": 13,
+     "filas": 417,
+     "pct": 2.4535
+    },
+    {
+     "valor": 9,
+     "filas": 417,
+     "pct": 2.4535
+    }
+   ],
+   "total": 16996,
+   "columna": "pod_id",
+   "tipo": "codigo",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 60,
+   "nulos": 8503,
+   "dominante": "(vacío)",
+   "pct_dominante": 50.0294,
+   "pct_10_mas_frecuentes": 58.7315,
+   "frecuencias": [
+    {
+     "valor": "(vacío)",
+     "filas": 8503,
+     "pct": 50.0294
+    },
+    {
+     "valor": 24,
+     "filas": 176,
+     "pct": 1.0355
+    },
+    {
+     "valor": 12,
+     "filas": 172,
+     "pct": 1.012
+    },
+    {
+     "valor": 21,
+     "filas": 166,
+     "pct": 0.9767
+    },
+    {
+     "valor": 2,
+     "filas": 163,
+     "pct": 0.959
+    },
+    {
+     "valor": 5,
+     "filas": 163,
+     "pct": 0.959
+    },
+    {
+     "valor": 11,
+     "filas": 162,
+     "pct": 0.9532
+    },
+    {
+     "valor": 37,
+     "filas": 161,
+     "pct": 0.9473
+    },
+    {
+     "valor": 17,
+     "filas": 160,
+     "pct": 0.9414
+    },
+    {
+     "valor": 1,
+     "filas": 156,
+     "pct": 0.9179
+    },
+    {
+     "valor": 3,
+     "filas": 156,
+     "pct": 0.9179
+    },
+    {
+     "valor": 13,
+     "filas": 154,
+     "pct": 0.9061
+    },
+    {
+     "valor": 18,
+     "filas": 154,
+     "pct": 0.9061
+    },
+    {
+     "valor": 0,
+     "filas": 154,
+     "pct": 0.9061
+    },
+    {
+     "valor": 52,
+     "filas": 153,
+     "pct": 0.9002
+    }
+   ],
+   "total": 16996,
+   "columna": "pod_slot_num",
+   "tipo": "codigo",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 11,
+   "nulos": 0,
+   "dominante": 13.0,
+   "pct_dominante": 34.2728,
+   "pct_10_mas_frecuentes": 99.9353,
+   "frecuencias": [
+    {
+     "valor": 13.0,
+     "filas": 5825,
+     "pct": 34.2728
+    },
+    {
+     "valor": 15.0,
+     "filas": 3114,
+     "pct": 18.322
+    },
+    {
+     "valor": 9.0,
+     "filas": 2870,
+     "pct": 16.8863
+    },
+    {
+     "valor": 17.0,
+     "filas": 2354,
+     "pct": 13.8503
+    },
+    {
+     "valor": 5.0,
+     "filas": 2238,
+     "pct": 13.1678
+    },
+    {
+     "valor": 11.0,
+     "filas": 245,
+     "pct": 1.4415
+    },
+    {
+     "valor": 23.0,
+     "filas": 243,
+     "pct": 1.4297
+    },
+    {
+     "valor": 21.0,
+     "filas": 46,
+     "pct": 0.2707
+    },
+    {
+     "valor": 25.0,
+     "filas": 35,
+     "pct": 0.2059
+    },
+    {
+     "valor": 7.0,
+     "filas": 15,
+     "pct": 0.0883
+    },
+    {
+     "valor": 19.0,
+     "filas": 11,
+     "pct": 0.0647
+    }
+   ],
+   "total": 16996,
+   "columna": "plazo_reconstruccion_dias",
+   "tipo": "discreta",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 2,
+   "nulos": 13907,
+   "dominante": "(vacío)",
+   "pct_dominante": 81.8251,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": "(vacío)",
+     "filas": 13907,
+     "pct": 81.8251
+    },
+    {
+     "valor": false,
+     "filas": 2827,
+     "pct": 16.6333
+    },
+    {
+     "valor": true,
+     "filas": 262,
+     "pct": 1.5415
+    }
+   ],
+   "total": 16996,
+   "columna": "coincide_con_anterior",
+   "tipo": "booleana",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 2,
+   "nulos": 0,
+   "dominante": true,
+   "pct_dominante": 95.2459,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": true,
+     "filas": 16188,
+     "pct": 95.2459
+    },
+    {
+     "valor": false,
+     "filas": 808,
+     "pct": 4.7541
+    }
+   ],
+   "total": 16996,
+   "columna": "objetivo_de_alguna_foto",
+   "tipo": "booleana",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 2,
+   "nulos": 0,
+   "dominante": "construcción",
+   "pct_dominante": 73.4173,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": "construcción",
+     "filas": 12478,
+     "pct": 73.4173
+    },
+    {
+     "valor": "validación",
+     "filas": 4518,
+     "pct": 26.5827
+    }
+   ],
+   "total": 16996,
+   "columna": "periodo",
+   "tipo": "categorica",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 2,
+   "nulos": 0,
+   "dominante": true,
+   "pct_dominante": 99.9294,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": true,
+     "filas": 16984,
+     "pct": 99.9294
+    },
+    {
+     "valor": false,
+     "filas": 12,
+     "pct": 0.0706
+    }
+   ],
+   "total": 16996,
+   "columna": "primer_fallo_del_disco",
+   "tipo": "booleana",
+   "nivel": "fila"
+  }
+ ],
+ "fechas": [
+  {
+   "columna": "dia_fallo",
+   "minimo": "2020-01-01",
+   "maximo": "2025-06-30",
+   "nulos": 0
+  },
+  {
+   "columna": "ultima_foto_anterior",
+   "minimo": "2020-01-01",
+   "maximo": "2025-06-01",
+   "nulos": 271
+  }
+ ],
+ "temporal": {
+  "por_ano": [
+   {
+    "ano": 2020,
+    "fallos": 1307,
+    "completo": true,
+    "coste_fallos_usd": 250485.2,
+    "coste_fallos_garantia_usd": 80209.0
+   },
+   {
+    "ano": 2021,
+    "fallos": 1823,
+    "completo": true,
+    "coste_fallos_usd": 352673.77,
+    "coste_fallos_garantia_usd": 109169.07
+   },
+   {
+    "ano": 2022,
+    "fallos": 2999,
+    "completo": true,
+    "coste_fallos_usd": 565844.09,
+    "coste_fallos_garantia_usd": 200888.03
+   },
+   {
+    "ano": 2023,
+    "fallos": 4201,
+    "completo": true,
+    "coste_fallos_usd": 755878.6,
+    "coste_fallos_garantia_usd": 284506.6
+   },
+   {
+    "ano": 2024,
+    "fallos": 4538,
+    "completo": true,
+    "coste_fallos_usd": 832698.0,
+    "coste_fallos_garantia_usd": 305124.0
+   },
+   {
+    "ano": 2025,
+    "fallos": 2128,
+    "completo": false,
+    "coste_fallos_usd": 366916.0,
+    "coste_fallos_garantia_usd": 170296.0
+   }
+  ],
+  "periodos_incompletos": [
+   {
+    "periodo": "2025",
+    "motivo": "año que acaba después de la fecha de los datos"
+   }
+  ]
+ },
+ "tasas": [],
+ "partes": [
+  {
+   "nombre": "parte sin aviso",
+   "numerador": "sin_aviso_n",
+   "denominador": "con_anterior_n",
+   "total": {
+    "num": 4046,
+    "den": 16093,
+    "pct": 25.1414
+   },
+   "por": {
+    "fabricante": {
+     "dimension": "fabricante",
+     "medida": {
+      "numerador": "sin_aviso_n",
+      "denominador": "con_anterior_n",
+      "factor": 100,
+      "minimo": 30
+     },
+     "total": [
+      {
+       "categoria": "Seagate",
+       "num": 1806.0,
+       "den": 9764.0,
+       "valor": 18.49651782056534,
+       "comparada": true
+      },
+      {
+       "categoria": "HGST",
+       "num": 651.0,
+       "den": 2468.0,
+       "valor": 26.377633711507293,
+       "comparada": true
+      },
+      {
+       "categoria": "Toshiba",
+       "num": 1321.0,
+       "den": 3160.0,
+       "valor": 41.80379746835443,
+       "comparada": true
+      },
+      {
+       "categoria": "WDC",
+       "num": 268.0,
+       "den": 701.0,
+       "valor": 38.23109843081313,
+       "comparada": true
+      }
+     ],
+     "par": [
+      "Toshiba",
+      "Seagate"
+     ],
+     "por_grupo": {
+      "capacidad_tb": {
+       "4.0": [
+        {
+         "categoria": "Seagate",
+         "num": 490.0,
+         "den": 1901.0,
+         "valor": 25.77590741714887,
+         "comparada": true
+        },
+        {
+         "categoria": "HGST",
+         "num": 165.0,
+         "den": 261.0,
+         "valor": 63.2183908045977,
+         "comparada": true
+        },
+        {
+         "categoria": "Toshiba",
+         "num": 4.0,
+         "den": 6.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "6.0": [
+        {
+         "categoria": "Seagate",
+         "num": 6.0,
+         "den": 15.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "8.0": [
+        {
+         "categoria": "Seagate",
+         "num": 340.0,
+         "den": 2567.0,
+         "valor": 13.245033112582782,
+         "comparada": true
+        },
+        {
+         "categoria": "HGST",
+         "num": 48.0,
+         "den": 92.0,
+         "valor": 52.17391304347826,
+         "comparada": true
+        },
+        {
+         "categoria": "Toshiba",
+         "num": 1.0,
+         "den": 8.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "10.0": [
+        {
+         "categoria": "Seagate",
+         "num": 8.0,
+         "den": 223.0,
+         "valor": 3.587443946188341,
+         "comparada": true
+        }
+       ],
+       "12.0": [
+        {
+         "categoria": "HGST",
+         "num": 438.0,
+         "den": 2115.0,
+         "valor": 20.70921985815603,
+         "comparada": true
+        },
+        {
+         "categoria": "Seagate",
+         "num": 664.0,
+         "den": 3332.0,
+         "valor": 19.92797118847539,
+         "comparada": true
+        }
+       ],
+       "14.0": [
+        {
+         "categoria": "Toshiba",
+         "num": 817.0,
+         "den": 1761.0,
+         "valor": 46.394094264622375,
+         "comparada": true
+        },
+        {
+         "categoria": "Seagate",
+         "num": 123.0,
+         "den": 1037.0,
+         "valor": 11.861137897782063,
+         "comparada": true
+        },
+        {
+         "categoria": "WDC",
+         "num": 87.0,
+         "den": 175.0,
+         "valor": 49.714285714285715,
+         "comparada": true
+        }
+       ],
+       "16.0": [
+        {
+         "categoria": "Seagate",
+         "num": 150.0,
+         "den": 643.0,
+         "valor": 23.32814930015552,
+         "comparada": true
+        },
+        {
+         "categoria": "Toshiba",
+         "num": 474.0,
+         "den": 1340.0,
+         "valor": 35.37313432835821,
+         "comparada": true
+        },
+        {
+         "categoria": "WDC",
+         "num": 123.0,
+         "den": 292.0,
+         "valor": 42.12328767123287,
+         "comparada": true
+        }
+       ],
+       "18.0": [
+        {
+         "categoria": "Seagate",
+         "num": 6.0,
+         "den": 11.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "20.0": [
+        {
+         "categoria": "Toshiba",
+         "num": 25.0,
+         "den": 45.0,
+         "valor": 55.55555555555556,
+         "comparada": true
+        }
+       ],
+       "22.0": [
+        {
+         "categoria": "WDC",
+         "num": 58.0,
+         "den": 234.0,
+         "valor": 24.786324786324787,
+         "comparada": true
+        }
+       ],
+       "24.0": [
+        {
+         "categoria": "Seagate",
+         "num": 19.0,
+         "den": 35.0,
+         "valor": 54.285714285714285,
+         "comparada": true
+        }
+       ]
+      }
+     },
+     "anidada": [],
+     "alertas": []
+    },
+    "capacidad_tb": {
+     "dimension": "capacidad_tb",
+     "medida": {
+      "numerador": "sin_aviso_n",
+      "denominador": "con_anterior_n",
+      "factor": 100,
+      "minimo": 30
+     },
+     "total": [
+      {
+       "categoria": 4.0,
+       "num": 659.0,
+       "den": 2168.0,
+       "valor": 30.39667896678967,
+       "comparada": true
+      },
+      {
+       "categoria": 8.0,
+       "num": 389.0,
+       "den": 2667.0,
+       "valor": 14.5856767904012,
+       "comparada": true
+      },
+      {
+       "categoria": 12.0,
+       "num": 1102.0,
+       "den": 5447.0,
+       "valor": 20.23131999265651,
+       "comparada": true
+      },
+      {
+       "categoria": 14.0,
+       "num": 1027.0,
+       "den": 2973.0,
+       "valor": 34.544231416078034,
+       "comparada": true
+      },
+      {
+       "categoria": 6.0,
+       "num": 6.0,
+       "den": 15.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 10.0,
+       "num": 8.0,
+       "den": 223.0,
+       "valor": 3.587443946188341,
+       "comparada": true
+      },
+      {
+       "categoria": 16.0,
+       "num": 747.0,
+       "den": 2275.0,
+       "valor": 32.83516483516483,
+       "comparada": true
+      },
+      {
+       "categoria": 18.0,
+       "num": 6.0,
+       "den": 11.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 22.0,
+       "num": 58.0,
+       "den": 234.0,
+       "valor": 24.786324786324787,
+       "comparada": true
+      },
+      {
+       "categoria": 20.0,
+       "num": 25.0,
+       "den": 45.0,
+       "valor": 55.55555555555556,
+       "comparada": true
+      },
+      {
+       "categoria": 24.0,
+       "num": 19.0,
+       "den": 35.0,
+       "valor": 54.285714285714285,
+       "comparada": true
+      }
+     ],
+     "par": [
+      20.0,
+      10.0
+     ],
+     "por_grupo": {
+      "fabricante": {
+       "HGST": [
+        {
+         "categoria": 12.0,
+         "num": 438.0,
+         "den": 2115.0,
+         "valor": 20.70921985815603,
+         "comparada": true
+        },
+        {
+         "categoria": 4.0,
+         "num": 165.0,
+         "den": 261.0,
+         "valor": 63.2183908045977,
+         "comparada": true
+        },
+        {
+         "categoria": 8.0,
+         "num": 48.0,
+         "den": 92.0,
+         "valor": 52.17391304347826,
+         "comparada": true
+        }
+       ],
+       "Seagate": [
+        {
+         "categoria": 4.0,
+         "num": 490.0,
+         "den": 1901.0,
+         "valor": 25.77590741714887,
+         "comparada": true
+        },
+        {
+         "categoria": 8.0,
+         "num": 340.0,
+         "den": 2567.0,
+         "valor": 13.245033112582782,
+         "comparada": true
+        },
+        {
+         "categoria": 12.0,
+         "num": 664.0,
+         "den": 3332.0,
+         "valor": 19.92797118847539,
+         "comparada": true
+        },
+        {
+         "categoria": 6.0,
+         "num": 6.0,
+         "den": 15.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 10.0,
+         "num": 8.0,
+         "den": 223.0,
+         "valor": 3.587443946188341,
+         "comparada": true
+        },
+        {
+         "categoria": 16.0,
+         "num": 150.0,
+         "den": 643.0,
+         "valor": 23.32814930015552,
+         "comparada": true
+        },
+        {
+         "categoria": 14.0,
+         "num": 123.0,
+         "den": 1037.0,
+         "valor": 11.861137897782063,
+         "comparada": true
+        },
+        {
+         "categoria": 18.0,
+         "num": 6.0,
+         "den": 11.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 24.0,
+         "num": 19.0,
+         "den": 35.0,
+         "valor": 54.285714285714285,
+         "comparada": true
+        }
+       ],
+       "Toshiba": [
+        {
+         "categoria": 14.0,
+         "num": 817.0,
+         "den": 1761.0,
+         "valor": 46.394094264622375,
+         "comparada": true
+        },
+        {
+         "categoria": 16.0,
+         "num": 474.0,
+         "den": 1340.0,
+         "valor": 35.37313432835821,
+         "comparada": true
+        },
+        {
+         "categoria": 8.0,
+         "num": 1.0,
+         "den": 8.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 4.0,
+         "num": 4.0,
+         "den": 6.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 20.0,
+         "num": 25.0,
+         "den": 45.0,
+         "valor": 55.55555555555556,
+         "comparada": true
+        }
+       ],
+       "WDC": [
+        {
+         "categoria": 14.0,
+         "num": 87.0,
+         "den": 175.0,
+         "valor": 49.714285714285715,
+         "comparada": true
+        },
+        {
+         "categoria": 16.0,
+         "num": 123.0,
+         "den": 292.0,
+         "valor": 42.12328767123287,
+         "comparada": true
+        },
+        {
+         "categoria": 22.0,
+         "num": 58.0,
+         "den": 234.0,
+         "valor": 24.786324786324787,
+         "comparada": true
+        }
+       ]
+      }
+     },
+     "anidada": [],
+     "alertas": []
+    },
+    "ano": {
+     "dimension": "ano",
+     "medida": {
+      "numerador": "sin_aviso_n",
+      "denominador": "con_anterior_n",
+      "factor": 100,
+      "minimo": 30
+     },
+     "total": [
+      {
+       "categoria": 2020,
+       "num": 516.0,
+       "den": 1279.0,
+       "valor": 40.34401876465989,
+       "comparada": true
+      },
+      {
+       "categoria": 2021,
+       "num": 656.0,
+       "den": 1785.0,
+       "valor": 36.75070028011204,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 762.0,
+       "den": 2865.0,
+       "valor": 26.596858638743456,
+       "comparada": true
+      },
+      {
+       "categoria": 2023,
+       "num": 890.0,
+       "den": 3958.0,
+       "valor": 22.48610409297625,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 880.0,
+       "den": 4298.0,
+       "valor": 20.47463936714751,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 342.0,
+       "den": 1908.0,
+       "valor": 17.92452830188679,
+       "comparada": true
+      }
+     ],
+     "par": [
+      2024,
+      2020
+     ],
+     "por_grupo": {
+      "fabricante": {
+       "HGST": [
+        {
+         "categoria": 2020,
+         "num": 63.0,
+         "den": 112.0,
+         "valor": 56.25,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 100.0,
+         "den": 146.0,
+         "valor": 68.4931506849315,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 147.0,
+         "den": 260.0,
+         "valor": 56.53846153846154,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 158.0,
+         "den": 561.0,
+         "valor": 28.163992869875223,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 153.0,
+         "den": 1031.0,
+         "valor": 14.83996120271581,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 30.0,
+         "den": 358.0,
+         "valor": 8.379888268156424,
+         "comparada": true
+        }
+       ],
+       "Seagate": [
+        {
+         "categoria": 2020,
+         "num": 380.0,
+         "den": 1067.0,
+         "valor": 35.61387066541706,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 337.0,
+         "den": 1338.0,
+         "valor": 25.186846038863976,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 365.0,
+         "den": 2083.0,
+         "valor": 17.522803648583775,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 392.0,
+         "den": 2637.0,
+         "valor": 14.865377322715206,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 245.0,
+         "den": 1889.0,
+         "valor": 12.96982530439386,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 87.0,
+         "den": 750.0,
+         "valor": 11.6,
+         "comparada": true
+        }
+       ],
+       "Toshiba": [
+        {
+         "categoria": 2020,
+         "num": 72.0,
+         "den": 99.0,
+         "valor": 72.72727272727273,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 189.0,
+         "den": 266.0,
+         "valor": 71.05263157894737,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 231.0,
+         "den": 497.0,
+         "valor": 46.478873239436616,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 290.0,
+         "den": 671.0,
+         "valor": 43.21907600596125,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 370.0,
+         "den": 1049.0,
+         "valor": 35.27168732125834,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 169.0,
+         "den": 578.0,
+         "valor": 29.238754325259517,
+         "comparada": true
+        }
+       ],
+       "WDC": [
+        {
+         "categoria": 2020,
+         "num": 1.0,
+         "den": 1.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2021,
+         "num": 30.0,
+         "den": 35.0,
+         "valor": 85.71428571428571,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 19.0,
+         "den": 25.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2023,
+         "num": 50.0,
+         "den": 89.0,
+         "valor": 56.17977528089887,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 112.0,
+         "den": 329.0,
+         "valor": 34.04255319148936,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 56.0,
+         "den": 222.0,
+         "valor": 25.225225225225227,
+         "comparada": true
+        }
+       ]
+      },
+      "capacidad_tb": {
+       "4.0": [
+        {
+         "categoria": 2020,
+         "num": 155.0,
+         "den": 310.0,
+         "valor": 50.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 151.0,
+         "den": 394.0,
+         "valor": 38.3248730964467,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 168.0,
+         "den": 711.0,
+         "valor": 23.628691983122362,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 149.0,
+         "den": 598.0,
+         "valor": 24.91638795986622,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 33.0,
+         "den": 151.0,
+         "valor": 21.85430463576159,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 3.0,
+         "den": 4.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "6.0": [
+        {
+         "categoria": 2020,
+         "num": 2.0,
+         "den": 2.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2021,
+         "num": 0.0,
+         "den": 1.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2022,
+         "num": 2.0,
+         "den": 6.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2023,
+         "num": 2.0,
+         "den": 6.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "8.0": [
+        {
+         "categoria": 2020,
+         "num": 68.0,
+         "den": 260.0,
+         "valor": 26.153846153846153,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 53.0,
+         "den": 353.0,
+         "valor": 15.01416430594901,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 87.0,
+         "den": 529.0,
+         "valor": 16.446124763705104,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 108.0,
+         "den": 797.0,
+         "valor": 13.550815558343789,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 57.0,
+         "den": 505.0,
+         "valor": 11.287128712871286,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 16.0,
+         "den": 223.0,
+         "valor": 7.174887892376682,
+         "comparada": true
+        }
+       ],
+       "10.0": [
+        {
+         "categoria": 2020,
+         "num": 2.0,
+         "den": 16.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2021,
+         "num": 3.0,
+         "den": 28.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2022,
+         "num": 1.0,
+         "den": 40.0,
+         "valor": 2.5,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 1.0,
+         "den": 66.0,
+         "valor": 1.5151515151515151,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 0.0,
+         "den": 55.0,
+         "valor": 0.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 1.0,
+         "den": 18.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "12.0": [
+        {
+         "categoria": 2020,
+         "num": 206.0,
+         "den": 575.0,
+         "valor": 35.82608695652174,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 159.0,
+         "den": 502.0,
+         "valor": 31.673306772908365,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 195.0,
+         "den": 714.0,
+         "valor": 27.310924369747898,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 236.0,
+         "den": 1258.0,
+         "valor": 18.75993640699523,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 243.0,
+         "den": 1754.0,
+         "valor": 13.854047890535918,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 63.0,
+         "den": 644.0,
+         "valor": 9.782608695652174,
+         "comparada": true
+        }
+       ],
+       "14.0": [
+        {
+         "categoria": 2020,
+         "num": 81.0,
+         "den": 113.0,
+         "valor": 71.68141592920354,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 249.0,
+         "den": 440.0,
+         "valor": 56.59090909090909,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 216.0,
+         "den": 592.0,
+         "valor": 36.486486486486484,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 236.0,
+         "den": 750.0,
+         "valor": 31.466666666666665,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 194.0,
+         "den": 717.0,
+         "valor": 27.057182705718272,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 51.0,
+         "den": 361.0,
+         "valor": 14.12742382271468,
+         "comparada": true
+        }
+       ],
+       "16.0": [
+        {
+         "categoria": 2020,
+         "num": 0.0,
+         "den": 1.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2021,
+         "num": 40.0,
+         "den": 65.0,
+         "valor": 61.53846153846154,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 92.0,
+         "den": 271.0,
+         "valor": 33.94833948339483,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 154.0,
+         "den": 478.0,
+         "valor": 32.21757322175732,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 311.0,
+         "den": 969.0,
+         "valor": 32.09494324045408,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 150.0,
+         "den": 491.0,
+         "valor": 30.54989816700611,
+         "comparada": true
+        }
+       ],
+       "18.0": [
+        {
+         "categoria": 2020,
+         "num": 2.0,
+         "den": 2.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2021,
+         "num": 1.0,
+         "den": 2.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2022,
+         "num": 1.0,
+         "den": 2.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2023,
+         "num": 2.0,
+         "den": 3.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2024,
+         "num": 0.0,
+         "den": 1.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2025,
+         "num": 0.0,
+         "den": 1.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "20.0": [
+        {
+         "categoria": 2024,
+         "num": 11.0,
+         "den": 15.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2025,
+         "num": 14.0,
+         "den": 30.0,
+         "valor": 46.666666666666664,
+         "comparada": true
+        }
+       ],
+       "22.0": [
+        {
+         "categoria": 2023,
+         "num": 2.0,
+         "den": 2.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2024,
+         "num": 31.0,
+         "den": 131.0,
+         "valor": 23.66412213740458,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 25.0,
+         "den": 101.0,
+         "valor": 24.752475247524753,
+         "comparada": true
+        }
+       ],
+       "24.0": [
+        {
+         "categoria": 2025,
+         "num": 19.0,
+         "den": 35.0,
+         "valor": 54.285714285714285,
+         "comparada": true
+        }
+       ]
+      }
+     },
+     "anidada": [],
+     "alertas": [
+      {
+       "grupo_dim": "fabricante",
+       "grupo": "HGST",
+       "a": 2024,
+       "b": 2020,
+       "diferencia_total": -19.869379,
+       "diferencia_grupo": -41.410039,
+       "tipo": "cambia de tamaño"
+      },
+      {
+       "grupo_dim": "capacidad_tb",
+       "grupo": "14.0",
+       "a": 2024,
+       "b": 2020,
+       "diferencia_total": -19.869379,
+       "diferencia_grupo": -44.624233,
+       "tipo": "cambia de tamaño"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "nombre": "parte en garantía",
+   "numerador": "en_garantia_n",
+   "denominador": "uno",
+   "total": {
+    "num": 11326,
+    "den": 16996,
+    "pct": 66.6392
+   },
+   "por": {
+    "fabricante": {
+     "dimension": "fabricante",
+     "medida": {
+      "numerador": "en_garantia_n",
+      "denominador": "uno",
+      "factor": 100,
+      "minimo": 30
+     },
+     "total": [
+      {
+       "categoria": "Seagate",
+       "num": 5807.0,
+       "den": 10284.0,
+       "valor": 56.46635550369506,
+       "comparada": true
+      },
+      {
+       "categoria": "HGST",
+       "num": 1703.0,
+       "den": 2702.0,
+       "valor": 63.02738712065137,
+       "comparada": true
+      },
+      {
+       "categoria": "Toshiba",
+       "num": 3085.0,
+       "den": 3279.0,
+       "valor": 94.08356206160414,
+       "comparada": true
+      },
+      {
+       "categoria": "WDC",
+       "num": 731.0,
+       "den": 731.0,
+       "valor": 100.0,
+       "comparada": true
+      }
+     ],
+     "par": [
+      "WDC",
+      "Seagate"
+     ],
+     "por_grupo": {
+      "capacidad_tb": {
+       "4.0": [
+        {
+         "categoria": "Seagate",
+         "num": 1.0,
+         "den": 1949.0,
+         "valor": 0.051308363263211906,
+         "comparada": true
+        },
+        {
+         "categoria": "HGST",
+         "num": 7.0,
+         "den": 283.0,
+         "valor": 2.4734982332155475,
+         "comparada": true
+        },
+        {
+         "categoria": "Toshiba",
+         "num": 0.0,
+         "den": 6.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "6.0": [
+        {
+         "categoria": "Seagate",
+         "num": 0.0,
+         "den": 15.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "8.0": [
+        {
+         "categoria": "Seagate",
+         "num": 662.0,
+         "den": 2762.0,
+         "valor": 23.968139029688633,
+         "comparada": true
+        },
+        {
+         "categoria": "HGST",
+         "num": 40.0,
+         "den": 96.0,
+         "valor": 41.666666666666664,
+         "comparada": true
+        },
+        {
+         "categoria": "Toshiba",
+         "num": 0.0,
+         "den": 12.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "10.0": [
+        {
+         "categoria": "Seagate",
+         "num": 77.0,
+         "den": 245.0,
+         "valor": 31.428571428571427,
+         "comparada": true
+        }
+       ],
+       "12.0": [
+        {
+         "categoria": "HGST",
+         "num": 1656.0,
+         "den": 2323.0,
+         "valor": 71.2871287128713,
+         "comparada": true
+        },
+        {
+         "categoria": "Seagate",
+         "num": 3256.0,
+         "den": 3502.0,
+         "valor": 92.97544260422616,
+         "comparada": true
+        }
+       ],
+       "14.0": [
+        {
+         "categoria": "Toshiba",
+         "num": 1674.0,
+         "den": 1850.0,
+         "valor": 90.48648648648648,
+         "comparada": true
+        },
+        {
+         "categoria": "Seagate",
+         "num": 1074.0,
+         "den": 1074.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": "WDC",
+         "num": 190.0,
+         "den": 190.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ],
+       "16.0": [
+        {
+         "categoria": "Seagate",
+         "num": 691.0,
+         "den": 691.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": "Toshiba",
+         "num": 1365.0,
+         "den": 1365.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": "WDC",
+         "num": 298.0,
+         "den": 298.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ],
+       "18.0": [
+        {
+         "categoria": "Seagate",
+         "num": 11.0,
+         "den": 11.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "20.0": [
+        {
+         "categoria": "Toshiba",
+         "num": 46.0,
+         "den": 46.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ],
+       "22.0": [
+        {
+         "categoria": "WDC",
+         "num": 243.0,
+         "den": 243.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ],
+       "24.0": [
+        {
+         "categoria": "Seagate",
+         "num": 35.0,
+         "den": 35.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ]
+      }
+     },
+     "anidada": [],
+     "alertas": [
+      {
+       "grupo_dim": "capacidad_tb",
+       "grupo": "14.0",
+       "a": "WDC",
+       "b": "Seagate",
+       "diferencia_total": 43.533644,
+       "diferencia_grupo": 0.0,
+       "tipo": "cambia de tamaño"
+      },
+      {
+       "grupo_dim": "capacidad_tb",
+       "grupo": "16.0",
+       "a": "WDC",
+       "b": "Seagate",
+       "diferencia_total": 43.533644,
+       "diferencia_grupo": 0.0,
+       "tipo": "cambia de tamaño"
+      }
+     ]
+    },
+    "capacidad_tb": {
+     "dimension": "capacidad_tb",
+     "medida": {
+      "numerador": "en_garantia_n",
+      "denominador": "uno",
+      "factor": 100,
+      "minimo": 30
+     },
+     "total": [
+      {
+       "categoria": 4.0,
+       "num": 8.0,
+       "den": 2238.0,
+       "valor": 0.3574620196604111,
+       "comparada": true
+      },
+      {
+       "categoria": 8.0,
+       "num": 702.0,
+       "den": 2870.0,
+       "valor": 24.45993031358885,
+       "comparada": true
+      },
+      {
+       "categoria": 12.0,
+       "num": 4912.0,
+       "den": 5825.0,
+       "valor": 84.32618025751073,
+       "comparada": true
+      },
+      {
+       "categoria": 14.0,
+       "num": 2938.0,
+       "den": 3114.0,
+       "valor": 94.34810533076428,
+       "comparada": true
+      },
+      {
+       "categoria": 6.0,
+       "num": 0.0,
+       "den": 15.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 10.0,
+       "num": 77.0,
+       "den": 245.0,
+       "valor": 31.428571428571427,
+       "comparada": true
+      },
+      {
+       "categoria": 16.0,
+       "num": 2354.0,
+       "den": 2354.0,
+       "valor": 100.0,
+       "comparada": true
+      },
+      {
+       "categoria": 18.0,
+       "num": 11.0,
+       "den": 11.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 22.0,
+       "num": 243.0,
+       "den": 243.0,
+       "valor": 100.0,
+       "comparada": true
+      },
+      {
+       "categoria": 20.0,
+       "num": 46.0,
+       "den": 46.0,
+       "valor": 100.0,
+       "comparada": true
+      },
+      {
+       "categoria": 24.0,
+       "num": 35.0,
+       "den": 35.0,
+       "valor": 100.0,
+       "comparada": true
+      }
+     ],
+     "par": [
+      24.0,
+      4.0
+     ],
+     "por_grupo": {
+      "fabricante": {
+       "HGST": [
+        {
+         "categoria": 12.0,
+         "num": 1656.0,
+         "den": 2323.0,
+         "valor": 71.2871287128713,
+         "comparada": true
+        },
+        {
+         "categoria": 4.0,
+         "num": 7.0,
+         "den": 283.0,
+         "valor": 2.4734982332155475,
+         "comparada": true
+        },
+        {
+         "categoria": 8.0,
+         "num": 40.0,
+         "den": 96.0,
+         "valor": 41.666666666666664,
+         "comparada": true
+        }
+       ],
+       "Seagate": [
+        {
+         "categoria": 4.0,
+         "num": 1.0,
+         "den": 1949.0,
+         "valor": 0.051308363263211906,
+         "comparada": true
+        },
+        {
+         "categoria": 8.0,
+         "num": 662.0,
+         "den": 2762.0,
+         "valor": 23.968139029688633,
+         "comparada": true
+        },
+        {
+         "categoria": 12.0,
+         "num": 3256.0,
+         "den": 3502.0,
+         "valor": 92.97544260422616,
+         "comparada": true
+        },
+        {
+         "categoria": 6.0,
+         "num": 0.0,
+         "den": 15.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 10.0,
+         "num": 77.0,
+         "den": 245.0,
+         "valor": 31.428571428571427,
+         "comparada": true
+        },
+        {
+         "categoria": 16.0,
+         "num": 691.0,
+         "den": 691.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 14.0,
+         "num": 1074.0,
+         "den": 1074.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 18.0,
+         "num": 11.0,
+         "den": 11.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 24.0,
+         "num": 35.0,
+         "den": 35.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ],
+       "Toshiba": [
+        {
+         "categoria": 14.0,
+         "num": 1674.0,
+         "den": 1850.0,
+         "valor": 90.48648648648648,
+         "comparada": true
+        },
+        {
+         "categoria": 16.0,
+         "num": 1365.0,
+         "den": 1365.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 8.0,
+         "num": 0.0,
+         "den": 12.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 4.0,
+         "num": 0.0,
+         "den": 6.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 20.0,
+         "num": 46.0,
+         "den": 46.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ],
+       "WDC": [
+        {
+         "categoria": 14.0,
+         "num": 190.0,
+         "den": 190.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 16.0,
+         "num": 298.0,
+         "den": 298.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 22.0,
+         "num": 243.0,
+         "den": 243.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ]
+      }
+     },
+     "anidada": [],
+     "alertas": []
+    },
+    "ano": {
+     "dimension": "ano",
+     "medida": {
+      "numerador": "en_garantia_n",
+      "denominador": "uno",
+      "factor": 100,
+      "minimo": 30
+     },
+     "total": [
+      {
+       "categoria": 2020,
+       "num": 907.0,
+       "den": 1307.0,
+       "valor": 69.3955623565417,
+       "comparada": true
+      },
+      {
+       "categoria": 2021,
+       "num": 1289.0,
+       "den": 1823.0,
+       "valor": 70.70762479429511,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 1890.0,
+       "den": 2999.0,
+       "valor": 63.02100700233411,
+       "comparada": true
+      },
+      {
+       "categoria": 2023,
+       "num": 2691.0,
+       "den": 4201.0,
+       "valor": 64.0561771006903,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 3258.0,
+       "den": 4538.0,
+       "valor": 71.79374173644777,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 1291.0,
+       "den": 2128.0,
+       "valor": 60.66729323308271,
+       "comparada": true
+      }
+     ],
+     "par": [
+      2024,
+      2020
+     ],
+     "por_grupo": {
+      "fabricante": {
+       "HGST": [
+        {
+         "categoria": 2020,
+         "num": 73.0,
+         "den": 112.0,
+         "valor": 65.17857142857143,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 92.0,
+         "den": 150.0,
+         "valor": 61.333333333333336,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 181.0,
+         "den": 280.0,
+         "valor": 64.64285714285714,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 537.0,
+         "den": 622.0,
+         "valor": 86.33440514469453,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 605.0,
+         "den": 1108.0,
+         "valor": 54.6028880866426,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 215.0,
+         "den": 430.0,
+         "valor": 50.0,
+         "comparada": true
+        }
+       ],
+       "Seagate": [
+        {
+         "categoria": 2020,
+         "num": 733.0,
+         "den": 1094.0,
+         "valor": 67.0018281535649,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 885.0,
+         "den": 1358.0,
+         "valor": 65.16936671575847,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 1163.0,
+         "den": 2169.0,
+         "valor": 53.619179345320426,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 1366.0,
+         "den": 2781.0,
+         "valor": 49.11902193455592,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 1273.0,
+         "den": 2009.0,
+         "valor": 63.3648581383773,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 387.0,
+         "den": 873.0,
+         "valor": 44.329896907216494,
+         "comparada": true
+        }
+       ],
+       "Toshiba": [
+        {
+         "categoria": 2020,
+         "num": 100.0,
+         "den": 100.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 276.0,
+         "den": 279.0,
+         "valor": 98.9247311827957,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 520.0,
+         "den": 524.0,
+         "valor": 99.23664122137404,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 694.0,
+         "den": 704.0,
+         "valor": 98.57954545454545,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 1038.0,
+         "den": 1079.0,
+         "valor": 96.20018535681186,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 457.0,
+         "den": 593.0,
+         "valor": 77.06576728499157,
+         "comparada": true
+        }
+       ],
+       "WDC": [
+        {
+         "categoria": 2020,
+         "num": 1.0,
+         "den": 1.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2021,
+         "num": 36.0,
+         "den": 36.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 26.0,
+         "den": 26.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2023,
+         "num": 94.0,
+         "den": 94.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 342.0,
+         "den": 342.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 232.0,
+         "den": 232.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ]
+      },
+      "capacidad_tb": {
+       "4.0": [
+        {
+         "categoria": 2020,
+         "num": 4.0,
+         "den": 313.0,
+         "valor": 1.2779552715654952,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 0.0,
+         "den": 399.0,
+         "valor": 0.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 3.0,
+         "den": 739.0,
+         "valor": 0.4059539918809202,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 1.0,
+         "den": 620.0,
+         "valor": 0.16129032258064516,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 0.0,
+         "den": 163.0,
+         "valor": 0.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 0.0,
+         "den": 4.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "6.0": [
+        {
+         "categoria": 2020,
+         "num": 0.0,
+         "den": 2.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2021,
+         "num": 0.0,
+         "den": 1.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2022,
+         "num": 0.0,
+         "den": 6.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2023,
+         "num": 0.0,
+         "den": 6.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "8.0": [
+        {
+         "categoria": 2020,
+         "num": 184.0,
+         "den": 273.0,
+         "valor": 67.3992673992674,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 225.0,
+         "den": 359.0,
+         "valor": 62.674094707520894,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 210.0,
+         "den": 558.0,
+         "valor": 37.634408602150536,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 42.0,
+         "den": 848.0,
+         "valor": 4.952830188679245,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 32.0,
+         "den": 553.0,
+         "valor": 5.786618444846293,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 9.0,
+         "den": 279.0,
+         "valor": 3.225806451612903,
+         "comparada": true
+        }
+       ],
+       "10.0": [
+        {
+         "categoria": 2020,
+         "num": 16.0,
+         "den": 16.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2021,
+         "num": 28.0,
+         "den": 28.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2022,
+         "num": 26.0,
+         "den": 45.0,
+         "valor": 57.77777777777778,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 5.0,
+         "den": 74.0,
+         "valor": 6.756756756756757,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 2.0,
+         "den": 58.0,
+         "valor": 3.4482758620689653,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 0.0,
+         "den": 24.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "12.0": [
+        {
+         "categoria": 2020,
+         "num": 586.0,
+         "den": 586.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 510.0,
+         "den": 510.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 742.0,
+         "den": 742.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 1352.0,
+         "den": 1358.0,
+         "valor": 99.55817378497791,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 1364.0,
+         "den": 1868.0,
+         "valor": 73.01927194860814,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 358.0,
+         "den": 761.0,
+         "valor": 47.04336399474376,
+         "comparada": true
+        }
+       ],
+       "14.0": [
+        {
+         "categoria": 2020,
+         "num": 114.0,
+         "den": 114.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2021,
+         "num": 449.0,
+         "den": 449.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 620.0,
+         "den": 620.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 789.0,
+         "den": 793.0,
+         "valor": 99.49558638083228,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 712.0,
+         "den": 748.0,
+         "valor": 95.18716577540107,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 254.0,
+         "den": 390.0,
+         "valor": 65.12820512820512,
+         "comparada": true
+        }
+       ],
+       "16.0": [
+        {
+         "categoria": 2020,
+         "num": 1.0,
+         "den": 1.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2021,
+         "num": 75.0,
+         "den": 75.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2022,
+         "num": 287.0,
+         "den": 287.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2023,
+         "num": 497.0,
+         "den": 497.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2024,
+         "num": 993.0,
+         "den": 993.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 501.0,
+         "den": 501.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ],
+       "18.0": [
+        {
+         "categoria": 2020,
+         "num": 2.0,
+         "den": 2.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2021,
+         "num": 2.0,
+         "den": 2.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2022,
+         "num": 2.0,
+         "den": 2.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2023,
+         "num": 3.0,
+         "den": 3.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2024,
+         "num": 1.0,
+         "den": 1.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2025,
+         "num": 1.0,
+         "den": 1.0,
+         "valor": null,
+         "comparada": false
+        }
+       ],
+       "20.0": [
+        {
+         "categoria": 2024,
+         "num": 15.0,
+         "den": 15.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2025,
+         "num": 31.0,
+         "den": 31.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ],
+       "22.0": [
+        {
+         "categoria": 2023,
+         "num": 2.0,
+         "den": 2.0,
+         "valor": null,
+         "comparada": false
+        },
+        {
+         "categoria": 2024,
+         "num": 139.0,
+         "den": 139.0,
+         "valor": 100.0,
+         "comparada": true
+        },
+        {
+         "categoria": 2025,
+         "num": 102.0,
+         "den": 102.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ],
+       "24.0": [
+        {
+         "categoria": 2025,
+         "num": 35.0,
+         "den": 35.0,
+         "valor": 100.0,
+         "comparada": true
+        }
+       ]
+      }
+     },
+     "anidada": [],
+     "alertas": [
+      {
+       "grupo_dim": "fabricante",
+       "grupo": "HGST",
+       "a": 2024,
+       "b": 2020,
+       "diferencia_total": 2.398179,
+       "diferencia_grupo": -10.575683,
+       "tipo": "se invierte"
+      },
+      {
+       "grupo_dim": "fabricante",
+       "grupo": "Seagate",
+       "a": 2024,
+       "b": 2020,
+       "diferencia_total": 2.398179,
+       "diferencia_grupo": -3.63697,
+       "tipo": "se invierte"
+      },
+      {
+       "grupo_dim": "fabricante",
+       "grupo": "Toshiba",
+       "a": 2024,
+       "b": 2020,
+       "diferencia_total": 2.398179,
+       "diferencia_grupo": -3.799815,
+       "tipo": "se invierte"
+      },
+      {
+       "grupo_dim": "capacidad_tb",
+       "grupo": "4.0",
+       "a": 2024,
+       "b": 2020,
+       "diferencia_total": 2.398179,
+       "diferencia_grupo": -1.277955,
+       "tipo": "se invierte"
+      },
+      {
+       "grupo_dim": "capacidad_tb",
+       "grupo": "8.0",
+       "a": 2024,
+       "b": 2020,
+       "diferencia_total": 2.398179,
+       "diferencia_grupo": -61.612649,
+       "tipo": "se invierte"
+      },
+      {
+       "grupo_dim": "capacidad_tb",
+       "grupo": "12.0",
+       "a": 2024,
+       "b": 2020,
+       "diferencia_total": 2.398179,
+       "diferencia_grupo": -26.980728,
+       "tipo": "se invierte"
+      },
+      {
+       "grupo_dim": "capacidad_tb",
+       "grupo": "14.0",
+       "a": 2024,
+       "b": 2020,
+       "diferencia_total": 2.398179,
+       "diferencia_grupo": -4.812834,
+       "tipo": "se invierte"
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "pareto": [],
+ "series_negocio": [
+  {
+   "serie": "fallos de discos de datos por mes",
+   "frecuencia": "mes",
+   "tipo": "flujo",
+   "periodos": 66,
+   "ventana_movil": 3,
+   "fuera": 0,
+   "detalle": [
+    {
+     "periodo": "2020-01-01",
+     "valor": 141.0,
+     "movil": null,
+     "var_anterior_pct": null,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-02-01",
+     "valor": 102.0,
+     "movil": null,
+     "var_anterior_pct": -27.6596,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-03-01",
+     "valor": 93.0,
+     "movil": 112.0,
+     "var_anterior_pct": -8.8235,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-04-01",
+     "valor": 95.0,
+     "movil": 96.666667,
+     "var_anterior_pct": 2.1505,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-05-01",
+     "valor": 104.0,
+     "movil": 97.333333,
+     "var_anterior_pct": 9.4737,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-06-01",
+     "valor": 73.0,
+     "movil": 90.666667,
+     "var_anterior_pct": -29.8077,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-07-01",
+     "valor": 117.0,
+     "movil": 98.0,
+     "var_anterior_pct": 60.274,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-08-01",
+     "valor": 106.0,
+     "movil": 98.666667,
+     "var_anterior_pct": -9.4017,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-09-01",
+     "valor": 104.0,
+     "movil": 109.0,
+     "var_anterior_pct": -1.8868,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-10-01",
+     "valor": 122.0,
+     "movil": 110.666667,
+     "var_anterior_pct": 17.3077,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-11-01",
+     "valor": 131.0,
+     "movil": 119.0,
+     "var_anterior_pct": 7.377,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-12-01",
+     "valor": 119.0,
+     "movil": 124.0,
+     "var_anterior_pct": -9.1603,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2021-01-01",
+     "valor": 122.0,
+     "movil": 124.0,
+     "var_anterior_pct": 2.521,
+     "interanual_pct": -13.4752
+    },
+    {
+     "periodo": "2021-02-01",
+     "valor": 122.0,
+     "movil": 121.0,
+     "var_anterior_pct": 0.0,
+     "interanual_pct": 19.6078
+    },
+    {
+     "periodo": "2021-03-01",
+     "valor": 106.0,
+     "movil": 116.666667,
+     "var_anterior_pct": -13.1148,
+     "interanual_pct": 13.9785
+    },
+    {
+     "periodo": "2021-04-01",
+     "valor": 144.0,
+     "movil": 124.0,
+     "var_anterior_pct": 35.8491,
+     "interanual_pct": 51.5789
+    },
+    {
+     "periodo": "2021-05-01",
+     "valor": 161.0,
+     "movil": 137.0,
+     "var_anterior_pct": 11.8056,
+     "interanual_pct": 54.8077
+    },
+    {
+     "periodo": "2021-06-01",
+     "valor": 136.0,
+     "movil": 147.0,
+     "var_anterior_pct": -15.528,
+     "interanual_pct": 86.3014
+    },
+    {
+     "periodo": "2021-07-01",
+     "valor": 172.0,
+     "movil": 156.333333,
+     "var_anterior_pct": 26.4706,
+     "interanual_pct": 47.0085
+    },
+    {
+     "periodo": "2021-08-01",
+     "valor": 180.0,
+     "movil": 162.666667,
+     "var_anterior_pct": 4.6512,
+     "interanual_pct": 69.8113
+    },
+    {
+     "periodo": "2021-09-01",
+     "valor": 158.0,
+     "movil": 170.0,
+     "var_anterior_pct": -12.2222,
+     "interanual_pct": 51.9231
+    },
+    {
+     "periodo": "2021-10-01",
+     "valor": 183.0,
+     "movil": 173.666667,
+     "var_anterior_pct": 15.8228,
+     "interanual_pct": 50.0
+    },
+    {
+     "periodo": "2021-11-01",
+     "valor": 170.0,
+     "movil": 170.333333,
+     "var_anterior_pct": -7.1038,
+     "interanual_pct": 29.771
+    },
+    {
+     "periodo": "2021-12-01",
+     "valor": 169.0,
+     "movil": 174.0,
+     "var_anterior_pct": -0.5882,
+     "interanual_pct": 42.0168
+    },
+    {
+     "periodo": "2022-01-01",
+     "valor": 190.0,
+     "movil": 176.333333,
+     "var_anterior_pct": 12.426,
+     "interanual_pct": 55.7377
+    },
+    {
+     "periodo": "2022-02-01",
+     "valor": 160.0,
+     "movil": 173.0,
+     "var_anterior_pct": -15.7895,
+     "interanual_pct": 31.1475
+    },
+    {
+     "periodo": "2022-03-01",
+     "valor": 268.0,
+     "movil": 206.0,
+     "var_anterior_pct": 67.5,
+     "interanual_pct": 152.8302
+    },
+    {
+     "periodo": "2022-04-01",
+     "valor": 232.0,
+     "movil": 220.0,
+     "var_anterior_pct": -13.4328,
+     "interanual_pct": 61.1111
+    },
+    {
+     "periodo": "2022-05-01",
+     "valor": 275.0,
+     "movil": 258.333333,
+     "var_anterior_pct": 18.5345,
+     "interanual_pct": 70.8075
+    },
+    {
+     "periodo": "2022-06-01",
+     "valor": 256.0,
+     "movil": 254.333333,
+     "var_anterior_pct": -6.9091,
+     "interanual_pct": 88.2353
+    },
+    {
+     "periodo": "2022-07-01",
+     "valor": 327.0,
+     "movil": 286.0,
+     "var_anterior_pct": 27.7344,
+     "interanual_pct": 90.1163
+    },
+    {
+     "periodo": "2022-08-01",
+     "valor": 290.0,
+     "movil": 291.0,
+     "var_anterior_pct": -11.315,
+     "interanual_pct": 61.1111
+    },
+    {
+     "periodo": "2022-09-01",
+     "valor": 299.0,
+     "movil": 305.333333,
+     "var_anterior_pct": 3.1034,
+     "interanual_pct": 89.2405
+    },
+    {
+     "periodo": "2022-10-01",
+     "valor": 251.0,
+     "movil": 280.0,
+     "var_anterior_pct": -16.0535,
+     "interanual_pct": 37.1585
+    },
+    {
+     "periodo": "2022-11-01",
+     "valor": 236.0,
+     "movil": 262.0,
+     "var_anterior_pct": -5.9761,
+     "interanual_pct": 38.8235
+    },
+    {
+     "periodo": "2022-12-01",
+     "valor": 215.0,
+     "movil": 234.0,
+     "var_anterior_pct": -8.8983,
+     "interanual_pct": 27.2189
+    },
+    {
+     "periodo": "2023-01-01",
+     "valor": 286.0,
+     "movil": 245.666667,
+     "var_anterior_pct": 33.0233,
+     "interanual_pct": 50.5263
+    },
+    {
+     "periodo": "2023-02-01",
+     "valor": 240.0,
+     "movil": 247.0,
+     "var_anterior_pct": -16.0839,
+     "interanual_pct": 50.0
+    },
+    {
+     "periodo": "2023-03-01",
+     "valor": 366.0,
+     "movil": 297.333333,
+     "var_anterior_pct": 52.5,
+     "interanual_pct": 36.5672
+    },
+    {
+     "periodo": "2023-04-01",
+     "valor": 565.0,
+     "movil": 390.333333,
+     "var_anterior_pct": 54.3716,
+     "interanual_pct": 143.5345
+    },
+    {
+     "periodo": "2023-05-01",
+     "valor": 457.0,
+     "movil": 462.666667,
+     "var_anterior_pct": -19.115,
+     "interanual_pct": 66.1818
+    },
+    {
+     "periodo": "2023-06-01",
+     "valor": 319.0,
+     "movil": 447.0,
+     "var_anterior_pct": -30.1969,
+     "interanual_pct": 24.6094
+    },
+    {
+     "periodo": "2023-07-01",
+     "valor": 287.0,
+     "movil": 354.333333,
+     "var_anterior_pct": -10.0313,
+     "interanual_pct": -12.2324
+    },
+    {
+     "periodo": "2023-08-01",
+     "valor": 361.0,
+     "movil": 322.333333,
+     "var_anterior_pct": 25.784,
+     "interanual_pct": 24.4828
+    },
+    {
+     "periodo": "2023-09-01",
+     "valor": 295.0,
+     "movil": 314.333333,
+     "var_anterior_pct": -18.2825,
+     "interanual_pct": -1.3378
+    },
+    {
+     "periodo": "2023-10-01",
+     "valor": 366.0,
+     "movil": 340.666667,
+     "var_anterior_pct": 24.0678,
+     "interanual_pct": 45.8167
+    },
+    {
+     "periodo": "2023-11-01",
+     "valor": 403.0,
+     "movil": 354.666667,
+     "var_anterior_pct": 10.1093,
+     "interanual_pct": 70.7627
+    },
+    {
+     "periodo": "2023-12-01",
+     "valor": 256.0,
+     "movil": 341.666667,
+     "var_anterior_pct": -36.4764,
+     "interanual_pct": 19.0698
+    },
+    {
+     "periodo": "2024-01-01",
+     "valor": 348.0,
+     "movil": 335.666667,
+     "var_anterior_pct": 35.9375,
+     "interanual_pct": 21.6783
+    },
+    {
+     "periodo": "2024-02-01",
+     "valor": 335.0,
+     "movil": 313.0,
+     "var_anterior_pct": -3.7356,
+     "interanual_pct": 39.5833
+    },
+    {
+     "periodo": "2024-03-01",
+     "valor": 266.0,
+     "movil": 316.333333,
+     "var_anterior_pct": -20.597,
+     "interanual_pct": -27.3224
+    },
+    {
+     "periodo": "2024-04-01",
+     "valor": 279.0,
+     "movil": 293.333333,
+     "var_anterior_pct": 4.8872,
+     "interanual_pct": -50.6195
+    },
+    {
+     "periodo": "2024-05-01",
+     "valor": 469.0,
+     "movil": 338.0,
+     "var_anterior_pct": 68.1004,
+     "interanual_pct": 2.6258
+    },
+    {
+     "periodo": "2024-06-01",
+     "valor": 451.0,
+     "movil": 399.666667,
+     "var_anterior_pct": -3.838,
+     "interanual_pct": 41.3793
+    },
+    {
+     "periodo": "2024-07-01",
+     "valor": 501.0,
+     "movil": 473.666667,
+     "var_anterior_pct": 11.0865,
+     "interanual_pct": 74.5645
+    },
+    {
+     "periodo": "2024-08-01",
+     "valor": 548.0,
+     "movil": 500.0,
+     "var_anterior_pct": 9.3812,
+     "interanual_pct": 51.8006
+    },
+    {
+     "periodo": "2024-09-01",
+     "valor": 340.0,
+     "movil": 463.0,
+     "var_anterior_pct": -37.9562,
+     "interanual_pct": 15.2542
+    },
+    {
+     "periodo": "2024-10-01",
+     "valor": 339.0,
+     "movil": 409.0,
+     "var_anterior_pct": -0.2941,
+     "interanual_pct": -7.377
+    },
+    {
+     "periodo": "2024-11-01",
+     "valor": 322.0,
+     "movil": 333.666667,
+     "var_anterior_pct": -5.0147,
+     "interanual_pct": -20.0993
+    },
+    {
+     "periodo": "2024-12-01",
+     "valor": 340.0,
+     "movil": 333.666667,
+     "var_anterior_pct": 5.5901,
+     "interanual_pct": 32.8125
+    },
+    {
+     "periodo": "2025-01-01",
+     "valor": 377.0,
+     "movil": 346.333333,
+     "var_anterior_pct": 10.8824,
+     "interanual_pct": 8.3333
+    },
+    {
+     "periodo": "2025-02-01",
+     "valor": 322.0,
+     "movil": 346.333333,
+     "var_anterior_pct": -14.5889,
+     "interanual_pct": -3.8806
+    },
+    {
+     "periodo": "2025-03-01",
+     "valor": 368.0,
+     "movil": 355.666667,
+     "var_anterior_pct": 14.2857,
+     "interanual_pct": 38.3459
+    },
+    {
+     "periodo": "2025-04-01",
+     "valor": 382.0,
+     "movil": 357.333333,
+     "var_anterior_pct": 3.8043,
+     "interanual_pct": 36.9176
+    },
+    {
+     "periodo": "2025-05-01",
+     "valor": 338.0,
+     "movil": 362.666667,
+     "var_anterior_pct": -11.5183,
+     "interanual_pct": -27.9318
+    },
+    {
+     "periodo": "2025-06-01",
+     "valor": 341.0,
+     "movil": 353.666667,
+     "var_anterior_pct": 0.8876,
+     "interanual_pct": -24.3902
+    }
+   ],
+   "anos_completos": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+   ],
+   "estacionalidad": [
+    {
+     "posicion": 1,
+     "media": 217.4
+    },
+    {
+     "posicion": 2,
+     "media": 191.8
+    },
+    {
+     "posicion": 3,
+     "media": 219.8
+    },
+    {
+     "posicion": 4,
+     "media": 263.0
+    },
+    {
+     "posicion": 5,
+     "media": 293.2
+    },
+    {
+     "posicion": 6,
+     "media": 247.0
+    },
+    {
+     "posicion": 7,
+     "media": 280.8
+    },
+    {
+     "posicion": 8,
+     "media": 297.0
+    },
+    {
+     "posicion": 9,
+     "media": 239.2
+    },
+    {
+     "posicion": 10,
+     "media": 252.2
+    },
+    {
+     "posicion": 11,
+     "media": 252.4
+    },
+    {
+     "posicion": 12,
+     "media": 219.8
+    }
+   ],
+   "cagr_pct": 36.5046,
+   "cagr_base": {
+    "desde": 2020,
+    "hasta": 2024,
+    "agregado": "suma"
+   },
+   "tendencia_lineal": {
+    "pendiente_por_periodo": 5.305041,
+    "r2": 0.705
+   },
+   "tendencia_exponencial": {
+    "crecimiento_por_periodo_pct": 2.4146,
+    "r2": 0.791
+   }
+  }
+ ],
+ "anomalias": [],
+ "frente_al_objetivo": null,
+ "hallazgos": [
+  {
+   "id": "H-01",
+   "texto": "Parte sin aviso por fabricante: 41,8 % en Toshiba (1.321 de 3.160) frente a 18,5 % en Seagate (1.806 de 9.764).",
+   "cifra": 41.803797,
+   "filas": 12924,
+   "columnas": [
+    "sin_aviso_n",
+    "fabricante"
+   ],
+   "dimensiones_comprobadas": [
+    "capacidad_tb"
+   ],
+   "grafico": "parte-parte sin aviso-fabricante"
+  }
+ ],
+ "alertas": [
+  {
+   "id": "A-01",
+   "tipo": "separar",
+   "origen": null,
+   "texto": "Parte sin aviso por ano: 20,5 % en 2024 (880 de 4.298) frente a 40,3 % en 2020 (516 de 1.279). Al separar por fabricante, capacidad_tb cambia: parte sin aviso por ano: la diferencia entre 2024 y 2020 es de −19,87 puntos en el total y de −41,41 dentro de fabricante = HGST: cambia de tamaño.; parte sin aviso por ano: la diferencia entre 2024 y 2020 es de −19,87 puntos en el total y de −44,62 dentro de capacidad_tb = 14: cambia de tamaño.",
+   "vista": "parte sin aviso por ano"
+  },
+  {
+   "id": "A-02",
+   "tipo": "separar",
+   "origen": null,
+   "texto": "Parte en garantía por fabricante: 100,0 % en WDC (731 de 731) frente a 56,5 % en Seagate (5.807 de 10.284). Al separar por capacidad_tb cambia: parte en garantía por fabricante: la diferencia entre WDC y Seagate es de 43,53 puntos en el total y de 0,00 dentro de capacidad_tb = 14: cambia de tamaño.; parte en garantía por fabricante: la diferencia entre WDC y Seagate es de 43,53 puntos en el total y de 0,00 dentro de capacidad_tb = 16: cambia de tamaño.",
+   "vista": "parte en garantía por fabricante"
+  },
+  {
+   "id": "A-03",
+   "tipo": "separar",
+   "origen": null,
+   "texto": "Parte en garantía por ano: 71,8 % en 2024 (3.258 de 4.538) frente a 69,4 % en 2020 (907 de 1.307). Al separar por fabricante, capacidad_tb cambia: parte en garantía por ano: la diferencia entre 2024 y 2020 es de 2,40 puntos en el total y de −10,58 dentro de fabricante = HGST: se invierte.; parte en garantía por ano: la diferencia entre 2024 y 2020 es de 2,40 puntos en el total y de −3,64 dentro de fabricante = Seagate: se invierte.; parte en garantía por ano: la diferencia entre 2024 y 2020 es de 2,40 puntos en el total y de −3,80 dentro de fabricante = Toshiba: se invierte. (y 4 más)",
+   "vista": "parte en garantía por ano"
+  },
+  {
+   "id": "A-04",
+   "tipo": "limitacion",
+   "origen": "transformacion-datos, exclusiones",
+   "texto": "808 fallos de discos de datos no son objetivo de ninguna foto de fotos_riesgo; 903 no tienen el día anterior y salen del indicador de fallos sin aviso."
+  },
+  {
+   "id": "A-05",
+   "tipo": "limitacion",
+   "origen": null,
+   "texto": "Fuera de Seagate, avisar depende de tres contadores: la parte sin aviso no se compara entre fabricantes (reglas-negocio §3). Comparar fabricantes o capacidades mezcla discos de edades y modelos distintos (reglas-negocio §7): la diferencia no es de la marca ni de la capacidad."
+  },
+  {
+   "id": "A-06",
+   "tipo": "limitacion",
+   "origen": null,
+   "texto": "El sitio solo consta desde el 01/07/2023: 8.634 fallos de discos de datos, 141 sin tomo. Los fallos agrupados por tomo son del paso 5."
+  },
+  {
+   "id": "A-07",
+   "tipo": "heredada",
+   "origen": "correccion-datos C-20",
+   "texto": "RC-03 incumplida: smart_5_raw baja 575 veces en 413 discos; smart_187_raw baja 12 veces en 12 discos; smart_188_raw baja 1.650 veces en 1.650 discos; smart_197_raw baja 24.477 veces en 11.547 discos; smart_198_raw baja 10.055 veces en 5.517 discos: el aviso mira si un contador pasa de cero el día anterior (reglas §6), no si sube"
+  },
+  {
+   "id": "A-08",
+   "tipo": "heredada",
+   "origen": "correccion-datos C-26",
+   "texto": "163 pares de modelo y contador con vacíos solo en parte de sus filas; suman 2.789.298 filas vacías: de 16.101 fallos de discos de datos con día anterior, 4.049 llegan sin aviso y solo 69 tienen un contador vacío que su modelo sí apunta; aunque contaran como aviso, la parte sin aviso pasa del 25,1 % al 24,7 % (cifras del encargo 07)"
+  }
+ ],
+ "hipotesis": [
+  {
+   "id": "Hi-01",
+   "texto": "El cambio de parte sin aviso por ano al separar puede venir de que cada grupo tiene otra mezcla de modelos y edades.",
+   "que_haria_falta": "compararla a igual modelo y edad, que es del paso 5 (reglas-negocio §7)",
+   "alternativas_repasadas": [
+    "el tamaño del grupo",
+    "el calendario",
+    "la regresión a la media",
+    "la causa al revés",
+    "una variable que no está en la tabla (edad, vault)"
+   ]
+  },
+  {
+   "id": "Hi-02",
+   "texto": "El cambio de parte en garantía por fabricante al separar puede venir de que cada grupo tiene otra mezcla de modelos y edades.",
+   "que_haria_falta": "compararla a igual modelo y edad, que es del paso 5 (reglas-negocio §7)",
+   "alternativas_repasadas": [
+    "el tamaño del grupo",
+    "el calendario",
+    "la regresión a la media",
+    "la causa al revés",
+    "una variable que no está en la tabla (edad, vault)"
+   ]
+  },
+  {
+   "id": "Hi-03",
+   "texto": "El cambio de parte en garantía por ano al separar puede venir de que cada grupo tiene otra mezcla de modelos y edades.",
+   "que_haria_falta": "compararla a igual modelo y edad, que es del paso 5 (reglas-negocio §7)",
+   "alternativas_repasadas": [
+    "el tamaño del grupo",
+    "el calendario",
+    "la regresión a la media",
+    "la causa al revés",
+    "una variable que no está en la tabla (edad, vault)"
+   ]
+  }
+ ],
+ "comprobaciones": [
+  {
+   "comprobacion": "1 Tiempo",
+   "estado": "aplicada_con_resultado",
+   "detalle": "ordenado por fecha; dos granularidades (mes o trimestre y año); periodos incompletos: 2025; el primer mes de las fotos es ene 2020"
+  },
+  {
+   "comprobacion": "2 Pareto y ABC",
+   "estado": "no_aplica",
+   "detalle": "la tabla no tiene una magnitud que se sume por elemento fuera de lo ya descrito en otro informe"
+  },
+  {
+   "comprobacion": "3 Respaldo de cada cifra",
+   "estado": "aplicada_con_resultado",
+   "detalle": "cada hallazgo lleva su cifra, sus filas y sus columnas"
+  },
+  {
+   "comprobacion": "4 Datos personales en el informe",
+   "estado": "aplicada_sin_nada_relevante",
+   "detalle": "ninguna columna trae nombres, correos, teléfonos, documentos ni cuentas (reglas-negocio §9); el número de serie identifica un disco y no sale en ningún gráfico"
+  },
+  {
+   "comprobacion": "5 Códigos sin etiqueta",
+   "estado": "aplicada_con_resultado",
+   "detalle": "códigos sin etiqueta que no se interpretan: vault_id, pod_id, pod_slot_num"
+  },
+  {
+   "comprobacion": "6 Reproducibilidad",
+   "estado": "aplicada_con_resultado",
+   "detalle": "versiones, fecha de ejecución, tamaño y huella en «Contexto»"
+  },
+  {
+   "comprobacion": "7 Correlaciones",
+   "estado": "no_aplica",
+   "detalle": "esta tabla no lleva el objetivo y nadie pidió correlaciones"
+  },
+  {
+   "comprobacion": "8 Forma de las hipótesis",
+   "estado": "aplicada_con_resultado",
+   "detalle": "3 hipótesis, cada una con lo que haría falta y las cinco alternativas repasadas"
+  },
+  {
+   "comprobacion": "9 Variables asimétricas",
+   "estado": "aplicada_con_resultado",
+   "detalle": "muy asimétricas, que se comparan con la mediana: coste_fallo_garantia_usd"
+  },
+  {
+   "comprobacion": "10 Gráficos",
+   "estado": "aplicada_con_resultado",
+   "detalle": "un eje por gráfico, color por papel, meses con su nombre, títulos calculados del dato; gráficos repetidos quitados: ninguno"
+  },
+  {
+   "comprobacion": "11 Series de negocio",
+   "estado": "aplicada_con_resultado",
+   "detalle": "fallos de discos de datos por mes: 66 periodos completos, CAGR 36,50 %"
+  },
+  {
+   "comprobacion": "12 Frente al objetivo",
+   "estado": "no_aplica",
+   "detalle": "esta tabla no lleva el objetivo; se describe entera, con los dos periodos (reglas-negocio §7)"
+  },
+  {
+   "comprobacion": "13 Discreta o continua",
+   "estado": "aplicada_con_resultado",
+   "detalle": "discreta si es entera y tiene como mucho min(20, 5 % de las filas) valores distintos; 3 discretas y 6 continuas"
+  },
+  {
+   "comprobacion": "14 Texto",
+   "estado": "no_aplica",
+   "detalle": "no hay columnas de texto libre"
+  },
+  {
+   "comprobacion": "15 Alta cardinalidad",
+   "estado": "aplicada_sin_nada_relevante",
+   "detalle": "ninguna categórica pasa de 50 valores"
+  },
+  {
+   "comprobacion": "16 Observaciones de la persona",
+   "estado": "aplicada_sin_nada_relevante",
+   "detalle": "apartado vacío: la persona escribe sus observaciones y se vuelve a ejecutar"
+  },
+  {
+   "comprobacion": "17 La tabla de estadísticos se lee",
+   "estado": "aplicada_con_resultado",
+   "detalle": "garantia_anos (cuartiles 25 y 75 iguales, en 5,00); coste_fallo_garantia_usd (media lejos de la mediana)"
+  },
+  {
+   "comprobacion": "18 Lo esperable",
+   "estado": "no_aplica",
+   "detalle": "las reglas de negocio no tienen la tabla «Lo esperable»"
+  }
+ ],
+ "observaciones": [],
+ "parametros": [
+  {
+   "nombre": "numérica discreta",
+   "valor": "entera y con como mucho min(20, 5 % de las filas) valores distintos",
+   "origen": "por defecto (parametros.md)"
+  },
+  {
+   "nombre": "filas mínimas para comparar una categoría frente al objetivo",
+   "valor": 30,
+   "origen": "por defecto (parametros.md)"
+  },
+  {
+   "nombre": "alta cardinalidad",
+   "valor": "más de 50 valores distintos",
+   "origen": "por defecto"
+  },
+  {
+   "nombre": "las más frecuentes en alta cardinalidad",
+   "valor": 10,
+   "origen": "por defecto"
+  },
+  {
+   "nombre": "texto muy corto",
+   "valor": "menos de 3 caracteres",
+   "origen": "por defecto; no hay texto libre"
+  },
+  {
+   "nombre": "diagrama de caja",
+   "valor": "no se dibuja ninguno: todas las tablas pasan de 1.000 filas o el histograma ya lo enseña",
+   "origen": "por defecto"
+  },
+  {
+   "nombre": "parte con que se cruza el objetivo",
+   "valor": "construcción",
+   "origen": "reglas-negocio §7, la partición por fecha"
+  },
+  {
+   "nombre": "muestra fija de fotos",
+   "valor": "400000 fotos, semilla 42",
+   "origen": "encargo y criterio de este análisis"
+  },
+  {
+   "nombre": "valores distintos que se siguen por columna al leer por bloques",
+   "valor": 60,
+   "origen": "criterio de este análisis, por encima del límite de discreta y del de alta cardinalidad"
+  },
+  {
+   "nombre": "diferencia frente al objetivo",
+   "valor": "|2·AUC − 1|; se dibujan las de 0.1 o más; posible fuga desde 0.9",
+   "origen": "criterio de este análisis, fijado antes de calcular"
+  },
+  {
+   "nombre": "cambio al separar",
+   "valor": "se invierte, o la diferencia del grupo es menos de 1/2 o más de 2 veces la del total",
+   "origen": "criterio de este análisis, fijado antes de calcular"
+  },
+  {
+   "nombre": "días mínimos para comparar una tasa anual",
+   "valor": 50000,
+   "origen": "reglas-negocio §7, mínimo del ranking"
+  },
+  {
+   "nombre": "fallos mínimos para concluir sobre un año de edad",
+   "valor": 20,
+   "origen": "reglas-negocio §7, CP-009"
+  },
+  {
+   "nombre": "señales de la tabla de estadísticos",
+   "valor": "media y mediana a más de 0.5 desviaciones; máximo / mínimo positivo de 1.000 o más",
+   "origen": "criterio de este análisis"
+  },
+  {
+   "nombre": "correlación fuerte",
+   "valor": "|r| ≥ 0.9",
+   "origen": "criterio de este análisis"
+  },
+  {
+   "nombre": "anomalía en una serie de volumen",
+   "valor": "un periodo fuera de 0.8 a 1.25 veces la mediana de los 3 periodos de cada lado",
+   "origen": "criterio de este análisis"
+  },
+  {
+   "nombre": "media móvil",
+   "valor": "3 meses o 4 trimestres",
+   "origen": "criterio de este análisis"
+  }
+ ],
+ "siguiente_paso": "con_esto_basta",
+ "graficos": [
+  {
+   "id": "cat-model",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "model: «ST12000NM0008» reúne el 12,3 % de las filas",
+   "subtitulo": "Filas de cada valor (los 15 más frecuentes de 49 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "ST12000NM0008",
+     "ST4000DM000",
+     "ST8000NM0055",
+     "TOSHIBA MG07ACA14TA",
+     "HGST HUH721212ALN604",
+     "ST8000DM002",
+     "HGST HUH721212ALE604",
+     "TOSHIBA MG08ACA16TA",
+     "ST12000NM0007",
+     "ST16000NM001G",
+     "ST14000NM001G",
+     "ST12000NM001G",
+     "ST14000NM0138",
+     "TOSHIBA MG08ACA16TE",
+     "ST10000NM0086"
+    ],
+    "series": {
+     "filas": [
+      2084,
+      1942,
+      1819,
+      1811,
+      1367,
+      937,
+      878,
+      858,
+      813,
+      684,
+      663,
+      584,
+      391,
+      279,
+      243
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "cat-capacidad_tb",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "capacidad_tb: «12» reúne el 34,3 % de las filas",
+   "subtitulo": "Filas de cada valor (11 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "4",
+     "6",
+     "8",
+     "10",
+     "12",
+     "14",
+     "16",
+     "18",
+     "20",
+     "22",
+     "24"
+    ],
+    "series": {
+     "filas": [
+      2238,
+      15,
+      2870,
+      245,
+      5825,
+      3114,
+      2354,
+      11,
+      46,
+      243,
+      35
+     ]
+    },
+    "decimales": 0,
+    "ordenar": false
+   }
+  },
+  {
+   "id": "cat-fabricante",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "fabricante: «Seagate» reúne el 60,5 % de las filas",
+   "subtitulo": "Filas de cada valor (4 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "Seagate",
+     "Toshiba",
+     "HGST",
+     "WDC"
+    ],
+    "series": {
+     "filas": [
+      10284,
+      3279,
+      2702,
+      731
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "cat-tipo_disco",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "tipo_disco: «datos» reúne el 100,0 % de las filas",
+   "subtitulo": "Filas de cada valor (1 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "datos"
+    ],
+    "series": {
+     "filas": [
+      16996
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "cat-garantia_anos",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "garantia_anos: «5» reúne el 81,1 % de las filas",
+   "subtitulo": "Filas de cada valor (3 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "2",
+     "3",
+     "5",
+     "(vacío)"
+    ],
+    "series": {
+     "filas": [
+      2890,
+      281,
+      13790,
+      35
+     ]
+    },
+    "decimales": 0,
+    "ordenar": false
+   }
+  },
+  {
+   "id": "num-horas_al_fallar",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "horas_al_fallar: mediana 32.422,00 y media 33.170,08",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "16.917 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     0.0,
+     6515.333333333333,
+     13030.666666666666,
+     19546.0,
+     26061.333333333332,
+     32576.666666666664,
+     39092.0,
+     45607.33333333333,
+     52122.666666666664,
+     58638.0,
+     65153.33333333333,
+     71668.66666666666,
+     78184.0
+    ],
+    "cuentas": [
+     1544,
+     1351,
+     1647,
+     1915,
+     2049,
+     2067,
+     1693,
+     1572,
+     1073,
+     1022,
+     787,
+     197
+    ],
+    "log": false,
+    "etiqueta_x": "horas_al_fallar"
+   }
+  },
+  {
+   "id": "num-edad_al_fallar_anos",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "edad_al_fallar_anos: mediana 3,69 y media 3,77",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "16.996 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     0.0,
+     0.7432504372956118,
+     1.4865008745912236,
+     2.2297513118868353,
+     2.973001749182447,
+     3.716252186478059,
+     4.459502623773671,
+     5.2027530610692825,
+     5.946003498364894,
+     6.689253935660506,
+     7.432504372956118,
+     8.17575481025173,
+     8.919005247547341
+    ],
+    "cuentas": [
+     1574,
+     1361,
+     1664,
+     1921,
+     2054,
+     2072,
+     1698,
+     1573,
+     1073,
+     1022,
+     787,
+     197
+    ],
+    "log": false,
+    "etiqueta_x": "edad_al_fallar_anos"
+   }
+  },
+  {
+   "id": "cat-edad_de_horas",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "edad_de_horas: «True» reúne el 99,5 % de las filas",
+   "subtitulo": "Filas de cada valor (2 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "True",
+     "False"
+    ],
+    "series": {
+     "filas": [
+      16917,
+      79
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "cat-en_garantia",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "en_garantia: «True» reúne el 66,6 % de las filas",
+   "subtitulo": "Filas de cada valor (2 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "True",
+     "False"
+    ],
+    "series": {
+     "filas": [
+      11326,
+      5670
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "cat-hay_dia_anterior",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "hay_dia_anterior: «True» reúne el 94,7 % de las filas",
+   "subtitulo": "Filas de cada valor (2 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "True",
+     "False"
+    ],
+    "series": {
+     "filas": [
+      16093,
+      903
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "cat-avisa_dia_anterior",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "avisa_dia_anterior: «True» reúne el 70,9 % de las filas",
+   "subtitulo": "Filas de cada valor (2 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "True",
+     "False",
+     "(vacío)"
+    ],
+    "series": {
+     "filas": [
+      12047,
+      4046,
+      903
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "cat-sin_aviso",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "sin_aviso: «False» reúne el 70,9 % de las filas",
+   "subtitulo": "Filas de cada valor (2 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "False",
+     "True",
+     "(vacío)"
+    ],
+    "series": {
+     "filas": [
+      12047,
+      4046,
+      903
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "cat-datacenter",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "datacenter: «(vacío)» reúne el 50,0 % de las filas",
+   "subtitulo": "Filas de cada valor (6 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "(vacío)",
+     "sac0",
+     "sac2",
+     "phx1",
+     "iad1",
+     "ams5",
+     "yyz1"
+    ],
+    "series": {
+     "filas": [
+      8490,
+      2806,
+      2546,
+      2160,
+      512,
+      476,
+      6
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "cat-plazo_reconstruccion_dias",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "plazo_reconstruccion_dias: «13» reúne el 34,3 % de las filas",
+   "subtitulo": "Filas de cada valor (11 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "5",
+     "7",
+     "9",
+     "11",
+     "13",
+     "15",
+     "17",
+     "19",
+     "21",
+     "23",
+     "25"
+    ],
+    "series": {
+     "filas": [
+      2238,
+      15,
+      2870,
+      245,
+      5825,
+      3114,
+      2354,
+      11,
+      46,
+      243,
+      35
+     ]
+    },
+    "decimales": 0,
+    "ordenar": false
+   }
+  },
+  {
+   "id": "num-dias_desde_anterior_del_tomo",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "dias_desde_anterior_del_tomo: mediana 126,00 y media 169,08",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "3.089 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     0.0,
+     60.5,
+     121.0,
+     181.5,
+     242.0,
+     302.5,
+     363.0,
+     423.5,
+     484.0,
+     544.5,
+     605.0,
+     665.5,
+     726.0
+    ],
+    "cuentas": [
+     955,
+     553,
+     406,
+     328,
+     247,
+     214,
+     152,
+     98,
+     56,
+     50,
+     26,
+     4
+    ],
+    "log": false,
+    "etiqueta_x": "dias_desde_anterior_del_tomo"
+   }
+  },
+  {
+   "id": "cat-coincide_con_anterior",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "coincide_con_anterior: «(vacío)» reúne el 81,8 % de las filas",
+   "subtitulo": "Filas de cada valor (2 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "(vacío)",
+     "False",
+     "True"
+    ],
+    "series": {
+     "filas": [
+      13907,
+      2827,
+      262
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "num-precio_nuevo_usd",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "precio_nuevo_usd: mediana 158,40 y media 146,84",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "16.996 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     40.0,
+     61.04166666666667,
+     82.08333333333334,
+     103.125,
+     124.16666666666667,
+     145.20833333333334,
+     166.25,
+     187.29166666666669,
+     208.33333333333334,
+     229.375,
+     250.41666666666669,
+     271.45833333333337,
+     292.5
+    ],
+    "cuentas": [
+     1526,
+     997,
+     586,
+     2225,
+     2964,
+     2696,
+     3039,
+     618,
+     1782,
+     340,
+     215,
+     8
+    ],
+    "log": false,
+    "etiqueta_x": "precio_nuevo_usd"
+   }
+  },
+  {
+   "id": "num-coste_fallo_usd",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "coste_fallo_usd: mediana 195,40 y media 183,84",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "16.996 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     77.0,
+     98.04166666666667,
+     119.08333333333334,
+     140.125,
+     161.16666666666669,
+     182.20833333333334,
+     203.25,
+     224.29166666666669,
+     245.33333333333334,
+     266.375,
+     287.4166666666667,
+     308.45833333333337,
+     329.5
+    ],
+    "cuentas": [
+     1526,
+     997,
+     586,
+     2225,
+     2964,
+     2696,
+     3039,
+     618,
+     1782,
+     340,
+     215,
+     8
+    ],
+    "log": false,
+    "etiqueta_x": "coste_fallo_usd"
+   }
+  },
+  {
+   "id": "num-coste_fallo_garantia_usd",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "coste_fallo_garantia_usd: mediana 37,00 y media 67,67",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "16.996 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     37.0,
+     52.4,
+     67.8,
+     83.19999999999999,
+     98.6,
+     114.0,
+     129.39999999999998,
+     144.79999999999998,
+     160.2,
+     175.6,
+     191.0,
+     206.39999999999998,
+     221.79999999999998
+    ],
+    "cuentas": [
+     11326,
+     0,
+     167,
+     1355,
+     708,
+     803,
+     833,
+     807,
+     796,
+     155,
+     42,
+     4
+    ],
+    "log": false,
+    "etiqueta_x": "coste_fallo_garantia_usd"
+   }
+  },
+  {
+   "id": "cat-objetivo_de_alguna_foto",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "objetivo_de_alguna_foto: «True» reúne el 95,2 % de las filas",
+   "subtitulo": "Filas de cada valor (2 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "True",
+     "False"
+    ],
+    "series": {
+     "filas": [
+      16188,
+      808
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "cat-periodo",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "periodo: «construcción» reúne el 73,4 % de las filas",
+   "subtitulo": "Filas de cada valor (2 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "construcción",
+     "validación"
+    ],
+    "series": {
+     "filas": [
+      12478,
+      4518
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "cat-primer_fallo_del_disco",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "primer_fallo_del_disco: «True» reúne el 99,9 % de las filas",
+   "subtitulo": "Filas de cada valor (2 valores)",
+   "fuente": "16.996 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "True",
+     "False"
+    ],
+    "series": {
+     "filas": [
+      16984,
+      12
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "parte-parte sin aviso-fabricante",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "Parte sin aviso por fabricante: de 18,5 % a 41,8 %",
+   "subtitulo": "Parte sin aviso, en %, con la base (n). Comparar fabricantes o capacidades mezcla discos de edades y modelos distintos (reglas-negocio §7): la diferencia no es de la marca ni de la capacidad.",
+   "fuente": "16.093 fallos de discos de datos",
+   "datos": {
+    "etiquetas": [
+     "HGST",
+     "Seagate",
+     "Toshiba",
+     "WDC"
+    ],
+    "series": {
+     "parte": [
+      26.377633711507293,
+      18.49651782056534,
+      41.80379746835443,
+      38.23109843081313
+     ]
+    },
+    "n": [
+     2468,
+     9764,
+     3160,
+     701
+    ],
+    "decimales": 1,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "parte-parte sin aviso-ano",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "Parte sin aviso por ano: de 17,9 % a 40,3 %",
+   "subtitulo": "Parte sin aviso, en %, con la base (n)",
+   "fuente": "16.093 fallos de discos de datos",
+   "datos": {
+    "etiquetas": [
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "series": {
+     "parte": [
+      40.34401876465989,
+      36.75070028011204,
+      26.596858638743456,
+      22.48610409297625,
+      20.47463936714751,
+      17.92452830188679
+     ]
+    },
+    "n": [
+     1279,
+     1785,
+     2865,
+     3958,
+     4298,
+     1908
+    ],
+    "decimales": 1,
+    "ordenar": false
+   }
+  },
+  {
+   "id": "parte-parte en garantía-fabricante",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "Parte en garantía por fabricante: de 56,5 % a 100,0 %",
+   "subtitulo": "Parte en garantía, en %, con la base (n). Comparar fabricantes o capacidades mezcla discos de edades y modelos distintos (reglas-negocio §7): la diferencia no es de la marca ni de la capacidad.",
+   "fuente": "16.996 fallos de discos de datos",
+   "datos": {
+    "etiquetas": [
+     "HGST",
+     "Seagate",
+     "Toshiba",
+     "WDC"
+    ],
+    "series": {
+     "parte": [
+      63.02738712065137,
+      56.46635550369506,
+      94.08356206160414,
+      100.0
+     ]
+    },
+    "n": [
+     2702,
+     10284,
+     3279,
+     731
+    ],
+    "decimales": 1,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "parte-parte en garantía-ano",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "Parte en garantía por ano: de 60,7 % a 71,8 %",
+   "subtitulo": "Parte en garantía, en %, con la base (n)",
+   "fuente": "16.996 fallos de discos de datos",
+   "datos": {
+    "etiquetas": [
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "series": {
+     "parte": [
+      69.3955623565417,
+      70.70762479429511,
+      63.02100700233411,
+      64.0561771006903,
+      71.79374173644777,
+      60.66729323308271
+     ]
+    },
+    "n": [
+     1307,
+     1823,
+     2999,
+     4201,
+     4538,
+     2128
+    ],
+    "decimales": 1,
+    "ordenar": false
+   }
+  },
+  {
+   "id": "tmp-fallos de discos de datos por mes",
+   "seccion": "temporal",
+   "tipo": "linea",
+   "ancho": "completo",
+   "titulo": "Fallos de discos de datos por mes: el máximo es 565 en abr 2023",
+   "subtitulo": "Fallos de discos de datos por mes, por mes",
+   "fuente": "66 periodos",
+   "datos": {
+    "periodos": [
+     "ene 2020",
+     "feb 2020",
+     "mar 2020",
+     "abr 2020",
+     "may 2020",
+     "jun 2020",
+     "jul 2020",
+     "ago 2020",
+     "sep 2020",
+     "oct 2020",
+     "nov 2020",
+     "dic 2020",
+     "ene 2021",
+     "feb 2021",
+     "mar 2021",
+     "abr 2021",
+     "may 2021",
+     "jun 2021",
+     "jul 2021",
+     "ago 2021",
+     "sep 2021",
+     "oct 2021",
+     "nov 2021",
+     "dic 2021",
+     "ene 2022",
+     "feb 2022",
+     "mar 2022",
+     "abr 2022",
+     "may 2022",
+     "jun 2022",
+     "jul 2022",
+     "ago 2022",
+     "sep 2022",
+     "oct 2022",
+     "nov 2022",
+     "dic 2022",
+     "ene 2023",
+     "feb 2023",
+     "mar 2023",
+     "abr 2023",
+     "may 2023",
+     "jun 2023",
+     "jul 2023",
+     "ago 2023",
+     "sep 2023",
+     "oct 2023",
+     "nov 2023",
+     "dic 2023",
+     "ene 2024",
+     "feb 2024",
+     "mar 2024",
+     "abr 2024",
+     "may 2024",
+     "jun 2024",
+     "jul 2024",
+     "ago 2024",
+     "sep 2024",
+     "oct 2024",
+     "nov 2024",
+     "dic 2024",
+     "ene 2025",
+     "feb 2025",
+     "mar 2025",
+     "abr 2025",
+     "may 2025",
+     "jun 2025"
+    ],
+    "series": {
+     "fallos de discos de datos por mes": [
+      141.0,
+      102.0,
+      93.0,
+      95.0,
+      104.0,
+      73.0,
+      117.0,
+      106.0,
+      104.0,
+      122.0,
+      131.0,
+      119.0,
+      122.0,
+      122.0,
+      106.0,
+      144.0,
+      161.0,
+      136.0,
+      172.0,
+      180.0,
+      158.0,
+      183.0,
+      170.0,
+      169.0,
+      190.0,
+      160.0,
+      268.0,
+      232.0,
+      275.0,
+      256.0,
+      327.0,
+      290.0,
+      299.0,
+      251.0,
+      236.0,
+      215.0,
+      286.0,
+      240.0,
+      366.0,
+      565.0,
+      457.0,
+      319.0,
+      287.0,
+      361.0,
+      295.0,
+      366.0,
+      403.0,
+      256.0,
+      348.0,
+      335.0,
+      266.0,
+      279.0,
+      469.0,
+      451.0,
+      501.0,
+      548.0,
+      340.0,
+      339.0,
+      322.0,
+      340.0,
+      377.0,
+      322.0,
+      368.0,
+      382.0,
+      338.0,
+      341.0
+     ]
+    },
+    "decimales": 0
+   }
+  }
+ ],
+ "graficos_no_dibujados": [],
+ "cifras_para_siguiente": {},
+ "cifras_de_control": {},
+ "teoria": [
+  "34.1 y 34.2, qué es y el esquema: cada columna se tipifica por su papel y cada análisis es una función que se aplica a todo el bloque.",
+  "3.1, descriptiva: el informe describe estos datos y no extrapola; no se dan intervalos ni contrastes.",
+  "34.3, 34.4, 3.5 y 3.6: frecuencias y cardinalidad en las categóricas; describe con la mediana al lado y la tabla leída con sus cuatro señales en las numéricas.",
+  "34.5, 34.6 y 10.6: barras para categóricas y discretas, histograma para continuas, sin cajas; la escala logarítmica se dice en el eje.",
+  "34.7 y 13.14: el cruce con el objetivo solo con la construcción; describe y no elige variables.",
+  "5.4, 5.5 y 5.6: cada tasa con su base, la tasa de un grupo como suma entre suma y cada comparación repetida por fabricante y capacidad, por si se invierte (paradoja de Simpson).",
+  "34.8, 34.9 y 34.10: hallazgo, alerta, anomalía e hipótesis separados; Pareto, ABC y series de negocio."
+ ],
+ "versiones": {
+  "python": "3.13.15",
+  "pandas": "3.0.6",
+  "numpy": "2.5.3",
+  "pyarrow": "24.0.0",
+  "matplotlib": "3.11.2"
+ },
+ "datos_personales_texto": [
+  "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+  "No hay datos de personas (reglas-negocio §9): el número de serie identifica un disco, no a una persona.",
+  "Este exploratorio no usa ni deja ninguna columna de datos personales."
+ ],
+ "huellas": [
+  {
+   "tabla": "dim_modelo",
+   "antes": "543441fa6c7c8bb023d40bfacd6357c85fd0cd37013a2305c3fe97bc9512a3af",
+   "despues": "543441fa6c7c8bb023d40bfacd6357c85fd0cd37013a2305c3fe97bc9512a3af",
+   "iguales": true
+  },
+  {
+   "tabla": "dim_precio_gb",
+   "antes": "c2a444fbc373fc42d05364ad47e251a646415e7d7fc38f82f2096261894cd2a8",
+   "despues": "c2a444fbc373fc42d05364ad47e251a646415e7d7fc38f82f2096261894cd2a8",
+   "iguales": true
+  },
+  {
+   "tabla": "fotos_riesgo",
+   "antes": "5a84a6ae35d20108e94875f87d0ec9f35c8ac71f9e67aab4444f919dde354a71",
+   "despues": "5a84a6ae35d20108e94875f87d0ec9f35c8ac71f9e67aab4444f919dde354a71",
+   "iguales": true
+  },
+  {
+   "tabla": "fallos_detalle",
+   "antes": "ff67f9a515527ffb6e1dd6b7474067836c1d401c3e1a33901f290f1b56c236ad",
+   "despues": "ff67f9a515527ffb6e1dd6b7474067836c1d401c3e1a33901f290f1b56c236ad",
+   "iguales": true
+  },
+  {
+   "tabla": "vida_discos",
+   "antes": "af034d17ebc92a1ff22e3c2e1688a585d39383cb8e2f94106ea4e0ffc709d504",
+   "despues": "af034d17ebc92a1ff22e3c2e1688a585d39383cb8e2f94106ea4e0ffc709d504",
+   "iguales": true
+  },
+  {
+   "tabla": "dias_por_tramo",
+   "antes": "a8f2230c04a3c9717bb4aa2a9792297ef3b0dd2d37b234178d949eadd7c38c66",
+   "despues": "a8f2230c04a3c9717bb4aa2a9792297ef3b0dd2d37b234178d949eadd7c38c66",
+   "iguales": true
+  },
+  {
+   "tabla": "inicio_trimestre",
+   "antes": "86169128b7862e772d1e1e6a755d8df287c74a4da7e469257b57b0b0ed14a03e",
+   "despues": "86169128b7862e772d1e1e6a755d8df287c74a4da7e469257b57b0b0ed14a03e",
+   "iguales": true
+  },
+  {
+   "tabla": "modelo_trimestre",
+   "antes": "82be69d656509c36760f705d0d2bd21801702ddbf33795056e5cc92c7fff76cf",
+   "despues": "82be69d656509c36760f705d0d2bd21801702ddbf33795056e5cc92c7fff76cf",
+   "iguales": true
+  },
+  {
+   "tabla": "centro_mes",
+   "antes": "d6e8b53032fe7ff2be864922483b3a07a33fbf0fadbd20eca3b3c516a3b2fc57",
+   "despues": "d6e8b53032fe7ff2be864922483b3a07a33fbf0fadbd20eca3b3c516a3b2fc57",
+   "iguales": true
+  }
+ ],
+ "ejecucion": {
+  "segundos_total": 90.9
+ }
+}

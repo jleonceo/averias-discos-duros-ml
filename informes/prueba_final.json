@@ -1,0 +1,876 @@
+{
+ "skill": "preproduccion",
+ "version_skill": "11/11/2026 (WF-85)",
+ "script": "scripts/19_prueba_final.py",
+ "encargo": "prompts/23_encargo_prueba_final_y_reentreno.md, segunda parte",
+ "modo": "--reserva",
+ "fecha_datos": "2026-06-30",
+ "fecha_ejecucion": "2026-11-19T17:20:15",
+ "entradas": [
+  {
+   "ruta": "data/raw/reserva/fallos.parquet",
+   "sha256": "c4b040c0de880a38329d8eea7ad7082cef0f9fe71c1cbb09f2f795bd2319559f",
+   "filas": 4751,
+   "columnas": 2
+  },
+  {
+   "ruta": "data/raw/reserva/fotos_mensuales/2025-07.parquet",
+   "sha256": "b760511b39e61d5e5b9e00ca2bc4d8066b5a4bc28da027d528c76f19943593de",
+   "filas": 321792,
+   "columnas": 130
+  },
+  {
+   "ruta": "data/raw/reserva/fotos_mensuales/2025-08.parquet",
+   "sha256": "1301ef4b80f2739ed0fa943a21276eda15654b278d4cc7834224d7cf963fabb1",
+   "filas": 322327,
+   "columnas": 130
+  },
+  {
+   "ruta": "data/raw/reserva/fotos_mensuales/2025-09.parquet",
+   "sha256": "f1cbd06939d6c8b82d194698b1346b9d7d1ee194bfa639f086c99c3bfb75a467",
+   "filas": 324631,
+   "columnas": 130
+  },
+  {
+   "ruta": "data/raw/reserva/fotos_mensuales/2025-10.parquet",
+   "sha256": "ad032cf55b244b34a2078172afc1bb1af5bb2a3842dce41d936d8fed3fe4b268",
+   "filas": 330866,
+   "columnas": 130
+  },
+  {
+   "ruta": "data/raw/reserva/fotos_mensuales/2025-11.parquet",
+   "sha256": "a94f72772f7c6ad57da54e4deec8c4ab6de9277abd854877e8dd478b1817d57c",
+   "filas": 336799,
+   "columnas": 130
+  },
+  {
+   "ruta": "data/raw/reserva/fotos_mensuales/2025-12.parquet",
+   "sha256": "ed104b84526c1285dba225332fcebc26b25247bd68dea5fbba01a3df00b84032",
+   "filas": 337006,
+   "columnas": 130
+  },
+  {
+   "ruta": "data/raw/reserva/fotos_mensuales/2026-01.parquet",
+   "sha256": "6ecf9e38a0f911ae5a937d14809b8c93ebbbf637f09257928e2538751e0d8df8",
+   "filas": 338760,
+   "columnas": 130
+  },
+  {
+   "ruta": "data/raw/reserva/fotos_mensuales/2026-02.parquet",
+   "sha256": "427133c9f6701974faaaca75c1c166d52568d59bf99a74b3cf684814e7266cb8",
+   "filas": 337633,
+   "columnas": 130
+  },
+  {
+   "ruta": "data/raw/reserva/fotos_mensuales/2026-03.parquet",
+   "sha256": "9b9e4adfdb41107a62fa9eb6d589975b7e0be979e3ec4245fc118bd935e628e0",
+   "filas": 340759,
+   "columnas": 130
+  },
+  {
+   "ruta": "data/raw/reserva/fotos_mensuales/2026-04.parquet",
+   "sha256": "9c61efd405fa2a05bee2f4f0d92e89608c04717b680376298d1b016f0cf4f165",
+   "filas": 345738,
+   "columnas": 130
+  },
+  {
+   "ruta": "data/raw/reserva/fotos_mensuales/2026-05.parquet",
+   "sha256": "ce6e1c6110928b8163ae56ed3467c89eca40f3a4c110459cc24d0b1edc7bbd89",
+   "filas": 350531,
+   "columnas": 130
+  },
+  {
+   "ruta": "data/raw/reserva/fotos_mensuales/2026-06.parquet",
+   "sha256": "1be37cd8765f164d3dbb2a1b697238ef75a9a7784760bf44f9b31461d9535786",
+   "filas": 353401,
+   "columnas": 130
+  }
+ ],
+ "resultado": {
+  "estado": "OK",
+  "riesgo": "bajo",
+  "resumen": "El modelo se da por bueno en el año guardado: en la lista de los 100 discos de más riesgo de cada mes encuentra de media 7,73 fallos más que la regla de los cinco avisos SMART. El intervalo de esa diferencia va de 4,82 a 11,45, por encima de cero.",
+  "artefactos": [
+   "informes/prueba_final.json",
+   "informes/prueba_final.md",
+   "data/processed/fotos_riesgo_reserva.parquet",
+   "data/predicciones/2026-11-19/"
+  ],
+  "siguiente": "produccion/reentrenar.py --tabla data/processed/fotos_riesgo.parquet --fecha 2025-07-01 --medir data/processed/fotos_riesgo_reserva.parquet"
+ },
+ "pendientes": [],
+ "periodo": {
+  "desde": "2025-07",
+  "hasta": "2026-06",
+  "fin": "2026-06-30",
+  "meses_esperados": 11,
+  "horizonte_recortado": "no se mide"
+ },
+ "por_mes": [
+  {
+   "mes": "2025-07-01",
+   "horizonte_hasta": "2025-07-31",
+   "filas_foto": 321792,
+   "filas_medidas": 317799,
+   "fallos": 350,
+   "sin_puntuar": [
+    {
+     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "filas": 3979
+    },
+    {
+     "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+     "filas": 14
+    }
+   ],
+   "objetivo_distinto_por_otro_camino": 0,
+   "mismas_filas": true,
+   "modelo_lista_20": 8.0,
+   "regla_lista_20": 1.0,
+   "modelo_marcas_lista_20": 8,
+   "modelo_lista_100": 27.0,
+   "regla_lista_100": 5.0,
+   "modelo_marcas_lista_100": 27,
+   "modelo_lista_500": 76.0,
+   "regla_lista_500": 36.0,
+   "modelo_marcas_lista_500": 76,
+   "modelo_lista_1000": 114.0,
+   "regla_lista_1000": 46.0,
+   "modelo_marcas_lista_1000": 114,
+   "tomos": {
+    "tomos_en_peligro": 168,
+    "fotos": 3329,
+    "fallos": 9,
+    "lista": 166,
+    "modelo": 6.0,
+    "regla": 4.0
+   },
+   "se_mide": true,
+   "salida_alineada": true,
+   "salida": "data\\predicciones\\2026-11-19\\predicciones_2025-07.parquet"
+  },
+  {
+   "mes": "2025-08-01",
+   "horizonte_hasta": "2025-08-31",
+   "filas_foto": 322327,
+   "filas_medidas": 318326,
+   "fallos": 384,
+   "sin_puntuar": [
+    {
+     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "filas": 3980
+    },
+    {
+     "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+     "filas": 21
+    }
+   ],
+   "objetivo_distinto_por_otro_camino": 0,
+   "mismas_filas": true,
+   "modelo_lista_20": 5.0,
+   "regla_lista_20": 2.0,
+   "modelo_marcas_lista_20": 5,
+   "modelo_lista_100": 22.0,
+   "regla_lista_100": 18.0,
+   "modelo_marcas_lista_100": 22,
+   "modelo_lista_500": 64.0,
+   "regla_lista_500": 41.0,
+   "modelo_marcas_lista_500": 64,
+   "modelo_lista_1000": 102.0,
+   "regla_lista_1000": 51.0,
+   "modelo_marcas_lista_1000": 102,
+   "tomos": {
+    "tomos_en_peligro": 202,
+    "fotos": 3996,
+    "fallos": 17,
+    "lista": 200,
+    "modelo": 8.0,
+    "regla": 7.0
+   },
+   "se_mide": true,
+   "salida_alineada": true,
+   "salida": "data\\predicciones\\2026-11-19\\predicciones_2025-08.parquet"
+  },
+  {
+   "mes": "2025-09-01",
+   "horizonte_hasta": "2025-10-01",
+   "filas_foto": 324631,
+   "filas_medidas": 320652,
+   "fallos": 395,
+   "sin_puntuar": [
+    {
+     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "filas": 3978
+    },
+    {
+     "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+     "filas": 1
+    }
+   ],
+   "objetivo_distinto_por_otro_camino": 0,
+   "mismas_filas": true,
+   "modelo_lista_20": 8.0,
+   "regla_lista_20": 3.0,
+   "modelo_marcas_lista_20": 8,
+   "modelo_lista_100": 29.0,
+   "regla_lista_100": 19.0,
+   "modelo_marcas_lista_100": 29,
+   "modelo_lista_500": 79.0,
+   "regla_lista_500": 41.0,
+   "modelo_marcas_lista_500": 79,
+   "modelo_lista_1000": 115.0,
+   "regla_lista_1000": 51.0,
+   "modelo_marcas_lista_1000": 115,
+   "tomos": {
+    "tomos_en_peligro": 207,
+    "fotos": 4107,
+    "fallos": 23,
+    "lista": 205,
+    "modelo": 10.0,
+    "regla": 8.0
+   },
+   "se_mide": true,
+   "salida_alineada": true,
+   "salida": "data\\predicciones\\2026-11-19\\predicciones_2025-09.parquet"
+  },
+  {
+   "mes": "2025-10-01",
+   "horizonte_hasta": "2025-10-31",
+   "filas_foto": 330866,
+   "filas_medidas": 326882,
+   "fallos": 404,
+   "sin_puntuar": [
+    {
+     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "filas": 3980
+    },
+    {
+     "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+     "filas": 4
+    }
+   ],
+   "objetivo_distinto_por_otro_camino": 0,
+   "mismas_filas": true,
+   "modelo_lista_20": 8.0,
+   "regla_lista_20": 3.0,
+   "modelo_marcas_lista_20": 8,
+   "modelo_lista_100": 25.0,
+   "regla_lista_100": 13.0,
+   "modelo_marcas_lista_100": 25,
+   "modelo_lista_500": 75.0,
+   "regla_lista_500": 39.0,
+   "modelo_marcas_lista_500": 75,
+   "modelo_lista_1000": 116.0,
+   "regla_lista_1000": 45.0,
+   "modelo_marcas_lista_1000": 116,
+   "tomos": {
+    "tomos_en_peligro": 253,
+    "fotos": 5035,
+    "fallos": 15,
+    "lista": 252,
+    "modelo": 5.0,
+    "regla": 5.0
+   },
+   "se_mide": true,
+   "salida_alineada": true,
+   "salida": "data\\predicciones\\2026-11-19\\predicciones_2025-10.parquet"
+  },
+  {
+   "mes": "2025-11-01",
+   "horizonte_hasta": "2025-12-01",
+   "filas_foto": 336799,
+   "filas_medidas": 332804,
+   "fallos": 300,
+   "sin_puntuar": [
+    {
+     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "filas": 3981
+    },
+    {
+     "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+     "filas": 14
+    }
+   ],
+   "objetivo_distinto_por_otro_camino": 0,
+   "mismas_filas": true,
+   "modelo_lista_20": 6.0,
+   "regla_lista_20": 3.0,
+   "modelo_marcas_lista_20": 6,
+   "modelo_lista_100": 16.0,
+   "regla_lista_100": 14.0,
+   "modelo_marcas_lista_100": 16,
+   "modelo_lista_500": 60.0,
+   "regla_lista_500": 25.0,
+   "modelo_marcas_lista_500": 60,
+   "modelo_lista_1000": 86.0,
+   "regla_lista_1000": 31.0,
+   "modelo_marcas_lista_1000": 86,
+   "tomos": {
+    "tomos_en_peligro": 246,
+    "fotos": 4909,
+    "fallos": 9,
+    "lista": 245,
+    "modelo": 5.0,
+    "regla": 5.0
+   },
+   "se_mide": true,
+   "salida_alineada": true,
+   "salida": "data\\predicciones\\2026-11-19\\predicciones_2025-11.parquet"
+  },
+  {
+   "mes": "2025-12-01",
+   "horizonte_hasta": "2025-12-31",
+   "filas_foto": 337006,
+   "filas_medidas": 333027,
+   "fallos": 124,
+   "sin_puntuar": [
+    {
+     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "filas": 3971
+    },
+    {
+     "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+     "filas": 8
+    }
+   ],
+   "objetivo_distinto_por_otro_camino": 0,
+   "mismas_filas": true,
+   "modelo_lista_20": 5.0,
+   "regla_lista_20": 2.0,
+   "modelo_marcas_lista_20": 5,
+   "modelo_lista_100": 15.0,
+   "regla_lista_100": 7.0,
+   "modelo_marcas_lista_100": 15,
+   "modelo_lista_500": 31.0,
+   "regla_lista_500": 16.0,
+   "modelo_marcas_lista_500": 31,
+   "modelo_lista_1000": 48.0,
+   "regla_lista_1000": 19.0,
+   "modelo_marcas_lista_1000": 48,
+   "tomos": {
+    "tomos_en_peligro": 136,
+    "fotos": 2686,
+    "fallos": 2,
+    "lista": 134,
+    "modelo": 2.0,
+    "regla": 1.0
+   },
+   "se_mide": true,
+   "salida_alineada": true,
+   "salida": "data\\predicciones\\2026-11-19\\predicciones_2025-12.parquet"
+  },
+  {
+   "mes": "2026-01-01",
+   "horizonte_hasta": "2026-01-31",
+   "filas_foto": 338760,
+   "filas_medidas": 334790,
+   "fallos": 264,
+   "sin_puntuar": [
+    {
+     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "filas": 3969
+    },
+    {
+     "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+     "filas": 1
+    }
+   ],
+   "objetivo_distinto_por_otro_camino": 0,
+   "mismas_filas": true,
+   "modelo_lista_20": 7.0,
+   "regla_lista_20": 4.0,
+   "modelo_marcas_lista_20": 7,
+   "modelo_lista_100": 18.0,
+   "regla_lista_100": 14.0,
+   "modelo_marcas_lista_100": 18,
+   "modelo_lista_500": 49.0,
+   "regla_lista_500": 35.0,
+   "modelo_marcas_lista_500": 49,
+   "modelo_lista_1000": 77.0,
+   "regla_lista_1000": 38.0,
+   "modelo_marcas_lista_1000": 77,
+   "tomos": {
+    "tomos_en_peligro": 39,
+    "fotos": 771,
+    "fallos": 1,
+    "lista": 39,
+    "modelo": 1.0,
+    "regla": 1.0
+   },
+   "se_mide": true,
+   "salida_alineada": true,
+   "salida": "data\\predicciones\\2026-11-19\\predicciones_2026-01.parquet"
+  },
+  {
+   "mes": "2026-02-01",
+   "horizonte_hasta": "2026-03-03",
+   "filas_foto": 337633,
+   "filas_medidas": 333693,
+   "fallos": 290,
+   "sin_puntuar": [
+    {
+     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "filas": 3931
+    },
+    {
+     "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+     "filas": 9
+    }
+   ],
+   "objetivo_distinto_por_otro_camino": 0,
+   "mismas_filas": true,
+   "modelo_lista_20": 8.0,
+   "regla_lista_20": 6.0,
+   "modelo_marcas_lista_20": 8,
+   "modelo_lista_100": 20.0,
+   "regla_lista_100": 19.0,
+   "modelo_marcas_lista_100": 20,
+   "modelo_lista_500": 70.0,
+   "regla_lista_500": 37.0,
+   "modelo_marcas_lista_500": 70,
+   "modelo_lista_1000": 109.0,
+   "regla_lista_1000": 40.0,
+   "modelo_marcas_lista_1000": 109,
+   "tomos": {
+    "tomos_en_peligro": 170,
+    "fotos": 3325,
+    "fallos": 12,
+    "lista": 166,
+    "modelo": 6.0,
+    "regla": 6.0
+   },
+   "se_mide": true,
+   "salida_alineada": true,
+   "salida": "data\\predicciones\\2026-11-19\\predicciones_2026-02.parquet"
+  },
+  {
+   "mes": "2026-03-01",
+   "horizonte_hasta": "2026-03-31",
+   "filas_foto": 340759,
+   "filas_medidas": 336818,
+   "fallos": 327,
+   "sin_puntuar": [
+    {
+     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "filas": 3935
+    },
+    {
+     "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+     "filas": 6
+    }
+   ],
+   "objetivo_distinto_por_otro_camino": 0,
+   "mismas_filas": true,
+   "modelo_lista_20": 7.0,
+   "regla_lista_20": 5.0,
+   "modelo_marcas_lista_20": 7,
+   "modelo_lista_100": 19.0,
+   "regla_lista_100": 13.0,
+   "modelo_marcas_lista_100": 19,
+   "modelo_lista_500": 58.0,
+   "regla_lista_500": 25.0,
+   "modelo_marcas_lista_500": 58,
+   "modelo_lista_1000": 98.0,
+   "regla_lista_1000": 33.0,
+   "modelo_marcas_lista_1000": 98,
+   "tomos": {
+    "tomos_en_peligro": 157,
+    "fotos": 3095,
+    "fallos": 5,
+    "lista": 155,
+    "modelo": 4.0,
+    "regla": 3.0
+   },
+   "se_mide": true,
+   "salida_alineada": true,
+   "salida": "data\\predicciones\\2026-11-19\\predicciones_2026-03.parquet"
+  },
+  {
+   "mes": "2026-04-01",
+   "horizonte_hasta": "2026-05-01",
+   "filas_foto": 345738,
+   "filas_medidas": 341809,
+   "fallos": 505,
+   "sin_puntuar": [
+    {
+     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "filas": 3915
+    },
+    {
+     "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+     "filas": 14
+    }
+   ],
+   "objetivo_distinto_por_otro_camino": 0,
+   "mismas_filas": true,
+   "modelo_lista_20": 9.0,
+   "regla_lista_20": 6.0,
+   "modelo_marcas_lista_20": 9,
+   "modelo_lista_100": 28.0,
+   "regla_lista_100": 20.0,
+   "modelo_marcas_lista_100": 28,
+   "modelo_lista_500": 100.0,
+   "regla_lista_500": 55.0,
+   "modelo_marcas_lista_500": 100,
+   "modelo_lista_1000": 171.0,
+   "regla_lista_1000": 61.0,
+   "modelo_marcas_lista_1000": 171,
+   "tomos": {
+    "tomos_en_peligro": 156,
+    "fotos": 3069,
+    "fallos": 7,
+    "lista": 153,
+    "modelo": 5.0,
+    "regla": 5.0
+   },
+   "se_mide": true,
+   "salida_alineada": true,
+   "salida": "data\\predicciones\\2026-11-19\\predicciones_2026-04.parquet"
+  },
+  {
+   "mes": "2026-05-01",
+   "horizonte_hasta": "2026-05-31",
+   "filas_foto": 350531,
+   "filas_medidas": 346607,
+   "fallos": 430,
+   "sin_puntuar": [
+    {
+     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "filas": 3893
+    },
+    {
+     "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+     "filas": 31
+    }
+   ],
+   "objetivo_distinto_por_otro_camino": 0,
+   "mismas_filas": true,
+   "modelo_lista_20": 10.0,
+   "regla_lista_20": 8.0,
+   "modelo_marcas_lista_20": 10,
+   "modelo_lista_100": 30.0,
+   "regla_lista_100": 22.0,
+   "modelo_marcas_lista_100": 30,
+   "modelo_lista_500": 79.0,
+   "regla_lista_500": 53.0,
+   "modelo_marcas_lista_500": 79,
+   "modelo_lista_1000": 121.0,
+   "regla_lista_1000": 62.0,
+   "modelo_marcas_lista_1000": 121,
+   "tomos": {
+    "tomos_en_peligro": 320,
+    "fotos": 6306,
+    "fallos": 13,
+    "lista": 315,
+    "modelo": 11.0,
+    "regla": 10.0
+   },
+   "se_mide": true,
+   "salida_alineada": true,
+   "salida": "data\\predicciones\\2026-11-19\\predicciones_2026-05.parquet"
+  },
+  {
+   "mes": "2026-06-01",
+   "se_mide": false,
+   "horizonte_hasta": "2026-06-30",
+   "motivo": "el horizonte de 30 días pasa del fin del periodo",
+   "filas_foto": 353401,
+   "puntuadas": 349495,
+   "salida": "data\\predicciones\\2026-11-19\\predicciones_2026-06.parquet",
+   "salida_alineada": true
+  }
+ ],
+ "validaciones": {
+  "filas_de_la_salida_con_su_foto": true,
+  "objetivo_sin_fallos_anteriores": true,
+  "sin_meses_recortados": true,
+  "meses_medidos_esperados": true,
+  "mismas_filas_modelo_y_regla": true,
+  "sin_resultados_escritos": true,
+  "tabla_puntua_igual_que_la_salida": true,
+  "huella_de_data_raw_igual": true
+ },
+ "datos_personales": "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque son de discos y no de personas (reglas §9). serial_number identifica un disco; esta prueba no usa ni deja ninguna columna de datos personales.",
+ "modelo_en_uso": {
+  "ruta": "modelos/en_uso/modelo_riesgo.joblib",
+  "huella": "6f504f7a291255326aa771c2826333adf67d2a9b36f56e8433d8a13622f9bbd2"
+ },
+ "listas": [
+  20,
+  100,
+  500,
+  1000
+ ],
+ "lista_principal": 100,
+ "historia": {
+  "historia_fotos": [
+   "data\\raw\\podado\\fotos_mensuales",
+   "data\\raw\\reserva\\fotos_mensuales"
+  ],
+  "historia_ventanas": [
+   "data\\raw\\podado\\ventanas_fallo",
+   "data\\raw\\reserva\\ventanas_fallo"
+  ]
+ },
+ "tomos_fallos": {
+  "fallos": 4882,
+  "sin_ventana": 0,
+  "sin_capacidad": 0,
+  "de_arranque": 0,
+  "de_datos_sin_tomo": 132,
+  "de_datos_con_tomo": 4750
+ },
+ "totales": {
+  "meses": 11,
+  "filas_medidas": 3643207,
+  "fallos": 3773,
+  "modelo_lista_20": 81.0,
+  "regla_lista_20": 43.0,
+  "modelo_marcas_lista_20": 81.0,
+  "modelo_lista_100": 249.0,
+  "regla_lista_100": 164.0,
+  "modelo_marcas_lista_100": 249.0,
+  "modelo_lista_500": 741.0,
+  "regla_lista_500": 403.0,
+  "modelo_marcas_lista_500": 741.0,
+  "modelo_lista_1000": 1157.0,
+  "regla_lista_1000": 477.0,
+  "modelo_marcas_lista_1000": 1157.0,
+  "tomos": {
+   "fotos": 40628.0,
+   "fallos": 113.0,
+   "lista": 2030.0,
+   "modelo": 63.0,
+   "regla": 55.0
+  },
+  "sin_puntuar": [
+   {
+    "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+    "filas": 43512
+   },
+   {
+    "motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)",
+    "filas": 123
+   }
+  ]
+ },
+ "auc": {
+  "modelo": {
+   "filas": 3643207,
+   "positivos": 3773,
+   "tasa_base": 0.0010356260294844624,
+   "auc": 0.8725293006211722,
+   "gini": 0.7450586012423444,
+   "ks": 0.6289731778820948,
+   "pr_auc": 0.08146853024263764,
+   "brier": 0.0010122351316274724
+  },
+  "regla": {
+   "filas": 3643207,
+   "positivos": 3773,
+   "tasa_base": 0.0010356260294844624,
+   "auc": 0.8157774755844089,
+   "gini": 0.6315549511688179,
+   "ks": 0.6081104897214148,
+   "pr_auc": 0.036513746258057575,
+   "brier": 0.004410488849952176
+  }
+ },
+ "intervalo": {
+  "medida": "fallos en la lista de 100, diferencia media por mes",
+  "media": 7.7272727272727275,
+  "bajo": 4.818181818181818,
+  "alto": 11.454545454545455,
+  "remuestreos": 1000,
+  "semilla": 42,
+  "unidad": "mes",
+  "unidades": 11
+ },
+ "matthews": {
+  "lista": 100,
+  "modelo": 0.12174711964650584,
+  "regla": 0.07999584354579703,
+  "como": "las marcas de cada mes, todos los meses juntos; la regla, con el desempate por serial_number"
+ },
+ "tomos": {
+  "por_mes": [
+   {
+    "mes": "2025-07-01",
+    "tomos_en_peligro": 168,
+    "fotos": 3329,
+    "fallos": 9,
+    "lista": 166,
+    "modelo": 6.0,
+    "regla": 4.0
+   },
+   {
+    "mes": "2025-08-01",
+    "tomos_en_peligro": 202,
+    "fotos": 3996,
+    "fallos": 17,
+    "lista": 200,
+    "modelo": 8.0,
+    "regla": 7.0
+   },
+   {
+    "mes": "2025-09-01",
+    "tomos_en_peligro": 207,
+    "fotos": 4107,
+    "fallos": 23,
+    "lista": 205,
+    "modelo": 10.0,
+    "regla": 8.0
+   },
+   {
+    "mes": "2025-10-01",
+    "tomos_en_peligro": 253,
+    "fotos": 5035,
+    "fallos": 15,
+    "lista": 252,
+    "modelo": 5.0,
+    "regla": 5.0
+   },
+   {
+    "mes": "2025-11-01",
+    "tomos_en_peligro": 246,
+    "fotos": 4909,
+    "fallos": 9,
+    "lista": 245,
+    "modelo": 5.0,
+    "regla": 5.0
+   },
+   {
+    "mes": "2025-12-01",
+    "tomos_en_peligro": 136,
+    "fotos": 2686,
+    "fallos": 2,
+    "lista": 134,
+    "modelo": 2.0,
+    "regla": 1.0
+   },
+   {
+    "mes": "2026-01-01",
+    "tomos_en_peligro": 39,
+    "fotos": 771,
+    "fallos": 1,
+    "lista": 39,
+    "modelo": 1.0,
+    "regla": 1.0
+   },
+   {
+    "mes": "2026-02-01",
+    "tomos_en_peligro": 170,
+    "fotos": 3325,
+    "fallos": 12,
+    "lista": 166,
+    "modelo": 6.0,
+    "regla": 6.0
+   },
+   {
+    "mes": "2026-03-01",
+    "tomos_en_peligro": 157,
+    "fotos": 3095,
+    "fallos": 5,
+    "lista": 155,
+    "modelo": 4.0,
+    "regla": 3.0
+   },
+   {
+    "mes": "2026-04-01",
+    "tomos_en_peligro": 156,
+    "fotos": 3069,
+    "fallos": 7,
+    "lista": 153,
+    "modelo": 5.0,
+    "regla": 5.0
+   },
+   {
+    "mes": "2026-05-01",
+    "tomos_en_peligro": 320,
+    "fotos": 6306,
+    "fallos": 13,
+    "lista": 315,
+    "modelo": 11.0,
+    "regla": 10.0
+   }
+  ],
+  "total": {
+   "fotos": 40628.0,
+   "fallos": 113.0,
+   "lista": 2030.0,
+   "modelo": 63.0,
+   "regla": 55.0
+  },
+  "fallos_de_la_lista": {
+   "fallos": 4882,
+   "sin_ventana": 0,
+   "sin_capacidad": 0,
+   "de_arranque": 0,
+   "de_datos_sin_tomo": 132,
+   "de_datos_con_tomo": 4750
+  },
+  "regla": "tomo = centro + vault + ranura; en peligro si un disco de datos suyo falló antes de la foto y hace menos días que su plazo, capacidad en TB + 1; el 5 % de más riesgo de sus fotos medidas, redondeado y al menos 1"
+ },
+ "se_da_por_bueno": true,
+ "frente_a": {
+  "referencia": "la regla de los cinco avisos SMART, en la lista de 100 de cada mes y en las mismas fotos",
+  "criterio": "más fallos que la regla con el intervalo de la diferencia por encima de cero y AUC de 0.7 o más",
+  "frente_a_la_regla": "supera"
+ },
+ "limites": [
+  "La medida de los tomos se apoya en 113 fallos en tomos en peligro, pocos para decidir con ellos.",
+  "Se quedan fuera de los tomos 132 fallos de discos de datos cuya ventana no trae centro, vault y ranura.",
+  "Para la correlación de Matthews, la lista de la regla deshace los empates por número de serie, igual que la del modelo.",
+  "Las listas de cada mes reparten en proporción un empate en el último puesto, como en el modelado. Las marcas de la puntuación de cada mes lo deshacen por número de serie.",
+  "El modelo examinado aquí no se volvió a elegir ni a ajustar con nada del año guardado. El que se usa hoy, reentrenado con un año más de datos, se midió en este año antes de aprobarlo: para él no es una prueba independiente."
+ ],
+ "parametros": [
+  {
+   "nombre": "modo",
+   "valor": "--reserva",
+   "origen": "argumento"
+  },
+  {
+   "nombre": "periodo",
+   "valor": "2025-07 a 2026-06, fin 2026-06-30",
+   "origen": "encargo 23; guion §2"
+  },
+  {
+   "nombre": "horizonte",
+   "valor": 30,
+   "origen": "reglas §7; reglas de transformación §3"
+  },
+  {
+   "nombre": "listas",
+   "valor": [
+    20,
+    100,
+    500,
+    1000
+   ],
+   "origen": "produccion/configuracion.json"
+  },
+  {
+   "nombre": "AUC mínimo",
+   "valor": 0.7,
+   "origen": "guion §2; planteamientos 1.C"
+  },
+  {
+   "nombre": "remuestreos y semilla",
+   "valor": "1000, 42",
+   "origen": "encargo 23; scripts/15_modelado.py"
+  },
+  {
+   "nombre": "parte de las fotos en tomos en peligro",
+   "valor": "0.05",
+   "origen": "encargo 23"
+  }
+ ],
+ "ejecucion": {
+  "python": "3.13.15",
+  "ejecutable": "python",
+  "pandas": "3.0.6",
+  "pyarrow": "24.0.0",
+  "scikit_learn": "1.9.1"
+ }
+}

@@ -1,0 +1,72 @@
+Fuente: https://www.sec.gov/Archives/edgar/data/1462056/000162828026016395/blze-20251231.htm
+Backblaze, Inc., Form 10-K del ejercicio cerrado el 31/12/2025 (cuentas auditadas, nivel A). Guardado el 16/11/2026 con el navegador integrado: las tablas de ingresos, clientes y resultados, copiadas celda a celda; columnas separadas por « | ». Importes en miles de dólares salvo donde se indica. Documento de terceros, no se publica con el caso.
+El informe no da cuántos terabytes o exabytes guarda Backblaze (búsqueda de «exabyte», «EB», «petabyte» y «PB» con cifra: ninguna).
+---
+[Indicadores clave a 31 de diciembre]
+                                         | 2025    | 2024    | 2023
+B2 Cloud Storage
+Net revenue retention rate (%)           | 111     | 123     | 122
+Gross customer retention rate (%)        | 89      | 89      | 90
+Annual recurring revenue (millones $)    | 88.9    | 70.2    | 57.6
+Number of customers                      | 119,154 | 107,616 | 97,842
+Annual average revenue per user ($)      | 750     | 645     | 577
+Computer Backup
+Net revenue retention rate (%)           | 98      | 109     | 100
+Gross customer retention rate (%)        | 91      | 90      | 91
+Annual recurring revenue (millones $)    | 65.5    | 66.5    | 60.0
+Number of customers                      | 402,589 | 417,845 | 431,745
+Annual average revenue per user ($)      | 163     | 159     | 140
+Total Company
+Net revenue retention rate (%)           | 105     | 116     | 109
+Gross customer retention rate (%)        | 91      | 90      | 91
+Annual recurring revenue (millones $)    | 154.4   | 136.7   | 117.6
+Number of customers (1)                  | 503,866 | 507,647 | 511,942
+Annual average revenue per user ($)      | 307     | 268     | 228
+
+[Ingresos por producto, años cerrados a 31 de diciembre, miles de $]
+                         | 2025    | 2024    | 2023
+B2 Cloud Storage         | 79,897  | 63,335  | 46,427
+Computer Backup          | 65,938  | 64,293  | 55,592
+Total revenue            | 145,835 | 127,628 | 102,019
+Cambio 2025 frente a 2024: B2 +16,562 (+26 %); Computer Backup +1,645 (+3 %); total +18,207 (+14 %).
+
+[Ingresos por tipo de contrato, miles de $]
+                                   | 2025   | 2024   | 2023
+Consumption-based arrangements     | 77,187 | 61,459 | 45,771
+Subscription-based arrangements    | 68,236 | 65,658 | 55,679
+Point in time arrangements         | 412    | 511    | 569
+Total revenue                      | 145,835 | 127,628 | 102,019
+
+[Ingresos por país, miles de $]
+                 | 2025    | 2024   | 2023
+United States    | 104,567 | 94,323 | 73,262
+United Kingdom   | 7,513   | 6,703  | 5,463
+Canada           | 6,609   | 5,757  | 5,027
+Other            | 27,146  | 20,845 | 18,267
+Total revenue    | 145,835 | 127,628 | 102,019
+
+[Cuenta de resultados, miles de $]
+                                   | 2025     | 2024     | 2023
+Revenue                            | 145,835  | 127,628  | 102,019
+Cost of revenue                    | 57,042   | 58,285   | 52,162
+Gross profit                       | 88,793   | 69,343   | 49,857
+Research and development           | 46,109   | 42,098   | 39,527
+Sales and marketing                | 37,397   | 44,440   | 41,270
+General and administrative         | 28,910   | 29,094   | 26,965
+Total operating expenses           | 112,416  | 115,632  | 107,762
+Loss from operations               | (23,623) | (46,289) | (57,905)
+Investment income                  | 1,961    | 1,422    | 1,984
+Interest expense                   | (3,866)  | (3,658)  | (3,792)
+Loss before provision for income taxes | (25,528) | (48,525) | (59,713)
+Income tax provision               | 84       | 6        | —
+Net loss and comprehensive loss    | (25,612) | (48,531) | (59,713)
+En % de los ingresos: coste de los ingresos 39 / 46 / 51; margen bruto 61 / 54 / 49.
+
+[Amortización y otros dentro del coste de los ingresos, miles de $]
+                                            | 2025   | 2024   | 2023
+Depreciation and amortization, cost of revenue | 25,136 | 27,761 | 24,331
+Stock-based compensation, cost of revenue   | 1,557  | 1,616  | 1,986
+Restructuring charges, cost of revenue      | 115    | 460    | —
+Adjusted gross profit                       | 115,601 | 99,180 | 76,173
+Adjusted gross margin (%)                   | 79     | 78     | 75
+Amortización del software propio en el coste de los ingresos | 10,398 | 6,989 | 3,598

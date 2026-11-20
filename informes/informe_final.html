@@ -1,0 +1,1143 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coste por terabyte y riesgo de fallo de los discos de Backblaze</title>
+<style>
+/* Hoja de estilos de los informes de los casos de uso. Valores de reglas_de_salida.md §7 (E1 a E8).
+   informe.py la mete dentro del HTML: el informe no carga nada de fuera.
+   Plantilla copiada el 04/10/2026 de fuentes con licencia abierta: la ficha de gráficos de la ONS (título, subtítulo,
+   dibujo y fuente en su propia línea debajo), la escala de espacios de GOV.UK (30 px entre bloques), los huecos del CSS
+   de Observable Framework (4 px bajo el título, 16 antes del dibujo) y las tablas del Gobierno británico (sin rayas
+   entre filas). */
+
+/* E1: fondo siempre blanco. E3: texto #0b0b0b. */
+html, body { margin: 0; background: #ffffff; color: #0b0b0b; }
+
+/* E4: letra. E5: texto a 15 px con interlineado 1,5. TB2: cifras de ancho fijo. */
+body { font-family: "Segoe UI", system-ui, sans-serif; font-size: 15px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+
+/* S1: panel fijo a la izquierda con la lista de páginas; compacto para que quepa entero en 650 px. */
+nav { position: fixed; top: 0; left: 0; bottom: 0; width: 240px; box-sizing: border-box; padding: 24px 16px; border-right: 1px solid #e1e0d9; overflow-y: auto; background: #ffffff; }
+.informe-titulo { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
+.informe-fecha { font-size: 13px; color: #52514e; margin: 0 0 12px; }
+nav button { display: block; width: 100%; text-align: left; font: 15px "Segoe UI", system-ui, sans-serif; line-height: 1.3; color: #0b0b0b; background: #ffffff; border: 0; padding: 3px 0; cursor: pointer; }
+nav button[aria-current="page"] { font-weight: 700; text-decoration: underline; }
+/* S2: las páginas de cada pregunta, los límites y la decisión van juntas bajo su rótulo, sin número delante. */
+nav .grupo { font-size: 13px; font-weight: 700; color: #52514e; margin: 8px 0 0; }
+nav button.sub { padding-left: 12px; }
+
+/* Zona de las páginas. */
+main { margin-left: 240px; padding: 24px 40px 0; max-width: 1100px; }
+/* Un solo ancho para todo lo de la página, el de dos gráficos en fila. */
+.pagina { max-width: 1024px; }
+/* El documento acaba donde acaba el contenido: sin margen debajo del último bloque, la página no se desplaza. */
+.pagina > :last-child { margin-bottom: 0; }
+
+/* E5: título de página 28 px y sección 20 px, en negrita. */
+h1 { font-size: 28px; font-weight: 700; line-height: 1.25; margin: 0 0 12px; }
+h2 { font-size: 20px; font-weight: 700; line-height: 1.3; margin: 20px 0 8px; }
+
+/* T2: párrafos cortos, unos 75 caracteres por línea. */
+.pagina p { max-width: 75ch; margin: 0 0 12px; }
+
+/* S2: la pregunta que contesta la página, debajo del título, en negro y seminegrita para que se vea. */
+.pagina p.pregunta { color: #0b0b0b; font-weight: 600; }
+
+/* C1 y C2: cifras clave en fila, sin icono, borde ni fondo. E5: número a 28 px en negrita, etiqueta a 13.
+   Cuatro casillas iguales: con dos o tres cifras quedan juntas a la izquierda. */
+.cifras { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; margin: 15px 0 30px; }
+.cifra-clave p { margin: 0; }
+.cifra-clave .numero { font-size: 28px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+.cifra-clave .etiqueta { font-size: 13px; }
+.cifra-clave .contexto { font-size: 13px; color: #52514e; }
+
+/* G1 y G2, como la ficha de gráficos de la ONS: título que dice la conclusión a 20 px, subtítulo con la medida a 16,
+   el dibujo y la fuente en su propia línea debajo, a 13. 30 px entre bloques (GOV.UK). G7: el SVG va dentro. */
+.grafico { margin: 30px 0; }
+.g-titulo { font-size: 20px; font-weight: 700; line-height: 1.3; margin: 0 0 4px; }
+.g-subtitulo { font-size: 16px; color: #52514e; line-height: 1.5; margin: 0 0 16px; }
+.g-fuente { font-size: 13px; color: #52514e; line-height: 1.5; margin: 8px 0 0; }
+.grafico svg { display: block; max-width: 100%; height: auto; }
+
+/* S3: dos gráficos lado a lado, de 500 px cada uno; con el mismo subtítulo y la misma fuente, van una vez. */
+.fila-bloque { margin: 30px 0; }
+.fila { display: grid; grid-template-columns: repeat(2, minmax(0, 500px)); gap: 24px; }
+.fila .grafico { margin: 0; }
+
+/* Texto con un solo gráfico o una sola tabla: el texto a la izquierda y lo otro a la derecha, con el ancho que le
+   pone informe.py en --ancho-otro. */
+.lado { display: grid; grid-template-columns: minmax(0, 1fr) var(--ancho-otro); gap: 32px; align-items: start; margin: 30px 0; }
+.lado .grafico { margin: 0; }
+.lado table { margin-top: 0; }
+.lado .fuente { margin-bottom: 0; }
+/* Un apartado que abre la columna de texto empieza a la altura del gráfico o de la tabla de al lado. */
+.lado-texto > h2:first-child { margin-top: 0; }
+
+/* TB2 y TB4, como las tablas del Gobierno británico: números y sus cabeceras a la derecha, una línea bajo la cabecera
+   y sobre el total, sin rayas entre filas, total en negrita. E5: tabla a 13 px. */
+table { border-collapse: collapse; font-size: 13px; margin: 30px 0 0; }
+th { text-align: left; font-weight: 700; padding: 6px 16px 6px 0; border-bottom: 1px solid #0b0b0b; vertical-align: bottom; }
+td { text-align: left; padding: 6px 16px 6px 0; vertical-align: top; }
+th.num, td.num { text-align: right; }
+tr.total td { font-weight: 700; border-top: 1px solid #0b0b0b; }
+/* Una tabla sin cifras es texto para leer: a 15 px y a todo el ancho. */
+table.texto { font-size: 15px; width: 100%; }
+table.texto td:first-child { font-weight: 600; }
+
+/* F1: la fuente debajo de la tabla, a 13 px. */
+.fuente { font-size: 13px; color: #52514e; margin: 8px 0 30px; }
+
+/* G20: la etiqueta de cada valor al pasar el ratón o con el tabulador. Fondo blanco, borde fino, sin sombra (E6, E8).
+   Los valores reciben el ratón aunque su marca no se vea (los puntos de una línea). */
+svg g.dato { pointer-events: all; }
+svg g.dato:focus { outline: 2px solid #0b0b0b; }
+.etiqueta-dato { position: fixed; z-index: 10; max-width: 320px; padding: 4px 8px; font-size: 13px; line-height: 1.4; color: #0b0b0b; background: #ffffff; border: 1px solid #0b0b0b; pointer-events: none; }
+.etiqueta-dato[hidden] { display: none; }
+
+/* En una ventana estrecha, lo lado a lado y los gráficos en fila van uno debajo de otro, y las cifras, de dos en dos. */
+@media (max-width: 1180px) {
+  .lado { grid-template-columns: 1fr; }
+  .fila { grid-template-columns: 1fr; }
+  .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Al imprimir, sin panel, con todas las páginas y cada una en su hoja. */
+@media print {
+  nav { display: none; }
+  .etiqueta-dato { display: none; }
+  main { margin-left: 0; }
+  section[hidden] { display: block; }
+  section + section { break-before: page; }
+}
+</style>
+</head>
+<body>
+<nav><p class="informe-titulo">Coste por terabyte y riesgo de fallo de los discos de Backblaze</p><p class="informe-fecha">Para la dirección de operaciones de los centros de datos. Discos de datos de Backblaze, de enero de 2020 a junio de 2025.</p><button data-pagina="p1" aria-current="page">1. Resumen</button><button data-pagina="p2">2. El caso</button><button data-pagina="p3">3. Qué modelo comprar</button><button data-pagina="p4">4. Los repuestos</button><button data-pagina="p5">5. La edad</button><button data-pagina="p6">6. Los centros de datos</button><button data-pagina="p7">7. Los tomos</button><button data-pagina="p8">8. La lista de riesgo</button><button data-pagina="p9">9. Límites</button><button data-pagina="p10">10. Decisiones propuestas</button><p class="grupo">Anexo</p><button data-pagina="p11" class="sub">Definiciones</button><button data-pagina="p12" class="sub">Cálculos</button><button data-pagina="p13" class="sub">Método</button><button data-pagina="p14" class="sub">Fuentes y datos personales</button><button data-pagina="p15" class="sub">La prueba final</button></nav>
+<main>
+<section id="p1" class="pagina"><h1>Reducir costes depende más del precio de compra de los discos que de sus fallos</h1><div class="cifras"><div class="cifra-clave"><p class="numero">93,56 %</p><p class="etiqueta">Parte del coste por terabyte y año que corresponde al precio de compra</p><p class="contexto">Mediana de 27 modelos de disco</p></div><div class="cifra-clave"><p class="numero">832.698 $</p><p class="etiqueta">Lo que costaron los fallos de discos en 2024</p><p class="contexto">305.124 $ si la garantía pagara los discos</p></div><div class="cifra-clave"><p class="numero">22,6</p><p class="etiqueta">Discos que fallan al mes de los 100 de la lista de riesgo</p><p class="contexto">Un 52 % más que con la regla de los cinco avisos SMART, 14,9</p></div></div><h2>Análisis ejecutivo</h2><p>Para reducir costes, elige en cada compra el modelo con menor coste por terabyte y año. Los fallos suman mucho dinero porque hay muchos discos, pero en el coste de cada terabyte pesan poco frente al precio del disco.</p><p>Dos límites condicionan estas cifras. El precio desde 2023 es estimado y no se puede calcular el ahorro en dólares, porque depende de los modelos y terabytes de cada compra. La lista de riesgo dice qué discos revisar, pero no cuánto ahorra.</p><h2>Próximo paso</h2><p>Aprueba las cinco decisiones de la página 10. La primera es comprar en cada capacidad el modelo de menor coste por terabyte y año. Después vienen la lista de riesgo, la vigilancia por edad, la revisión del centro de datos sac2 y los repuestos.</p></section><section id="p2" class="pagina" hidden><h1>Varios fallos a la vez en un mismo grupo de 20 discos pueden hacer perder datos</h1><div class="cifras"><div class="cifra-clave"><p class="numero">314.758</p><p class="etiqueta">Discos de datos el 01/06/2025, sin contar los de arranque</p><p class="contexto">El 01/01/2020 eran 122.696</p></div><div class="cifra-clave"><p class="numero">16.996</p><p class="etiqueta">Fallos de discos de datos</p><p class="contexto">De enero de 2020 a junio de 2025</p></div><div class="cifra-clave"><p class="numero">2</p><p class="etiqueta">Veces que un tomo llegó al límite de la redundancia</p><p class="contexto">De julio de 2023 a junio de 2025. Nunca se superó</p></div></div><div class="lado" style="--ancho-otro: 560px"><div class="lado-texto"><h2>Análisis ejecutivo</h2><p>Backblaze guarda los datos de sus clientes en discos propios, repartidos en seis centros de datos. Los discos se agrupan de 20 en 20 y cada grupo se llama tomo. Cada fichero se reparte entre los 20 discos de su tomo. Entre 3 y 5 de ellos guardan redundancia, que permite reconstruir los datos cuando falla un disco. Si fallan a la vez más discos de los que cubre la redundancia, los datos del tomo se pierden.</p><h2>Próximo paso</h2><p>Aprueba primero la compra de discos y los repuestos (págs. 3 y 4). Después, la vigilancia (págs. 5 a 8).</p></div><div class="lado-otro"><div class="grafico"><div class="g-subtitulo">Ejemplo de un tomo de 20 discos con 3 de redundancia.</div><svg role="img" aria-label="Ejemplo de un tomo de 20 discos con 3 de redundancia." xmlns="http://www.w3.org/2000/svg" width="560" height="210" viewBox="0 0 560 210"><text x="0" y="32" font-family="Segoe UI, sans-serif" font-size="13" fill="#0b0b0b">Fallan 3 a la vez</text><rect x="150" y="20" width="16" height="16" fill="#2a78d6"/><rect x="170" y="20" width="16" height="16" fill="#2a78d6"/><rect x="190" y="20" width="16" height="16" fill="#2a78d6"/><rect x="210" y="20" width="16" height="16" fill="#2a78d6"/><rect x="230" y="20" width="16" height="16" fill="#2a78d6"/><rect x="250" y="20" width="16" height="16" fill="#2a78d6"/><rect x="270" y="20" width="16" height="16" fill="#2a78d6"/><rect x="290" y="20" width="16" height="16" fill="#2a78d6"/><rect x="310" y="20" width="16" height="16" fill="#2a78d6"/><rect x="330" y="20" width="16" height="16" fill="#2a78d6"/><rect x="350" y="20" width="16" height="16" fill="#2a78d6"/><rect x="370" y="20" width="16" height="16" fill="#2a78d6"/><rect x="390" y="20" width="16" height="16" fill="#2a78d6"/><rect x="410" y="20" width="16" height="16" fill="#2a78d6"/><rect x="430" y="20" width="16" height="16" fill="#2a78d6"/><rect x="450" y="20" width="16" height="16" fill="#2a78d6"/><rect x="470" y="20" width="16" height="16" fill="#2a78d6"/><rect x="490" y="20" width="16" height="16" fill="#e1e0d9"/><rect x="510" y="20" width="16" height="16" fill="#e1e0d9"/><rect x="530" y="20" width="16" height="16" fill="#e1e0d9"/><text x="150" y="56" font-family="Segoe UI, sans-serif" font-size="13" fill="#52514e">Los datos se reconstruyen con los otros 17 discos</text><text x="0" y="102" font-family="Segoe UI, sans-serif" font-size="13" fill="#0b0b0b">Fallan 4 a la vez</text><rect x="150" y="90" width="16" height="16" fill="#2a78d6"/><rect x="170" y="90" width="16" height="16" fill="#2a78d6"/><rect x="190" y="90" width="16" height="16" fill="#2a78d6"/><rect x="210" y="90" width="16" height="16" fill="#2a78d6"/><rect x="230" y="90" width="16" height="16" fill="#2a78d6"/><rect x="250" y="90" width="16" height="16" fill="#2a78d6"/><rect x="270" y="90" width="16" height="16" fill="#2a78d6"/><rect x="290" y="90" width="16" height="16" fill="#2a78d6"/><rect x="310" y="90" width="16" height="16" fill="#2a78d6"/><rect x="330" y="90" width="16" height="16" fill="#2a78d6"/><rect x="350" y="90" width="16" height="16" fill="#2a78d6"/><rect x="370" y="90" width="16" height="16" fill="#2a78d6"/><rect x="390" y="90" width="16" height="16" fill="#2a78d6"/><rect x="410" y="90" width="16" height="16" fill="#2a78d6"/><rect x="430" y="90" width="16" height="16" fill="#2a78d6"/><rect x="450" y="90" width="16" height="16" fill="#2a78d6"/><rect x="470" y="90" width="16" height="16" fill="#eb6834"/><rect x="490" y="90" width="16" height="16" fill="#eb6834"/><rect x="510" y="90" width="16" height="16" fill="#eb6834"/><rect x="530" y="90" width="16" height="16" fill="#eb6834"/><text x="150" y="126" font-family="Segoe UI, sans-serif" font-size="13" fill="#52514e">Los datos del tomo se pierden</text><text x="0" y="176" font-family="Segoe UI, sans-serif" font-size="13" fill="#52514e">Se supone una redundancia de 3 discos hasta 8 TB,</text><text x="0" y="196" font-family="Segoe UI, sans-serif" font-size="13" fill="#52514e">de 4 de 10 a 14 TB y de 5 desde 16 TB.</text></svg><div class="g-fuente">Fuente: documentación técnica de Backblaze</div></div></div></div></section><section id="p3" class="pagina" hidden><h1>En los siete grupos con dos modelos o más el más barato por terabyte es el que menos falla</h1><table><thead><tr><th>Capacidad y año de compra</th><th>Modelo más barato</th><th class="num">Dólares por TB y año</th><th class="num">Tasa de fallo, %</th><th class="num">Siguiente modelo, dólares</th><th class="num">Siguiente modelo, tasa %</th></tr></thead><tbody><tr><td>4 TB, 2016</td><td>HGST HMS5C4040BLE640</td><td class="num">4,03</td><td class="num">0,33</td><td class="num">4,33</td><td class="num">0,63</td></tr><tr><td>12 TB, 2019</td><td>HGST HUH721212ALE600</td><td class="num">3,05</td><td class="num">0,56</td><td class="num">3,69</td><td class="num">2,34</td></tr><tr><td>12 TB, 2021</td><td>ST12000NM001G</td><td class="num">2,79</td><td class="num">0,99</td><td class="num">2,84</td><td class="num">1,57</td></tr><tr><td>14 TB, 2020</td><td>TOSHIBA MG07ACA14TA</td><td class="num">2,80</td><td class="num">1,03</td><td class="num">3,58</td><td class="num">5,90</td></tr><tr><td>14 TB, 2021</td><td>WDC WUH721414ALE6L4</td><td class="num">2,65</td><td class="num">0,50</td><td class="num">2,79</td><td class="num">1,41</td></tr><tr><td>16 TB, 2021</td><td>WDC WUH721816ALE6L0</td><td class="num">2,72</td><td class="num">0,74</td><td class="num">2,80</td><td class="num">1,25</td></tr><tr><td>16 TB, 2023</td><td>WDC WUH721816ALE6L4</td><td class="num">2,34</td><td class="num">0,37</td><td class="num">2,39</td><td class="num">1,15</td></tr></tbody></table><div class="fuente">Fuente: en 16 TB de 2021 hay otro modelo más, a 2,83 $ y 1,29 %; precios estimados desde 2023, registro diario de los discos de Backblaze, enero de 2020 a junio de 2025</div><h2>Análisis ejecutivo</h2><p>Cada modelo se compara con los de su capacidad comprados el mismo año, porque cada año el terabyte sale más barato. Dentro de cada grupo los precios se parecen más que las tasas de fallo. En la mediana de los 27 modelos, los fallos son solo el 6,44 % del coste. Solo 7 de los 19 grupos tienen dos modelos o más.</p><h2>Próximo paso</h2><p>Compra en cada capacidad el modelo de menor coste por terabyte y año. Antes, confirma su precio si es de 2023 o posterior.</p></section><section id="p4" class="pagina" hidden><h1>La previsión por modelo y edad no es más precisa que el trimestre anterior</h1><div class="cifras"><div class="cifra-clave"><p class="numero">16.484</p><p class="etiqueta">Fallos previstos por modelo y edad, de 2021 a junio de 2025</p><p class="contexto">Los reales fueron 15.689</p></div><div class="cifra-clave"><p class="numero">25,0 %</p><p class="etiqueta">Error medio al prever con los fallos del trimestre anterior</p><p class="contexto">Con la previsión por modelo y edad, 26,7 %</p></div></div><div class="lado" style="--ancho-otro: 640px"><div class="lado-texto"><h2>Análisis ejecutivo</h2><p>La previsión por modelo y edad sobrestima los fallos totales en un 5,1 %. Los fallos del trimestre anterior los subestiman en un 4,4 %, con un error medio algo menor. La mayor desviación se produjo en el T4 2024, con 1.430 fallos previstos frente a 1.001 reales. En el último año, que se guardó para la prueba final, repetir el trimestre anterior volvió a prever mejor, con un error medio del 30,6 % frente al 31,8 %. Como la previsión no mejora, basta con el método más sencillo.</p><h2>Próximo paso</h2><p>Planifica los repuestos de cada trimestre con los fallos del trimestre previo. Añade un margen de seguridad que cubra su error medio.</p></div><div class="lado-otro"><div class="grafico"><div class="g-subtitulo">Fallos por trimestre. La previsión con el trimestre anterior es la línea de los reales desplazada un trimestre.</div><svg role="img" aria-label="Fallos por trimestre. La previsión con el trimestre anterior es la línea de los reales desplazada un trimestre." xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="320" viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="gd42282_figure_1">
+  <g id="gd42282_patch_1">
+   <path d="M 0 320 
+L 640 320 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="gd42282_axes_1">
+   <g id="gd42282_patch_2">
+    <path d="M 48 300.299805 
+L 522.133042 300.299805 
+L 522.133042 4 
+L 48 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="gd42282_matplotlib.axis_1">
+    <g id="gd42282_xtick_1">
+     <g id="gd42282_line2d_1"/>
+     <g id="gd42282_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="53.098205" y="313.26416" transform="rotate(-0 53.098205 313.26416)">T1 21</text>
+     </g>
+    </g>
+    <g id="gd42282_xtick_2">
+     <g id="gd42282_line2d_2"/>
+     <g id="gd42282_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="104.080252" y="313.26416" transform="rotate(-0 104.080252 313.26416)">T3 21</text>
+     </g>
+    </g>
+    <g id="gd42282_xtick_3">
+     <g id="gd42282_line2d_3"/>
+     <g id="gd42282_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="155.0623" y="313.26416" transform="rotate(-0 155.0623 313.26416)">T1 22</text>
+     </g>
+    </g>
+    <g id="gd42282_xtick_4">
+     <g id="gd42282_line2d_4"/>
+     <g id="gd42282_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="206.044347" y="313.26416" transform="rotate(-0 206.044347 313.26416)">T3 22</text>
+     </g>
+    </g>
+    <g id="gd42282_xtick_5">
+     <g id="gd42282_line2d_5"/>
+     <g id="gd42282_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="257.026395" y="313.26416" transform="rotate(-0 257.026395 313.26416)">T1 23</text>
+     </g>
+    </g>
+    <g id="gd42282_xtick_6">
+     <g id="gd42282_line2d_6"/>
+     <g id="gd42282_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="308.008442" y="313.26416" transform="rotate(-0 308.008442 313.26416)">T3 23</text>
+     </g>
+    </g>
+    <g id="gd42282_xtick_7">
+     <g id="gd42282_line2d_7"/>
+     <g id="gd42282_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="358.99049" y="313.26416" transform="rotate(-0 358.99049 313.26416)">T1 24</text>
+     </g>
+    </g>
+    <g id="gd42282_xtick_8">
+     <g id="gd42282_line2d_8"/>
+     <g id="gd42282_text_8">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="409.972537" y="313.26416" transform="rotate(-0 409.972537 313.26416)">T3 24</text>
+     </g>
+    </g>
+    <g id="gd42282_xtick_9">
+     <g id="gd42282_line2d_9"/>
+     <g id="gd42282_text_9">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="460.954585" y="313.26416" transform="rotate(-0 460.954585 313.26416)">T1 25</text>
+     </g>
+    </g>
+   </g>
+   <g id="gd42282_matplotlib.axis_2">
+    <g id="gd42282_ytick_1">
+     <g id="gd42282_line2d_10">
+      <path d="M 48 274.360609 
+L 522.133042 274.360609 
+" clip-path="url(#gd42282_p2b412a271e)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gd42282_line2d_11"/>
+     <g id="gd42282_text_10">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="279.092786" transform="rotate(-0 44.5 279.092786)">400</text>
+     </g>
+    </g>
+    <g id="gd42282_ytick_2">
+     <g id="gd42282_line2d_12">
+      <path d="M 48 224.476516 
+L 522.133042 224.476516 
+" clip-path="url(#gd42282_p2b412a271e)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gd42282_line2d_13"/>
+     <g id="gd42282_text_11">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="229.208694" transform="rotate(-0 44.5 229.208694)">600</text>
+     </g>
+    </g>
+    <g id="gd42282_ytick_3">
+     <g id="gd42282_line2d_14">
+      <path d="M 48 174.592424 
+L 522.133042 174.592424 
+" clip-path="url(#gd42282_p2b412a271e)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gd42282_line2d_15"/>
+     <g id="gd42282_text_12">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="179.324601" transform="rotate(-0 44.5 179.324601)">800</text>
+     </g>
+    </g>
+    <g id="gd42282_ytick_4">
+     <g id="gd42282_line2d_16">
+      <path d="M 48 124.708331 
+L 522.133042 124.708331 
+" clip-path="url(#gd42282_p2b412a271e)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gd42282_line2d_17"/>
+     <g id="gd42282_text_13">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="129.440509" transform="rotate(-0 44.5 129.440509)">1.000</text>
+     </g>
+    </g>
+    <g id="gd42282_ytick_5">
+     <g id="gd42282_line2d_18">
+      <path d="M 48 74.824238 
+L 522.133042 74.824238 
+" clip-path="url(#gd42282_p2b412a271e)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gd42282_line2d_19"/>
+     <g id="gd42282_text_14">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="79.556416" transform="rotate(-0 44.5 79.556416)">1.200</text>
+     </g>
+    </g>
+    <g id="gd42282_ytick_6">
+     <g id="gd42282_line2d_20">
+      <path d="M 48 24.940146 
+L 522.133042 24.940146 
+" clip-path="url(#gd42282_p2b412a271e)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gd42282_line2d_21"/>
+     <g id="gd42282_text_15">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="29.672324" transform="rotate(-0 44.5 29.672324)">1.400</text>
+     </g>
+    </g>
+   </g>
+   <g id="gd42282_line2d_22">
+    <path d="M 53.098205 286.831632 
+L 78.589228 264.13437 
+L 104.080252 246.924358 
+L 129.571276 243.931312 
+L 155.0623 219.986948 
+L 180.553323 183.820981 
+L 206.044347 145.65965 
+L 231.535371 199.035629 
+L 257.026395 151.645741 
+L 282.517418 39.655953 
+L 308.008442 138.925297 
+L 333.499466 118.472819 
+L 358.99049 137.428775 
+L 384.481513 75.073659 
+L 409.972537 27.683771 
+L 435.463561 124.458911 
+L 460.954585 107.99716 
+L 486.445608 109.493683 
+" clip-path="url(#gd42282_p2b412a271e)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="gd42282_dato0" class="dato" tabindex="0"><title>T1 21 · Reales · fallos: 350</title>
+    <defs>
+     <path id="gd42282_me6bf60eb94" d="M 0 5 
+C 1.326016 5 2.597899 4.473168 3.535534 3.535534 
+C 4.473168 2.597899 5 1.326016 5 0 
+C 5 -1.326016 4.473168 -2.597899 3.535534 -3.535534 
+C 2.597899 -4.473168 1.326016 -5 0 -5 
+C -1.326016 -5 -2.597899 -4.473168 -3.535534 -3.535534 
+C -4.473168 -2.597899 -5 -1.326016 -5 0 
+C -5 1.326016 -4.473168 2.597899 -3.535534 3.535534 
+C -2.597899 4.473168 -1.326016 5 0 5 
+z
+" style="stroke: #2a78d6; stroke-opacity: 0"/>
+    </defs>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="53.098205" y="286.831632" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato1" class="dato" tabindex="0"><title>T2 21 · Reales · fallos: 441</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="78.589228" y="264.13437" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato2" class="dato" tabindex="0"><title>T3 21 · Reales · fallos: 510</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="104.080252" y="246.924358" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato3" class="dato" tabindex="0"><title>T4 21 · Reales · fallos: 522</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="129.571276" y="243.931312" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato4" class="dato" tabindex="0"><title>T1 22 · Reales · fallos: 618</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="155.0623" y="219.986948" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato5" class="dato" tabindex="0"><title>T2 22 · Reales · fallos: 763</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="180.553323" y="183.820981" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato6" class="dato" tabindex="0"><title>T3 22 · Reales · fallos: 916</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="206.044347" y="145.65965" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato7" class="dato" tabindex="0"><title>T4 22 · Reales · fallos: 702</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="231.535371" y="199.035629" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato8" class="dato" tabindex="0"><title>T1 23 · Reales · fallos: 892</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="257.026395" y="151.645741" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato9" class="dato" tabindex="0"><title>T2 23 · Reales · fallos: 1.341</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="282.517418" y="39.655953" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato10" class="dato" tabindex="0"><title>T3 23 · Reales · fallos: 943</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="308.008442" y="138.925297" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato11" class="dato" tabindex="0"><title>T4 23 · Reales · fallos: 1.025</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="333.499466" y="118.472819" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato12" class="dato" tabindex="0"><title>T1 24 · Reales · fallos: 949</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="358.99049" y="137.428775" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato13" class="dato" tabindex="0"><title>T2 24 · Reales · fallos: 1.199</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="384.481513" y="75.073659" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato14" class="dato" tabindex="0"><title>T3 24 · Reales · fallos: 1.389</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="409.972537" y="27.683771" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato15" class="dato" tabindex="0"><title>T4 24 · Reales · fallos: 1.001</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="435.463561" y="124.458911" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato16" class="dato" tabindex="0"><title>T1 25 · Reales · fallos: 1.067</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="460.954585" y="107.99716" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato17" class="dato" tabindex="0"><title>T2 25 · Reales · fallos: 1.061</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="486.445608" y="109.493683" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_line2d_23">
+    <path d="M 53.098205 269.766007 
+L 78.589228 271.767 
+L 104.080252 264.918901 
+L 129.571276 255.043961 
+L 155.0623 242.686428 
+L 180.553323 227.042476 
+L 206.044347 182.995401 
+L 231.535371 159.113162 
+L 257.026395 160.789278 
+L 282.517418 130.448417 
+L 308.008442 48.899979 
+L 333.499466 73.110852 
+L 358.99049 82.492909 
+L 384.481513 92.675972 
+L 409.972537 52.095555 
+L 435.463561 17.468173 
+L 460.954585 51.752023 
+L 486.445608 39.805514 
+" clip-path="url(#gd42282_p2b412a271e)" style="fill: none; stroke: #eb6834; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="gd42282_dato18" class="dato" tabindex="0"><title>T1 21 · Por modelo y edad · fallos: 418</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="53.098205" y="269.766007" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato19" class="dato" tabindex="0"><title>T2 21 · Por modelo y edad · fallos: 410</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="78.589228" y="271.767" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato20" class="dato" tabindex="0"><title>T3 21 · Por modelo y edad · fallos: 438</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="104.080252" y="264.918901" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato21" class="dato" tabindex="0"><title>T4 21 · Por modelo y edad · fallos: 477</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="129.571276" y="255.043961" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato22" class="dato" tabindex="0"><title>T1 22 · Por modelo y edad · fallos: 527</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="155.0623" y="242.686428" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato23" class="dato" tabindex="0"><title>T2 22 · Por modelo y edad · fallos: 590</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="180.553323" y="227.042476" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato24" class="dato" tabindex="0"><title>T3 22 · Por modelo y edad · fallos: 766</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="206.044347" y="182.995401" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato25" class="dato" tabindex="0"><title>T4 22 · Por modelo y edad · fallos: 862</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="231.535371" y="159.113162" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato26" class="dato" tabindex="0"><title>T1 23 · Por modelo y edad · fallos: 855</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="257.026395" y="160.789278" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato27" class="dato" tabindex="0"><title>T2 23 · Por modelo y edad · fallos: 977</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="282.517418" y="130.448417" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato28" class="dato" tabindex="0"><title>T3 23 · Por modelo y edad · fallos: 1.304</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="308.008442" y="48.899979" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato29" class="dato" tabindex="0"><title>T4 23 · Por modelo y edad · fallos: 1.207</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="333.499466" y="73.110852" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato30" class="dato" tabindex="0"><title>T1 24 · Por modelo y edad · fallos: 1.169</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="358.99049" y="82.492909" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato31" class="dato" tabindex="0"><title>T2 24 · Por modelo y edad · fallos: 1.128</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="384.481513" y="92.675972" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato32" class="dato" tabindex="0"><title>T3 24 · Por modelo y edad · fallos: 1.291</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="409.972537" y="52.095555" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato33" class="dato" tabindex="0"><title>T4 24 · Por modelo y edad · fallos: 1.430</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="435.463561" y="17.468173" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato34" class="dato" tabindex="0"><title>T1 25 · Por modelo y edad · fallos: 1.293</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="460.954585" y="51.752023" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_dato35" class="dato" tabindex="0"><title>T2 25 · Por modelo y edad · fallos: 1.340</title>
+    <g clip-path="url(#gd42282_p2b412a271e)">
+     <use xlink:href="#gd42282_me6bf60eb94" x="486.445608" y="39.805514" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gd42282_patch_3">
+    <path d="M 48 300.299805 
+L 522.133042 300.299805 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="gd42282_text_16">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="488.48489" y="112.937794" transform="rotate(-0 488.48489 112.937794)">Reales 1.061</text>
+   </g>
+   <g id="gd42282_text_17">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="488.48489" y="43.088014" transform="rotate(-0 488.48489 43.088014)">Por modelo y edad 1.340</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="gd42282_p2b412a271e">
+   <rect x="48" y="4" width="474.133042" height="296.299805"/>
+  </clipPath>
+ </defs>
+</svg>
+<div class="g-fuente">Fuente: registro diario de los discos de Backblaze, enero de 2020 a junio de 2025</div></div></div></div></section><section id="p5" class="pagina" hidden><h1>La tasa de fallo sube cada año de edad entre el primero y el quinto</h1><div class="cifras"><div class="cifra-clave"><p class="numero">93,6 %</p><p class="etiqueta">Discos que siguen funcionando a los 5 años</p><p class="contexto">Al año, 99,2 %</p></div><div class="cifra-clave"><p class="numero">3,6 %</p><p class="etiqueta">Discos de 8 años o más</p><p class="contexto">11.038 de 308.836 el 01/04/2025</p></div></div><div class="lado" style="--ancho-otro: 640px"><div class="lado-texto"><h2>Análisis ejecutivo</h2><p>La subida entre el primer y el quinto año cumplido es real: los intervalos de cada año no se tocan. Desde los 6 años la tasa deja de subir, pero solo mide los discos que han llegado a esa edad. Quedan tan pocos discos de 8 años que no se puede saber si su bajada es real.</p><h2>Próximo paso</h2><p>Compara los modelos de disco siempre a la misma edad: uno joven parece fallar poco solo por su edad. Vigila más los discos desde los 2 años cumplidos.</p></div><div class="lado-otro"><div class="grafico"><div class="g-subtitulo">Tasa anual de fallo por años cumplidos, en %.</div><svg role="img" aria-label="Tasa anual de fallo por años cumplidos, en %." xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="376" viewBox="0 0 640 376" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="g1c073d_figure_1">
+  <g id="g1c073d_patch_1">
+   <path d="M 0 376 
+L 640 376 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="g1c073d_axes_1">
+   <g id="g1c073d_patch_2">
+    <path d="M 120 359 
+L 636 359 
+L 636 4 
+L 120 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="g1c073d_dato0" class="dato" tabindex="0"><title>0 años · tasa anual de fallo: 0,79 % (intervalo de confianza del 95 %: 0,71 a 0,87 %)</title>
+    <path d="M 120 55.237113 
+L 212.576681 55.237113 
+L 212.576681 33.278351 
+L 120 33.278351 
+z
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g1c073d_dato1" class="dato" tabindex="0"><title>1 año · tasa anual de fallo: 0,86 % (intervalo de confianza del 95 %: 0,78 a 0,95 %)</title>
+    <path d="M 120 91.835052 
+L 220.708955 91.835052 
+L 220.708955 69.876289 
+L 120 69.876289 
+z
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g1c073d_dato2" class="dato" tabindex="0"><title>2 años · tasa anual de fallo: 1,20 % (intervalo de confianza del 95 %: 1,10 a 1,31 %)</title>
+    <path d="M 120 128.43299 
+L 260.956599 128.43299 
+L 260.956599 106.474227 
+L 120 106.474227 
+z
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g1c073d_dato3" class="dato" tabindex="0"><title>3 años · tasa anual de fallo: 1,59 % (intervalo de confianza del 95 %: 1,46 a 1,73 %)</title>
+    <path d="M 120 165.030928 
+L 306.758273 165.030928 
+L 306.758273 143.072165 
+L 120 143.072165 
+z
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g1c073d_dato4" class="dato" tabindex="0"><title>4 años · tasa anual de fallo: 1,92 % (intervalo de confianza del 95 %: 1,76 a 2,10 %)</title>
+    <path d="M 120 201.628866 
+L 345.029662 201.628866 
+L 345.029662 179.670103 
+L 120 179.670103 
+z
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g1c073d_dato5" class="dato" tabindex="0"><title>5 años · tasa anual de fallo: 2,58 % (intervalo de confianza del 95 %: 2,34 a 2,84 %)</title>
+    <path d="M 120 238.226804 
+L 422.634776 238.226804 
+L 422.634776 216.268041 
+L 120 216.268041 
+z
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g1c073d_dato6" class="dato" tabindex="0"><title>6 años · tasa anual de fallo: 2,39 % (intervalo de confianza del 95 %: 2,13 a 2,69 %)</title>
+    <path d="M 120 274.824742 
+L 400.529629 274.824742 
+L 400.529629 252.865979 
+L 120 252.865979 
+z
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g1c073d_dato7" class="dato" tabindex="0"><title>7 años · tasa anual de fallo: 2,41 % (intervalo de confianza del 95 %: 2,12 a 2,74 %)</title>
+    <path d="M 120 311.42268 
+L 402.47178 311.42268 
+L 402.47178 289.463918 
+L 120 289.463918 
+z
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g1c073d_dato8" class="dato" tabindex="0"><title>8 años · tasa anual de fallo: 1,90 % (intervalo de confianza del 95 %: 1,47 a 2,41 %)</title>
+    <path d="M 120 348.020619 
+L 342.406756 348.020619 
+L 342.406756 326.061856 
+L 120 326.061856 
+z
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g1c073d_matplotlib.axis_1">
+    <g id="g1c073d_ytick_1">
+     <g id="g1c073d_line2d_1"/>
+     <g id="g1c073d_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="48.98991" transform="rotate(-0 116.5 48.98991)">0 años</text>
+     </g>
+    </g>
+    <g id="g1c073d_ytick_2">
+     <g id="g1c073d_line2d_2"/>
+     <g id="g1c073d_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="85.587848" transform="rotate(-0 116.5 85.587848)">1 año</text>
+     </g>
+    </g>
+    <g id="g1c073d_ytick_3">
+     <g id="g1c073d_line2d_3"/>
+     <g id="g1c073d_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="122.185786" transform="rotate(-0 116.5 122.185786)">2 años</text>
+     </g>
+    </g>
+    <g id="g1c073d_ytick_4">
+     <g id="g1c073d_line2d_4"/>
+     <g id="g1c073d_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="158.783724" transform="rotate(-0 116.5 158.783724)">3 años</text>
+     </g>
+    </g>
+    <g id="g1c073d_ytick_5">
+     <g id="g1c073d_line2d_5"/>
+     <g id="g1c073d_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="195.381662" transform="rotate(-0 116.5 195.381662)">4 años</text>
+     </g>
+    </g>
+    <g id="g1c073d_ytick_6">
+     <g id="g1c073d_line2d_6"/>
+     <g id="g1c073d_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="231.9796" transform="rotate(-0 116.5 231.9796)">5 años</text>
+     </g>
+    </g>
+    <g id="g1c073d_ytick_7">
+     <g id="g1c073d_line2d_7"/>
+     <g id="g1c073d_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="268.577539" transform="rotate(-0 116.5 268.577539)">6 años</text>
+     </g>
+    </g>
+    <g id="g1c073d_ytick_8">
+     <g id="g1c073d_line2d_8"/>
+     <g id="g1c073d_text_8">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="305.175477" transform="rotate(-0 116.5 305.175477)">7 años</text>
+     </g>
+    </g>
+    <g id="g1c073d_ytick_9">
+     <g id="g1c073d_line2d_9"/>
+     <g id="g1c073d_text_9">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="341.773415" transform="rotate(-0 116.5 341.773415)">8 años</text>
+     </g>
+    </g>
+   </g>
+   <g id="g1c073d_LineCollection_1">
+    <path d="M 203.754274 44.257732 
+L 222.075636 44.257732 
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+    <path d="M 211.209556 80.85567 
+L 230.928874 80.85567 
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+    <path d="M 248.853059 117.453608 
+L 273.890832 117.453608 
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+    <path d="M 291.562003 154.051546 
+L 322.939708 154.051546 
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+    <path d="M 325.665352 190.649485 
+L 365.72603 190.649485 
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+    <path d="M 394.471874 227.247423 
+L 452.903226 227.247423 
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+    <path d="M 369.236435 263.845361 
+L 434.664915 263.845361 
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+    <path d="M 367.896652 300.443299 
+L 440.51993 300.443299 
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+    <path d="M 292.204028 337.041237 
+L 402.675908 337.041237 
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+   </g>
+   <g id="g1c073d_line2d_10">
+    <defs>
+     <path id="g1c073d_mb4444188ae" d="M 0 4 
+L 0 -4 
+" style="stroke: #0b0b0b"/>
+    </defs>
+    <g clip-path="url(#g1c073d_pf2e73390a3)">
+     <use xlink:href="#g1c073d_mb4444188ae" x="203.754274" y="44.257732" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="211.209556" y="80.85567" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="248.853059" y="117.453608" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="291.562003" y="154.051546" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="325.665352" y="190.649485" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="394.471874" y="227.247423" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="369.236435" y="263.845361" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="367.896652" y="300.443299" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="292.204028" y="337.041237" style="fill: #2a78d6; stroke: #0b0b0b"/>
+    </g>
+   </g>
+   <g id="g1c073d_line2d_11">
+    <g clip-path="url(#g1c073d_pf2e73390a3)">
+     <use xlink:href="#g1c073d_mb4444188ae" x="222.075636" y="44.257732" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="230.928874" y="80.85567" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="273.890832" y="117.453608" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="322.939708" y="154.051546" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="365.72603" y="190.649485" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="452.903226" y="227.247423" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="434.664915" y="263.845361" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="440.51993" y="300.443299" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g1c073d_mb4444188ae" x="402.675908" y="337.041237" style="fill: #2a78d6; stroke: #0b0b0b"/>
+    </g>
+   </g>
+   <g id="g1c073d_line2d_12">
+    <path d="M 282.896294 359 
+L 282.896294 4 
+" clip-path="url(#g1c073d_pf2e73390a3)" style="fill: none; stroke-dasharray: 4,3; stroke-dashoffset: 0; stroke: #898781"/>
+   </g>
+   <g id="g1c073d_patch_3">
+    <path d="M 120 359 
+L 120 4 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="g1c073d_text_10">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="235.391765" y="47.62199" transform="rotate(-0 235.391765 47.62199)">0,79 %</text>
+   </g>
+   <g id="g1c073d_text_11">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="244.245003" y="84.219928" transform="rotate(-0 244.245003 84.219928)">0,86 %</text>
+   </g>
+   <g id="g1c073d_text_12">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="287.206961" y="120.817866" transform="rotate(-0 287.206961 120.817866)">1,20 %</text>
+   </g>
+   <g id="g1c073d_text_13">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="336.255837" y="157.415804" transform="rotate(-0 336.255837 157.415804)">1,59 %</text>
+   </g>
+   <g id="g1c073d_text_14">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="379.042159" y="194.013742" transform="rotate(-0 379.042159 194.013742)">1,92 %</text>
+   </g>
+   <g id="g1c073d_text_15">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="466.219355" y="230.61168" transform="rotate(-0 466.219355 230.61168)">2,58 %</text>
+   </g>
+   <g id="g1c073d_text_16">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="447.981044" y="267.209619" transform="rotate(-0 447.981044 267.209619)">2,39 %</text>
+   </g>
+   <g id="g1c073d_text_17">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="453.836059" y="303.807557" transform="rotate(-0 453.836059 303.807557)">2,41 %</text>
+   </g>
+   <g id="g1c073d_text_18">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="415.992037" y="340.405495" transform="rotate(-0 415.992037 340.405495)">1,90 %</text>
+   </g>
+   <g id="g1c073d_text_19">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="278.391765" y="47.62199" transform="rotate(-0 278.391765 47.62199)">(0,71 a 0,87 %)</text>
+   </g>
+   <g id="g1c073d_text_20">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="287.245003" y="84.219928" transform="rotate(-0 287.245003 84.219928)">(0,78 a 0,95 %)</text>
+   </g>
+   <g id="g1c073d_text_21">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="330.206961" y="120.817866" transform="rotate(-0 330.206961 120.817866)">(1,10 a 1,31 %)</text>
+   </g>
+   <g id="g1c073d_text_22">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="379.255837" y="157.415804" transform="rotate(-0 379.255837 157.415804)">(1,46 a 1,73 %)</text>
+   </g>
+   <g id="g1c073d_text_23">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="422.042159" y="194.013742" transform="rotate(-0 422.042159 194.013742)">(1,76 a 2,10 %)</text>
+   </g>
+   <g id="g1c073d_text_24">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="509.219355" y="230.61168" transform="rotate(-0 509.219355 230.61168)">(2,34 a 2,84 %)</text>
+   </g>
+   <g id="g1c073d_text_25">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="490.981044" y="267.209619" transform="rotate(-0 490.981044 267.209619)">(2,13 a 2,69 %)</text>
+   </g>
+   <g id="g1c073d_text_26">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="496.836059" y="303.807557" transform="rotate(-0 496.836059 303.807557)">(2,12 a 2,74 %)</text>
+   </g>
+   <g id="g1c073d_text_27">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="458.992037" y="340.405495" transform="rotate(-0 458.992037 340.405495)">(1,47 a 2,41 %)</text>
+   </g>
+   <g id="g1c073d_text_28">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="120" y="368.812969" transform="rotate(-0 120 368.812969)">Entre paréntesis, el intervalo de confianza del 95 %</text>
+   </g>
+   <g id="g1c073d_text_29">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="282.896294" y="17.733232" transform="rotate(-0 282.896294 17.733232)"> Todos los discos, 1,39 %</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="g1c073d_pf2e73390a3">
+   <rect x="120" y="4" width="516" height="355"/>
+  </clipPath>
+ </defs>
+</svg>
+<div class="g-fuente">Fuente: registro diario de los discos de Backblaze, enero de 2020 a junio de 2025</div></div></div></div></section><section id="p6" class="pagina" hidden><h1>El centro de datos sac2 falla un 10 % más de lo esperado para sus modelos y edades</h1><div class="cifras"><div class="cifra-clave"><p class="numero">2.546</p><p class="etiqueta">Fallos en sac2</p><p class="contexto">Con sus discos se esperaban 2.316</p></div><div class="cifra-clave"><p class="numero">2.806</p><p class="etiqueta">Fallos en sac0</p><p class="contexto">Con sus discos se esperaban 3.097</p></div></div><div class="lado" style="--ancho-otro: 640px"><div class="lado-texto"><h2>Análisis ejecutivo</h2><p>Con un 95 % de confianza, sac2 falla entre un 6 % y un 14 % más de lo esperado. phx1, ams5 e iad1 fallan lo esperado para sus discos. sac0 falla algo menos. yyz1 solo tuvo 6 fallos, que no bastan para concluir. La temperatura media de los discos de sac2 es de 35,9 °C, frente a 30,0 °C en sac0, pero eso no demuestra que sea la causa.</p><h2>Próximo paso</h2><p>Revisa con el equipo de sac2 en qué se diferencia su operación. La temperatura de sus discos es la primera pista.</p></div><div class="lado-otro"><div class="grafico"><div class="g-subtitulo">Fallos de cada centro frente a los esperados si fallara como la media con sus mismos discos.</div><svg role="img" aria-label="Fallos de cada centro frente a los esperados si fallara como la media con sus mismos discos." xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="240" viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="g662217_figure_1">
+  <g id="g662217_patch_1">
+   <path d="M 0 240 
+L 640 240 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="g662217_axes_1">
+   <g id="g662217_patch_2">
+    <path d="M 120 223 
+L 636 223 
+L 636 4 
+L 120 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="g662217_dato0" class="dato" tabindex="0"><title>ams5 · veces lo esperado: 1,07 (intervalo de confianza del 95 %: 0,97 a 1,17)</title>
+    <path d="M 120 57.789474 
+L 424.031847 57.789474 
+L 424.031847 34.736842 
+L 120 34.736842 
+z
+" clip-path="url(#g662217_pe674170e1d)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g662217_dato1" class="dato" tabindex="0"><title>iad1 · veces lo esperado: 1,00 (intervalo de confianza del 95 %: 0,91 a 1,09)</title>
+    <path d="M 120 96.210526 
+L 403.389656 96.210526 
+L 403.389656 73.157895 
+L 120 73.157895 
+z
+" clip-path="url(#g662217_pe674170e1d)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g662217_dato2" class="dato" tabindex="0"><title>phx1 · veces lo esperado: 1,04 (intervalo de confianza del 95 %: 1,00 a 1,09)</title>
+    <path d="M 120 134.631579 
+L 415.812812 134.631579 
+L 415.812812 111.578947 
+L 120 111.578947 
+z
+" clip-path="url(#g662217_pe674170e1d)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g662217_dato3" class="dato" tabindex="0"><title>sac0 · veces lo esperado: 0,91 (intervalo de confianza del 95 %: 0,87 a 0,94)</title>
+    <path d="M 120 173.052632 
+L 377.511421 173.052632 
+L 377.511421 150 
+L 120 150 
+z
+" clip-path="url(#g662217_pe674170e1d)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g662217_dato4" class="dato" tabindex="0"><title>sac2 · veces lo esperado: 1,10 (intervalo de confianza del 95 %: 1,06 a 1,14)</title>
+    <path d="M 120 211.473684 
+L 432.509834 211.473684 
+L 432.509834 188.421053 
+L 120 188.421053 
+z
+" clip-path="url(#g662217_pe674170e1d)" style="fill: #eb6834"/>
+   </g>
+   <g id="g662217_matplotlib.axis_1">
+    <g id="g662217_ytick_1">
+     <g id="g662217_line2d_1"/>
+     <g id="g662217_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="50.995336" transform="rotate(-0 116.5 50.995336)">ams5</text>
+     </g>
+    </g>
+    <g id="g662217_ytick_2">
+     <g id="g662217_line2d_2"/>
+     <g id="g662217_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="89.496242" transform="rotate(-0 116.5 89.496242)">iad1</text>
+     </g>
+    </g>
+    <g id="g662217_ytick_3">
+     <g id="g662217_line2d_3"/>
+     <g id="g662217_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="127.917294" transform="rotate(-0 116.5 127.917294)">phx1</text>
+     </g>
+    </g>
+    <g id="g662217_ytick_4">
+     <g id="g662217_line2d_4"/>
+     <g id="g662217_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="166.258494" transform="rotate(-0 116.5 166.258494)">sac0</text>
+     </g>
+    </g>
+    <g id="g662217_ytick_5">
+     <g id="g662217_line2d_5"/>
+     <g id="g662217_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="204.679546" transform="rotate(-0 116.5 204.679546)">sac2</text>
+     </g>
+    </g>
+   </g>
+   <g id="g662217_LineCollection_1">
+    <path d="M 397.074704 46.263158 
+L 452.903226 46.263158 
+" clip-path="url(#g662217_pe674170e1d)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+    <path d="M 379.142068 84.684211 
+L 429.295154 84.684211 
+" clip-path="url(#g662217_pe674170e1d)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+    <path d="M 403.348969 123.105263 
+L 428.683766 123.105263 
+" clip-path="url(#g662217_pe674170e1d)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+    <path d="M 367.979434 161.526316 
+L 387.315973 161.526316 
+" clip-path="url(#g662217_pe674170e1d)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+    <path d="M 420.371401 199.947368 
+L 445.012942 199.947368 
+" clip-path="url(#g662217_pe674170e1d)" style="fill: none; stroke: #0b0b0b; stroke-width: 1.2"/>
+   </g>
+   <g id="g662217_line2d_6">
+    <defs>
+     <path id="g662217_mb4444188ae" d="M 0 4 
+L 0 -4 
+" style="stroke: #0b0b0b"/>
+    </defs>
+    <g clip-path="url(#g662217_pe674170e1d)">
+     <use xlink:href="#g662217_mb4444188ae" x="397.074704" y="46.263158" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g662217_mb4444188ae" x="379.142068" y="84.684211" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g662217_mb4444188ae" x="403.348969" y="123.105263" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g662217_mb4444188ae" x="367.979434" y="161.526316" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g662217_mb4444188ae" x="420.371401" y="199.947368" style="fill: #2a78d6; stroke: #0b0b0b"/>
+    </g>
+   </g>
+   <g id="g662217_line2d_7">
+    <g clip-path="url(#g662217_pe674170e1d)">
+     <use xlink:href="#g662217_mb4444188ae" x="452.903226" y="46.263158" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g662217_mb4444188ae" x="429.295154" y="84.684211" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g662217_mb4444188ae" x="428.683766" y="123.105263" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g662217_mb4444188ae" x="387.315973" y="161.526316" style="fill: #2a78d6; stroke: #0b0b0b"/>
+     <use xlink:href="#g662217_mb4444188ae" x="445.012942" y="199.947368" style="fill: #2a78d6; stroke: #0b0b0b"/>
+    </g>
+   </g>
+   <g id="g662217_line2d_8">
+    <path d="M 404.231768 223 
+L 404.231768 4 
+" clip-path="url(#g662217_pe674170e1d)" style="fill: none; stroke-dasharray: 4,3; stroke-dashoffset: 0; stroke: #898781"/>
+   </g>
+   <g id="g662217_patch_3">
+    <path d="M 120 223 
+L 120 4 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="g662217_text_6">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="466.219355" y="49.627416" transform="rotate(-0 466.219355 49.627416)">1,07</text>
+   </g>
+   <g id="g662217_text_7">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="442.611283" y="88.048468" transform="rotate(-0 442.611283 88.048468)">1,00</text>
+   </g>
+   <g id="g662217_text_8">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="441.999895" y="126.469521" transform="rotate(-0 441.999895 126.469521)">1,04</text>
+   </g>
+   <g id="g662217_text_9">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="400.632102" y="164.890574" transform="rotate(-0 400.632102 164.890574)">0,91</text>
+   </g>
+   <g id="g662217_text_10">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="458.329071" y="203.311626" transform="rotate(-0 458.329071 203.311626)">1,10</text>
+   </g>
+   <g id="g662217_text_11">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="494.219355" y="49.627416" transform="rotate(-0 494.219355 49.627416)">(0,97 a 1,17)</text>
+   </g>
+   <g id="g662217_text_12">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="470.611283" y="88.048468" transform="rotate(-0 470.611283 88.048468)">(0,91 a 1,09)</text>
+   </g>
+   <g id="g662217_text_13">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="469.999895" y="126.469521" transform="rotate(-0 469.999895 126.469521)">(1,00 a 1,09)</text>
+   </g>
+   <g id="g662217_text_14">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="428.632102" y="164.890574" transform="rotate(-0 428.632102 164.890574)">(0,87 a 0,94)</text>
+   </g>
+   <g id="g662217_text_15">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="486.329071" y="203.311626" transform="rotate(-0 486.329071 203.311626)">(1,06 a 1,14)</text>
+   </g>
+   <g id="g662217_text_16">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="120" y="232.812969" transform="rotate(-0 120 232.812969)">Entre paréntesis, el intervalo de confianza del 95 %</text>
+   </g>
+   <g id="g662217_text_17">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #52514e" x="404.231768" y="18.299474" transform="rotate(-0 404.231768 18.299474)"> 1: falla lo esperado</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="g662217_pe674170e1d">
+   <rect x="120" y="4" width="516" height="219"/>
+  </clipPath>
+ </defs>
+</svg>
+<div class="g-fuente">Fuente: registro diario de los discos de Backblaze, julio de 2023 a junio de 2025</div></div></div></div></section><section id="p7" class="pagina" hidden><h1>Hay un 12 % más grupos de 20 discos con dos fallos en 30 días de lo que daría el azar</h1><div class="cifras"><div class="cifra-clave"><p class="numero">489</p><p class="etiqueta">Tomos con dos fallos o más en 30 días</p><p class="contexto">Al azar, 437 de media</p></div><div class="cifra-clave"><p class="numero">262</p><p class="etiqueta">Fallos que llegaron antes de reconstruir el disco anterior del tomo</p><p class="contexto">De 8.493 fallos con tomo conocido</p></div><div class="cifra-clave"><p class="numero">2</p><p class="etiqueta">Veces que se llegó al límite de la redundancia</p><p class="contexto">Tres discos caídos a la vez con tres de redundancia. Nunca se superó</p></div></div><div class="lado" style="--ancho-otro: 640px"><div class="lado-texto"><h2>Análisis ejecutivo</h2><p>Los datos no dicen si la causa es que los discos de un tomo son del mismo lote. Tampoco se sabe cuánto costaría perder datos.</p><h2>Próximo paso</h2><p>Cuando falle un disco, avisa a los técnicos para que revisen su tomo mientras se reconstruyen los datos.</p></div><div class="lado-otro"><div class="grafico"><div class="g-subtitulo">Tomos con dos fallos o más en 30 días. Máximo que daría el azar: el que no se supera en 19 de cada 20 simulaciones.</div><svg role="img" aria-label="Tomos con dos fallos o más en 30 días. Máximo que daría el azar: el que no se supera en 19 de cada 20 simulaciones." xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="144" viewBox="0 0 640 144" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="g1aac62_figure_1">
+  <g id="g1aac62_patch_1">
+   <path d="M 0 144 
+L 640 144 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="g1aac62_axes_1">
+   <g id="g1aac62_patch_2">
+    <path d="M 157.5 140 
+L 636 140 
+L 636 4 
+L 157.5 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="g1aac62_dato0" class="dato" tabindex="0"><title>Lo que pasó · tomos: 489</title>
+    <path d="M 157.5 42.909091 
+L 556.25 42.909091 
+L 556.25 10.181818 
+L 157.5 10.181818 
+z
+" clip-path="url(#g1aac62_p4ebcaff2d0)" style="fill: #eb6834"/>
+   </g>
+   <g id="g1aac62_dato1" class="dato" tabindex="0"><title>Media al azar · tomos: 437</title>
+    <path d="M 157.5 88.363636 
+L 513.757439 88.363636 
+L 513.757439 55.636364 
+L 157.5 55.636364 
+z
+" clip-path="url(#g1aac62_p4ebcaff2d0)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g1aac62_dato2" class="dato" tabindex="0"><title>Máximo que daría el azar · tomos: 456</title>
+    <path d="M 157.5 133.818182 
+L 529.340491 133.818182 
+L 529.340491 101.090909 
+L 157.5 101.090909 
+z
+" clip-path="url(#g1aac62_p4ebcaff2d0)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g1aac62_matplotlib.axis_1">
+    <g id="g1aac62_ytick_1">
+     <g id="g1aac62_line2d_1"/>
+     <g id="g1aac62_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="31.451939" transform="rotate(-0 154 31.451939)">Lo que pasó</text>
+     </g>
+    </g>
+    <g id="g1aac62_ytick_2">
+     <g id="g1aac62_line2d_2"/>
+     <g id="g1aac62_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="76.812031" transform="rotate(-0 154 76.812031)">Media al azar</text>
+     </g>
+    </g>
+    <g id="g1aac62_ytick_3">
+     <g id="g1aac62_line2d_3"/>
+     <g id="g1aac62_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="154" y="122.36103" transform="rotate(-0 154 122.36103)">Máximo que daría el azar</text>
+     </g>
+    </g>
+   </g>
+   <g id="g1aac62_patch_3">
+    <path d="M 157.5 140 
+L 157.5 4 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="g1aac62_text_4">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="560.2375" y="29.909712" transform="rotate(-0 560.2375 29.909712)">489</text>
+   </g>
+   <g id="g1aac62_text_5">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="517.744939" y="75.364258" transform="rotate(-0 517.744939 75.364258)">437</text>
+   </g>
+   <g id="g1aac62_text_6">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="533.327991" y="120.818803" transform="rotate(-0 533.327991 120.818803)">456</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="g1aac62_p4ebcaff2d0">
+   <rect x="157.5" y="4" width="478.5" height="136"/>
+  </clipPath>
+ </defs>
+</svg>
+<div class="g-fuente">Fuente: registro diario de los discos de Backblaze, julio de 2023 a junio de 2025</div></div></div></div></section><section id="p8" class="pagina" hidden><h1>La lista de riesgo encuentra un 52 % más de fallos que la regla de los cinco avisos SMART</h1><table><thead><tr><th class="num">Discos señalados al mes</th><th class="num">Fallos al mes en la lista de riesgo</th><th class="num">Fallos al mes con la regla de los cinco avisos SMART</th></tr></thead><tbody><tr><td class="num">20</td><td class="num">7,36</td><td class="num">3,91</td></tr><tr><td class="num">100</td><td class="num">22,64</td><td class="num">14,91</td></tr><tr><td class="num">500</td><td class="num">67,36</td><td class="num">36,64</td></tr><tr><td class="num">1.000</td><td class="num">105,18</td><td class="num">43,36</td></tr></tbody></table><div class="fuente">Fuente: media de los 11 meses de la prueba final, estado de los discos de Backblaze el primer día de cada mes, julio de 2025 a mayo de 2026</div><h2>Análisis ejecutivo</h2><p>En la prueba final, con un año que no se usó para construirla, la lista encontró más fallos que la regla todos los meses: 7,73 más al mes, con un intervalo de confianza de 4,82 a 11,45.</p><p>Unos tres de cada cuatro discos de la lista no fallan en 30 días.</p><h2>Próximo paso</h2><p>Revisa cada mes los discos de la lista de riesgo. Decide cuántos según las horas que puedan dedicar los técnicos.</p></section><section id="p9" class="pagina" hidden><h1>Seis límites pueden cambiar estas decisiones</h1><table class="texto"><thead><tr><th>Decisión a la que afecta</th><th>Límite</th></tr></thead><tbody><tr><td>Qué modelo comprar</td><td>Desde 2023 el precio es estimado, en 5 de los 10 modelos más baratos. Con precios un 20 % más bajos no cambia ninguno; con un 20 % más altos cambian 2. El precio se reparte en 6 años de vida supuesta</td></tr><tr><td>Qué modelo comprar</td><td>No consta si Backblaze reclama la garantía. Si la reclamara, el ST14000NM0138 bajaría de 3,58 $ a 2,79 $ por TB y año y sería el más barato de los 14 TB de 2020</td></tr><tr><td>Usar la lista de riesgo</td><td>En el último año, el 32 % de los fallos no avisaba el primer día del mes. Con 100 discos bajó de 32,2 a 22,6 fallos al mes</td></tr><tr><td>Revisar sac2</td><td>Solo hay dos años con el centro de cada disco. Los datos no dicen la causa</td></tr><tr><td>Vigilar por edad</td><td>Quedan pocos discos de 8 años o más para saber si su tasa baja</td></tr><tr><td>Comprar repuestos</td><td>Repetir el trimestre anterior tiene un error medio del 25 %</td></tr></tbody></table><div class="fuente">Fuente: reglas de negocio del caso e informes de cada paso</div><h2>Próximo paso</h2><p>Facilita los precios de compra desde 2023, si Backblaze reclama la garantía y las horas que pueden dedicar los técnicos.</p></section><section id="p10" class="pagina" hidden><h1>Cinco decisiones para la dirección de operaciones</h1><p>Se proponen a la dirección de operaciones estas cinco decisiones, por este orden.</p><table class="texto"><thead><tr><th>Decisión</th><th>Quién</th><th>Plazo</th><th>Por qué</th></tr></thead><tbody><tr><td>Comprar en cada capacidad el modelo de menor coste por terabyte y año, con su precio confirmado desde 2023</td><td>Departamento de compras</td><td>En la siguiente compra</td><td>En los siete grupos de compra comparables, el más barato por terabyte es el que menos falla (pág. 3)</td></tr><tr><td>Revisar cada mes los discos de la lista de riesgo, con el tamaño que puedan atender los técnicos</td><td>Dirección de operaciones, con los técnicos de los centros</td><td>Cada mes</td><td>En la prueba final la lista encontró 22,6 fallos al mes entre 100 discos, frente a 14,9 con la regla de los cinco avisos SMART (pág. 8)</td></tr><tr><td>Vigilar más los discos desde los 2 años cumplidos y revisar el tomo de cada disco que falle</td><td>Técnicos de los centros</td><td>Pendiente de fijar por la dirección</td><td>La tasa sube cada año hasta los 5 (pág. 5). Los fallos de un tomo llegan algo más juntos (pág. 7)</td></tr><tr><td>Revisar con el equipo del centro de datos sac2 en qué se diferencia su operación</td><td>Dirección de operaciones</td><td>Pendiente de fijar por la dirección</td><td>sac2 falla un 10 % más de lo esperado (pág. 6)</td></tr><tr><td>Comprar los repuestos con los fallos del trimestre anterior, con un margen</td><td>Departamento de compras</td><td>Cada trimestre</td><td>Su error medio es del 25,0 %, frente al 26,7 % de la previsión por modelo y edad (pág. 4)</td></tr></tbody></table><div class="fuente">Fuente: páginas de este informe</div></section><section id="p11" class="pagina" hidden><h1>Definiciones</h1><table class="texto"><thead><tr><th>Término</th><th>Definición</th></tr></thead><tbody><tr><td>Backblaze</td><td>Proveedor estadounidense de almacenamiento en la nube. Aloja la información de sus clientes en discos duros propios, repartidos en seis centros de datos.</td></tr><tr><td>Fallo de un disco</td><td>El disco deja de funcionar o Backblaze lo retira antes por signos de degradación.</td></tr><tr><td>Aviso SMART</td><td>SMART es el sistema con el que cada disco anota sus propios errores en contadores internos. Un ejemplo son los sectores que ya no se pueden leer. El disco avisa cuando alguno de sus cinco contadores de avería pasa de cero.</td></tr><tr><td>Tomo</td><td>Conjunto de 20 discos que almacenan de forma repartida los mismos ficheros. Cada fichero se divide en 20 fragmentos, uno por disco. Entre 3 y 5 de ellos son de redundancia.</td></tr><tr><td>Pérdida de datos</td><td>Ocurre cuando fallan a la vez más discos de un tomo de los que cubre su redundancia. Sus ficheros ya no se pueden reconstruir.</td></tr><tr><td>Redundancia</td><td>Fragmentos adicionales que almacena un tomo para reconstruir la información de los discos que fallan. Se da por hecho que son 3 discos hasta 8 TB, 4 entre 10 y 14 TB y 5 desde 16 TB.</td></tr></tbody></table><div class="fuente">Fuente: documentación técnica de Backblaze y reglas del caso</div></section><section id="p12" class="pagina" hidden><h1>Cómo se calculan las cifras</h1><table class="texto"><thead><tr><th>Término</th><th>Definición</th></tr></thead><tbody><tr><td>Modelo de riesgo</td><td>Ordena cada mes los discos por su riesgo de fallar en 30 días. Su puntuación sirve para ordenar; no es una probabilidad exacta.</td></tr><tr><td>Lista de riesgo</td><td>Los discos con más riesgo según el modelo. Un técnico decide qué hacer con cada uno.</td></tr><tr><td>Intervalo de confianza</td><td>Margen que, al repetir la medida muchas veces, contendría la cifra verdadera 95 de cada 100.</td></tr></tbody></table><div class="fuente">Fuente: reglas de negocio del caso</div><p>Tasa anual de fallo: de cada 100 discos que funcionan un año entero, cuántos fallan. Se calcula con los fallos entre los días de disco, por 365 y por 100. Días de disco: la suma de los días que estuvo funcionando cada disco.</p><p>Coste por terabyte y año: suma dos partes. La primera es el precio del disco, repartido entre su capacidad y 6 años de vida supuesta. La segunda, la tasa anual de fallo por el coste de cada cambio: disco nuevo y 37 $ de mano de obra.</p><p>La regla de los cinco avisos SMART cuenta cuántos de los contadores 5, 187, 188, 197 y 198 pasan de cero. Ordena los discos por esa cuenta y, si empatan, por la suma de los contadores sin el 188. Es la referencia con la que se compara la lista de riesgo; los datos no dicen si Backblaze la usa.</p></section><section id="p13" class="pagina" hidden><h1>Método</h1><p>Coste: los modelos con 50.000 días de disco al año como mínimo y 20 fallos o más.</p><p>Repuestos: la tasa de fallo de cada modelo y edad por sus discos el primer día del trimestre. Se compara con repetir los fallos del trimestre anterior.</p><p>Edad: tasa por año de edad cumplido, con intervalos más anchos para recoger lo que cambia entre trimestres.</p><p>Centros: fallos observados frente a los esperados con la tasa de cada modelo, edad y trimestre.</p><p>Tomos: los fallos reales frente a 200 simulaciones que los reparten al azar dentro de cada centro y trimestre.</p><p>Lista de riesgo: tres tipos de modelo comparados en cinco tramos trimestrales, de abril de 2023 a junio de 2024. Ganó uno de árboles de decisión combinados (HistGradientBoosting), que se midió una sola vez con los doce meses siguientes. El intervalo de la página 8 sale de 1.000 repeticiones al azar.</p></section><section id="p14" class="pagina" hidden><h1>Fuentes y datos personales</h1><p>Datos personales. Los datos son de discos. El número de serie identifica a cada disco y ninguna columna habla de una persona. Backblaze los publica en abierto, así que no hay datos personales.</p><table class="texto"><thead><tr><th>Cifra</th><th>Fichero de informes</th><th>Fecha de los datos</th></tr></thead><tbody><tr><td>Coste por terabyte y repuestos</td><td>indicadores__coste_prevision.json</td><td>Enero de 2020 a junio de 2025</td></tr><tr><td>Discos y edad</td><td>indicadores__discos_modelos_edad.json</td><td>Enero de 2020 a junio de 2025</td></tr><tr><td>Centros y tomos</td><td>indicadores__centros_avisos_tomos.json</td><td>Julio de 2023 a junio de 2025</td></tr><tr><td>Lista de riesgo, prueba anterior</td><td>modelado.json</td><td>Julio de 2024 a junio de 2025</td></tr><tr><td>Lista de riesgo, prueba final</td><td>prueba_final.json</td><td>Julio de 2025 a junio de 2026</td></tr><tr><td>Repuestos, prueba final</td><td>prueba_final_prevision.json</td><td>Julio de 2025 a junio de 2026</td></tr><tr><td>Fallos sin aviso, punto ciego de la lista</td><td>punto_ciego.json</td><td>Julio de 2024 a mayo de 2026</td></tr><tr><td>Coste de los fallos de 2024, con y sin garantía</td><td>consultas-informe-ejecutivo.json</td><td>Año 2024</td></tr><tr><td>Cifras de los gráficos</td><td>informe_final_graficos.csv</td><td>Las de cada gráfico</td></tr></tbody></table><div class="fuente">Fuente: carpeta de informes del caso</div></section><section id="p15" class="pagina" hidden><h1>La prueba final</h1><p>La lista de riesgo y los repuestos se midieron con el último año, de julio de 2025 a junio de 2026, que se guardó hasta el final. En la lista no entra junio de 2026, porque sus 30 días siguientes pasan del final de los datos. Las cifras de la página 8 son las del modelo examinado.</p><p>El modelo que se usa hoy se reentrenó con un año más de datos. También se midió en ese año antes de aprobarlo, con 23,73 fallos al mes en la lista de 100, así que ese año ya no es una prueba independiente para él.</p></section>
+</main>
+<div class="etiqueta-dato" role="tooltip" hidden></div>
+<script>
+function mostrar(id) {
+  var boton = document.querySelector('nav button[data-pagina="' + id + '"]');
+  if (!boton) { return; }
+  document.querySelectorAll('section.pagina').forEach(function (pagina) { pagina.hidden = pagina.id !== id; });
+  document.querySelectorAll('nav button').forEach(function (otro) { otro.removeAttribute('aria-current'); });
+  boton.setAttribute('aria-current', 'page');
+  boton.scrollIntoView({block: 'nearest'});
+}
+document.querySelectorAll('nav button').forEach(function (boton) {
+  boton.addEventListener('click', function () {
+    mostrar(boton.dataset.pagina);
+    history.replaceState(null, '', '#' + boton.dataset.pagina);
+    window.scrollTo(0, 0);
+  });
+});
+if (location.hash) { mostrar(location.hash.slice(1)); }
+
+// G20: cada valor de un gráfico enseña su etiqueta con el ratón y con el tabulador. El texto pasa del <title> a
+// aria-label, para que el navegador no saque además su propia etiqueta y el lector de pantalla lo siga leyendo.
+var caja = document.querySelector('.etiqueta-dato');
+document.querySelectorAll('svg g.dato').forEach(function (dato) {
+  var titulo = dato.querySelector('title');
+  if (!titulo) { return; }
+  dato.dataset.etiqueta = titulo.textContent;
+  dato.setAttribute('aria-label', titulo.textContent);
+  titulo.remove();
+});
+function enseñar(dato, x, y) {
+  caja.textContent = dato.dataset.etiqueta;
+  caja.hidden = false;
+  var ancho = caja.offsetWidth, alto = caja.offsetHeight;
+  // Al lado del ratón; si no cabe a la derecha o abajo, al otro lado
+  var izquierda = x + 12 + ancho > window.innerWidth ? x - 12 - ancho : x + 12;
+  var arriba = y + 12 + alto > window.innerHeight ? y - 12 - alto : y + 12;
+  caja.style.left = Math.max(0, izquierda) + 'px';
+  caja.style.top = Math.max(0, arriba) + 'px';
+}
+function esconder() { caja.hidden = true; }
+document.addEventListener('mouseover', function (e) {
+  var dato = e.target.closest ? e.target.closest('g.dato') : null;
+  if (dato && dato.dataset.etiqueta) { enseñar(dato, e.clientX, e.clientY); } else { esconder(); }
+});
+document.addEventListener('mousemove', function (e) {
+  var dato = e.target.closest ? e.target.closest('g.dato') : null;
+  if (dato && dato.dataset.etiqueta) { enseñar(dato, e.clientX, e.clientY); }
+});
+document.addEventListener('focusin', function (e) {
+  var dato = e.target.closest ? e.target.closest('g.dato') : null;
+  if (!dato || !dato.dataset.etiqueta) { esconder(); return; }
+  var r = dato.getBoundingClientRect();
+  enseñar(dato, r.right, r.top);
+});
+document.addEventListener('focusout', esconder);
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { esconder(); } });
+</script>
+</body>
+</html>

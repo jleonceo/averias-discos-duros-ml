@@ -1,0 +1,35 @@
+name: ci
+
+# Pasa las pruebas que no necesitan los datos de Backblaze: leen los informes y el modelo que trae el repositorio, o
+# tablas pequeñas escritas en la propia prueba. Las demás pruebas leen el extracto de los datos, que no se publica.
+# La de las pestañas del cuadro de mando abre el cuadro en Edge y se pasa en local.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          environment-file: environment.yml
+          activate-environment: 68_averias_discos_duros
+      - name: Pruebas sin datos
+        env:
+          PYTHONUTF8: "1"
+        run: |
+          for t in tests/probar_05_transformacion_datos.py tests/probar_06_analisis_exploratorio.py \
+                   tests/probar_16_variables_nuevas.py tests/probar_17_informe_final.py \
+                   tests/probar_18_contrato_produccion.py tests/probar_19_prueba_final.py \
+                   tests/probar_20_prueba_final_prevision.py tests/probar_21_cuadro_mando.py \
+                   tests/probar_22_punto_ciego.py tests/probar_ejecutar.py tests/probar_pipeline_riesgo.py \
+                   tests/probar_reentrenar.py; do
+            echo "== $t"; python -W error "$t"
+          done

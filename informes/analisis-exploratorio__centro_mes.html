@@ -1,0 +1,2205 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Exploratorio · centro_mes</title><style>/* Hoja de estilos de los informes de los casos de uso. Valores de reglas_de_salida.md §7 (E1 a E8).
+   informe.py la mete dentro del HTML: el informe no carga nada de fuera.
+   Plantilla copiada el 04/10/2026 de fuentes con licencia abierta: la ficha de gráficos de la ONS (título, subtítulo,
+   dibujo y fuente en su propia línea debajo), la escala de espacios de GOV.UK (30 px entre bloques), los huecos del CSS
+   de Observable Framework (4 px bajo el título, 16 antes del dibujo) y las tablas del Gobierno británico (sin rayas
+   entre filas). */
+
+/* E1: fondo siempre blanco. E3: texto #0b0b0b. */
+html, body { margin: 0; background: #ffffff; color: #0b0b0b; }
+
+/* E4: letra. E5: texto a 15 px con interlineado 1,5. TB2: cifras de ancho fijo. */
+body { font-family: "Segoe UI", system-ui, sans-serif; font-size: 15px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+
+/* S1: panel fijo a la izquierda con la lista de páginas; compacto para que quepa entero en 650 px. */
+nav { position: fixed; top: 0; left: 0; bottom: 0; width: 240px; box-sizing: border-box; padding: 24px 16px; border-right: 1px solid #e1e0d9; overflow-y: auto; background: #ffffff; }
+.informe-titulo { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
+.informe-fecha { font-size: 13px; color: #52514e; margin: 0 0 12px; }
+nav button { display: block; width: 100%; text-align: left; font: 15px "Segoe UI", system-ui, sans-serif; line-height: 1.3; color: #0b0b0b; background: #ffffff; border: 0; padding: 3px 0; cursor: pointer; }
+nav button[aria-current="page"] { font-weight: 700; text-decoration: underline; }
+/* S2: las páginas de cada pregunta, los límites y la decisión van juntas bajo su rótulo, sin número delante. */
+nav .grupo { font-size: 13px; font-weight: 700; color: #52514e; margin: 8px 0 0; }
+nav button.sub { padding-left: 12px; }
+
+/* Zona de las páginas. */
+main { margin-left: 240px; padding: 24px 40px 0; max-width: 1100px; }
+/* Un solo ancho para todo lo de la página, el de dos gráficos en fila. */
+.pagina { max-width: 1024px; }
+/* El documento acaba donde acaba el contenido: sin margen debajo del último bloque, la página no se desplaza. */
+.pagina > :last-child { margin-bottom: 0; }
+
+/* E5: título de página 28 px y sección 20 px, en negrita. */
+h1 { font-size: 28px; font-weight: 700; line-height: 1.25; margin: 0 0 12px; }
+h2 { font-size: 20px; font-weight: 700; line-height: 1.3; margin: 20px 0 8px; }
+
+/* T2: párrafos cortos, unos 75 caracteres por línea. */
+.pagina p { max-width: 75ch; margin: 0 0 12px; }
+
+/* S2: la pregunta que contesta la página, debajo del título, en negro y seminegrita para que se vea. */
+.pagina p.pregunta { color: #0b0b0b; font-weight: 600; }
+
+/* C1 y C2: cifras clave en fila, sin icono, borde ni fondo. E5: número a 28 px en negrita, etiqueta a 13.
+   Cuatro casillas iguales: con dos o tres cifras quedan juntas a la izquierda. */
+.cifras { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; margin: 15px 0 30px; }
+.cifra-clave p { margin: 0; }
+.cifra-clave .numero { font-size: 28px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+.cifra-clave .etiqueta { font-size: 13px; }
+.cifra-clave .contexto { font-size: 13px; color: #52514e; }
+
+/* G1 y G2, como la ficha de gráficos de la ONS: título que dice la conclusión a 20 px, subtítulo con la medida a 16,
+   el dibujo y la fuente en su propia línea debajo, a 13. 30 px entre bloques (GOV.UK). G7: el SVG va dentro. */
+.grafico { margin: 30px 0; }
+.g-titulo { font-size: 20px; font-weight: 700; line-height: 1.3; margin: 0 0 4px; }
+.g-subtitulo { font-size: 16px; color: #52514e; line-height: 1.5; margin: 0 0 16px; }
+.g-fuente { font-size: 13px; color: #52514e; line-height: 1.5; margin: 8px 0 0; }
+.grafico svg { display: block; max-width: 100%; height: auto; }
+
+/* S3: dos gráficos lado a lado, de 500 px cada uno; con el mismo subtítulo y la misma fuente, van una vez. */
+.fila-bloque { margin: 30px 0; }
+.fila { display: grid; grid-template-columns: repeat(2, minmax(0, 500px)); gap: 24px; }
+.fila .grafico { margin: 0; }
+
+/* Texto con un solo gráfico o una sola tabla: el texto a la izquierda y lo otro a la derecha, con el ancho que le
+   pone informe.py en --ancho-otro. */
+.lado { display: grid; grid-template-columns: minmax(0, 1fr) var(--ancho-otro); gap: 32px; align-items: start; margin: 30px 0; }
+.lado .grafico { margin: 0; }
+.lado table { margin-top: 0; }
+.lado .fuente { margin-bottom: 0; }
+/* Un apartado que abre la columna de texto empieza a la altura del gráfico o de la tabla de al lado. */
+.lado-texto > h2:first-child { margin-top: 0; }
+
+/* TB2 y TB4, como las tablas del Gobierno británico: números y sus cabeceras a la derecha, una línea bajo la cabecera
+   y sobre el total, sin rayas entre filas, total en negrita. E5: tabla a 13 px. */
+table { border-collapse: collapse; font-size: 13px; margin: 30px 0 0; }
+th { text-align: left; font-weight: 700; padding: 6px 16px 6px 0; border-bottom: 1px solid #0b0b0b; vertical-align: bottom; }
+td { text-align: left; padding: 6px 16px 6px 0; vertical-align: top; }
+th.num, td.num { text-align: right; }
+tr.total td { font-weight: 700; border-top: 1px solid #0b0b0b; }
+/* Una tabla sin cifras es texto para leer: a 15 px y a todo el ancho. */
+table.texto { font-size: 15px; width: 100%; }
+table.texto td:first-child { font-weight: 600; }
+
+/* F1: la fuente debajo de la tabla, a 13 px. */
+.fuente { font-size: 13px; color: #52514e; margin: 8px 0 30px; }
+
+/* G20: la etiqueta de cada valor al pasar el ratón o con el tabulador. Fondo blanco, borde fino, sin sombra (E6, E8).
+   Los valores reciben el ratón aunque su marca no se vea (los puntos de una línea). */
+svg g.dato { pointer-events: all; }
+svg g.dato:focus { outline: 2px solid #0b0b0b; }
+.etiqueta-dato { position: fixed; z-index: 10; max-width: 320px; padding: 4px 8px; font-size: 13px; line-height: 1.4; color: #0b0b0b; background: #ffffff; border: 1px solid #0b0b0b; pointer-events: none; }
+.etiqueta-dato[hidden] { display: none; }
+
+/* En una ventana estrecha, lo lado a lado y los gráficos en fila van uno debajo de otro, y las cifras, de dos en dos. */
+@media (max-width: 1180px) {
+  .lado { grid-template-columns: 1fr; }
+  .fila { grid-template-columns: 1fr; }
+  .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Al imprimir, sin panel, con todas las páginas y cada una en su hoja. */
+@media print {
+  nav { display: none; }
+  .etiqueta-dato { display: none; }
+  main { margin-left: 0; }
+  section[hidden] { display: block; }
+  section + section { break-before: page; }
+}
+
+main { margin-left: 0; }</style></head><body><main><div class="pagina"><h1>Análisis exploratorio de datos · centro_mes</h1>
+<h2>Resumen ejecutivo</h2><ul>
+<li>Tasa anual de fallo por centro: 2,07 % en sac2 (2.546 fallos en 44.890.413 días de disco) frente a 0,34 % en yyz1 (6 fallos en 651.306). Al separar por fabricante, capacidad_tb cambia: tasa anual de fallo por centro: la diferencia entre sac2 y yyz1 es de 1,73 puntos en el total y de 0,64 dentro de fabricante = Toshiba: cambia de tamaño.; tasa anual de fallo por centro: la diferencia entre sac2 y yyz1 es de 1,73 puntos en el total y de 0,37 dentro de fabricante = WDC: cambia de tamaño.; tasa anual de fallo por centro: la diferencia entre sac2 y yyz1 es de 1,73 puntos en el total y de −0,01 dentro de capacidad_tb = 20: se invierte. (y 1 más)</li>
+<li>Siguiente paso: paso 5: los bloques del plan de la analítica con esta tabla.</li></ul>
+<h2>Contexto</h2>
+<p>Una fila es un centro de datos en un mes, solo discos de datos, con clave datacenter, mes. La tabla tiene 186 filas y 6 columnas. Periodo: de 2020-01-01 a 2025-06-01. Fecha de los datos: 2025-06-30. Reglas: reglas-transformacion.md §9.</p>
+<p>Reproducibilidad: ejecutado el 2026-11-17T21:05:33 con Python 3.13.15, pandas 3.0.6, numpy 2.5.3, pyarrow 24.0.0 y matplotlib 3.11.2. Fichero de 6.310 bytes, huella d6e8b53032fe7ff2be864922483b3a07a33fbf0fadbd20eca3b3c516a3b2fc57.</p>
+<p>Teoría del manual aplicada:</p><ul><li>34.1 y 34.2, qué es y el esquema: cada columna se tipifica por su papel y cada análisis es una función que se aplica a todo el bloque.</li><li>3.1, descriptiva: el informe describe estos datos y no extrapola; no se dan intervalos ni contrastes.</li><li>34.3, 34.4, 3.5 y 3.6: frecuencias y cardinalidad en las categóricas; describe con la mediana al lado y la tabla leída con sus cuatro señales en las numéricas.</li><li>34.5, 34.6 y 10.6: barras para categóricas y discretas, histograma para continuas, sin cajas; la escala logarítmica se dice en el eje.</li><li>34.7 y 13.14: el cruce con el objetivo solo con la construcción; describe y no elige variables.</li><li>5.4, 5.5 y 5.6: cada tasa con su base, la tasa de un grupo como suma entre suma y cada comparación repetida por fabricante y capacidad, por si se invierte (paradoja de Simpson).</li><li>34.8, 34.9 y 34.10: hallazgo, alerta, anomalía e hipótesis separados; Pareto, ABC y series de negocio.</li></ul>
+<h2>Visión general</h2>
+<table><thead><tr><th>medida</th><th class="num">valor</th></tr></thead><tbody><tr><td>filas</td><td class="num">186</td></tr><tr><td>columnas</td><td class="num">6</td></tr><tr><td>meses</td><td class="num">66</td></tr><tr><td>filas_con_sitio</td><td class="num">144</td></tr><tr><td>dias_disco</td><td class="num">446.108.683</td></tr><tr><td>fallos</td><td class="num">16.996</td></tr></tbody></table>
+<table><thead><tr><th>tipo de columna</th><th class="num">columnas</th></tr></thead><tbody><tr><td>categorica</td><td class="num">2</td></tr><tr><td>continua</td><td class="num">2</td></tr><tr><td>fecha</td><td class="num">1</td></tr><tr><td>booleana</td><td class="num">1</td></tr></tbody></table>
+<h2>Variables numéricas</h2>
+<table><thead><tr><th>columna</th><th>tipo</th><th class="num">conteo</th><th class="num">vacíos</th><th class="num">media</th><th class="num">mediana</th><th class="num">desviación</th><th class="num">mínimo</th><th class="num">p25</th><th class="num">p75</th><th class="num">máximo</th><th>señales</th></tr></thead><tbody><tr><td>dias_disco</td><td>continua</td><td class="num">186</td><td class="num">0</td><td class="num">2.398.433,78</td><td class="num">2.082.138,00</td><td class="num">2.050.101,00</td><td class="num">23.816,00</td><td class="num">633.230,00</td><td class="num">2.961.960,75</td><td class="num">7.408.966,00</td><td>ninguna</td></tr><tr><td>fallos</td><td>continua</td><td class="num">186</td><td class="num">0</td><td class="num">91,38</td><td class="num">86,00</td><td class="num">87,65</td><td class="num">0,00</td><td class="num">21,00</td><td class="num">122,00</td><td class="num">565,00</td><td>ninguna</td></tr></tbody></table>
+<p class="fuente">Base: 186 filas (fila).</p>
+<div class="fila-bloque"><div class="fila"><div class="grafico"><p class="g-titulo">dias_disco: mediana 2.082.138,00 y media 2.398.433,78</p><p class="g-subtitulo">Cuántas filas caen en cada tramo</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="320" viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="ge4e80d_figure_1">
+  <g id="ge4e80d_patch_1">
+   <path d="M 0 320 
+L 640 320 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="ge4e80d_axes_1">
+   <g id="ge4e80d_patch_2">
+    <path d="M 23 283.563965 
+L 608.5 283.563965 
+L 608.5 4 
+L 23 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="ge4e80d_dato0" class="dato" tabindex="0"><title>dias_disco de 23.816 a 639.245: 48</title>
+    <path d="M 23 283.563965 
+L 71.791667 283.563965 
+L 71.791667 40.464865 
+L 23 40.464865 
+z
+" clip-path="url(#ge4e80d_pba0e060607)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="ge4e80d_dato1" class="dato" tabindex="0"><title>dias_disco de 639.245 a 1.254.674: 22</title>
+    <path d="M 71.791667 283.563965 
+L 120.583333 283.563965 
+L 120.583333 172.143544 
+L 71.791667 172.143544 
+z
+" clip-path="url(#ge4e80d_pba0e060607)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="ge4e80d_dato2" class="dato" tabindex="0"><title>dias_disco de 1.254.674 a 1.870.104: 19</title>
+    <path d="M 120.583333 283.563965 
+L 169.375 283.563965 
+L 169.375 187.337238 
+L 120.583333 187.337238 
+z
+" clip-path="url(#ge4e80d_pba0e060607)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="ge4e80d_dato3" class="dato" tabindex="0"><title>dias_disco de 1.870.104 a 2.485.533: 25</title>
+    <path d="M 169.375 283.563965 
+L 218.166667 283.563965 
+L 218.166667 156.94985 
+L 169.375 156.94985 
+z
+" clip-path="url(#ge4e80d_pba0e060607)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="ge4e80d_dato4" class="dato" tabindex="0"><title>dias_disco de 2.485.533 a 3.100.962: 30</title>
+    <path d="M 218.166667 283.563965 
+L 266.958333 283.563965 
+L 266.958333 131.627027 
+L 218.166667 131.627027 
+z
+" clip-path="url(#ge4e80d_pba0e060607)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="ge4e80d_dato5" class="dato" tabindex="0"><title>dias_disco de 3.100.962 a 3.716.391: 1</title>
+    <path d="M 266.958333 283.563965 
+L 315.75 283.563965 
+L 315.75 278.4994 
+L 266.958333 278.4994 
+z
+" clip-path="url(#ge4e80d_pba0e060607)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="ge4e80d_dato6" class="dato" tabindex="0"><title>dias_disco de 3.716.391 a 4.331.820: 5</title>
+    <path d="M 315.75 283.563965 
+L 364.541667 283.563965 
+L 364.541667 258.241142 
+L 315.75 258.241142 
+z
+" clip-path="url(#ge4e80d_pba0e060607)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="ge4e80d_dato7" class="dato" tabindex="0"><title>dias_disco de 4.331.820 a 4.947.249: 6</title>
+    <path d="M 364.541667 283.563965 
+L 413.333333 283.563965 
+L 413.333333 253.176577 
+L 364.541667 253.176577 
+z
+" clip-path="url(#ge4e80d_pba0e060607)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="ge4e80d_dato8" class="dato" tabindex="0"><title>dias_disco de 4.947.249 a 5.562.679: 6</title>
+    <path d="M 413.333333 283.563965 
+L 462.125 283.563965 
+L 462.125 253.176577 
+L 413.333333 253.176577 
+z
+" clip-path="url(#ge4e80d_pba0e060607)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="ge4e80d_dato9" class="dato" tabindex="0"><title>dias_disco de 5.562.679 a 6.178.108: 6</title>
+    <path d="M 462.125 283.563965 
+L 510.916667 283.563965 
+L 510.916667 253.176577 
+L 462.125 253.176577 
+z
+" clip-path="url(#ge4e80d_pba0e060607)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="ge4e80d_dato10" class="dato" tabindex="0"><title>dias_disco de 6.178.108 a 6.793.537: 10</title>
+    <path d="M 510.916667 283.563965 
+L 559.708333 283.563965 
+L 559.708333 232.918319 
+L 510.916667 232.918319 
+z
+" clip-path="url(#ge4e80d_pba0e060607)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="ge4e80d_dato11" class="dato" tabindex="0"><title>dias_disco de 6.793.537 a 7.408.966: 8</title>
+    <path d="M 559.708333 283.563965 
+L 608.5 283.563965 
+L 608.5 243.047448 
+L 559.708333 243.047448 
+z
+" clip-path="url(#ge4e80d_pba0e060607)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="ge4e80d_matplotlib.axis_1">
+    <g id="ge4e80d_xtick_1">
+     <g id="ge4e80d_line2d_1"/>
+     <g id="ge4e80d_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="23" y="296.52832" transform="rotate(-0 23 296.52832)">23.816</text>
+     </g>
+    </g>
+    <g id="ge4e80d_xtick_2">
+     <g id="ge4e80d_line2d_2"/>
+     <g id="ge4e80d_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="120.583333" y="296.52832" transform="rotate(-0 120.583333 296.52832)">1.254.674</text>
+     </g>
+    </g>
+    <g id="ge4e80d_xtick_3">
+     <g id="ge4e80d_line2d_3"/>
+     <g id="ge4e80d_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="218.166667" y="296.52832" transform="rotate(-0 218.166667 296.52832)">2.485.533</text>
+     </g>
+    </g>
+    <g id="ge4e80d_xtick_4">
+     <g id="ge4e80d_line2d_4"/>
+     <g id="ge4e80d_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="315.75" y="296.52832" transform="rotate(-0 315.75 296.52832)">3.716.391</text>
+     </g>
+    </g>
+    <g id="ge4e80d_xtick_5">
+     <g id="ge4e80d_line2d_5"/>
+     <g id="ge4e80d_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="413.333333" y="296.52832" transform="rotate(-0 413.333333 296.52832)">4.947.249</text>
+     </g>
+    </g>
+    <g id="ge4e80d_xtick_6">
+     <g id="ge4e80d_line2d_6"/>
+     <g id="ge4e80d_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="510.916667" y="296.52832" transform="rotate(-0 510.916667 296.52832)">6.178.108</text>
+     </g>
+    </g>
+    <g id="ge4e80d_xtick_7">
+     <g id="ge4e80d_line2d_7"/>
+     <g id="ge4e80d_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="608.5" y="296.52832" transform="rotate(-0 608.5 296.52832)">7.408.966</text>
+     </g>
+    </g>
+    <g id="ge4e80d_text_8">
+     <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="315.75" y="312.888223" transform="rotate(-0 315.75 312.888223)">dias_disco</text>
+    </g>
+   </g>
+   <g id="ge4e80d_patch_3">
+    <path d="M 23 283.563965 
+L 608.5 283.563965 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="ge4e80d_text_9">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="47.395833" y="32.867043" transform="rotate(-0 47.395833 32.867043)">48</text>
+   </g>
+   <g id="ge4e80d_text_10">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="96.1875" y="164.545722" transform="rotate(-0 96.1875 164.545722)">22</text>
+   </g>
+   <g id="ge4e80d_text_11">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="144.979167" y="179.739416" transform="rotate(-0 144.979167 179.739416)">19</text>
+   </g>
+   <g id="ge4e80d_text_12">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="193.770833" y="149.352028" transform="rotate(-0 193.770833 149.352028)">25</text>
+   </g>
+   <g id="ge4e80d_text_13">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="242.5625" y="124.029206" transform="rotate(-0 242.5625 124.029206)">30</text>
+   </g>
+   <g id="ge4e80d_text_14">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="291.354167" y="270.901578" transform="rotate(-0 291.354167 270.901578)">1</text>
+   </g>
+   <g id="ge4e80d_text_15">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="340.145833" y="250.64332" transform="rotate(-0 340.145833 250.64332)">5</text>
+   </g>
+   <g id="ge4e80d_text_16">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="388.9375" y="245.578756" transform="rotate(-0 388.9375 245.578756)">6</text>
+   </g>
+   <g id="ge4e80d_text_17">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="437.729167" y="245.578756" transform="rotate(-0 437.729167 245.578756)">6</text>
+   </g>
+   <g id="ge4e80d_text_18">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="486.520833" y="245.578756" transform="rotate(-0 486.520833 245.578756)">6</text>
+   </g>
+   <g id="ge4e80d_text_19">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="535.3125" y="225.320497" transform="rotate(-0 535.3125 225.320497)">10</text>
+   </g>
+   <g id="ge4e80d_text_20">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="584.104167" y="235.449626" transform="rotate(-0 584.104167 235.449626)">8</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="ge4e80d_pba0e060607">
+   <rect x="23" y="4" width="585.5" height="279.563965"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 186 valores, uno por fila</p></div><div class="grafico"><p class="g-titulo">fallos: mediana 86,00 y media 91,38</p><p class="g-subtitulo">Cuántas filas caen en cada tramo</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="320" viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="gced2fe_figure_1">
+  <g id="gced2fe_patch_1">
+   <path d="M 0 320 
+L 640 320 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="gced2fe_axes_1">
+   <g id="gced2fe_patch_2">
+    <path d="M 12.5 283.563965 
+L 620.5 283.563965 
+L 620.5 4 
+L 12.5 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="gced2fe_dato0" class="dato" tabindex="0"><title>fallos de 0,0 a 47,1: 72</title>
+    <path d="M 12.5 283.563965 
+L 63.166667 283.563965 
+L 63.166667 40.464865 
+L 12.5 40.464865 
+z
+" clip-path="url(#gced2fe_p04c2722791)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="gced2fe_dato1" class="dato" tabindex="0"><title>fallos de 47,1 a 94,2: 31</title>
+    <path d="M 63.166667 283.563965 
+L 113.833333 283.563965 
+L 113.833333 178.896297 
+L 63.166667 178.896297 
+z
+" clip-path="url(#gced2fe_p04c2722791)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="gced2fe_dato2" class="dato" tabindex="0"><title>fallos de 94,2 a 141,3: 48</title>
+    <path d="M 113.833333 283.563965 
+L 164.5 283.563965 
+L 164.5 121.497898 
+L 113.833333 121.497898 
+z
+" clip-path="url(#gced2fe_p04c2722791)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="gced2fe_dato3" class="dato" tabindex="0"><title>fallos de 141,3 a 188,3: 18</title>
+    <path d="M 164.5 283.563965 
+L 215.166667 283.563965 
+L 215.166667 222.78919 
+L 164.5 222.78919 
+z
+" clip-path="url(#gced2fe_p04c2722791)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="gced2fe_dato4" class="dato" tabindex="0"><title>fallos de 188,3 a 235,4: 3</title>
+    <path d="M 215.166667 283.563965 
+L 265.833333 283.563965 
+L 265.833333 273.434836 
+L 215.166667 273.434836 
+z
+" clip-path="url(#gced2fe_p04c2722791)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="gced2fe_dato5" class="dato" tabindex="0"><title>fallos de 235,4 a 282,5: 6</title>
+    <path d="M 265.833333 283.563965 
+L 316.5 283.563965 
+L 316.5 263.305707 
+L 265.833333 263.305707 
+z
+" clip-path="url(#gced2fe_p04c2722791)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="gced2fe_dato6" class="dato" tabindex="0"><title>fallos de 282,5 a 329,6: 5</title>
+    <path d="M 316.5 283.563965 
+L 367.166667 283.563965 
+L 367.166667 266.682083 
+L 316.5 266.682083 
+z
+" clip-path="url(#gced2fe_p04c2722791)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="gced2fe_dato7" class="dato" tabindex="0"><title>fallos de 329,6 a 376,7: 1</title>
+    <path d="M 367.166667 283.563965 
+L 417.833333 283.563965 
+L 417.833333 280.187588 
+L 367.166667 280.187588 
+z
+" clip-path="url(#gced2fe_p04c2722791)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="gced2fe_dato8" class="dato" tabindex="0"><title>fallos de 376,7 a 423,8: 0</title>
+    <path d="M 417.833333 283.563965 
+L 468.5 283.563965 
+L 468.5 283.563965 
+L 417.833333 283.563965 
+z
+" clip-path="url(#gced2fe_p04c2722791)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="gced2fe_dato9" class="dato" tabindex="0"><title>fallos de 423,8 a 470,8: 1</title>
+    <path d="M 468.5 283.563965 
+L 519.166667 283.563965 
+L 519.166667 280.187588 
+L 468.5 280.187588 
+z
+" clip-path="url(#gced2fe_p04c2722791)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="gced2fe_dato10" class="dato" tabindex="0"><title>fallos de 470,8 a 517,9: 0</title>
+    <path d="M 519.166667 283.563965 
+L 569.833333 283.563965 
+L 569.833333 283.563965 
+L 519.166667 283.563965 
+z
+" clip-path="url(#gced2fe_p04c2722791)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="gced2fe_dato11" class="dato" tabindex="0"><title>fallos de 517,9 a 565,0: 1</title>
+    <path d="M 569.833333 283.563965 
+L 620.5 283.563965 
+L 620.5 280.187588 
+L 569.833333 280.187588 
+z
+" clip-path="url(#gced2fe_p04c2722791)" style="fill: #2a78d6; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="gced2fe_matplotlib.axis_1">
+    <g id="gced2fe_xtick_1">
+     <g id="gced2fe_line2d_1"/>
+     <g id="gced2fe_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="12.5" y="296.52832" transform="rotate(-0 12.5 296.52832)">0,0</text>
+     </g>
+    </g>
+    <g id="gced2fe_xtick_2">
+     <g id="gced2fe_line2d_2"/>
+     <g id="gced2fe_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="63.166667" y="296.52832" transform="rotate(-0 63.166667 296.52832)">47,1</text>
+     </g>
+    </g>
+    <g id="gced2fe_xtick_3">
+     <g id="gced2fe_line2d_3"/>
+     <g id="gced2fe_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="113.833333" y="296.52832" transform="rotate(-0 113.833333 296.52832)">94,2</text>
+     </g>
+    </g>
+    <g id="gced2fe_xtick_4">
+     <g id="gced2fe_line2d_4"/>
+     <g id="gced2fe_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="164.5" y="296.52832" transform="rotate(-0 164.5 296.52832)">141,3</text>
+     </g>
+    </g>
+    <g id="gced2fe_xtick_5">
+     <g id="gced2fe_line2d_5"/>
+     <g id="gced2fe_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="215.166667" y="296.52832" transform="rotate(-0 215.166667 296.52832)">188,3</text>
+     </g>
+    </g>
+    <g id="gced2fe_xtick_6">
+     <g id="gced2fe_line2d_6"/>
+     <g id="gced2fe_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="265.833333" y="296.52832" transform="rotate(-0 265.833333 296.52832)">235,4</text>
+     </g>
+    </g>
+    <g id="gced2fe_xtick_7">
+     <g id="gced2fe_line2d_7"/>
+     <g id="gced2fe_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="316.5" y="296.52832" transform="rotate(-0 316.5 296.52832)">282,5</text>
+     </g>
+    </g>
+    <g id="gced2fe_xtick_8">
+     <g id="gced2fe_line2d_8"/>
+     <g id="gced2fe_text_8">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="367.166667" y="296.52832" transform="rotate(-0 367.166667 296.52832)">329,6</text>
+     </g>
+    </g>
+    <g id="gced2fe_xtick_9">
+     <g id="gced2fe_line2d_9"/>
+     <g id="gced2fe_text_9">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="417.833333" y="296.52832" transform="rotate(-0 417.833333 296.52832)">376,7</text>
+     </g>
+    </g>
+    <g id="gced2fe_xtick_10">
+     <g id="gced2fe_line2d_10"/>
+     <g id="gced2fe_text_10">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="468.5" y="296.52832" transform="rotate(-0 468.5 296.52832)">423,8</text>
+     </g>
+    </g>
+    <g id="gced2fe_xtick_11">
+     <g id="gced2fe_line2d_11"/>
+     <g id="gced2fe_text_11">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="519.166667" y="296.52832" transform="rotate(-0 519.166667 296.52832)">470,8</text>
+     </g>
+    </g>
+    <g id="gced2fe_xtick_12">
+     <g id="gced2fe_line2d_12"/>
+     <g id="gced2fe_text_12">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="569.833333" y="296.52832" transform="rotate(-0 569.833333 296.52832)">517,9</text>
+     </g>
+    </g>
+    <g id="gced2fe_xtick_13">
+     <g id="gced2fe_line2d_13"/>
+     <g id="gced2fe_text_13">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="620.5" y="296.52832" transform="rotate(-0 620.5 296.52832)">565,0</text>
+     </g>
+    </g>
+    <g id="gced2fe_text_14">
+     <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="316.5" y="313.026348" transform="rotate(-0 316.5 313.026348)">fallos</text>
+    </g>
+   </g>
+   <g id="gced2fe_patch_3">
+    <path d="M 12.5 283.563965 
+L 620.5 283.563965 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="gced2fe_text_15">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="37.833333" y="32.867043" transform="rotate(-0 37.833333 32.867043)">72</text>
+   </g>
+   <g id="gced2fe_text_16">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="88.5" y="171.298475" transform="rotate(-0 88.5 171.298475)">31</text>
+   </g>
+   <g id="gced2fe_text_17">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="139.166667" y="113.900076" transform="rotate(-0 139.166667 113.900076)">48</text>
+   </g>
+   <g id="gced2fe_text_18">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="189.833333" y="215.191368" transform="rotate(-0 189.833333 215.191368)">18</text>
+   </g>
+   <g id="gced2fe_text_19">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="240.5" y="265.837014" transform="rotate(-0 240.5 265.837014)">3</text>
+   </g>
+   <g id="gced2fe_text_20">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="291.166667" y="255.707885" transform="rotate(-0 291.166667 255.707885)">6</text>
+   </g>
+   <g id="gced2fe_text_21">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="341.833333" y="259.084261" transform="rotate(-0 341.833333 259.084261)">5</text>
+   </g>
+   <g id="gced2fe_text_22">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="392.5" y="272.589767" transform="rotate(-0 392.5 272.589767)">1</text>
+   </g>
+   <g id="gced2fe_text_23">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="443.166667" y="275.966143" transform="rotate(-0 443.166667 275.966143)">0</text>
+   </g>
+   <g id="gced2fe_text_24">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="493.833333" y="272.589767" transform="rotate(-0 493.833333 272.589767)">1</text>
+   </g>
+   <g id="gced2fe_text_25">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="544.5" y="275.966143" transform="rotate(-0 544.5 275.966143)">0</text>
+   </g>
+   <g id="gced2fe_text_26">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #0b0b0b" x="595.166667" y="272.589767" transform="rotate(-0 595.166667 272.589767)">1</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="gced2fe_p04c2722791">
+   <rect x="12.5" y="4" width="608" height="279.563965"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 186 valores, uno por fila</p></div></div></div>
+<h2>Variables categóricas</h2>
+<table><thead><tr><th>columna</th><th>tipo</th><th class="num">valores</th><th class="num">vacíos</th><th>dominante</th><th class="num">% dominante</th><th class="num">% de las 10 más frecuentes</th></tr></thead><tbody><tr><td>datacenter</td><td>categorica</td><td class="num">7</td><td class="num">0</td><td>sin dato</td><td class="num">32,3</td><td class="num">100,0</td></tr><tr><td>periodo</td><td>categorica</td><td class="num">2</td><td class="num">0</td><td>construcción</td><td class="num">61,3</td><td class="num">100,0</td></tr><tr><td>con_sitio</td><td>booleana</td><td class="num">2</td><td class="num">0</td><td>True</td><td class="num">77,4</td><td class="num">100,0</td></tr></tbody></table>
+<div class="fila-bloque"><div class="fila"><div class="grafico"><p class="g-titulo">datacenter: «sin dato» reúne el 32,3 % de las filas</p><p class="g-subtitulo">Filas de cada valor (7 valores)</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="296" viewBox="0 0 640 296" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="gb3fb2c_figure_1">
+  <g id="gb3fb2c_patch_1">
+   <path d="M 0 296 
+L 640 296 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="gb3fb2c_axes_1">
+   <g id="gb3fb2c_patch_2">
+    <path d="M 120 292 
+L 636 292 
+L 636 4 
+L 120 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="gb3fb2c_dato0" class="dato" tabindex="0"><title>sin dato · filas · datacenter: «sin dato» reúne el 32,3 % d: 60</title>
+    <path d="M 120 45.142857 
+L 550 45.142857 
+L 550 17.090909 
+L 120 17.090909 
+z
+" clip-path="url(#gb3fb2c_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gb3fb2c_dato1" class="dato" tabindex="0"><title>ams5 · filas · datacenter: «sin dato» reúne el 32,3 % d: 24</title>
+    <path d="M 120 84.103896 
+L 292 84.103896 
+L 292 56.051948 
+L 120 56.051948 
+z
+" clip-path="url(#gb3fb2c_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gb3fb2c_dato2" class="dato" tabindex="0"><title>iad1 · filas · datacenter: «sin dato» reúne el 32,3 % d: 24</title>
+    <path d="M 120 123.064935 
+L 292 123.064935 
+L 292 95.012987 
+L 120 95.012987 
+z
+" clip-path="url(#gb3fb2c_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gb3fb2c_dato3" class="dato" tabindex="0"><title>phx1 · filas · datacenter: «sin dato» reúne el 32,3 % d: 24</title>
+    <path d="M 120 162.025974 
+L 292 162.025974 
+L 292 133.974026 
+L 120 133.974026 
+z
+" clip-path="url(#gb3fb2c_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gb3fb2c_dato4" class="dato" tabindex="0"><title>sac0 · filas · datacenter: «sin dato» reúne el 32,3 % d: 24</title>
+    <path d="M 120 200.987013 
+L 292 200.987013 
+L 292 172.935065 
+L 120 172.935065 
+z
+" clip-path="url(#gb3fb2c_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gb3fb2c_dato5" class="dato" tabindex="0"><title>sac2 · filas · datacenter: «sin dato» reúne el 32,3 % d: 24</title>
+    <path d="M 120 239.948052 
+L 292 239.948052 
+L 292 211.896104 
+L 120 211.896104 
+z
+" clip-path="url(#gb3fb2c_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gb3fb2c_dato6" class="dato" tabindex="0"><title>yyz1 · filas · datacenter: «sin dato» reúne el 32,3 % d: 6</title>
+    <path d="M 120 278.909091 
+L 163 278.909091 
+L 163 250.857143 
+L 120 250.857143 
+z
+" clip-path="url(#gb3fb2c_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gb3fb2c_matplotlib.axis_1">
+    <g id="gb3fb2c_ytick_1">
+     <g id="gb3fb2c_line2d_1"/>
+     <g id="gb3fb2c_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="35.928914" transform="rotate(-0 116.5 35.928914)">sin dato</text>
+     </g>
+    </g>
+    <g id="gb3fb2c_ytick_2">
+     <g id="gb3fb2c_line2d_2"/>
+     <g id="gb3fb2c_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="74.8101" transform="rotate(-0 116.5 74.8101)">ams5</text>
+     </g>
+    </g>
+    <g id="gb3fb2c_ytick_3">
+     <g id="gb3fb2c_line2d_3"/>
+     <g id="gb3fb2c_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="113.850992" transform="rotate(-0 116.5 113.850992)">iad1</text>
+     </g>
+    </g>
+    <g id="gb3fb2c_ytick_4">
+     <g id="gb3fb2c_line2d_4"/>
+     <g id="gb3fb2c_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="152.812031" transform="rotate(-0 116.5 152.812031)">phx1</text>
+     </g>
+    </g>
+    <g id="gb3fb2c_ytick_5">
+     <g id="gb3fb2c_line2d_5"/>
+     <g id="gb3fb2c_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="191.693217" transform="rotate(-0 116.5 191.693217)">sac0</text>
+     </g>
+    </g>
+    <g id="gb3fb2c_ytick_6">
+     <g id="gb3fb2c_line2d_6"/>
+     <g id="gb3fb2c_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="230.654256" transform="rotate(-0 116.5 230.654256)">sac2</text>
+     </g>
+    </g>
+    <g id="gb3fb2c_ytick_7">
+     <g id="gb3fb2c_line2d_7"/>
+     <g id="gb3fb2c_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="269.615295" transform="rotate(-0 116.5 269.615295)">yyz1</text>
+     </g>
+    </g>
+   </g>
+   <g id="gb3fb2c_patch_3">
+    <path d="M 120 292 
+L 120 4 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="gb3fb2c_text_8">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="554.3" y="34.481141" transform="rotate(-0 554.3 34.481141)">60</text>
+   </g>
+   <g id="gb3fb2c_text_9">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="296.3" y="73.44218" transform="rotate(-0 296.3 73.44218)">24</text>
+   </g>
+   <g id="gb3fb2c_text_10">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="296.3" y="112.403219" transform="rotate(-0 296.3 112.403219)">24</text>
+   </g>
+   <g id="gb3fb2c_text_11">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="296.3" y="151.364258" transform="rotate(-0 296.3 151.364258)">24</text>
+   </g>
+   <g id="gb3fb2c_text_12">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="296.3" y="190.325297" transform="rotate(-0 296.3 190.325297)">24</text>
+   </g>
+   <g id="gb3fb2c_text_13">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="296.3" y="229.286336" transform="rotate(-0 296.3 229.286336)">24</text>
+   </g>
+   <g id="gb3fb2c_text_14">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="167.3" y="268.247375" transform="rotate(-0 167.3 268.247375)">6</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="gb3fb2c_pe900b14c13">
+   <rect x="120" y="4" width="516" height="288"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 186 filas, una por fila</p></div><div class="grafico"><p class="g-titulo">periodo: «construcción» reúne el 61,3 % de las filas</p><p class="g-subtitulo">Filas de cada valor (2 valores)</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="106" viewBox="0 0 640 106" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="ga3a072_figure_1">
+  <g id="ga3a072_patch_1">
+   <path d="M 0 106 
+L 640 106 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="ga3a072_axes_1">
+   <g id="ga3a072_patch_2">
+    <path d="M 120 102 
+L 636 102 
+L 636 4 
+L 120 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="ga3a072_dato0" class="dato" tabindex="0"><title>construcción · filas · periodo: «construcción» reúne el 61,3 % : 114</title>
+    <path d="M 120 45.748414 
+L 550 45.748414 
+L 550 8.454545 
+L 120 8.454545 
+z
+" clip-path="url(#ga3a072_p0c72dcd2a0)" style="fill: #2a78d6"/>
+   </g>
+   <g id="ga3a072_dato1" class="dato" tabindex="0"><title>validación · filas · periodo: «construcción» reúne el 61,3 % : 72</title>
+    <path d="M 120 97.545455 
+L 391.578947 97.545455 
+L 391.578947 60.251586 
+L 120 60.251586 
+z
+" clip-path="url(#ga3a072_p0c72dcd2a0)" style="fill: #2a78d6"/>
+   </g>
+   <g id="ga3a072_matplotlib.axis_1">
+    <g id="ga3a072_ytick_1">
+     <g id="ga3a072_line2d_1"/>
+     <g id="ga3a072_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="32.007964" transform="rotate(-0 116.5 32.007964)">construcción</text>
+     </g>
+    </g>
+    <g id="ga3a072_ytick_2">
+     <g id="ga3a072_line2d_2"/>
+     <g id="ga3a072_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="83.805004" transform="rotate(-0 116.5 83.805004)">validación</text>
+     </g>
+    </g>
+   </g>
+   <g id="ga3a072_patch_3">
+    <path d="M 120 102 
+L 120 4 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="ga3a072_text_3">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="554.3" y="30.465738" transform="rotate(-0 554.3 30.465738)">114</text>
+   </g>
+   <g id="ga3a072_text_4">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="395.878947" y="82.262778" transform="rotate(-0 395.878947 82.262778)">72</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="ga3a072_p0c72dcd2a0">
+   <rect x="120" y="4" width="516" height="98"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 186 filas, una por fila</p></div></div></div><div class="fila-bloque"><div class="fila"><div class="grafico"><p class="g-titulo">con_sitio: «True» reúne el 77,4 % de las filas</p><p class="g-subtitulo">Filas de cada valor (2 valores)</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="106" viewBox="0 0 640 106" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="g65ab27_figure_1">
+  <g id="g65ab27_patch_1">
+   <path d="M 0 106 
+L 640 106 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="g65ab27_axes_1">
+   <g id="g65ab27_patch_2">
+    <path d="M 120 102 
+L 636 102 
+L 636 4 
+L 120 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="g65ab27_dato0" class="dato" tabindex="0"><title>True · filas · con_sitio: «True» reúne el 77,4 % de las: 144</title>
+    <path d="M 120 45.748414 
+L 550 45.748414 
+L 550 8.454545 
+L 120 8.454545 
+z
+" clip-path="url(#g65ab27_p0c72dcd2a0)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g65ab27_dato1" class="dato" tabindex="0"><title>False · filas · con_sitio: «True» reúne el 77,4 % de las: 42</title>
+    <path d="M 120 97.545455 
+L 245.416667 97.545455 
+L 245.416667 60.251586 
+L 120 60.251586 
+z
+" clip-path="url(#g65ab27_p0c72dcd2a0)" style="fill: #2a78d6"/>
+   </g>
+   <g id="g65ab27_matplotlib.axis_1">
+    <g id="g65ab27_ytick_1">
+     <g id="g65ab27_line2d_1"/>
+     <g id="g65ab27_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="31.833658" transform="rotate(-0 116.5 31.833658)">True</text>
+     </g>
+    </g>
+    <g id="g65ab27_ytick_2">
+     <g id="g65ab27_line2d_2"/>
+     <g id="g65ab27_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="83.710551" transform="rotate(-0 116.5 83.710551)">False</text>
+     </g>
+    </g>
+   </g>
+   <g id="g65ab27_patch_3">
+    <path d="M 120 102 
+L 120 4 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="g65ab27_text_3">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="554.3" y="30.465738" transform="rotate(-0 554.3 30.465738)">144</text>
+   </g>
+   <g id="g65ab27_text_4">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="249.716667" y="82.262778" transform="rotate(-0 249.716667 82.262778)">42</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="g65ab27_p0c72dcd2a0">
+   <rect x="120" y="4" width="516" height="98"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 186 filas, una por fila</p></div><div class="grafico"><p class="g-titulo">La tasa anual de fallo más alta por centro es la de sac2: 2,06 %</p><p class="g-subtitulo">Tasa anual de fallo en %, con sus fallos (n); solo con 50.000 días de disco o más</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="640" height="296" viewBox="0 0 640 296" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="gdb4a71_figure_1">
+  <g id="gdb4a71_patch_1">
+   <path d="M 0 296 
+L 640 296 
+L 640 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="gdb4a71_axes_1">
+   <g id="gdb4a71_patch_2">
+    <path d="M 120 292 
+L 636 292 
+L 636 4 
+L 120 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="gdb4a71_dato0" class="dato" tabindex="0"><title>ams5 · tasa · La tasa anual de fallo más alta por cent: 1,43</title>
+    <path d="M 120 123.064935 
+L 419.138404 123.064935 
+L 419.138404 95.012987 
+L 120 95.012987 
+z
+" clip-path="url(#gdb4a71_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gdb4a71_dato1" class="dato" tabindex="0"><title>iad1 · tasa · La tasa anual de fallo más alta por cent: 1,04</title>
+    <path d="M 120 200.987013 
+L 336.40348 200.987013 
+L 336.40348 172.935065 
+L 120 172.935065 
+z
+" clip-path="url(#gdb4a71_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gdb4a71_dato2" class="dato" tabindex="0"><title>phx1 · tasa · La tasa anual de fallo más alta por cent: 1,20</title>
+    <path d="M 120 162.025974 
+L 370.13756 162.025974 
+L 370.13756 133.974026 
+L 120 133.974026 
+z
+" clip-path="url(#gdb4a71_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gdb4a71_dato3" class="dato" tabindex="0"><title>sac0 · tasa · La tasa anual de fallo más alta por cent: 1,73</title>
+    <path d="M 120 84.103896 
+L 481.257566 84.103896 
+L 481.257566 56.051948 
+L 120 56.051948 
+z
+" clip-path="url(#gdb4a71_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gdb4a71_dato4" class="dato" tabindex="0"><title>sac2 · tasa · La tasa anual de fallo más alta por cent: 2,06</title>
+    <path d="M 120 45.142857 
+L 550 45.142857 
+L 550 17.090909 
+L 120 17.090909 
+z
+" clip-path="url(#gdb4a71_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gdb4a71_dato5" class="dato" tabindex="0"><title>sin dato · tasa · La tasa anual de fallo más alta por cent: 0,71</title>
+    <path d="M 120 239.948052 
+L 267.136224 239.948052 
+L 267.136224 211.896104 
+L 120 211.896104 
+z
+" clip-path="url(#gdb4a71_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gdb4a71_dato6" class="dato" tabindex="0"><title>yyz1 · tasa · La tasa anual de fallo más alta por cent: 0,34</title>
+    <path d="M 120 278.909091 
+L 190.115392 278.909091 
+L 190.115392 250.857143 
+L 120 250.857143 
+z
+" clip-path="url(#gdb4a71_pe900b14c13)" style="fill: #2a78d6"/>
+   </g>
+   <g id="gdb4a71_matplotlib.axis_1">
+    <g id="gdb4a71_ytick_1">
+     <g id="gdb4a71_line2d_1"/>
+     <g id="gdb4a71_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="113.771139" transform="rotate(-0 116.5 113.771139)">ams5 (n = 476)</text>
+     </g>
+    </g>
+    <g id="gdb4a71_ytick_2">
+     <g id="gdb4a71_line2d_2"/>
+     <g id="gdb4a71_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="191.77307" transform="rotate(-0 116.5 191.77307)">iad1 (n = 512)</text>
+     </g>
+    </g>
+    <g id="gdb4a71_ytick_3">
+     <g id="gdb4a71_line2d_3"/>
+     <g id="gdb4a71_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="152.812031" transform="rotate(-0 116.5 152.812031)">phx1 (n = 2.160)</text>
+     </g>
+    </g>
+    <g id="gdb4a71_ytick_4">
+     <g id="gdb4a71_line2d_4"/>
+     <g id="gdb4a71_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="74.8101" transform="rotate(-0 116.5 74.8101)">sac0 (n = 2.806)</text>
+     </g>
+    </g>
+    <g id="gdb4a71_ytick_5">
+     <g id="gdb4a71_line2d_5"/>
+     <g id="gdb4a71_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="35.849061" transform="rotate(-0 116.5 35.849061)">sac2 (n = 2.546)</text>
+     </g>
+    </g>
+    <g id="gdb4a71_ytick_6">
+     <g id="gdb4a71_line2d_6"/>
+     <g id="gdb4a71_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="230.734109" transform="rotate(-0 116.5 230.734109)">sin dato (n = 128)</text>
+     </g>
+    </g>
+    <g id="gdb4a71_ytick_7">
+     <g id="gdb4a71_line2d_7"/>
+     <g id="gdb4a71_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="116.5" y="269.615295" transform="rotate(-0 116.5 269.615295)">yyz1 (n = 6)</text>
+     </g>
+    </g>
+   </g>
+   <g id="gdb4a71_patch_3">
+    <path d="M 120 292 
+L 120 4 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="gdb4a71_text_8">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="423.438404" y="112.403219" transform="rotate(-0 423.438404 112.403219)">1,43</text>
+   </g>
+   <g id="gdb4a71_text_9">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="340.70348" y="190.325297" transform="rotate(-0 340.70348 190.325297)">1,04</text>
+   </g>
+   <g id="gdb4a71_text_10">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="374.43756" y="151.364258" transform="rotate(-0 374.43756 151.364258)">1,20</text>
+   </g>
+   <g id="gdb4a71_text_11">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="485.557566" y="73.44218" transform="rotate(-0 485.557566 73.44218)">1,73</text>
+   </g>
+   <g id="gdb4a71_text_12">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="554.3" y="34.481141" transform="rotate(-0 554.3 34.481141)">2,06</text>
+   </g>
+   <g id="gdb4a71_text_13">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="271.436224" y="229.286336" transform="rotate(-0 271.436224 229.286336)">0,71</text>
+   </g>
+   <g id="gdb4a71_text_14">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="194.415392" y="268.247375" transform="rotate(-0 194.415392 268.247375)">0,34</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="gdb4a71_pe900b14c13">
+   <rect x="120" y="4" width="516" height="288"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 207.297.278 días de disco y 8.634 fallos</p></div></div></div>
+<p>Tasa anual de fallo por centro (centro_mes, desde que consta el sitio), con su base:</p>
+<table><thead><tr><th>datacenter</th><th class="num">fallos</th><th class="num">días de disco</th><th class="num">tasa anual</th></tr></thead><tbody><tr><td>ams5</td><td class="num">476</td><td class="num">12.111.055</td><td class="num">1,43 %</td></tr><tr><td>iad1</td><td class="num">512</td><td class="num">18.007.479</td><td class="num">1,04 %</td></tr><tr><td>phx1</td><td class="num">2.160</td><td class="num">65.723.705</td><td class="num">1,20 %</td></tr><tr><td>sac0</td><td class="num">2.806</td><td class="num">59.117.752</td><td class="num">1,73 %</td></tr><tr><td>sac2</td><td class="num">2.546</td><td class="num">45.064.768</td><td class="num">2,06 %</td></tr><tr><td>sin dato</td><td class="num">128</td><td class="num">6.621.213</td><td class="num">0,71 %</td></tr><tr><td>yyz1</td><td class="num">6</td><td class="num">651.306</td><td class="num">0,34 %</td></tr></tbody></table>
+<p>Tasa anual de fallo por centro (dias_por_tramo, por fabricante y capacidad), con su base:</p>
+<table><thead><tr><th>datacenter</th><th class="num">fallos</th><th class="num">días de disco</th><th class="num">tasa anual</th></tr></thead><tbody><tr><td>sac0</td><td class="num">2.806</td><td class="num">59.047.948</td><td class="num">1,73 %</td></tr><tr><td>sin dato</td><td class="num">128</td><td class="num">6.484.566</td><td class="num">0,72 %</td></tr><tr><td>phx1</td><td class="num">2.160</td><td class="num">65.584.363</td><td class="num">1,20 %</td></tr><tr><td>sac2</td><td class="num">2.546</td><td class="num">44.890.413</td><td class="num">2,07 %</td></tr><tr><td>ams5</td><td class="num">476</td><td class="num">12.081.045</td><td class="num">1,44 %</td></tr><tr><td>iad1</td><td class="num">512</td><td class="num">17.750.649</td><td class="num">1,05 %</td></tr><tr><td>yyz1</td><td class="num">6</td><td class="num">651.306</td><td class="num">0,34 %</td></tr></tbody></table>
+<p>Vista por grupos de datacenter: sac2 frente a yyz1.</p><table><thead><tr><th>grupo</th><th class="num">sac2</th><th class="num">yyz1</th></tr></thead><tbody><tr><td>total</td><td class="num">2,07</td><td class="num">0,34</td></tr><tr><td>fabricante = HGST</td><td class="num">3,59</td><td class="num">no se compara</td></tr><tr><td>fabricante = Seagate</td><td class="num">2,49</td><td class="num">no se compara</td></tr><tr><td>fabricante = Toshiba</td><td class="num">1,14</td><td class="num">0,50</td></tr><tr><td>fabricante = WDC</td><td class="num">0,63</td><td class="num">0,25</td></tr><tr><td>capacidad_tb = 4.0</td><td class="num">1,51</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 6.0</td><td class="num">no se compara</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 8.0</td><td class="num">1,89</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 10.0</td><td class="num">no se compara</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 12.0</td><td class="num">3,25</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 14.0</td><td class="num">1,50</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 16.0</td><td class="num">0,84</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 18.0</td><td class="num">no se compara</td><td class="num">no se compara</td></tr><tr><td>capacidad_tb = 20.0</td><td class="num">0,50</td><td class="num">0,50</td></tr><tr><td>capacidad_tb = 22.0</td><td class="num">0,51</td><td class="num">0,25</td></tr><tr><td>capacidad_tb = 24.0</td><td class="num">1,35</td><td class="num">no se compara</td></tr></tbody></table>
+<p>Tasa anual de fallo por periodo, con su base:</p>
+<table><thead><tr><th>periodo</th><th class="num">fallos</th><th class="num">días de disco</th><th class="num">tasa anual</th></tr></thead><tbody><tr><td>construcción</td><td class="num">12.478</td><td class="num">336.817.718</td><td class="num">1,35 %</td></tr><tr><td>validación</td><td class="num">4.518</td><td class="num">109.290.965</td><td class="num">1,51 %</td></tr></tbody></table>
+<p>Concentración (Pareto y ABC). Es volumen, no un ranking por tasa:</p>
+<table><thead><tr><th>pareja</th><th class="num">elementos</th><th class="num">% de elementos que suma el 80 %</th><th>A</th><th>B</th><th>C</th></tr></thead><tbody><tr><td>fallos por centros</td><td class="num">7</td><td class="num">42,9</td><td>3 (87,0 %)</td><td>2 (11,4 %)</td><td>2 (1,6 %)</td></tr></tbody></table>
+<h2>Análisis temporal</h2>
+<p>Periodos incompletos: ninguno. El primer mes de las fotos es ene 2020.</p>
+<div class="grafico"><p class="g-titulo">Días de disco por mes: el máximo es 9.638.285 en may 2025</p><p class="g-subtitulo">Días de disco por mes, por mes</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="320" viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="g727f92_figure_1">
+  <g id="g727f92_patch_1">
+   <path d="M 0 320 
+L 1000 320 
+L 1000 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="g727f92_axes_1">
+   <g id="g727f92_patch_2">
+    <path d="M 62.5 299.5 
+L 821.03401 299.5 
+L 821.03401 4 
+L 62.5 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="g727f92_matplotlib.axis_1">
+    <g id="g727f92_xtick_1">
+     <g id="g727f92_line2d_1"/>
+     <g id="g727f92_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="64.77788" y="312.464355" transform="rotate(-0 64.77788 312.464355)">ene 2020</text>
+     </g>
+    </g>
+    <g id="g727f92_xtick_2">
+     <g id="g727f92_line2d_2"/>
+     <g id="g727f92_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="133.114277" y="312.624062" transform="rotate(-0 133.114277 312.624062)">jul 2020</text>
+     </g>
+    </g>
+    <g id="g727f92_xtick_3">
+     <g id="g727f92_line2d_3"/>
+     <g id="g727f92_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="201.450674" y="312.464355" transform="rotate(-0 201.450674 312.464355)">ene 2021</text>
+     </g>
+    </g>
+    <g id="g727f92_xtick_4">
+     <g id="g727f92_line2d_4"/>
+     <g id="g727f92_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="269.787072" y="312.624062" transform="rotate(-0 269.787072 312.624062)">jul 2021</text>
+     </g>
+    </g>
+    <g id="g727f92_xtick_5">
+     <g id="g727f92_line2d_5"/>
+     <g id="g727f92_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="338.123469" y="312.464355" transform="rotate(-0 338.123469 312.464355)">ene 2022</text>
+     </g>
+    </g>
+    <g id="g727f92_xtick_6">
+     <g id="g727f92_line2d_6"/>
+     <g id="g727f92_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="406.459866" y="312.624062" transform="rotate(-0 406.459866 312.624062)">jul 2022</text>
+     </g>
+    </g>
+    <g id="g727f92_xtick_7">
+     <g id="g727f92_line2d_7"/>
+     <g id="g727f92_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="474.796264" y="312.464355" transform="rotate(-0 474.796264 312.464355)">ene 2023</text>
+     </g>
+    </g>
+    <g id="g727f92_xtick_8">
+     <g id="g727f92_line2d_8"/>
+     <g id="g727f92_text_8">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="543.132661" y="312.624062" transform="rotate(-0 543.132661 312.624062)">jul 2023</text>
+     </g>
+    </g>
+    <g id="g727f92_xtick_9">
+     <g id="g727f92_line2d_9"/>
+     <g id="g727f92_text_9">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="611.469058" y="312.464355" transform="rotate(-0 611.469058 312.464355)">ene 2024</text>
+     </g>
+    </g>
+    <g id="g727f92_xtick_10">
+     <g id="g727f92_line2d_10"/>
+     <g id="g727f92_text_10">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="679.805455" y="312.624062" transform="rotate(-0 679.805455 312.624062)">jul 2024</text>
+     </g>
+    </g>
+    <g id="g727f92_xtick_11">
+     <g id="g727f92_line2d_11"/>
+     <g id="g727f92_text_11">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="748.141853" y="312.464355" transform="rotate(-0 748.141853 312.464355)">ene 2025</text>
+     </g>
+    </g>
+   </g>
+   <g id="g727f92_matplotlib.axis_2">
+    <g id="g727f92_ytick_1">
+     <g id="g727f92_line2d_12">
+      <path d="M 62.5 269.055563 
+L 821.03401 269.055563 
+" clip-path="url(#g727f92_pa3e8b9e016)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="g727f92_line2d_13"/>
+     <g id="g727f92_text_12">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="59" y="273.787741" transform="rotate(-0 59 273.787741)">4.000.000</text>
+     </g>
+    </g>
+    <g id="g727f92_ytick_2">
+     <g id="g727f92_line2d_14">
+      <path d="M 62.5 179.800144 
+L 821.03401 179.800144 
+" clip-path="url(#g727f92_pa3e8b9e016)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="g727f92_line2d_15"/>
+     <g id="g727f92_text_13">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="59" y="184.532322" transform="rotate(-0 59 184.532322)">6.000.000</text>
+     </g>
+    </g>
+    <g id="g727f92_ytick_3">
+     <g id="g727f92_line2d_16">
+      <path d="M 62.5 90.544725 
+L 821.03401 90.544725 
+" clip-path="url(#g727f92_pa3e8b9e016)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="g727f92_line2d_17"/>
+     <g id="g727f92_text_14">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="59" y="95.276903" transform="rotate(-0 59 95.276903)">8.000.000</text>
+     </g>
+    </g>
+   </g>
+   <g id="g727f92_line2d_18">
+    <path d="M 64.77788 277.223818 
+L 76.167279 286.068182 
+L 87.556679 270.939611 
+L 98.946079 271.569844 
+L 110.335478 260.707192 
+L 121.724878 262.695312 
+L 133.114277 252.431742 
+L 144.503677 247.601194 
+L 155.893076 248.66311 
+L 167.282476 237.422952 
+L 178.671875 238.669761 
+L 190.061275 225.353388 
+L 201.450674 221.65268 
+L 212.840074 238.174349 
+L 224.229474 213.009587 
+L 235.618873 216.296998 
+L 247.008273 206.651388 
+L 258.397672 208.744695 
+L 269.787072 198.242054 
+L 281.176471 189.529297 
+L 292.565871 192.730622 
+L 303.95527 181.58494 
+L 315.34467 186.167135 
+L 326.73407 169.369533 
+L 338.123469 166.443428 
+L 349.512869 190.513205 
+L 360.902268 160.029221 
+L 372.291668 167.394266 
+L 383.681067 155.352683 
+L 395.070467 168.934547 
+L 406.459866 148.747336 
+L 417.849266 142.946269 
+L 429.238665 148.869482 
+L 440.628065 132.844743 
+L 452.017465 140.343091 
+L 463.406864 127.668687 
+L 474.796264 125.702435 
+L 486.185663 153.654064 
+L 497.575063 123.295484 
+L 508.964462 144.492263 
+L 520.353862 116.921219 
+L 531.743261 124.531047 
+L 543.132661 110.104693 
+L 554.52206 94.229323 
+L 565.91146 103.361625 
+L 577.30086 83.724317 
+L 588.690259 90.309403 
+L 600.079659 80.507016 
+L 611.469058 75.742473 
+L 622.858458 95.796068 
+L 634.247857 64.674131 
+L 645.637257 71.367529 
+L 657.026656 58.244305 
+L 668.416056 68.938666 
+L 679.805455 51.563626 
+L 691.194855 49.987509 
+L 702.584255 61.262611 
+L 713.973654 47.843862 
+L 725.363054 56.357177 
+L 736.752453 34.891071 
+L 748.141853 31.072188 
+L 759.531252 65.995156 
+L 770.920652 21.240347 
+L 782.310051 32.116834 
+L 793.699451 17.431818 
+L 805.088851 23.629179 
+" clip-path="url(#g727f92_pa3e8b9e016)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="g727f92_dato0" class="dato" tabindex="0"><title>ene 2020 · días de disco por mes: 3.816.969</title>
+    <defs>
+     <path id="g727f92_me6bf60eb94" d="M 0 5 
+C 1.326016 5 2.597899 4.473168 3.535534 3.535534 
+C 4.473168 2.597899 5 1.326016 5 0 
+C 5 -1.326016 4.473168 -2.597899 3.535534 -3.535534 
+C 2.597899 -4.473168 1.326016 -5 0 -5 
+C -1.326016 -5 -2.597899 -4.473168 -3.535534 -3.535534 
+C -4.473168 -2.597899 -5 -1.326016 -5 0 
+C -5 1.326016 -4.473168 2.597899 -3.535534 3.535534 
+C -2.597899 4.473168 -1.326016 5 0 5 
+z
+" style="stroke: #2a78d6; stroke-opacity: 0"/>
+    </defs>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="64.77788" y="277.223818" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato1" class="dato" tabindex="0"><title>feb 2020 · días de disco por mes: 3.618.788</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="76.167279" y="286.068182" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato2" class="dato" tabindex="0"><title>mar 2020 · días de disco por mes: 3.957.783</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="87.556679" y="270.939611" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato3" class="dato" tabindex="0"><title>abr 2020 · días de disco por mes: 3.943.661</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="98.946079" y="271.569844" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato4" class="dato" tabindex="0"><title>may 2020 · días de disco por mes: 4.187.067</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="110.335478" y="260.707192" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato5" class="dato" tabindex="0"><title>jun 2020 · días de disco por mes: 4.142.518</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="121.724878" y="262.695312" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato6" class="dato" tabindex="0"><title>jul 2020 · días de disco por mes: 4.372.500</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="133.114277" y="252.431742" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato7" class="dato" tabindex="0"><title>ago 2020 · días de disco por mes: 4.480.741</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="144.503677" y="247.601194" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato8" class="dato" tabindex="0"><title>sep 2020 · días de disco por mes: 4.456.946</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="155.893076" y="248.66311" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato9" class="dato" tabindex="0"><title>oct 2020 · días de disco por mes: 4.708.811</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="167.282476" y="237.422952" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato10" class="dato" tabindex="0"><title>nov 2020 · días de disco por mes: 4.680.873</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="178.671875" y="238.669761" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato11" class="dato" tabindex="0"><title>dic 2020 · días de disco por mes: 4.979.261</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="190.061275" y="225.353388" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato12" class="dato" tabindex="0"><title>ene 2021 · días de disco por mes: 5.062.185</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="201.450674" y="221.65268" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato13" class="dato" tabindex="0"><title>feb 2021 · días de disco por mes: 4.691.974</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="212.840074" y="238.174349" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato14" class="dato" tabindex="0"><title>mar 2021 · días de disco por mes: 5.255.856</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="224.229474" y="213.009587" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato15" class="dato" tabindex="0"><title>abr 2021 · días de disco por mes: 5.182.193</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="235.618873" y="216.296998" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato16" class="dato" tabindex="0"><title>may 2021 · días de disco por mes: 5.398.328</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="247.008273" y="206.651388" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato17" class="dato" tabindex="0"><title>jun 2021 · días de disco por mes: 5.351.422</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="258.397672" y="208.744695" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato18" class="dato" tabindex="0"><title>jul 2021 · días de disco por mes: 5.586.761</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="269.787072" y="198.242054" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato19" class="dato" tabindex="0"><title>ago 2021 · días de disco por mes: 5.781.993</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="281.176471" y="189.529297" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato20" class="dato" tabindex="0"><title>sep 2021 · días de disco por mes: 5.710.259</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="292.565871" y="192.730622" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato21" class="dato" tabindex="0"><title>oct 2021 · días de disco por mes: 5.960.007</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="303.95527" y="181.58494" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato22" class="dato" tabindex="0"><title>nov 2021 · días de disco por mes: 5.857.331</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="315.34467" y="186.167135" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato23" class="dato" tabindex="0"><title>dic 2021 · días de disco por mes: 6.233.725</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="326.73407" y="169.369533" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato24" class="dato" tabindex="0"><title>ene 2022 · días de disco por mes: 6.299.292</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="338.123469" y="166.443428" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato25" class="dato" tabindex="0"><title>feb 2022 · días de disco por mes: 5.759.946</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="349.512869" y="190.513205" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato26" class="dato" tabindex="0"><title>mar 2022 · días de disco por mes: 6.443.019</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="360.902268" y="160.029221" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato27" class="dato" tabindex="0"><title>abr 2022 · días de disco por mes: 6.277.986</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="372.291668" y="167.394266" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato28" class="dato" tabindex="0"><title>may 2022 · días de disco por mes: 6.547.809</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="383.681067" y="155.352683" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato29" class="dato" tabindex="0"><title>jun 2022 · días de disco por mes: 6.243.472</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="395.070467" y="168.934547" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato30" class="dato" tabindex="0"><title>jul 2022 · días de disco por mes: 6.695.819</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="406.459866" y="148.747336" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato31" class="dato" tabindex="0"><title>ago 2022 · días de disco por mes: 6.825.807</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="417.849266" y="142.946269" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato32" class="dato" tabindex="0"><title>sep 2022 · días de disco por mes: 6.693.082</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="429.238665" y="148.869482" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato33" class="dato" tabindex="0"><title>oct 2022 · días de disco por mes: 7.052.158</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="440.628065" y="132.844743" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato34" class="dato" tabindex="0"><title>nov 2022 · días de disco por mes: 6.884.138</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="452.017465" y="140.343091" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato35" class="dato" tabindex="0"><title>dic 2022 · días de disco por mes: 7.168.141</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="463.406864" y="127.668687" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato36" class="dato" tabindex="0"><title>ene 2023 · días de disco por mes: 7.212.200</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="474.796264" y="125.702435" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato37" class="dato" tabindex="0"><title>feb 2023 · días de disco por mes: 6.585.871</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="486.185663" y="153.654064" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato38" class="dato" tabindex="0"><title>mar 2023 · días de disco por mes: 7.266.134</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="497.575063" y="123.295484" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato39" class="dato" tabindex="0"><title>abr 2023 · días de disco por mes: 6.791.165</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="508.964462" y="144.492263" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato40" class="dato" tabindex="0"><title>may 2023 · días de disco por mes: 7.408.966</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="520.353862" y="116.921219" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato41" class="dato" tabindex="0"><title>jun 2023 · días de disco por mes: 7.238.448</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="531.743261" y="124.531047" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato42" class="dato" tabindex="0"><title>jul 2023 · días de disco por mes: 7.561.708</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="543.132661" y="110.104693" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato43" class="dato" tabindex="0"><title>ago 2023 · días de disco por mes: 7.917.437</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="554.52206" y="94.229323" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato44" class="dato" tabindex="0"><title>sep 2023 · días de disco por mes: 7.712.804</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="565.91146" y="103.361625" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato45" class="dato" tabindex="0"><title>oct 2023 · días de disco por mes: 8.152.829</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="577.30086" y="83.724317" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato46" class="dato" tabindex="0"><title>nov 2023 · días de disco por mes: 8.005.273</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="588.690259" y="90.309403" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato47" class="dato" tabindex="0"><title>dic 2023 · días de disco por mes: 8.224.921</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="600.079659" y="80.507016" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato48" class="dato" tabindex="0"><title>ene 2024 · días de disco por mes: 8.331.683</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="611.469058" y="75.742473" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato49" class="dato" tabindex="0"><title>feb 2024 · días de disco por mes: 7.882.330</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="622.858458" y="95.796068" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato50" class="dato" tabindex="0"><title>mar 2024 · días de disco por mes: 8.579.698</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="634.247857" y="64.674131" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato51" class="dato" tabindex="0"><title>abr 2024 · días de disco por mes: 8.429.715</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="645.637257" y="71.367529" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato52" class="dato" tabindex="0"><title>may 2024 · días de disco por mes: 8.723.775</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="657.026656" y="58.244305" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato53" class="dato" tabindex="0"><title>jun 2024 · días de disco por mes: 8.484.140</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="668.416056" y="68.938666" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato54" class="dato" tabindex="0"><title>jul 2024 · días de disco por mes: 8.873.473</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="679.805455" y="51.563626" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato55" class="dato" tabindex="0"><title>ago 2024 · días de disco por mes: 8.908.790</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="691.194855" y="49.987509" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato56" class="dato" tabindex="0"><title>sep 2024 · días de disco por mes: 8.656.142</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="702.584255" y="61.262611" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato57" class="dato" tabindex="0"><title>oct 2024 · días de disco por mes: 8.956.824</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="713.973654" y="47.843862" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato58" class="dato" tabindex="0"><title>nov 2024 · días de disco por mes: 8.766.061</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="725.363054" y="56.357177" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato59" class="dato" tabindex="0"><title>dic 2024 · días de disco por mes: 9.247.065</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="736.752453" y="34.891071" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato60" class="dato" tabindex="0"><title>ene 2025 · días de disco por mes: 9.332.637</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="748.141853" y="31.072188" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato61" class="dato" tabindex="0"><title>feb 2025 · días de disco por mes: 8.550.097</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="759.531252" y="65.995156" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato62" class="dato" tabindex="0"><title>mar 2025 · días de disco por mes: 9.552.945</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="770.920652" y="21.240347" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato63" class="dato" tabindex="0"><title>abr 2025 · días de disco por mes: 9.309.229</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="782.310051" y="32.116834" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato64" class="dato" tabindex="0"><title>may 2025 · días de disco por mes: 9.638.285</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="793.699451" y="17.431818" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_dato65" class="dato" tabindex="0"><title>jun 2025 · días de disco por mes: 9.499.417</title>
+    <g clip-path="url(#g727f92_pa3e8b9e016)">
+     <use xlink:href="#g727f92_me6bf60eb94" x="805.088851" y="23.629179" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="g727f92_patch_3">
+    <path d="M 62.5 299.5 
+L 821.03401 299.5 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="g727f92_text_15">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="806.000002" y="27.040663" transform="rotate(-0 806.000002 27.040663)">días de disco por mes 9.499.417</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="g727f92_pa3e8b9e016">
+   <rect x="62.5" y="4" width="758.53401" height="295.5"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 66 periodos</p></div><div class="grafico"><p class="g-titulo">Fallos por mes: el máximo es 565 en abr 2023</p><p class="g-subtitulo">Fallos por mes, por mes</p><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="320" viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="gb18fd6_figure_1">
+  <g id="gb18fd6_patch_1">
+   <path d="M 0 320 
+L 1000 320 
+L 1000 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="gb18fd6_axes_1">
+   <g id="gb18fd6_patch_2">
+    <path d="M 48 299.5 
+L 903.965061 299.5 
+L 903.965061 4 
+L 48 4 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="gb18fd6_matplotlib.axis_1">
+    <g id="gb18fd6_xtick_1">
+     <g id="gb18fd6_line2d_1"/>
+     <g id="gb18fd6_text_1">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="50.570466" y="312.464355" transform="rotate(-0 50.570466 312.464355)">ene 2020</text>
+     </g>
+    </g>
+    <g id="gb18fd6_xtick_2">
+     <g id="gb18fd6_line2d_2"/>
+     <g id="gb18fd6_text_2">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="127.684435" y="312.624062" transform="rotate(-0 127.684435 312.624062)">jul 2020</text>
+     </g>
+    </g>
+    <g id="gb18fd6_xtick_3">
+     <g id="gb18fd6_line2d_3"/>
+     <g id="gb18fd6_text_3">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="204.798405" y="312.464355" transform="rotate(-0 204.798405 312.464355)">ene 2021</text>
+     </g>
+    </g>
+    <g id="gb18fd6_xtick_4">
+     <g id="gb18fd6_line2d_4"/>
+     <g id="gb18fd6_text_4">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="281.912374" y="312.624062" transform="rotate(-0 281.912374 312.624062)">jul 2021</text>
+     </g>
+    </g>
+    <g id="gb18fd6_xtick_5">
+     <g id="gb18fd6_line2d_5"/>
+     <g id="gb18fd6_text_5">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="359.026343" y="312.464355" transform="rotate(-0 359.026343 312.464355)">ene 2022</text>
+     </g>
+    </g>
+    <g id="gb18fd6_xtick_6">
+     <g id="gb18fd6_line2d_6"/>
+     <g id="gb18fd6_text_6">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="436.140313" y="312.624062" transform="rotate(-0 436.140313 312.624062)">jul 2022</text>
+     </g>
+    </g>
+    <g id="gb18fd6_xtick_7">
+     <g id="gb18fd6_line2d_7"/>
+     <g id="gb18fd6_text_7">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="513.254282" y="312.464355" transform="rotate(-0 513.254282 312.464355)">ene 2023</text>
+     </g>
+    </g>
+    <g id="gb18fd6_xtick_8">
+     <g id="gb18fd6_line2d_8"/>
+     <g id="gb18fd6_text_8">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="590.368252" y="312.624062" transform="rotate(-0 590.368252 312.624062)">jul 2023</text>
+     </g>
+    </g>
+    <g id="gb18fd6_xtick_9">
+     <g id="gb18fd6_line2d_9"/>
+     <g id="gb18fd6_text_9">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="667.482221" y="312.464355" transform="rotate(-0 667.482221 312.464355)">ene 2024</text>
+     </g>
+    </g>
+    <g id="gb18fd6_xtick_10">
+     <g id="gb18fd6_line2d_10"/>
+     <g id="gb18fd6_text_10">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="744.596191" y="312.624062" transform="rotate(-0 744.596191 312.624062)">jul 2024</text>
+     </g>
+    </g>
+    <g id="gb18fd6_xtick_11">
+     <g id="gb18fd6_line2d_11"/>
+     <g id="gb18fd6_text_11">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: middle; fill: #52514e" x="821.71016" y="312.464355" transform="rotate(-0 821.71016 312.464355)">ene 2025</text>
+     </g>
+    </g>
+   </g>
+   <g id="gb18fd6_matplotlib.axis_2">
+    <g id="gb18fd6_ytick_1">
+     <g id="gb18fd6_line2d_12">
+      <path d="M 48 271.325942 
+L 903.965061 271.325942 
+" clip-path="url(#gb18fd6_p970f2cb2c6)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gb18fd6_line2d_13"/>
+     <g id="gb18fd6_text_12">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="276.05812" transform="rotate(-0 44.5 276.05812)">100</text>
+     </g>
+    </g>
+    <g id="gb18fd6_ytick_2">
+     <g id="gb18fd6_line2d_14">
+      <path d="M 48 216.725055 
+L 903.965061 216.725055 
+" clip-path="url(#gb18fd6_p970f2cb2c6)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gb18fd6_line2d_15"/>
+     <g id="gb18fd6_text_13">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="221.457233" transform="rotate(-0 44.5 221.457233)">200</text>
+     </g>
+    </g>
+    <g id="gb18fd6_ytick_3">
+     <g id="gb18fd6_line2d_16">
+      <path d="M 48 162.124169 
+L 903.965061 162.124169 
+" clip-path="url(#gb18fd6_p970f2cb2c6)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gb18fd6_line2d_17"/>
+     <g id="gb18fd6_text_14">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="166.856346" transform="rotate(-0 44.5 166.856346)">300</text>
+     </g>
+    </g>
+    <g id="gb18fd6_ytick_4">
+     <g id="gb18fd6_line2d_18">
+      <path d="M 48 107.523282 
+L 903.965061 107.523282 
+" clip-path="url(#gb18fd6_p970f2cb2c6)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gb18fd6_line2d_19"/>
+     <g id="gb18fd6_text_15">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="112.255459" transform="rotate(-0 44.5 112.255459)">400</text>
+     </g>
+    </g>
+    <g id="gb18fd6_ytick_5">
+     <g id="gb18fd6_line2d_20">
+      <path d="M 48 52.922395 
+L 903.965061 52.922395 
+" clip-path="url(#gb18fd6_p970f2cb2c6)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="gb18fd6_line2d_21"/>
+     <g id="gb18fd6_text_16">
+      <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: end; fill: #52514e" x="44.5" y="57.654572" transform="rotate(-0 44.5 57.654572)">500</text>
+     </g>
+    </g>
+   </g>
+   <g id="gb18fd6_line2d_22">
+    <path d="M 50.570466 248.939579 
+L 63.422794 270.233925 
+L 76.275122 275.148004 
+L 89.12745 274.055987 
+L 101.979779 269.141907 
+L 114.832107 286.068182 
+L 127.684435 262.043792 
+L 140.536763 268.049889 
+L 153.389092 269.141907 
+L 166.24142 259.313747 
+L 179.093748 254.399667 
+L 191.946076 260.951774 
+L 204.798405 259.313747 
+L 217.650733 259.313747 
+L 230.503061 268.049889 
+L 243.355389 247.301552 
+L 256.207718 238.019401 
+L 269.060046 251.669623 
+L 281.912374 232.013304 
+L 294.764702 227.645233 
+L 307.617031 239.657428 
+L 320.469359 226.007206 
+L 333.321687 233.105322 
+L 346.174015 233.65133 
+L 359.026343 222.185144 
+L 371.878672 238.56541 
+L 384.731 179.596452 
+L 397.583328 199.252772 
+L 410.435656 175.77439 
+L 423.287985 186.148559 
+L 436.140313 147.381929 
+L 448.992641 167.584257 
+L 461.844969 162.670177 
+L 474.697298 188.878603 
+L 487.549626 197.068736 
+L 500.401954 208.534922 
+L 513.254282 169.768293 
+L 526.106611 194.884701 
+L 538.958939 126.087583 
+L 551.811267 17.431818 
+L 564.663595 76.400776 
+L 577.515924 151.75 
+L 590.368252 169.222284 
+L 603.22058 128.817627 
+L 616.072908 164.854213 
+L 628.925237 126.087583 
+L 641.777565 105.885255 
+L 654.629893 186.148559 
+L 667.482221 135.915743 
+L 680.33455 143.013858 
+L 693.186878 180.68847 
+L 706.039206 173.590355 
+L 718.891534 69.84867 
+L 731.743863 79.676829 
+L 744.596191 52.376386 
+L 757.448519 26.713969 
+L 770.300847 140.283814 
+L 783.153176 140.829823 
+L 796.005504 150.111973 
+L 808.857832 140.283814 
+L 821.71016 120.081486 
+L 834.562489 150.111973 
+L 847.414817 124.995565 
+L 860.267145 117.351441 
+L 873.119473 141.375831 
+L 885.971801 139.737805 
+" clip-path="url(#gb18fd6_p970f2cb2c6)" style="fill: none; stroke: #2a78d6; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="gb18fd6_dato0" class="dato" tabindex="0"><title>ene 2020 · fallos por mes: 141</title>
+    <defs>
+     <path id="gb18fd6_me6bf60eb94" d="M 0 5 
+C 1.326016 5 2.597899 4.473168 3.535534 3.535534 
+C 4.473168 2.597899 5 1.326016 5 0 
+C 5 -1.326016 4.473168 -2.597899 3.535534 -3.535534 
+C 2.597899 -4.473168 1.326016 -5 0 -5 
+C -1.326016 -5 -2.597899 -4.473168 -3.535534 -3.535534 
+C -4.473168 -2.597899 -5 -1.326016 -5 0 
+C -5 1.326016 -4.473168 2.597899 -3.535534 3.535534 
+C -2.597899 4.473168 -1.326016 5 0 5 
+z
+" style="stroke: #2a78d6; stroke-opacity: 0"/>
+    </defs>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="50.570466" y="248.939579" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato1" class="dato" tabindex="0"><title>feb 2020 · fallos por mes: 102</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="63.422794" y="270.233925" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato2" class="dato" tabindex="0"><title>mar 2020 · fallos por mes: 93</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="76.275122" y="275.148004" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato3" class="dato" tabindex="0"><title>abr 2020 · fallos por mes: 95</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="89.12745" y="274.055987" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato4" class="dato" tabindex="0"><title>may 2020 · fallos por mes: 104</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="101.979779" y="269.141907" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato5" class="dato" tabindex="0"><title>jun 2020 · fallos por mes: 73</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="114.832107" y="286.068182" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato6" class="dato" tabindex="0"><title>jul 2020 · fallos por mes: 117</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="127.684435" y="262.043792" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato7" class="dato" tabindex="0"><title>ago 2020 · fallos por mes: 106</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="140.536763" y="268.049889" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato8" class="dato" tabindex="0"><title>sep 2020 · fallos por mes: 104</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="153.389092" y="269.141907" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato9" class="dato" tabindex="0"><title>oct 2020 · fallos por mes: 122</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="166.24142" y="259.313747" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato10" class="dato" tabindex="0"><title>nov 2020 · fallos por mes: 131</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="179.093748" y="254.399667" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato11" class="dato" tabindex="0"><title>dic 2020 · fallos por mes: 119</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="191.946076" y="260.951774" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato12" class="dato" tabindex="0"><title>ene 2021 · fallos por mes: 122</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="204.798405" y="259.313747" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato13" class="dato" tabindex="0"><title>feb 2021 · fallos por mes: 122</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="217.650733" y="259.313747" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato14" class="dato" tabindex="0"><title>mar 2021 · fallos por mes: 106</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="230.503061" y="268.049889" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato15" class="dato" tabindex="0"><title>abr 2021 · fallos por mes: 144</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="243.355389" y="247.301552" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato16" class="dato" tabindex="0"><title>may 2021 · fallos por mes: 161</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="256.207718" y="238.019401" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato17" class="dato" tabindex="0"><title>jun 2021 · fallos por mes: 136</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="269.060046" y="251.669623" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato18" class="dato" tabindex="0"><title>jul 2021 · fallos por mes: 172</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="281.912374" y="232.013304" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato19" class="dato" tabindex="0"><title>ago 2021 · fallos por mes: 180</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="294.764702" y="227.645233" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato20" class="dato" tabindex="0"><title>sep 2021 · fallos por mes: 158</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="307.617031" y="239.657428" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato21" class="dato" tabindex="0"><title>oct 2021 · fallos por mes: 183</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="320.469359" y="226.007206" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato22" class="dato" tabindex="0"><title>nov 2021 · fallos por mes: 170</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="333.321687" y="233.105322" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato23" class="dato" tabindex="0"><title>dic 2021 · fallos por mes: 169</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="346.174015" y="233.65133" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato24" class="dato" tabindex="0"><title>ene 2022 · fallos por mes: 190</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="359.026343" y="222.185144" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato25" class="dato" tabindex="0"><title>feb 2022 · fallos por mes: 160</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="371.878672" y="238.56541" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato26" class="dato" tabindex="0"><title>mar 2022 · fallos por mes: 268</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="384.731" y="179.596452" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato27" class="dato" tabindex="0"><title>abr 2022 · fallos por mes: 232</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="397.583328" y="199.252772" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato28" class="dato" tabindex="0"><title>may 2022 · fallos por mes: 275</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="410.435656" y="175.77439" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato29" class="dato" tabindex="0"><title>jun 2022 · fallos por mes: 256</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="423.287985" y="186.148559" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato30" class="dato" tabindex="0"><title>jul 2022 · fallos por mes: 327</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="436.140313" y="147.381929" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato31" class="dato" tabindex="0"><title>ago 2022 · fallos por mes: 290</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="448.992641" y="167.584257" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato32" class="dato" tabindex="0"><title>sep 2022 · fallos por mes: 299</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="461.844969" y="162.670177" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato33" class="dato" tabindex="0"><title>oct 2022 · fallos por mes: 251</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="474.697298" y="188.878603" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato34" class="dato" tabindex="0"><title>nov 2022 · fallos por mes: 236</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="487.549626" y="197.068736" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato35" class="dato" tabindex="0"><title>dic 2022 · fallos por mes: 215</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="500.401954" y="208.534922" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato36" class="dato" tabindex="0"><title>ene 2023 · fallos por mes: 286</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="513.254282" y="169.768293" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato37" class="dato" tabindex="0"><title>feb 2023 · fallos por mes: 240</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="526.106611" y="194.884701" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato38" class="dato" tabindex="0"><title>mar 2023 · fallos por mes: 366</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="538.958939" y="126.087583" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato39" class="dato" tabindex="0"><title>abr 2023 · fallos por mes: 565</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="551.811267" y="17.431818" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato40" class="dato" tabindex="0"><title>may 2023 · fallos por mes: 457</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="564.663595" y="76.400776" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato41" class="dato" tabindex="0"><title>jun 2023 · fallos por mes: 319</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="577.515924" y="151.75" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato42" class="dato" tabindex="0"><title>jul 2023 · fallos por mes: 287</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="590.368252" y="169.222284" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato43" class="dato" tabindex="0"><title>ago 2023 · fallos por mes: 361</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="603.22058" y="128.817627" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato44" class="dato" tabindex="0"><title>sep 2023 · fallos por mes: 295</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="616.072908" y="164.854213" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato45" class="dato" tabindex="0"><title>oct 2023 · fallos por mes: 366</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="628.925237" y="126.087583" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato46" class="dato" tabindex="0"><title>nov 2023 · fallos por mes: 403</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="641.777565" y="105.885255" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato47" class="dato" tabindex="0"><title>dic 2023 · fallos por mes: 256</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="654.629893" y="186.148559" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato48" class="dato" tabindex="0"><title>ene 2024 · fallos por mes: 348</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="667.482221" y="135.915743" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato49" class="dato" tabindex="0"><title>feb 2024 · fallos por mes: 335</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="680.33455" y="143.013858" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato50" class="dato" tabindex="0"><title>mar 2024 · fallos por mes: 266</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="693.186878" y="180.68847" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato51" class="dato" tabindex="0"><title>abr 2024 · fallos por mes: 279</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="706.039206" y="173.590355" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato52" class="dato" tabindex="0"><title>may 2024 · fallos por mes: 469</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="718.891534" y="69.84867" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato53" class="dato" tabindex="0"><title>jun 2024 · fallos por mes: 451</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="731.743863" y="79.676829" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato54" class="dato" tabindex="0"><title>jul 2024 · fallos por mes: 501</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="744.596191" y="52.376386" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato55" class="dato" tabindex="0"><title>ago 2024 · fallos por mes: 548</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="757.448519" y="26.713969" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato56" class="dato" tabindex="0"><title>sep 2024 · fallos por mes: 340</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="770.300847" y="140.283814" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato57" class="dato" tabindex="0"><title>oct 2024 · fallos por mes: 339</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="783.153176" y="140.829823" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato58" class="dato" tabindex="0"><title>nov 2024 · fallos por mes: 322</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="796.005504" y="150.111973" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato59" class="dato" tabindex="0"><title>dic 2024 · fallos por mes: 340</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="808.857832" y="140.283814" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato60" class="dato" tabindex="0"><title>ene 2025 · fallos por mes: 377</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="821.71016" y="120.081486" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato61" class="dato" tabindex="0"><title>feb 2025 · fallos por mes: 322</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="834.562489" y="150.111973" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato62" class="dato" tabindex="0"><title>mar 2025 · fallos por mes: 368</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="847.414817" y="124.995565" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato63" class="dato" tabindex="0"><title>abr 2025 · fallos por mes: 382</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="860.267145" y="117.351441" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato64" class="dato" tabindex="0"><title>may 2025 · fallos por mes: 338</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="873.119473" y="141.375831" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_dato65" class="dato" tabindex="0"><title>jun 2025 · fallos por mes: 341</title>
+    <g clip-path="url(#gb18fd6_p970f2cb2c6)">
+     <use xlink:href="#gb18fd6_me6bf60eb94" x="885.971801" y="139.737805" style="fill: #2a78d6; fill-opacity: 0; stroke: #2a78d6; stroke-opacity: 0"/>
+    </g>
+   </g>
+   <g id="gb18fd6_patch_3">
+    <path d="M 48 299.5 
+L 903.965061 299.5 
+" style="fill: none; stroke: #898781; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="gb18fd6_text_17">
+    <text style="font-size: 13px; font-family: 'Segoe UI', system-ui, sans-serif; text-anchor: start; fill: #0b0b0b" x="886.999988" y="143.123899" transform="rotate(-0 886.999988 143.123899)">fallos por mes 341</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="gb18fd6_p970f2cb2c6">
+   <rect x="48" y="4" width="855.965061" height="295.5"/>
+  </clipPath>
+ </defs>
+</svg>
+<p class="g-fuente">Fuente: 66 periodos</p></div>
+<table><thead><tr><th>serie</th><th class="num">periodos completos</th><th class="num">pendiente por periodo</th><th class="num">R² lineal</th><th class="num">crecimiento exponencial</th><th class="num">R² exponencial</th><th class="num">CAGR</th><th>años completos</th></tr></thead><tbody><tr><td>días de disco por mes</td><td class="num">66</td><td class="num">88.957,8</td><td class="num">0,984</td><td class="num">1,39 %</td><td class="num">0,962</td><td class="num">19,25 %</td><td>2020, 2021, 2022, 2023, 2024</td></tr><tr><td>fallos por mes</td><td class="num">66</td><td class="num">5,3</td><td class="num">0,705</td><td class="num">2,41 %</td><td class="num">0,791</td><td class="num">36,50 %</td><td>2020, 2021, 2022, 2023, 2024</td></tr></tbody></table>
+<h2>Frente al objetivo</h2>
+<p>No aplica: esta tabla no lleva el objetivo. Se describe entera, con los dos periodos, porque la parte analítica usa todos los datos de trabajo (reglas-negocio §7).</p>
+<h2>Hallazgos principales</h2>
+<p>Ninguna comparación se sostiene al separar por fabricante y capacidad: todo pasa a alertas.</p>
+<h2>Alertas y limitaciones</h2><ul>
+<li>A-01. Tasa anual de fallo por centro: 2,07 % en sac2 (2.546 fallos en 44.890.413 días de disco) frente a 0,34 % en yyz1 (6 fallos en 651.306). Al separar por fabricante, capacidad_tb cambia: tasa anual de fallo por centro: la diferencia entre sac2 y yyz1 es de 1,73 puntos en el total y de 0,64 dentro de fabricante = Toshiba: cambia de tamaño.; tasa anual de fallo por centro: la diferencia entre sac2 y yyz1 es de 1,73 puntos en el total y de 0,37 dentro de fabricante = WDC: cambia de tamaño.; tasa anual de fallo por centro: la diferencia entre sac2 y yyz1 es de 1,73 puntos en el total y de −0,01 dentro de capacidad_tb = 20: se invierte. (y 1 más)</li>
+<li>A-02. Desde el 01/07/2023, el centro «sin dato» suma 6.621.213 días de disco y 128 fallos, contados aparte. Antes, el centro no consta. Origen: transformacion-datos, exclusiones.</li>
+<li>A-03. La tasa por centro es bruta: mezcla modelos y edades. La ajustada es del paso 5 (reglas-negocio §7). La vista por fabricante y capacidad sale de dias_por_tramo, que deja fuera los días de disco sin foto (reglas-transformacion §6).</li>
+</ul>
+<h2>Hipótesis y preguntas abiertas</h2>
+<ul><li>Hi-01. El cambio de tasa anual de fallo por centro al separar puede venir de que cada grupo tiene otra mezcla de modelos y edades. Haría falta compararla a igual modelo y edad, que es del paso 5 (reglas-negocio §7). Alternativas repasadas: el tamaño del grupo, el calendario, la regresión a la media, la causa al revés, una variable que no está en la tabla (edad, vault).</li></ul>
+<h2>Observaciones de la persona</h2>
+<p>Todavía no hay observaciones. La persona las escribe en «observaciones» del JSON y se vuelve a ejecutar.</p>
+<h2>Comprobaciones aplicadas</h2>
+<table><thead><tr><th>comprobación</th><th>estado</th><th>detalle</th></tr></thead><tbody><tr><td>1 Tiempo</td><td>aplicada con resultado</td><td>ordenado por fecha; dos granularidades (mes o trimestre y año); periodos incompletos: ninguno; el primer mes de las fotos es ene 2020</td></tr><tr><td>2 Pareto y ABC</td><td>aplicada con resultado</td><td>fallos por centros: el 42,9 % de los elementos suma el 80 %</td></tr><tr><td>3 Respaldo de cada cifra</td><td>aplicada con resultado</td><td>cada hallazgo lleva su cifra, sus filas y sus columnas</td></tr><tr><td>4 Datos personales en el informe</td><td>aplicada sin nada relevante</td><td>ninguna columna trae nombres, correos, teléfonos, documentos ni cuentas (reglas-negocio §9); el número de serie identifica un disco y no sale en ningún gráfico</td></tr><tr><td>5 Códigos sin etiqueta</td><td>aplicada sin nada relevante</td><td>todas las columnas tienen su significado en las reglas de transformación</td></tr><tr><td>6 Reproducibilidad</td><td>aplicada con resultado</td><td>versiones, fecha de ejecución, tamaño y huella en «Contexto»</td></tr><tr><td>7 Correlaciones</td><td>no aplica</td><td>esta tabla no lleva el objetivo y nadie pidió correlaciones</td></tr><tr><td>8 Forma de las hipótesis</td><td>aplicada con resultado</td><td>1 hipótesis, cada una con lo que haría falta y las cinco alternativas repasadas</td></tr><tr><td>9 Variables asimétricas</td><td>aplicada sin nada relevante</td><td>ninguna numérica con la media lejos de la mediana</td></tr><tr><td>10 Gráficos</td><td>aplicada con resultado</td><td>un eje por gráfico, color por papel, meses con su nombre, títulos calculados del dato; gráficos repetidos quitados: ninguno</td></tr><tr><td>11 Series de negocio</td><td>aplicada con resultado</td><td>días de disco por mes: 66 periodos completos, CAGR 19,25 %; fallos por mes: 66 periodos completos, CAGR 36,50 %</td></tr><tr><td>12 Frente al objetivo</td><td>no aplica</td><td>esta tabla no lleva el objetivo; se describe entera, con los dos periodos (reglas-negocio §7)</td></tr><tr><td>13 Discreta o continua</td><td>aplicada con resultado</td><td>discreta si es entera y tiene como mucho min(20, 5 % de las filas) valores distintos; 0 discretas y 2 continuas</td></tr><tr><td>14 Texto</td><td>no aplica</td><td>no hay columnas de texto libre</td></tr><tr><td>15 Alta cardinalidad</td><td>aplicada sin nada relevante</td><td>ninguna categórica pasa de 50 valores</td></tr><tr><td>16 Observaciones de la persona</td><td>aplicada sin nada relevante</td><td>apartado vacío: la persona escribe sus observaciones y se vuelve a ejecutar</td></tr><tr><td>17 La tabla de estadísticos se lee</td><td>aplicada sin nada relevante</td><td>ninguna de las cuatro señales</td></tr><tr><td>18 Lo esperable</td><td>no aplica</td><td>las reglas de negocio no tienen la tabla «Lo esperable»</td></tr></tbody></table>
+<h2>Parámetros usados</h2>
+<table><thead><tr><th>parámetro</th><th>valor</th><th>de dónde sale</th></tr></thead><tbody><tr><td>numérica discreta</td><td>entera y con como mucho min(20, 5 % de las filas) valores distintos</td><td>por defecto (parametros.md)</td></tr><tr><td>filas mínimas para comparar una categoría frente al objetivo</td><td>30</td><td>por defecto (parametros.md)</td></tr><tr><td>alta cardinalidad</td><td>más de 50 valores distintos</td><td>por defecto</td></tr><tr><td>las más frecuentes en alta cardinalidad</td><td>10</td><td>por defecto</td></tr><tr><td>texto muy corto</td><td>menos de 3 caracteres</td><td>por defecto; no hay texto libre</td></tr><tr><td>diagrama de caja</td><td>no se dibuja ninguno: todas las tablas pasan de 1.000 filas o el histograma ya lo enseña</td><td>por defecto</td></tr><tr><td>parte con que se cruza el objetivo</td><td>construcción</td><td>reglas-negocio §7, la partición por fecha</td></tr><tr><td>muestra fija de fotos</td><td>400000 fotos, semilla 42</td><td>encargo y criterio de este análisis</td></tr><tr><td>valores distintos que se siguen por columna al leer por bloques</td><td>60</td><td>criterio de este análisis, por encima del límite de discreta y del de alta cardinalidad</td></tr><tr><td>diferencia frente al objetivo</td><td>|2·AUC − 1|; se dibujan las de 0.1 o más; posible fuga desde 0.9</td><td>criterio de este análisis, fijado antes de calcular</td></tr><tr><td>cambio al separar</td><td>se invierte, o la diferencia del grupo es menos de 1/2 o más de 2 veces la del total</td><td>criterio de este análisis, fijado antes de calcular</td></tr><tr><td>días mínimos para comparar una tasa anual</td><td>50000</td><td>reglas-negocio §7, mínimo del ranking</td></tr><tr><td>fallos mínimos para concluir sobre un año de edad</td><td>20</td><td>reglas-negocio §7, CP-009</td></tr><tr><td>señales de la tabla de estadísticos</td><td>media y mediana a más de 0.5 desviaciones; máximo / mínimo positivo de 1.000 o más</td><td>criterio de este análisis</td></tr><tr><td>correlación fuerte</td><td>|r| ≥ 0.9</td><td>criterio de este análisis</td></tr><tr><td>anomalía en una serie de volumen</td><td>un periodo fuera de 0.8 a 1.25 veces la mediana de los 3 periodos de cada lado</td><td>criterio de este análisis</td></tr><tr><td>media móvil</td><td>3 meses o 4 trimestres</td><td>criterio de este análisis</td></tr></tbody></table>
+<h2>Datos personales</h2><p>No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.</p><p>No hay datos de personas (reglas-negocio §9): el número de serie identifica un disco, no a una persona.</p><p>Este exploratorio no usa ni deja ninguna columna de datos personales.</p>
+<h2>Siguiente paso</h2>
+<p>Con esto basta: paso 5: los bloques del plan de la analítica con esta tabla.</p></div></main></body></html>

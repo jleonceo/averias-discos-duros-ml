@@ -1,0 +1,1942 @@
+{
+ "skill": "aprendizaje-automatico",
+ "version_skill": "16/11/2026 (WF-153)",
+ "script": "scripts/15_modelado.py",
+ "encargo": "prompts/21_encargo_preseleccion_competicion_y_ganador.md, segunda y tercera parte, con sus dos notas",
+ "fecha_datos": "2025-06-30",
+ "fecha_ejecucion": "2026-11-19T00:51:14",
+ "entradas": [
+  {
+   "ruta": "informes/preseleccion.json",
+   "estado": "AVISO",
+   "motivo": "en AVISO, con cada pendiente decidido por Juan: P-01, seguir con la lista de la semilla 42 (Juan, 18/11/2026, R-023)"
+  },
+  {
+   "ruta": "data/processed/fotos_riesgo_entrenamiento.parquet",
+   "sha256": "876b3793c788dcbfbda8a9262ef6e483ac626efbbd078f24e59bbab2bd8553e0",
+   "filas": 11026052
+  }
+ ],
+ "resultado": {
+  "estado": "OK",
+  "riesgo": "bajo",
+  "resumen": "La validación, abierta una vez, da por bueno el modelo: en la lista de 100 encuentra de media 16,33 fallos más que la regla por mes (intervalo 14,00 a 18,92) y su AUC es 0,898.",
+  "artefactos": [
+   "informes/modelado.json",
+   "informes/modelado_busqueda.csv",
+   "informes/modelado.md"
+  ],
+  "siguiente": "preproduccion, con la receta del ganador"
+ },
+ "pendientes": [],
+ "leidos": [
+  "informes/preseleccion.json",
+  "contexto-proyecto/modelo/matriz_transformaciones.md",
+  "data/processed/fotos_riesgo_entrenamiento.parquet",
+  "data/processed/fotos_riesgo_validacion.parquet"
+ ],
+ "rama": "si_no",
+ "hace_falta_modelar": {
+  "respuesta": true,
+  "por_que": "la pregunta 4 pide ordenar cada disco por su riesgo (planteamientos, 2)"
+ },
+ "puerta_contestable": {
+  "aplica": false,
+  "por_que": "la decisión es sobre discos y no afecta a personas (planteamientos 1.C)"
+ },
+ "aprobado_antes": {
+  "medida_principal": "los fallos encontrados entre los 100 discos de más riesgo de cada mes",
+  "por_que": "Es lo que mide el negocio: de los N discos de más riesgo, cuántos fallan (reglas §7).",
+  "referencias": [
+   "la regla de los cinco contadores (CP-010)",
+   "el trivial, DummyClassifier(strategy=\"prior\")"
+  ],
+  "se_da_por_bueno": "en la validación el modelo encuentra en esa lista más fallos que la regla, con el intervalo de la diferencia por encima de cero, y su AUC es 0,70 o más.",
+  "minimo_de_casos": 20,
+  "fuente": "contexto-proyecto/metodo/04_planteamientos.md, 1.C"
+ },
+ "preseleccion_estado": "en AVISO, con cada pendiente decidido por Juan: P-01, seguir con la lista de la semilla 42 (Juan, 18/11/2026, R-023)",
+ "validacion_cruzada": {
+  "tipo": "por fecha, bloques de tres meses, sin barajar",
+  "pliegues": 5,
+  "semilla": 42,
+  "grupo": null,
+  "test_size": null,
+  "gap": null,
+  "objetivo_sin_conocer": [
+   {
+    "entrenamiento": "pliegue que mide 2023-04-01",
+    "conocido_desde": "2023-04-01",
+    "filas_quitadas": 0,
+    "eventos_quitados": 0
+   },
+   {
+    "entrenamiento": "pliegue que mide 2023-07-01",
+    "conocido_desde": "2023-07-01",
+    "filas_quitadas": 241229,
+    "eventos_quitados": 308
+   },
+   {
+    "entrenamiento": "pliegue que mide 2023-10-01",
+    "conocido_desde": "2023-10-01",
+    "filas_quitadas": 256289,
+    "eventos_quitados": 289
+   },
+   {
+    "entrenamiento": "pliegue que mide 2024-01-01",
+    "conocido_desde": "2024-01-01",
+    "filas_quitadas": 0,
+    "eventos_quitados": 0
+   },
+   {
+    "entrenamiento": "pliegue que mide 2024-04-01",
+    "conocido_desde": "2024-04-01",
+    "filas_quitadas": 0,
+    "eventos_quitados": 0
+   },
+   {
+    "entrenamiento": "ajuste final",
+    "conocido_desde": "2024-07-01",
+    "filas_quitadas": 0,
+    "eventos_quitados": 0
+   }
+  ],
+  "pliegues_detalle": [
+   {
+    "bloque": 1,
+    "desde": "2023-04-01",
+    "hasta": "2023-06-30",
+    "filas_mide": 717312,
+    "fallos_mide": 1297,
+    "filas_entrena": 7103763,
+    "fallos_entrena": 6760,
+    "filas_quitadas": 0,
+    "fallos_quitados": 0,
+    "muestra": {
+     "filas": 148698,
+     "fallos": 6760,
+     "sanas": 141938
+    },
+    "hoja": 1487,
+    "tasa_muestra": 0.04546127049455944,
+    "tasa_real": 0.0009516083236448063,
+    "horizonte_max": "2023-03-31",
+    "horizonte_cerrado": true,
+    "fallos_por_pliegue_minimo": 20
+   },
+   {
+    "bloque": 2,
+    "desde": "2023-07-01",
+    "hasta": "2023-09-30",
+    "filas_mide": 752057,
+    "fallos_mide": 905,
+    "filas_entrena": 7579846,
+    "fallos_entrena": 7749,
+    "filas_quitadas": 241229,
+    "fallos_quitados": 308,
+    "muestra": {
+     "filas": 159189,
+     "fallos": 7749,
+     "sanas": 151440
+    },
+    "hoja": 1592,
+    "tasa_muestra": 0.0486779865442964,
+    "tasa_real": 0.0010223162845260972,
+    "horizonte_max": "2023-05-31",
+    "horizonte_cerrado": true,
+    "fallos_por_pliegue_minimo": 20
+   },
+   {
+    "bloque": 3,
+    "desde": "2023-10-01",
+    "hasta": "2023-12-31",
+    "filas_mide": 795015,
+    "fallos_mide": 994,
+    "filas_entrena": 8316843,
+    "fallos_entrena": 8673,
+    "filas_quitadas": 256289,
+    "fallos_quitados": 289,
+    "muestra": {
+     "filas": 174834,
+     "fallos": 8673,
+     "sanas": 166161
+    },
+    "hoja": 1748,
+    "tasa_muestra": 0.04960705583582141,
+    "tasa_real": 0.0010428235810150557,
+    "horizonte_max": "2023-08-31",
+    "horizonte_cerrado": true,
+    "fallos_por_pliegue_minimo": 20
+   },
+   {
+    "bloque": 4,
+    "desde": "2024-01-01",
+    "hasta": "2024-03-31",
+    "filas_mide": 814408,
+    "fallos_mide": 906,
+    "filas_entrena": 9368147,
+    "fallos_entrena": 9956,
+    "filas_quitadas": 0,
+    "fallos_quitados": 0,
+    "muestra": {
+     "filas": 197117,
+     "fallos": 9956,
+     "sanas": 187161
+    },
+    "hoja": 1971,
+    "tasa_muestra": 0.05050807388505304,
+    "tasa_real": 0.0010627501895518932,
+    "horizonte_max": "2023-12-31",
+    "horizonte_cerrado": true,
+    "fallos_por_pliegue_minimo": 20
+   },
+   {
+    "bloque": 5,
+    "desde": "2024-04-01",
+    "hasta": "2024-06-30",
+    "filas_mide": 843497,
+    "fallos_mide": 1100,
+    "filas_entrena": 10182555,
+    "fallos_entrena": 10862,
+    "filas_quitadas": 0,
+    "fallos_quitados": 0,
+    "muestra": {
+     "filas": 214294,
+     "fallos": 10862,
+     "sanas": 203432
+    },
+    "hoja": 2143,
+    "tasa_muestra": 0.05068737342156103,
+    "tasa_real": 0.0010667263766314054,
+    "horizonte_max": "2024-03-31",
+    "horizonte_cerrado": true,
+    "fallos_por_pliegue_minimo": 20
+   }
+  ]
+ },
+ "desequilibrio": {
+  "regla": "equilibrado",
+  "por_que": "La regla del caso (reglas §7) entrena con todas las fotos con fallo y el 2 % de las sanas de cada mes, solo al ajustar cada pliegue; lo medido conserva la proporción real. La probabilidad del ganador se recalibra con la corrección del prior sobre el logit.",
+  "metodo": "submuestreo de las sanas, semilla 42",
+  "recalibracion": {
+   "metodo": "corrección del prior sobre el logit (desequilibrio.md, «Recalibrar»)",
+   "tasa_muestra": 0.05150639631765005,
+   "tasa_real": 0.0010848851429323932
+  }
+ },
+ "busqueda": {
+  "nivel": "equilibrado",
+  "tipo": "rejilla en la logística; aleatoria en el bosque y el HistGradientBoosting",
+  "como": "Cada búsqueda usa ParameterGrid o ParameterSampler de scikit-learn y los cinco pliegues por fecha, y puntúa cada bloque por trozos; no usa RandomizedSearchCV porque la muestra se toma solo en la parte que entrena de cada pliegue y el bloque medido no cabe en memoria transformado.",
+  "modelos_estimados": 230,
+  "medida": "media de los fallos en la lista de 100 de los meses del bloque",
+  "tabla": "informes/modelado_busqueda.csv",
+  "rejillas_ampliadas": [
+   "bosque aleatorio, max_features hasta 0,7000",
+   "bosque aleatorio, max_depth hasta 20",
+   "HistGradientBoosting, max_iter hasta 1000",
+   "HistGradientBoosting, learning_rate hasta 0,0125"
+  ],
+  "espacio": [
+   {
+    "algoritmo": "logistica",
+    "combinaciones": 12,
+    "probadas": 12
+   },
+   {
+    "algoritmo": "bosque",
+    "combinaciones": 54,
+    "probadas": 17
+   },
+   {
+    "algoritmo": "hgb",
+    "combinaciones": 81,
+    "probadas": 17
+   }
+  ],
+  "segundas_busquedas": [
+   {
+    "algoritmo": "bosque",
+    "que_contesta": "max_features en el borde (0.5); se prueba 0.7",
+    "mejora": 0.00717906972109148,
+    "desviacion": 1.6141713835077243,
+    "se_queda": false,
+    "ronda": 1
+   },
+   {
+    "algoritmo": "bosque",
+    "que_contesta": "max_depth en el borde (15); se prueba 20",
+    "mejora": -0.5314261422957067,
+    "desviacion": 0.9656434127375227,
+    "se_queda": false,
+    "ronda": 1
+   },
+   {
+    "algoritmo": "hgb",
+    "que_contesta": "max_iter en el borde (500); se prueba 1000",
+    "mejora": 0.7333333333333314,
+    "desviacion": 0.8628119403696536,
+    "se_queda": false,
+    "ronda": 1
+   },
+   {
+    "algoritmo": "hgb",
+    "que_contesta": "learning_rate en el borde (0.025); se prueba 0.0125",
+    "mejora": -0.2,
+    "desviacion": 1.0954451150103324,
+    "se_queda": false,
+    "ronda": 1
+   }
+  ]
+ },
+ "ranking": [
+  {
+   "algoritmo": "hgb",
+   "hiperparametros": {
+    "min_samples_leaf": "hoja",
+    "max_iter": 500,
+    "max_depth": null,
+    "learning_rate": 0.025,
+    "l2_regularization": 0.5
+   },
+   "cv_media": 36.13333333333334,
+   "cv_desviacion": 5.965642370180173,
+   "cv_por_pliegue": [
+    42.333333333333336,
+    37.0,
+    41.333333333333336,
+    30.666666666666668,
+    29.333333333333332
+   ],
+   "listas": {
+    "20": 10.133333333333333,
+    "100": 36.13333333333333,
+    "500": 97.6,
+    "1000": 131.73333333333332
+   },
+   "cv_auc_media": 0.8731395727396473,
+   "cv_pr_auc_media": 0.14546874840911314,
+   "filas": "fuera de pliegue",
+   "entrenamiento_media": 0.9045642494773656,
+   "entrenamiento_medida": "AUC en las filas del ajuste de cada pliegue",
+   "filas_entrenamiento": "entrenamiento"
+  },
+  {
+   "algoritmo": "bosque",
+   "hiperparametros": {
+    "n_estimators": 100,
+    "min_samples_leaf": "hoja",
+    "max_features": 0.5,
+    "max_depth": 15
+   },
+   "cv_media": 29.370827155226134,
+   "cv_desviacion": 5.204161106837576,
+   "cv_por_pliegue": [
+    35.09595959595959,
+    30.51086956521739,
+    31.80952380952381,
+    28.25641025641026,
+    21.18137254901961
+   ],
+   "listas": {
+    "20": 6.313058796844834,
+    "100": 29.370827155226134,
+    "500": 86.55238095238094,
+    "1000": 116.75717615717618
+   },
+   "cv_auc_media": 0.8634605585883864,
+   "cv_pr_auc_media": 0.10116395735188013,
+   "filas": "fuera de pliegue",
+   "entrenamiento_media": 0.8641768540366532,
+   "entrenamiento_medida": "AUC en las filas del ajuste de cada pliegue",
+   "filas_entrenamiento": "entrenamiento"
+  },
+  {
+   "algoritmo": "logistica",
+   "hiperparametros": {
+    "C": 1.5199110829529332
+   },
+   "cv_media": 28.2,
+   "cv_desviacion": 6.392704174812619,
+   "cv_por_pliegue": [
+    34.333333333333336,
+    29.333333333333332,
+    34.0,
+    23.333333333333332,
+    20.0
+   ],
+   "listas": {
+    "20": 8.466666666666667,
+    "100": 28.2,
+    "500": 69.06666666666666,
+    "1000": 104.93333333333334
+   },
+   "cv_auc_media": 0.8564725409247422,
+   "cv_pr_auc_media": 0.09623608492950311,
+   "filas": "fuera de pliegue",
+   "entrenamiento_media": 0.8459962852407414,
+   "entrenamiento_medida": "AUC en las filas del ajuste de cada pliegue",
+   "filas_entrenamiento": "entrenamiento"
+  }
+ ],
+ "referencias_cv": [
+  {
+   "nombre": "regla de los cinco contadores",
+   "valor": 20.466666666666665,
+   "desviacion": 5.500505027318451,
+   "por_pliegue": [
+    27.333333333333332,
+    20.333333333333332,
+    24.333333333333332,
+    16.333333333333332,
+    14.0
+   ],
+   "auc": 0.8232980901509915,
+   "filas": "fuera de pliegue"
+  },
+  {
+   "nombre": "trivial",
+   "valor": 0.1336411936860545,
+   "desviacion": 0.027451647165033084,
+   "por_pliegue": [
+    0.18111109505272086,
+    0.12019435178901218,
+    0.1252689515560296,
+    0.11130037692857192,
+    0.1303311931039379
+   ],
+   "auc": 0.5,
+   "filas": "fuera de pliegue"
+  }
+ ],
+ "referencias_por_mes": {
+  "regla": [
+   {
+    "filas": 237270,
+    "fallos": 559,
+    "lista_20": 7.0,
+    "lista_100": 20.0,
+    "lista_500": 73.0,
+    "lista_1000": 139.625,
+    "auc": 0.8290218844263111,
+    "pr_auc": 0.08696144775356798,
+    "mes": "2023-04-01"
+   },
+   {
+    "filas": 238813,
+    "fallos": 430,
+    "lista_20": 9.0,
+    "lista_100": 28.0,
+    "lista_500": 81.0,
+    "lista_1000": 121.0,
+    "auc": 0.8203444691164864,
+    "pr_auc": 0.10368186402345458,
+    "mes": "2023-05-01"
+   },
+   {
+    "filas": 241229,
+    "fallos": 308,
+    "lista_20": 12.0,
+    "lista_100": 34.0,
+    "lista_500": 59.0,
+    "lista_1000": 95.3529411764706,
+    "auc": 0.8412965245868979,
+    "pr_auc": 0.12048957255285221,
+    "mes": "2023-06-01"
+   },
+   {
+    "filas": 241284,
+    "fallos": 268,
+    "lista_20": 8.0,
+    "lista_100": 17.0,
+    "lista_500": 33.0,
+    "lista_1000": 56.0,
+    "auc": 0.7990507318768457,
+    "pr_auc": 0.04494118139027365,
+    "mes": "2023-07-01"
+   },
+   {
+    "filas": 254484,
+    "fallos": 348,
+    "lista_20": 7.0,
+    "lista_100": 26.0,
+    "lista_500": 49.0,
+    "lista_1000": 78.0,
+    "auc": 0.795497999487287,
+    "pr_auc": 0.0669133309083415,
+    "mes": "2023-08-01"
+   },
+   {
+    "filas": 256289,
+    "fallos": 289,
+    "lista_20": 5.0,
+    "lista_100": 18.0,
+    "lista_500": 52.0,
+    "lista_1000": 79.0,
+    "auc": 0.8471688811094289,
+    "pr_auc": 0.061859287734811905,
+    "mes": "2023-09-01"
+   },
+   {
+    "filas": 260727,
+    "fallos": 356,
+    "lista_20": 12.0,
+    "lista_100": 30.0,
+    "lista_500": 59.0,
+    "lista_1000": 95.75,
+    "auc": 0.8172037920479848,
+    "pr_auc": 0.09046712623625074,
+    "mes": "2023-10-01"
+   },
+   {
+    "filas": 265200,
+    "fallos": 398,
+    "lista_20": 4.0,
+    "lista_100": 24.0,
+    "lista_500": 53.0,
+    "lista_1000": 94.0,
+    "auc": 0.8058816744047576,
+    "pr_auc": 0.059835521590611104,
+    "mes": "2023-11-01"
+   },
+   {
+    "filas": 269088,
+    "fallos": 240,
+    "lista_20": 7.0,
+    "lista_100": 19.0,
+    "lista_500": 39.0,
+    "lista_1000": 70.0,
+    "auc": 0.8606872346703962,
+    "pr_auc": 0.07150624896261953,
+    "mes": "2023-12-01"
+   },
+   {
+    "filas": 270257,
+    "fallos": 326,
+    "lista_20": 7.0,
+    "lista_100": 19.0,
+    "lista_500": 46.0,
+    "lista_1000": 73.0,
+    "auc": 0.8228222343028676,
+    "pr_auc": 0.06321863824311663,
+    "mes": "2024-01-01"
+   },
+   {
+    "filas": 271324,
+    "fallos": 338,
+    "lista_20": 6.0,
+    "lista_100": 20.0,
+    "lista_500": 41.0,
+    "lista_1000": 79.0,
+    "auc": 0.8185033041948018,
+    "pr_auc": 0.05733966729539883,
+    "mes": "2024-02-01"
+   },
+   {
+    "filas": 272827,
+    "fallos": 242,
+    "lista_20": 4.0,
+    "lista_100": 10.0,
+    "lista_500": 28.0,
+    "lista_1000": 48.0,
+    "auc": 0.795245231717091,
+    "pr_auc": 0.02802266039846779,
+    "mes": "2024-03-01"
+   },
+   {
+    "filas": 279566,
+    "fallos": 273,
+    "lista_20": 4.0,
+    "lista_100": 12.0,
+    "lista_500": 32.0,
+    "lista_1000": 54.0,
+    "auc": 0.8256398754316712,
+    "pr_auc": 0.034434090083907964,
+    "mes": "2024-04-01"
+   },
+   {
+    "filas": 281371,
+    "fallos": 442,
+    "lista_20": 5.0,
+    "lista_100": 15.0,
+    "lista_500": 32.333333333333336,
+    "lista_1000": 85.0,
+    "auc": 0.8299038545495521,
+    "pr_auc": 0.04585178846578993,
+    "mes": "2024-05-01"
+   },
+   {
+    "filas": 282560,
+    "fallos": 385,
+    "lista_20": 6.0,
+    "lista_100": 15.0,
+    "lista_500": 43.0,
+    "lista_1000": 94.0,
+    "auc": 0.8412036603424926,
+    "pr_auc": 0.056333769226413755,
+    "mes": "2024-06-01"
+   }
+  ],
+  "trivial": [
+   {
+    "filas": 237270,
+    "fallos": 559,
+    "lista_20": 0.047119315547688286,
+    "lista_100": 0.23559657773844145,
+    "lista_500": 1.1779828886922072,
+    "lista_1000": 2.3559657773844145,
+    "auc": 0.5,
+    "pr_auc": 0.0023559657773844144,
+    "mes": "2023-04-01"
+   },
+   {
+    "filas": 238813,
+    "fallos": 430,
+    "lista_20": 0.036011439913237554,
+    "lista_100": 0.18005719956618776,
+    "lista_500": 0.9002859978309389,
+    "lista_1000": 1.8005719956618778,
+    "auc": 0.5,
+    "pr_auc": 0.0018005719956618778,
+    "mes": "2023-05-01"
+   },
+   {
+    "filas": 241229,
+    "fallos": 308,
+    "lista_20": 0.025535901570706673,
+    "lista_100": 0.12767950785353335,
+    "lista_500": 0.6383975392676668,
+    "lista_1000": 1.2767950785353337,
+    "auc": 0.5,
+    "pr_auc": 0.0012767950785353337,
+    "mes": "2023-06-01"
+   },
+   {
+    "filas": 241284,
+    "fallos": 268,
+    "lista_20": 0.022214485834120785,
+    "lista_100": 0.11107242917060393,
+    "lista_500": 0.5553621458530197,
+    "lista_1000": 1.1107242917060394,
+    "auc": 0.5,
+    "pr_auc": 0.0011107242917060393,
+    "mes": "2023-07-01"
+   },
+   {
+    "filas": 254484,
+    "fallos": 348,
+    "lista_20": 0.02734946008393455,
+    "lista_100": 0.13674730041967276,
+    "lista_500": 0.6837365020983638,
+    "lista_1000": 1.3674730041967276,
+    "auc": 0.5,
+    "pr_auc": 0.0013674730041967275,
+    "mes": "2023-08-01"
+   },
+   {
+    "filas": 256289,
+    "fallos": 289,
+    "lista_20": 0.022552665155351967,
+    "lista_100": 0.11276332577675983,
+    "lista_500": 0.5638166288837991,
+    "lista_1000": 1.1276332577675983,
+    "auc": 0.5,
+    "pr_auc": 0.0011276332577675983,
+    "mes": "2023-09-01"
+   },
+   {
+    "filas": 260727,
+    "fallos": 356,
+    "lista_20": 0.02730825729594557,
+    "lista_100": 0.13654128647972782,
+    "lista_500": 0.6827064323986392,
+    "lista_1000": 1.3654128647972783,
+    "auc": 0.5,
+    "pr_auc": 0.0013654128647972784,
+    "mes": "2023-10-01"
+   },
+   {
+    "filas": 265200,
+    "fallos": 398,
+    "lista_20": 0.030015082956259428,
+    "lista_100": 0.15007541478129713,
+    "lista_500": 0.7503770739064857,
+    "lista_1000": 1.5007541478129713,
+    "auc": 0.5,
+    "pr_auc": 0.0015007541478129713,
+    "mes": "2023-11-01"
+   },
+   {
+    "filas": 269088,
+    "fallos": 240,
+    "lista_20": 0.01783803068141277,
+    "lista_100": 0.08919015340706386,
+    "lista_500": 0.4459507670353193,
+    "lista_1000": 0.8919015340706385,
+    "auc": 0.5,
+    "pr_auc": 0.0008919015340706386,
+    "mes": "2023-12-01"
+   },
+   {
+    "filas": 270257,
+    "fallos": 326,
+    "lista_20": 0.024125184546561235,
+    "lista_100": 0.12062592273280619,
+    "lista_500": 0.603129613664031,
+    "lista_1000": 1.206259227328062,
+    "auc": 0.5,
+    "pr_auc": 0.0012062592273280619,
+    "mes": "2024-01-01"
+   },
+   {
+    "filas": 271324,
+    "fallos": 338,
+    "lista_20": 0.024914861936282822,
+    "lista_100": 0.1245743096814141,
+    "lista_500": 0.6228715484070705,
+    "lista_1000": 1.245743096814141,
+    "auc": 0.5,
+    "pr_auc": 0.001245743096814141,
+    "mes": "2024-02-01"
+   },
+   {
+    "filas": 272827,
+    "fallos": 242,
+    "lista_20": 0.017740179674299097,
+    "lista_100": 0.08870089837149549,
+    "lista_500": 0.4435044918574774,
+    "lista_1000": 0.8870089837149548,
+    "auc": 0.5,
+    "pr_auc": 0.0008870089837149549,
+    "mes": "2024-03-01"
+   },
+   {
+    "filas": 279566,
+    "fallos": 273,
+    "lista_20": 0.01953027192147829,
+    "lista_100": 0.09765135960739146,
+    "lista_500": 0.48825679803695726,
+    "lista_1000": 0.9765135960739145,
+    "auc": 0.5,
+    "pr_auc": 0.0009765135960739145,
+    "mes": "2024-04-01"
+   },
+   {
+    "filas": 281371,
+    "fallos": 442,
+    "lista_20": 0.03141759456376101,
+    "lista_100": 0.15708797281880507,
+    "lista_500": 0.7854398640940253,
+    "lista_1000": 1.5708797281880507,
+    "auc": 0.5,
+    "pr_auc": 0.0015708797281880507,
+    "mes": "2024-05-01"
+   },
+   {
+    "filas": 282560,
+    "fallos": 385,
+    "lista_20": 0.027250849377123444,
+    "lista_100": 0.13625424688561721,
+    "lista_500": 0.6812712344280861,
+    "lista_1000": 1.3625424688561723,
+    "auc": 0.5,
+    "pr_auc": 0.0013625424688561722,
+    "mes": "2024-06-01"
+   }
+  ],
+  "filas": "fuera de pliegue"
+ },
+ "ganador": {
+  "algoritmo": "hgb",
+  "ficha": "assets/fichas_de_algoritmos/histgradientboosting/01_ficha.md",
+  "hiperparametros": {
+   "min_samples_leaf": "hoja",
+   "max_iter": 500,
+   "max_depth": null,
+   "learning_rate": 0.025,
+   "l2_regularization": 0.5
+  },
+  "semilla": 42,
+  "columnas": [
+   "capacidad_tb",
+   "garantia_anos",
+   "smart_5_raw",
+   "smart_187_raw",
+   "smart_197_raw",
+   "smart_198_raw",
+   "smart_194_raw",
+   "smart_199_raw",
+   "smart_12_raw",
+   "smart_192_raw",
+   "smart_1_raw",
+   "smart_7_raw",
+   "edad_anos",
+   "avisa",
+   "contadores_que_avisan",
+   "suma_contadores_sin_188",
+   "smart_188_no_cero",
+   "cambio_smart_5",
+   "cambio_smart_187",
+   "cambio_smart_197",
+   "cambio_smart_198",
+   "meses_desde_foto_anterior",
+   "smart_1_normalized",
+   "smart_2_normalized",
+   "smart_2_raw",
+   "smart_3_normalized",
+   "smart_3_raw",
+   "smart_4_raw",
+   "smart_5_normalized",
+   "smart_7_normalized",
+   "smart_8_normalized",
+   "smart_8_raw",
+   "smart_9_normalized",
+   "smart_22_normalized",
+   "smart_22_raw",
+   "smart_24_normalized",
+   "smart_90_raw",
+   "smart_183_raw",
+   "smart_184_raw",
+   "smart_189_raw",
+   "smart_191_normalized",
+   "smart_191_raw",
+   "smart_192_normalized",
+   "smart_193_normalized",
+   "smart_193_raw",
+   "smart_194_normalized",
+   "smart_195_normalized",
+   "smart_195_raw",
+   "smart_196_normalized",
+   "smart_196_raw",
+   "smart_198_normalized",
+   "smart_199_normalized",
+   "smart_200_normalized",
+   "smart_220_raw",
+   "smart_222_raw",
+   "smart_223_raw",
+   "smart_226_raw",
+   "smart_240_raw",
+   "smart_241_raw",
+   "smart_242_raw",
+   "smart_197_normalized",
+   "model",
+   "fabricante"
+  ],
+  "columnas_que_lee_el_preprocesador": [
+   "capacidad_tb",
+   "garantia_anos",
+   "smart_5_raw",
+   "smart_187_raw",
+   "smart_197_raw",
+   "smart_198_raw",
+   "smart_194_raw",
+   "smart_199_raw",
+   "smart_12_raw",
+   "smart_192_raw",
+   "smart_1_raw",
+   "smart_7_raw",
+   "edad_anos",
+   "avisa",
+   "contadores_que_avisan",
+   "suma_contadores_sin_188",
+   "smart_188_no_cero",
+   "cambio_smart_5",
+   "cambio_smart_187",
+   "cambio_smart_197",
+   "cambio_smart_198",
+   "meses_desde_foto_anterior",
+   "smart_1_normalized",
+   "smart_2_normalized",
+   "smart_2_raw",
+   "smart_3_normalized",
+   "smart_3_raw",
+   "smart_4_raw",
+   "smart_5_normalized",
+   "smart_7_normalized",
+   "smart_8_normalized",
+   "smart_8_raw",
+   "smart_9_normalized",
+   "smart_22_normalized",
+   "smart_22_raw",
+   "smart_24_normalized",
+   "smart_90_raw",
+   "smart_183_raw",
+   "smart_184_raw",
+   "smart_189_raw",
+   "smart_191_normalized",
+   "smart_191_raw",
+   "smart_192_normalized",
+   "smart_193_normalized",
+   "smart_193_raw",
+   "smart_194_normalized",
+   "smart_195_normalized",
+   "smart_195_raw",
+   "smart_196_normalized",
+   "smart_196_raw",
+   "smart_198_normalized",
+   "smart_199_normalized",
+   "smart_200_normalized",
+   "smart_220_raw",
+   "smart_222_raw",
+   "smart_223_raw",
+   "smart_226_raw",
+   "smart_240_raw",
+   "smart_241_raw",
+   "smart_242_raw",
+   "smart_197_normalized",
+   "model",
+   "fabricante",
+   "datacenter"
+  ],
+  "columnas_tras_el_preprocesador_pliegue_5": 64,
+  "datacenter": "se vacía (sin sitio)",
+  "por_que": "Tiene la mejor media en la lista de 100 fuera de pliegue (36,13 fallos por mes); la comparación pliegue a pliegue con los otros va en «ganador_detalle».",
+  "muestra": "todas las fotos con fallo y el 2 % de las sanas de cada mes, semilla 42",
+  "recalibracion": {
+   "metodo": "corrección del prior sobre el logit (desequilibrio.md, «Recalibrar»)",
+   "tasa_muestra": 0.05150639631765005,
+   "tasa_real": 0.0010848851429323932
+  },
+  "aprobado_por": "Juan, 19/11/2026: «Sí, abre la validación», con el desvío de la probabilidad media en los bloques 1 y 2 (validación 12) aceptado como límite (R68-122)"
+ },
+ "frente_a_la_regla_cv": {
+  "veredicto": "supera",
+  "media": 15.666666666666668,
+  "desviacion": 1.1303883305208782,
+  "empatan": false,
+  "por_pliegue": [
+   15.000000000000004,
+   16.666666666666668,
+   17.000000000000004,
+   14.333333333333336,
+   15.333333333333332
+  ],
+  "filas": "fuera de pliegue"
+ },
+ "sitio": {
+  "meses": 12,
+  "con": [
+   28.0,
+   46.0,
+   37.0,
+   48.0,
+   46.0,
+   30.0,
+   34.0,
+   39.0,
+   19.0,
+   26.0,
+   31.0,
+   31.0
+  ],
+  "sin": [
+   28.0,
+   46.0,
+   37.0,
+   47.0,
+   44.0,
+   33.0,
+   36.0,
+   38.0,
+   20.0,
+   26.0,
+   30.0,
+   33.0
+  ],
+  "entra": false,
+  "filas": "fuera de pliegue",
+  "por_que": "con él no encuentra más fallos en los 12 meses con sitio, así que se vacía."
+ },
+ "importancias": {
+  "metodo": "permutacion",
+  "filas": "fuera de pliegue: el bloque 5, con el modelo del pliegue 5",
+  "metrica": "average_precision",
+  "repeticiones": 10,
+  "fraccion_del_bloque": 0.25,
+  "filas_usadas": 210874,
+  "fallos_usados": 276,
+  "segundos": 2575.8,
+  "valores": [
+   {
+    "columna": "suma_contadores_sin_188",
+    "importancia": 0.07548166097211523,
+    "desviacion": 0.0027035150779499725
+   },
+   {
+    "columna": "cambio_smart_187",
+    "importancia": 0.010234066617438146,
+    "desviacion": 0.0026743262599180587
+   },
+   {
+    "columna": "cambio_smart_197",
+    "importancia": 0.009793243093692394,
+    "desviacion": 0.0004471106234020233
+   },
+   {
+    "columna": "smart_197_raw",
+    "importancia": 0.0093631369566778,
+    "desviacion": 0.0015843309574477531
+   },
+   {
+    "columna": "contadores_que_avisan",
+    "importancia": 0.0041064847821390875,
+    "desviacion": 0.0015781744449388114
+   },
+   {
+    "columna": "smart_241_raw",
+    "importancia": 0.003957504118153663,
+    "desviacion": 0.0005222182879136783
+   },
+   {
+    "columna": "smart_184_raw",
+    "importancia": 0.003912849075770411,
+    "desviacion": 0.0006960976001575594
+   },
+   {
+    "columna": "model",
+    "importancia": 0.003090280295781245,
+    "desviacion": 0.001716865705246567
+   },
+   {
+    "columna": "smart_5_raw",
+    "importancia": 0.0029296062984368737,
+    "desviacion": 0.00010695466433787024
+   },
+   {
+    "columna": "smart_7_raw",
+    "importancia": 0.0023139622207083823,
+    "desviacion": 0.00042771621735641414
+   },
+   {
+    "columna": "smart_1_normalized",
+    "importancia": 0.0022073482857951727,
+    "desviacion": 0.0010479484937941674
+   },
+   {
+    "columna": "smart_188_no_cero",
+    "importancia": 0.001628816466661616,
+    "desviacion": 0.00045098883141678236
+   },
+   {
+    "columna": "smart_1_raw",
+    "importancia": 0.0014358988248272502,
+    "desviacion": 0.0017988719795435678
+   },
+   {
+    "columna": "smart_3_normalized",
+    "importancia": 0.0014263957685332312,
+    "desviacion": 0.0005302174737318942
+   },
+   {
+    "columna": "smart_187_raw",
+    "importancia": 0.0014058763885609088,
+    "desviacion": 0.001207689701473421
+   },
+   {
+    "columna": "avisa",
+    "importancia": 0.001400994353490305,
+    "desviacion": 0.002868367652887249
+   },
+   {
+    "columna": "smart_198_raw",
+    "importancia": 0.0012221418776682618,
+    "desviacion": 0.0001334448401053791
+   },
+   {
+    "columna": "smart_226_raw",
+    "importancia": 0.0012164301077627628,
+    "desviacion": 0.00035093118153930856
+   },
+   {
+    "columna": "smart_193_raw",
+    "importancia": 0.0012121391172865551,
+    "desviacion": 0.0005099804304783777
+   },
+   {
+    "columna": "smart_4_raw",
+    "importancia": 0.0010982449973243199,
+    "desviacion": 0.000703990261162338
+   },
+   {
+    "columna": "smart_191_raw",
+    "importancia": 0.0005058262504922792,
+    "desviacion": 0.0006158918624464292
+   },
+   {
+    "columna": "smart_195_raw",
+    "importancia": 0.00036583472572832427,
+    "desviacion": 0.0004185195554227759
+   },
+   {
+    "columna": "smart_242_raw",
+    "importancia": 0.0002705720863437386,
+    "desviacion": 0.0005313578160431712
+   },
+   {
+    "columna": "smart_222_raw",
+    "importancia": 0.00026941995201732876,
+    "desviacion": 8.967891342496405e-05
+   },
+   {
+    "columna": "smart_194_normalized",
+    "importancia": 0.0002512247911750032,
+    "desviacion": 0.00015084127943845352
+   },
+   {
+    "columna": "smart_12_raw",
+    "importancia": 0.00019005211091471658,
+    "desviacion": 0.00015843584891316116
+   },
+   {
+    "columna": "smart_7_normalized",
+    "importancia": 0.00015308696894556357,
+    "desviacion": 0.00020478330102245696
+   },
+   {
+    "columna": "smart_240_raw",
+    "importancia": 0.00013443659498882653,
+    "desviacion": 0.0004257723507316327
+   },
+   {
+    "columna": "smart_194_raw",
+    "importancia": 0.0001293275337250363,
+    "desviacion": 0.0002388889678044742
+   },
+   {
+    "columna": "smart_22_normalized",
+    "importancia": 8.516203948400052e-05,
+    "desviacion": 0.00010323801097433536
+   },
+   {
+    "columna": "smart_223_raw",
+    "importancia": 7.647664099700303e-05,
+    "desviacion": 0.00023122522355169652
+   },
+   {
+    "columna": "smart_196_raw",
+    "importancia": 7.424511958300656e-05,
+    "desviacion": 5.9204667801407486e-05
+   },
+   {
+    "columna": "smart_2_raw",
+    "importancia": 7.212699554499935e-05,
+    "desviacion": 0.00016861577007913576
+   },
+   {
+    "columna": "garantia_anos",
+    "importancia": 6.885803564119498e-05,
+    "desviacion": 3.326516208876057e-05
+   },
+   {
+    "columna": "smart_8_normalized",
+    "importancia": 5.2321260966255166e-05,
+    "desviacion": 5.882093455822469e-05
+   },
+   {
+    "columna": "meses_desde_foto_anterior",
+    "importancia": 3.5742472044782146e-05,
+    "desviacion": 6.544363628439634e-05
+   },
+   {
+    "columna": "smart_8_raw",
+    "importancia": 1.7398352977453234e-05,
+    "desviacion": 6.571559477850115e-06
+   },
+   {
+    "columna": "smart_199_raw",
+    "importancia": 1.5357892615204538e-05,
+    "desviacion": 0.0001348321022920997
+   },
+   {
+    "columna": "smart_192_normalized",
+    "importancia": 7.230984114747763e-06,
+    "desviacion": 1.8037240324728664e-06
+   },
+   {
+    "columna": "smart_5_normalized",
+    "importancia": 0.0,
+    "desviacion": 0.0
+   },
+   {
+    "columna": "smart_24_normalized",
+    "importancia": 0.0,
+    "desviacion": 0.0
+   },
+   {
+    "columna": "smart_90_raw",
+    "importancia": 0.0,
+    "desviacion": 0.0
+   },
+   {
+    "columna": "smart_189_raw",
+    "importancia": 0.0,
+    "desviacion": 0.0
+   },
+   {
+    "columna": "smart_196_normalized",
+    "importancia": 0.0,
+    "desviacion": 0.0
+   },
+   {
+    "columna": "smart_198_normalized",
+    "importancia": 0.0,
+    "desviacion": 0.0
+   },
+   {
+    "columna": "smart_199_normalized",
+    "importancia": 0.0,
+    "desviacion": 0.0
+   },
+   {
+    "columna": "smart_200_normalized",
+    "importancia": 0.0,
+    "desviacion": 0.0
+   },
+   {
+    "columna": "smart_197_normalized",
+    "importancia": 0.0,
+    "desviacion": 0.0
+   },
+   {
+    "columna": "capacidad_tb",
+    "importancia": -1.0413975935998077e-05,
+    "desviacion": 2.664202869800293e-05
+   },
+   {
+    "columna": "smart_22_raw",
+    "importancia": -1.2599653339363803e-05,
+    "desviacion": 1.4533860075130845e-05
+   },
+   {
+    "columna": "fabricante",
+    "importancia": -1.3118713440377072e-05,
+    "desviacion": 2.7069261478880226e-05
+   },
+   {
+    "columna": "smart_183_raw",
+    "importancia": -5.976765371431686e-05,
+    "desviacion": 6.894207396210428e-06
+   },
+   {
+    "columna": "smart_195_normalized",
+    "importancia": -6.00506588163463e-05,
+    "desviacion": 0.0001176354501646741
+   },
+   {
+    "columna": "cambio_smart_198",
+    "importancia": -6.082934402253798e-05,
+    "desviacion": 0.0001107350997228461
+   },
+   {
+    "columna": "smart_192_raw",
+    "importancia": -0.00010389639819303881,
+    "desviacion": 0.001510041704068488
+   },
+   {
+    "columna": "smart_2_normalized",
+    "importancia": -0.0001504372914083965,
+    "desviacion": 0.00010931407986321267
+   },
+   {
+    "columna": "smart_220_raw",
+    "importancia": -0.00015657852152934916,
+    "desviacion": 0.0001438972569867216
+   },
+   {
+    "columna": "smart_193_normalized",
+    "importancia": -0.0002468737682239083,
+    "desviacion": 0.0002673267409249587
+   },
+   {
+    "columna": "smart_3_raw",
+    "importancia": -0.0003178953173284038,
+    "desviacion": 0.0007661439913245868
+   },
+   {
+    "columna": "smart_191_normalized",
+    "importancia": -0.0005400418624778274,
+    "desviacion": 0.00021074464195416267
+   },
+   {
+    "columna": "smart_9_normalized",
+    "importancia": -0.0007197873195630741,
+    "desviacion": 0.0009394310505200168
+   },
+   {
+    "columna": "edad_anos",
+    "importancia": -0.0009625699630786813,
+    "desviacion": 0.001435357493623835
+   },
+   {
+    "columna": "cambio_smart_5",
+    "importancia": -0.006135113200056344,
+    "desviacion": 0.0007230206589982361
+   }
+  ]
+ },
+ "canario": {
+  "barajado": {
+   "lista_100": 1.0,
+   "filas": "bloque 5"
+  },
+  "fuga": {
+   "lista_100": 100.0,
+   "filas": "bloque 5"
+  },
+  "trivial_lista_100": 0.1303311931039379,
+  "techo_lista_100": 100.0
+ },
+ "ajuste_final": {
+  "filas_entrena": 11026052,
+  "fallos_entrena": 11962,
+  "muestra": {
+   "filas": 232243,
+   "fallos": 11962,
+   "sanas": 220281
+  },
+  "hoja": 2322,
+  "auc_entrenamiento": 0.8992235515090948,
+  "filas": "entrenamiento",
+  "horizonte_max": "2024-06-30"
+ },
+ "validacion": {
+  "abierta_una_vez": true,
+  "pieza": "assets/evaluacion_binaria.py",
+  "filas": 3578809,
+  "medidas": {
+   "filas": 3578809,
+   "positivos": 4304,
+   "tasa_base": 0.0012026347312751253,
+   "auc": 0.897746314670268,
+   "gini": 0.795492629340536,
+   "ks": 0.6889261190967721,
+   "pr_auc": 0.12074643787228168,
+   "brier": 0.0011157683007486782
+  },
+  "referencias": {
+   "regla": {
+    "filas": 3578809,
+    "positivos": 4304,
+    "tasa_base": 0.0012026347312751253,
+    "auc": 0.8463750301930437,
+    "gini": 0.6927500603860874,
+    "ks": 0.6681724643247325,
+    "pr_auc": 0.045091994362234954,
+    "brier": 0.004053468416138283
+   },
+   "trivial": {
+    "filas": 3578809,
+    "positivos": 4304,
+    "tasa_base": 0.0012026347312751253,
+    "auc": 0.5,
+    "gini": 0.0,
+    "ks": 0.0,
+    "pr_auc": 0.0012026347312751253,
+    "brier": 0.0012012022659438114
+   }
+  },
+  "desarrollo_frente_a_validacion": {
+   "desarrollo": {
+    "auc": 0.8992235515090948,
+    "gini": 0.7984471030181897,
+    "ks": 0.6509044313109457,
+    "pr_auc": 0.6486541229059739
+   },
+   "validacion": {
+    "auc": 0.897746314670268,
+    "gini": 0.795492629340536,
+    "ks": 0.6889261190967721,
+    "pr_auc": 0.12074643787228168
+   },
+   "validacion_menos_desarrollo": {
+    "auc": -0.0014772368388268342,
+    "gini": -0.0029544736776536684,
+    "ks": 0.038021687785826486,
+    "pr_auc": -0.5279076850336922
+   }
+  },
+  "desarrollo_filas": "desarrollo: la muestra del reajuste final; validación: todas sus fotos",
+  "calibracion": [
+   {
+    "casos": 715762,
+    "prob_media": 0.000143526932708608,
+    "tasa_observada": 0.00016625638131110621
+   },
+   {
+    "casos": 715762,
+    "prob_media": 0.00023112235950189267,
+    "tasa_observada": 0.00017044771865508366
+   },
+   {
+    "casos": 715761,
+    "prob_media": 0.0003341993301995901,
+    "tasa_observada": 0.00027662865118384486
+   },
+   {
+    "casos": 715762,
+    "prob_media": 0.0004811597684223927,
+    "tasa_observada": 0.0004233250717417242
+   },
+   {
+    "casos": 715762,
+    "prob_media": 0.005704482142020625,
+    "tasa_observada": 0.004976514539749247
+   }
+  ],
+  "por_mes": [
+   {
+    "mes": "2024-07-01",
+    "filas": 284861,
+    "fallos": 472,
+    "modelo_lista_20": 13.75,
+    "regla_lista_20": 8.0,
+    "trivial_lista_20": 0.03313896953250884,
+    "modelo_lista_100": 42.0,
+    "regla_lista_100": 28.0,
+    "trivial_lista_100": 0.1656948476625442,
+    "modelo_lista_500": 127.0,
+    "regla_lista_500": 68.0,
+    "trivial_lista_500": 0.8284742383127209,
+    "modelo_lista_1000": 183.0,
+    "regla_lista_1000": 116.66666666666667,
+    "trivial_lista_1000": 1.6569484766254419
+   },
+   {
+    "mes": "2024-08-01",
+    "filas": 288478,
+    "fallos": 514,
+    "modelo_lista_20": 10.0,
+    "regla_lista_20": 4.0,
+    "trivial_lista_20": 0.035635299745561184,
+    "modelo_lista_100": 29.0,
+    "regla_lista_100": 19.0,
+    "trivial_lista_100": 0.17817649872780594,
+    "modelo_lista_500": 110.0,
+    "regla_lista_500": 51.0,
+    "trivial_lista_500": 0.8908824936390297,
+    "modelo_lista_1000": 172.0,
+    "regla_lista_1000": 86.0,
+    "trivial_lista_1000": 1.7817649872780594
+   },
+   {
+    "mes": "2024-09-01",
+    "filas": 287544,
+    "fallos": 325,
+    "modelo_lista_20": 15.0,
+    "regla_lista_20": 6.0,
+    "trivial_lista_20": 0.022605236068219126,
+    "modelo_lista_100": 35.0,
+    "regla_lista_100": 16.0,
+    "trivial_lista_100": 0.11302618034109563,
+    "modelo_lista_500": 78.0,
+    "regla_lista_500": 43.0,
+    "trivial_lista_500": 0.5651309017054782,
+    "modelo_lista_1000": 114.0,
+    "regla_lista_1000": 71.0,
+    "trivial_lista_1000": 1.1302618034109564
+   },
+   {
+    "mes": "2024-10-01",
+    "filas": 288572,
+    "fallos": 321,
+    "modelo_lista_20": 9.0,
+    "regla_lista_20": 4.0,
+    "trivial_lista_20": 0.022247480698058025,
+    "modelo_lista_100": 40.0,
+    "regla_lista_100": 14.0,
+    "trivial_lista_100": 0.11123740349029013,
+    "modelo_lista_500": 93.0,
+    "regla_lista_500": 48.333333333333336,
+    "trivial_lista_500": 0.5561870174514506,
+    "modelo_lista_1000": 140.0,
+    "regla_lista_1000": 82.0,
+    "trivial_lista_1000": 1.1123740349029012
+   },
+   {
+    "mes": "2024-11-01",
+    "filas": 290091,
+    "fallos": 316,
+    "modelo_lista_20": 9.0,
+    "regla_lista_20": 2.0,
+    "trivial_lista_20": 0.021786267067920067,
+    "modelo_lista_100": 26.0,
+    "regla_lista_100": 13.0,
+    "trivial_lista_100": 0.10893133533960034,
+    "modelo_lista_500": 73.0,
+    "regla_lista_500": 41.0,
+    "trivial_lista_500": 0.5446566766980017,
+    "modelo_lista_1000": 110.0,
+    "regla_lista_1000": 71.0,
+    "trivial_lista_1000": 1.0893133533960033
+   },
+   {
+    "mes": "2024-12-01",
+    "filas": 293583,
+    "fallos": 314,
+    "modelo_lista_20": 7.0,
+    "regla_lista_20": 4.0,
+    "trivial_lista_20": 0.02139088434957065,
+    "modelo_lista_100": 32.0,
+    "regla_lista_100": 12.0,
+    "trivial_lista_100": 0.10695442174785326,
+    "modelo_lista_500": 75.0,
+    "regla_lista_500": 31.0,
+    "trivial_lista_500": 0.5347721087392663,
+    "modelo_lista_1000": 114.0,
+    "regla_lista_1000": 61.0,
+    "trivial_lista_1000": 1.0695442174785326
+   },
+   {
+    "mes": "2025-01-01",
+    "filas": 300895,
+    "fallos": 359,
+    "modelo_lista_20": 8.0,
+    "regla_lista_20": 3.0,
+    "trivial_lista_20": 0.023862144601937554,
+    "modelo_lista_100": 32.0,
+    "regla_lista_100": 13.0,
+    "trivial_lista_100": 0.11931072300968776,
+    "modelo_lista_500": 89.0,
+    "regla_lista_500": 35.0,
+    "trivial_lista_500": 0.5965536150484388,
+    "modelo_lista_1000": 132.0,
+    "regla_lista_1000": 55.0,
+    "trivial_lista_1000": 1.1931072300968777
+   },
+   {
+    "mes": "2025-02-01",
+    "filas": 301087,
+    "fallos": 340,
+    "modelo_lista_20": 10.0,
+    "regla_lista_20": 6.0,
+    "trivial_lista_20": 0.022584834283778443,
+    "modelo_lista_100": 37.0,
+    "regla_lista_100": 25.0,
+    "trivial_lista_100": 0.11292417141889222,
+    "modelo_lista_500": 96.0,
+    "regla_lista_500": 51.0,
+    "trivial_lista_500": 0.5646208570944611,
+    "modelo_lista_1000": 144.0,
+    "regla_lista_1000": 73.0,
+    "trivial_lista_1000": 1.1292417141889222
+   },
+   {
+    "mes": "2025-03-01",
+    "filas": 308752,
+    "fallos": 342,
+    "modelo_lista_20": 10.0,
+    "regla_lista_20": 2.0,
+    "trivial_lista_20": 0.022153702648080014,
+    "modelo_lista_100": 31.0,
+    "regla_lista_100": 15.0,
+    "trivial_lista_100": 0.11076851324040007,
+    "modelo_lista_500": 89.0,
+    "regla_lista_500": 43.0,
+    "trivial_lista_500": 0.5538425662020003,
+    "modelo_lista_1000": 126.0,
+    "regla_lista_1000": 75.0,
+    "trivial_lista_1000": 1.1076851324040007
+   },
+   {
+    "mes": "2025-04-01",
+    "filas": 308819,
+    "fallos": 369,
+    "modelo_lista_20": 5.0,
+    "regla_lista_20": 2.0,
+    "trivial_lista_20": 0.023897493353712045,
+    "modelo_lista_100": 30.0,
+    "regla_lista_100": 12.0,
+    "trivial_lista_100": 0.11948746676856022,
+    "modelo_lista_500": 82.0,
+    "regla_lista_500": 35.0,
+    "trivial_lista_500": 0.5974373338428011,
+    "modelo_lista_1000": 127.0,
+    "regla_lista_1000": 60.0,
+    "trivial_lista_1000": 1.1948746676856021
+   },
+   {
+    "mes": "2025-05-01",
+    "filas": 311376,
+    "fallos": 313,
+    "modelo_lista_20": 10.0,
+    "regla_lista_20": 0.0,
+    "trivial_lista_20": 0.020104311186475515,
+    "modelo_lista_100": 25.0,
+    "regla_lista_100": 13.0,
+    "trivial_lista_100": 0.10052155593237758,
+    "modelo_lista_500": 64.0,
+    "regla_lista_500": 30.0,
+    "trivial_lista_500": 0.5026077796618879,
+    "modelo_lista_1000": 106.0,
+    "regla_lista_1000": 46.0,
+    "trivial_lista_1000": 1.0052155593237757
+   },
+   {
+    "mes": "2025-06-01",
+    "filas": 314751,
+    "fallos": 319,
+    "modelo_lista_20": 6.0,
+    "regla_lista_20": 3.0,
+    "trivial_lista_20": 0.02026999119939254,
+    "modelo_lista_100": 27.0,
+    "regla_lista_100": 10.0,
+    "trivial_lista_100": 0.10134995599696268,
+    "modelo_lista_500": 78.0,
+    "regla_lista_500": 33.0,
+    "trivial_lista_500": 0.5067497799848134,
+    "modelo_lista_1000": 117.0,
+    "regla_lista_1000": 51.0,
+    "trivial_lista_1000": 1.0134995599696268
+   }
+  ],
+  "intervalo": {
+   "medida": "fallos en la lista de 100, diferencia media por mes",
+   "media": 16.333333333333332,
+   "bajo": 14.0,
+   "alto": 18.916666666666668,
+   "remuestreos": 1000,
+   "semilla": 42,
+   "unidad": "mes",
+   "unidades": 12
+  },
+  "intervalo_frente_al_trivial": {
+   "medida": "fallos en la lista de 100, diferencia media por mes",
+   "media": 32.045968077193656,
+   "bajo": 29.221587574570382,
+   "alto": 35.1261435240189,
+   "remuestreos": 1000,
+   "semilla": 42,
+   "unidad": "mes",
+   "unidades": 12
+  },
+  "se_da_por_bueno": true,
+  "frente_al_trivial": "supera",
+  "frente_a_la_regla": "supera",
+  "filas_de_cada_cifra": "validacion",
+  "errores_por_segmento": []
+ },
+ "corte": {
+  "valor": null,
+  "como": "capacidad",
+  "filas_para_elegir": "fuera de pliegue",
+  "valor_en_validacion": null,
+  "tipo_de_decision": "estrategica",
+  "preferencia": null,
+  "minimo": null,
+  "escenarios": [],
+  "por_que": "el tamaño de la lista lo elige Backblaze según lo que puedan atender sus técnicos, que no consta (reglas §7, CP-010): se dan las listas de 20, 100, 500 y 1.000",
+  "se_puede_cambiar_sin_reentrenar": true
+ },
+ "vias_de_mejora": {
+  "mejor_modelo": "se probaron tres algoritmos con su búsqueda (regresión logística, 12 candidatos; bosque aleatorio, 17 candidatos; HistGradientBoosting, 17 candidatos); quedan sin probar XGBoost y los castigos L1 y mezcla de la logística, que Juan dejó fuera (reglas §7).",
+  "variables_nuevas": [
+   {
+    "variable": "las cuatro variables nuevas candidatas de la matriz (P-04)",
+    "probada": false,
+    "motivo": "no se crean en este encargo; se crean si el modelo no supera a la regla, con la decisión de Juan y antes de abrir la validación (reglas §7)"
+   }
+  ],
+  "informacion_nueva": [
+   {
+    "dato": "las lecturas SMART diarias, no solo la foto mensual",
+    "para_que": "ver los fallos que avisan entre una foto y la siguiente",
+    "quien_lo_tiene": "Backblaze"
+   }
+  ]
+ },
+ "validaciones": {
+  "sin_filas_de_ajuste": true,
+  "semillas": true,
+  "validacion_una_vez": true,
+  "con_probabilidad": true,
+  "columnas_de_preseleccion": true,
+  "recalibrado_si_hace_falta": true,
+  "citas_existen": true,
+  "reproducible": true,
+  "sin_identificadores_ni_posteriores": true,
+  "sin_resultados_escritos": true,
+  "canario_objetivo_barajado": true,
+  "probabilidad_media_cerca_de_la_tasa": false,
+  "objetivo_conocido_al_entrenar": true,
+  "intervalo_por_entidad": null
+ },
+ "validaciones_no_aplican": {
+  "14": "no es una previsión de una serie",
+  "15": "los pliegues van por fecha, no por entidad; el intervalo remuestrea meses"
+ },
+ "parametros": [
+  {
+   "nombre": "semilla",
+   "valor": 42,
+   "origen": "parametros.md de las dos skills"
+  },
+  {
+   "nombre": "pliegues",
+   "valor": "cinco bloques de tres meses, de 2023-04 a 2024-06, por fecha y sin barajar",
+   "origen": "skill §3; encargo 21"
+  },
+  {
+   "nombre": "muestra de cada entrenamiento",
+   "valor": "todas las fotos con fallo y el 2 % de las sanas de cada mes, solo con el horizonte cerrado",
+   "origen": "reglas §7"
+  },
+  {
+   "nombre": "medida de la búsqueda",
+   "valor": "media de los fallos en la lista de 100 de los meses del bloque",
+   "origen": "planteamientos 1.C; encargo 21"
+  },
+  {
+   "nombre": "logística",
+   "valor": "LogisticRegression(solver=\"lbfgs\", l1_ratio=0, max_iter=5000, random_state=42), C en logspace(-3, 2, 12)",
+   "origen": "reglas §7, Juan, 18/11/2026"
+  },
+  {
+   "nombre": "bosque",
+   "valor": "RandomForestClassifier(n_jobs=-1, random_state=42), 15 candidatos de ParameterSampler(random_state=42)",
+   "origen": "algoritmos.md; reglas §7"
+  },
+  {
+   "nombre": "HistGradientBoosting",
+   "valor": "early_stopping=False, max_iter en 100, 200 y 500, categóricas nativas, 15 candidatos",
+   "origen": "algoritmos.md, con fecha; reglas §7"
+  },
+  {
+   "nombre": "hoja",
+   "valor": "max(20, 1 % de las filas que entrenan en el pliegue)",
+   "origen": "parametros.md"
+  },
+  {
+   "nombre": "ampliación por el borde",
+   "valor": "hasta 2 rondas; se queda el valor nuevo si mejora pliegue a pliegue",
+   "origen": "skill §5"
+  },
+  {
+   "nombre": "empate",
+   "valor": "la media de las diferencias en los cinco pliegues no pasa de su desviación típica (con n − 1)",
+   "origen": "skill §6"
+  },
+  {
+   "nombre": "sitio",
+   "valor": "datacenter entra solo si con él la lista de 100 encuentra más fallos en cada uno de los 12 meses de 2023-07 a 2024-06",
+   "origen": "guion §3; encargo 21"
+  },
+  {
+   "nombre": "permutación",
+   "valor": "average_precision, 10 repeticiones sobre el 25 % de las fotos del bloque 5, sorteado una vez con la semilla 42",
+   "origen": "skill §7; parametros.md; la fracción, criterio del script por el tiempo"
+  },
+  {
+   "nombre": "canario",
+   "valor": "barajado: como mucho el trivial más tres desviaciones de Poisson y un fallo; fuga: el 90 % de lo que cabe en la lista",
+   "origen": "skill §9, validación 11; los márgenes, criterio del script"
+  },
+  {
+   "nombre": "tolerancia de la probabilidad media",
+   "valor": "20 % relativo",
+   "origen": "encargo 21, validación 12"
+  },
+  {
+   "nombre": "intervalo",
+   "valor": "1000 remuestreos de los 12 meses, semilla 42, percentiles 2,5 y 97,5",
+   "origen": "skill §8; encargo 21"
+  }
+ ],
+ "teoria": [
+  "20.3 y 31.6: validación cruzada temporal, con bloques de meses enteros y sin barajar, porque el modelo se usa hacia adelante y barajar mezclaría meses.",
+  "32.6 y 32.7: rejilla en la logística, que solo busca C, y búsqueda aleatoria en los árboles, una por algoritmo.",
+  "37.4 y 37.8: submuestreo de las sanas solo al entrenar y recalibración por la corrección del prior, porque la probabilidad se usa para esperar fallos.",
+  "21.1 y 21.8: todo con la probabilidad; AUC y PR-AUC del mes al lado de la lista de 100, que es la medida del negocio.",
+  "19.3: la distancia entre entrenamiento y fuera de pliegue, en AUC, para ver el sobreajuste.",
+  "5.1: las tres vías de mejora si el modelo no supera a la regla.",
+  "4.6 y 5.3: el intervalo de la diferencia remuestreando meses, que es la unidad de la medida."
+ ],
+ "datos_personales": "Los datos son de discos: serial_number identifica un disco, no a una persona (reglas §9), y el modelo no lo lee. No usa ni deja ninguna columna de datos personales. No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
+ "limites": [
+  "El modelo vale para los discos de datos de Backblaze, con una foto al mes, en los periodos de construcción y validación; si cambian los modelos de disco o los centros, su rendimiento puede caer (deriva).",
+  "Detecta asociaciones, no causas: que un contador pese no dice que cause el fallo.",
+  "No ve los fallos que llegan sin aviso en la última foto mensual (reglas §7).",
+  "La preselección de la logística se hizo una vez y entra fija en cada pliegue: su validación cruzada sale algo optimista; cuánto, NO SE PUEDE SABER sin medirlo.",
+  "Las cuatro variables nuevas candidatas de la matriz (P-04) no se crearon en este encargo."
+ ],
+ "ejecucion_parcial": {
+  "segundos_busqueda": 3443.2,
+  "segundos_competicion": 6247.2
+ },
+ "ganador_detalle": {
+  "mejor_media": "hgb",
+  "empatados_con_el_mejor": [
+   "hgb"
+  ],
+  "estabilidad_frente_al_trivial": {
+   "hgb": 5.949601808594262
+  },
+  "comparaciones": {
+   "logistica": {
+    "media": 7.9333333333333345,
+    "desviacion": 0.8299933065325806,
+    "empatan": false,
+    "por_pliegue": [
+     8.0,
+     7.666666666666668,
+     7.333333333333336,
+     7.333333333333336,
+     9.333333333333332
+    ]
+   },
+   "bosque": {
+    "media": 6.762506178107202,
+    "desviacion": 2.6831740442680325,
+    "empatan": false,
+    "por_pliegue": [
+     7.237373737373744,
+     6.489130434782609,
+     9.523809523809526,
+     2.410256410256409,
+     8.151960784313722
+    ]
+   }
+  }
+ },
+ "probabilidad_media_por_bloque": [
+  {
+   "bloque": 1,
+   "probabilidad_media": 0.0011284251883794225,
+   "tasa_real": 0.0018081392755174876,
+   "cerca": false
+  },
+  {
+   "bloque": 2,
+   "probabilidad_media": 0.0015384095292766001,
+   "tasa_real": 0.0012033662342083114,
+   "cerca": false
+  },
+  {
+   "bloque": 3,
+   "probabilidad_media": 0.001442759750596908,
+   "tasa_real": 0.0012502908750149368,
+   "cerca": true
+  },
+  {
+   "bloque": 4,
+   "probabilidad_media": 0.0012498050628252236,
+   "tasa_real": 0.0011124645141010402,
+   "cerca": true
+  },
+  {
+   "bloque": 5,
+   "probabilidad_media": 0.0012356246568168494,
+   "tasa_real": 0.001304094738926161,
+   "cerca": true
+  }
+ ],
+ "columnas_sin_dato_al_ajustar": [
+  {
+   "familia": "bosque",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 148698
+  },
+  {
+   "familia": "bosque",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 159189
+  },
+  {
+   "familia": "bosque",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 174834
+  },
+  {
+   "familia": "bosque",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 148698
+  },
+  {
+   "familia": "bosque",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 159189
+  },
+  {
+   "familia": "bosque",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 174834
+  },
+  {
+   "familia": "hgb",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 148698
+  },
+  {
+   "familia": "hgb",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 159189
+  },
+  {
+   "familia": "hgb",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 174834
+  },
+  {
+   "familia": "hgb",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 148698
+  },
+  {
+   "familia": "hgb",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 159189
+  },
+  {
+   "familia": "hgb",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 174834
+  },
+  {
+   "familia": "hgb",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 159189
+  },
+  {
+   "familia": "hgb",
+   "columnas": [
+    "smart_90_raw"
+   ],
+   "filas_del_ajuste": 174834
+  }
+ ],
+ "ejecucion": {
+  "segundos_busqueda": 3443.2,
+  "segundos_competicion": 6247.2,
+  "python": "3.13.15",
+  "ejecutable": "python",
+  "pandas": "3.0.6",
+  "pyarrow": "24.0.0",
+  "scikit_learn": "1.9.1",
+  "segundos": 111.8
+ }
+}

@@ -1,0 +1,844 @@
+{
+  "script": "scripts/07_consultas_informe_ejecutivo.py",
+  "fecha_datos": "2025-06-30",
+  "fecha_ejecucion": "2026-11-17T21:50:44",
+  "estado": "OK",
+  "versiones": {
+    "python": "3.13.15",
+    "pandas": "3.0.6",
+    "numpy": "2.5.3",
+    "pyarrow": "24.0.0"
+  },
+  "entradas": [
+    {
+      "ruta": "data/processed/modelo_trimestre.parquet",
+      "sha256": "82be69d656509c36760f705d0d2bd21801702ddbf33795056e5cc92c7fff76cf",
+      "sha256_transformacion": "82be69d656509c36760f705d0d2bd21801702ddbf33795056e5cc92c7fff76cf",
+      "coincide": true
+    },
+    {
+      "ruta": "data/processed/inicio_trimestre.parquet",
+      "sha256": "86169128b7862e772d1e1e6a755d8df287c74a4da7e469257b57b0b0ed14a03e",
+      "sha256_transformacion": "86169128b7862e772d1e1e6a755d8df287c74a4da7e469257b57b0b0ed14a03e",
+      "coincide": true
+    },
+    {
+      "ruta": "data/processed/fallos_detalle.parquet",
+      "sha256": "ff67f9a515527ffb6e1dd6b7474067836c1d401c3e1a33901f290f1b56c236ad",
+      "sha256_transformacion": "ff67f9a515527ffb6e1dd6b7474067836c1d401c3e1a33901f290f1b56c236ad",
+      "coincide": true
+    }
+  ],
+  "comprobaciones": {
+    "fallos_detalle_frente_a_modelo_trimestre": [
+      {
+        "ano": 2020,
+        "fallos_detalle": {
+          "fallos": 1307,
+          "coste_fallos_usd": 250485.2,
+          "coste_fallos_garantia_usd": 80209.0
+        },
+        "coincide": true
+      },
+      {
+        "ano": 2021,
+        "fallos_detalle": {
+          "fallos": 1823,
+          "coste_fallos_usd": 352673.7692307692,
+          "coste_fallos_garantia_usd": 109169.07307692307
+        },
+        "coincide": true
+      },
+      {
+        "ano": 2022,
+        "fallos_detalle": {
+          "fallos": 2999,
+          "coste_fallos_usd": 565844.0901098901,
+          "coste_fallos_garantia_usd": 200888.02857142856
+        },
+        "coincide": true
+      },
+      {
+        "ano": 2023,
+        "fallos_detalle": {
+          "fallos": 4201,
+          "coste_fallos_usd": 755878.6,
+          "coste_fallos_garantia_usd": 284506.6
+        },
+        "coincide": true
+      },
+      {
+        "ano": 2024,
+        "fallos_detalle": {
+          "fallos": 4538,
+          "coste_fallos_usd": 832698.0,
+          "coste_fallos_garantia_usd": 305124.0
+        },
+        "coincide": true
+      },
+      {
+        "ano": 2025,
+        "fallos_detalle": {
+          "fallos": 2128,
+          "coste_fallos_usd": 366916.0,
+          "coste_fallos_garantia_usd": 170296.0
+        },
+        "coincide": true
+      }
+    ]
+  },
+  "cifras": [
+    {
+      "nombre": "dias_disco_2020",
+      "valor": 51345918,
+      "unidad": "días de disco",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2020",
+      "calculo": "suma de dias_disco de modelo_trimestre"
+    },
+    {
+      "nombre": "fallos_2020",
+      "valor": 1307,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2020",
+      "calculo": "suma de fallos de modelo_trimestre"
+    },
+    {
+      "nombre": "fallos_en_garantia_2020",
+      "valor": 907,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2020",
+      "calculo": "suma de fallos_en_garantia de modelo_trimestre"
+    },
+    {
+      "nombre": "tasa_anual_pct_2020",
+      "valor": 0.9291001477468959,
+      "unidad": "%",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2020",
+      "calculo": "fallos / días de disco × 365 × 100"
+    },
+    {
+      "nombre": "coste_fallos_usd_2020",
+      "valor": 250485.2,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2020",
+      "calculo": "suma de coste_fallos_usd de modelo_trimestre"
+    },
+    {
+      "nombre": "coste_fallos_garantia_usd_2020",
+      "valor": 80209.0,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2020",
+      "calculo": "suma de coste_fallos_garantia_usd de modelo_trimestre"
+    },
+    {
+      "nombre": "ano_completo_2020",
+      "valor": true,
+      "unidad": "sí o no",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2020",
+      "calculo": "los datos llegan al 31 de diciembre (fecha_datos 2025-06-30)"
+    },
+    {
+      "nombre": "dias_disco_2021",
+      "valor": 66072034,
+      "unidad": "días de disco",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2021",
+      "calculo": "suma de dias_disco de modelo_trimestre"
+    },
+    {
+      "nombre": "fallos_2021",
+      "valor": 1823,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2021",
+      "calculo": "suma de fallos de modelo_trimestre"
+    },
+    {
+      "nombre": "fallos_en_garantia_2021",
+      "valor": 1289,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2021",
+      "calculo": "suma de fallos_en_garantia de modelo_trimestre"
+    },
+    {
+      "nombre": "tasa_anual_pct_2021",
+      "valor": 1.007075096250253,
+      "unidad": "%",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2021",
+      "calculo": "fallos / días de disco × 365 × 100"
+    },
+    {
+      "nombre": "coste_fallos_usd_2021",
+      "valor": 352673.7692307692,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2021",
+      "calculo": "suma de coste_fallos_usd de modelo_trimestre"
+    },
+    {
+      "nombre": "coste_fallos_garantia_usd_2021",
+      "valor": 109169.07307692307,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2021",
+      "calculo": "suma de coste_fallos_garantia_usd de modelo_trimestre"
+    },
+    {
+      "nombre": "ano_completo_2021",
+      "valor": true,
+      "unidad": "sí o no",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2021",
+      "calculo": "los datos llegan al 31 de diciembre (fecha_datos 2025-06-30)"
+    },
+    {
+      "nombre": "dias_disco_2022",
+      "valor": 78890669,
+      "unidad": "días de disco",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2022",
+      "calculo": "suma de dias_disco de modelo_trimestre"
+    },
+    {
+      "nombre": "fallos_2022",
+      "valor": 2999,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2022",
+      "calculo": "suma de fallos de modelo_trimestre"
+    },
+    {
+      "nombre": "fallos_en_garantia_2022",
+      "valor": 1890,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2022",
+      "calculo": "suma de fallos_en_garantia de modelo_trimestre"
+    },
+    {
+      "nombre": "tasa_anual_pct_2022",
+      "valor": 1.3875341835420358,
+      "unidad": "%",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2022",
+      "calculo": "fallos / días de disco × 365 × 100"
+    },
+    {
+      "nombre": "coste_fallos_usd_2022",
+      "valor": 565844.0901098901,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2022",
+      "calculo": "suma de coste_fallos_usd de modelo_trimestre"
+    },
+    {
+      "nombre": "coste_fallos_garantia_usd_2022",
+      "valor": 200888.02857142856,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2022",
+      "calculo": "suma de coste_fallos_garantia_usd de modelo_trimestre"
+    },
+    {
+      "nombre": "ano_completo_2022",
+      "valor": true,
+      "unidad": "sí o no",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2022",
+      "calculo": "los datos llegan al 31 de diciembre (fecha_datos 2025-06-30)"
+    },
+    {
+      "nombre": "dias_disco_2023",
+      "valor": 90077756,
+      "unidad": "días de disco",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2023",
+      "calculo": "suma de dias_disco de modelo_trimestre"
+    },
+    {
+      "nombre": "fallos_2023",
+      "valor": 4201,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2023",
+      "calculo": "suma de fallos de modelo_trimestre"
+    },
+    {
+      "nombre": "fallos_en_garantia_2023",
+      "valor": 2691,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2023",
+      "calculo": "suma de fallos_en_garantia de modelo_trimestre"
+    },
+    {
+      "nombre": "tasa_anual_pct_2023",
+      "valor": 1.7022682048162923,
+      "unidad": "%",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2023",
+      "calculo": "fallos / días de disco × 365 × 100"
+    },
+    {
+      "nombre": "coste_fallos_usd_2023",
+      "valor": 755878.6,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2023",
+      "calculo": "suma de coste_fallos_usd de modelo_trimestre"
+    },
+    {
+      "nombre": "coste_fallos_garantia_usd_2023",
+      "valor": 284506.6,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2023",
+      "calculo": "suma de coste_fallos_garantia_usd de modelo_trimestre"
+    },
+    {
+      "nombre": "ano_completo_2023",
+      "valor": true,
+      "unidad": "sí o no",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2023",
+      "calculo": "los datos llegan al 31 de diciembre (fecha_datos 2025-06-30)"
+    },
+    {
+      "nombre": "dias_disco_2024",
+      "valor": 103839696,
+      "unidad": "días de disco",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "suma de dias_disco de modelo_trimestre"
+    },
+    {
+      "nombre": "fallos_2024",
+      "valor": 4538,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "suma de fallos de modelo_trimestre"
+    },
+    {
+      "nombre": "fallos_en_garantia_2024",
+      "valor": 3258,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "suma de fallos_en_garantia de modelo_trimestre"
+    },
+    {
+      "nombre": "tasa_anual_pct_2024",
+      "valor": 1.5951221582929134,
+      "unidad": "%",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "fallos / días de disco × 365 × 100"
+    },
+    {
+      "nombre": "coste_fallos_usd_2024",
+      "valor": 832698.0,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "suma de coste_fallos_usd de modelo_trimestre"
+    },
+    {
+      "nombre": "coste_fallos_garantia_usd_2024",
+      "valor": 305124.0,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "suma de coste_fallos_garantia_usd de modelo_trimestre"
+    },
+    {
+      "nombre": "ano_completo_2024",
+      "valor": true,
+      "unidad": "sí o no",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "los datos llegan al 31 de diciembre (fecha_datos 2025-06-30)"
+    },
+    {
+      "nombre": "dias_disco_2025",
+      "valor": 55882610,
+      "unidad": "días de disco",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "de 2025-01-01 a 2025-06-30",
+      "calculo": "suma de dias_disco de modelo_trimestre"
+    },
+    {
+      "nombre": "fallos_2025",
+      "valor": 2128,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "de 2025-01-01 a 2025-06-30",
+      "calculo": "suma de fallos de modelo_trimestre"
+    },
+    {
+      "nombre": "fallos_en_garantia_2025",
+      "valor": 1291,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "de 2025-01-01 a 2025-06-30",
+      "calculo": "suma de fallos_en_garantia de modelo_trimestre"
+    },
+    {
+      "nombre": "tasa_anual_pct_2025",
+      "valor": 1.3899136063974105,
+      "unidad": "%",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "de 2025-01-01 a 2025-06-30",
+      "calculo": "fallos / días de disco × 365 × 100"
+    },
+    {
+      "nombre": "coste_fallos_usd_2025",
+      "valor": 366916.0,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "de 2025-01-01 a 2025-06-30",
+      "calculo": "suma de coste_fallos_usd de modelo_trimestre"
+    },
+    {
+      "nombre": "coste_fallos_garantia_usd_2025",
+      "valor": 170296.0,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "de 2025-01-01 a 2025-06-30",
+      "calculo": "suma de coste_fallos_garantia_usd de modelo_trimestre"
+    },
+    {
+      "nombre": "ano_completo_2025",
+      "valor": false,
+      "unidad": "sí o no",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "de 2025-01-01 a 2025-06-30",
+      "calculo": "los datos llegan al 31 de diciembre (fecha_datos 2025-06-30)"
+    },
+    {
+      "nombre": "discos_inicio_2020_T1",
+      "valor": 122696,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2020-T1",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2020_T2",
+      "valor": 129960,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2020-T2",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2020_T3",
+      "valor": 139938,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2020-T3",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2020_T4",
+      "valor": 150972,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2020-T4",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2021_T1",
+      "valor": 162532,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2021-T1",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2021_T2",
+      "valor": 172436,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2021-T2",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2021_T3",
+      "valor": 178954,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2021-T3",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2021_T4",
+      "valor": 191274,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2021-T4",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2022_T1",
+      "valor": 203194,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2022-T1",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2022_T2",
+      "valor": 207875,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2022-T2",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2022_T3",
+      "valor": 215423,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2022-T3",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2022_T4",
+      "valor": 226697,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2022-T4",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2023_T1",
+      "valor": 231298,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2023-T1",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2023_T2",
+      "valor": 237281,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2023-T2",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2023_T3",
+      "valor": 241297,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2023-T3",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2023_T4",
+      "valor": 260734,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2023-T4",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2024_T1",
+      "valor": 270260,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2024-T1",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2024_T2",
+      "valor": 279576,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2024-T2",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2024_T3",
+      "valor": 284877,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2024-T3",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2024_T4",
+      "valor": 288579,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2024-T4",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2025_T1",
+      "valor": 300901,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2025-T1",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "discos_inicio_2025_T2",
+      "valor": 308836,
+      "unidad": "discos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "primer día de 2025-T2",
+      "calculo": "suma de discos de inicio_trimestre por año y trimestre"
+    },
+    {
+      "nombre": "trimestres",
+      "valor": 22,
+      "unidad": "trimestres",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "de 2020-T1 a 2025-T2",
+      "calculo": "trimestres distintos de inicio_trimestre"
+    },
+    {
+      "nombre": "primer_trimestre",
+      "valor": "2020-T1",
+      "unidad": "trimestre",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "de 2020-T1 a 2025-T2",
+      "calculo": "el primero de la serie"
+    },
+    {
+      "nombre": "ultimo_trimestre",
+      "valor": "2025-T2",
+      "unidad": "trimestre",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "de 2020-T1 a 2025-T2",
+      "calculo": "el último de la serie"
+    },
+    {
+      "nombre": "subidas_trimestre",
+      "valor": 21,
+      "unidad": "trimestres",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "de 2020-T1 a 2025-T2",
+      "calculo": "trimestres con más discos que el anterior"
+    },
+    {
+      "nombre": "pasos_trimestre",
+      "valor": 21,
+      "unidad": "trimestres",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "de 2020-T1 a 2025-T2",
+      "calculo": "pasos de un trimestre al siguiente"
+    },
+    {
+      "nombre": "razon_discos_ultimo_primero",
+      "valor": 2.517082871487253,
+      "unidad": "veces",
+      "poblacion": "discos de datos (sin los de arranque de los servidores) en servicio el primer día del trimestre",
+      "periodo": "2025-T2 frente a 2020-T1",
+      "calculo": "discos del último trimestre / discos del primero"
+    },
+    {
+      "nombre": "razon_coste_2024_2020",
+      "valor": 3.3243401206937575,
+      "unidad": "veces",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024 frente a año 2020",
+      "calculo": "coste de los fallos de un año / del otro"
+    },
+    {
+      "nombre": "media_fallos_mes_2024",
+      "valor": 378.1666666666667,
+      "unidad": "fallos al mes",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "fallos del año / 12"
+    },
+    {
+      "nombre": "parte_fallos_garantia_pct_2024",
+      "valor": 71.79374173644777,
+      "unidad": "%",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "fallos en garantía / fallos × 100"
+    },
+    {
+      "nombre": "dias_disco_millones_2024",
+      "valor": 103.839696,
+      "unidad": "millones de días de disco",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "días de disco / 1.000.000"
+    },
+    {
+      "nombre": "fallos_tipo_datos",
+      "valor": 16996,
+      "unidad": "fallos",
+      "poblacion": "discos de datos",
+      "periodo": "1 de enero de 2020 a 2025-06-30",
+      "calculo": "filas de fallos_detalle con ese tipo_disco"
+    },
+    {
+      "nombre": "fallos_tipo_arranque",
+      "valor": 964,
+      "unidad": "fallos",
+      "poblacion": "discos de arranque",
+      "periodo": "1 de enero de 2020 a 2025-06-30",
+      "calculo": "filas de fallos_detalle con ese tipo_disco"
+    },
+    {
+      "nombre": "detalle_fallos_2020",
+      "valor": 1307,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2020",
+      "calculo": "filas de fallos_detalle de datos"
+    },
+    {
+      "nombre": "detalle_coste_fallos_usd_2020",
+      "valor": 250485.2,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2020",
+      "calculo": "suma de coste_fallo_usd de fallos_detalle"
+    },
+    {
+      "nombre": "detalle_coste_fallos_garantia_usd_2020",
+      "valor": 80209.0,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2020",
+      "calculo": "suma de coste_fallo_garantia_usd de fallos_detalle"
+    },
+    {
+      "nombre": "detalle_fallos_2021",
+      "valor": 1823,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2021",
+      "calculo": "filas de fallos_detalle de datos"
+    },
+    {
+      "nombre": "detalle_coste_fallos_usd_2021",
+      "valor": 352673.7692307692,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2021",
+      "calculo": "suma de coste_fallo_usd de fallos_detalle"
+    },
+    {
+      "nombre": "detalle_coste_fallos_garantia_usd_2021",
+      "valor": 109169.07307692307,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2021",
+      "calculo": "suma de coste_fallo_garantia_usd de fallos_detalle"
+    },
+    {
+      "nombre": "detalle_fallos_2022",
+      "valor": 2999,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2022",
+      "calculo": "filas de fallos_detalle de datos"
+    },
+    {
+      "nombre": "detalle_coste_fallos_usd_2022",
+      "valor": 565844.0901098901,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2022",
+      "calculo": "suma de coste_fallo_usd de fallos_detalle"
+    },
+    {
+      "nombre": "detalle_coste_fallos_garantia_usd_2022",
+      "valor": 200888.02857142856,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2022",
+      "calculo": "suma de coste_fallo_garantia_usd de fallos_detalle"
+    },
+    {
+      "nombre": "detalle_fallos_2023",
+      "valor": 4201,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2023",
+      "calculo": "filas de fallos_detalle de datos"
+    },
+    {
+      "nombre": "detalle_coste_fallos_usd_2023",
+      "valor": 755878.6,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2023",
+      "calculo": "suma de coste_fallo_usd de fallos_detalle"
+    },
+    {
+      "nombre": "detalle_coste_fallos_garantia_usd_2023",
+      "valor": 284506.6,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2023",
+      "calculo": "suma de coste_fallo_garantia_usd de fallos_detalle"
+    },
+    {
+      "nombre": "detalle_fallos_2024",
+      "valor": 4538,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "filas de fallos_detalle de datos"
+    },
+    {
+      "nombre": "detalle_coste_fallos_usd_2024",
+      "valor": 832698.0,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "suma de coste_fallo_usd de fallos_detalle"
+    },
+    {
+      "nombre": "detalle_coste_fallos_garantia_usd_2024",
+      "valor": 305124.0,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "año 2024",
+      "calculo": "suma de coste_fallo_garantia_usd de fallos_detalle"
+    },
+    {
+      "nombre": "detalle_fallos_2025",
+      "valor": 2128,
+      "unidad": "fallos",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "de 2025-01-01 a 2025-06-30",
+      "calculo": "filas de fallos_detalle de datos"
+    },
+    {
+      "nombre": "detalle_coste_fallos_usd_2025",
+      "valor": 366916.0,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "de 2025-01-01 a 2025-06-30",
+      "calculo": "suma de coste_fallo_usd de fallos_detalle"
+    },
+    {
+      "nombre": "detalle_coste_fallos_garantia_usd_2025",
+      "valor": 170296.0,
+      "unidad": "dólares",
+      "poblacion": "discos de datos (sin los de arranque de los servidores)",
+      "periodo": "de 2025-01-01 a 2025-06-30",
+      "calculo": "suma de coste_fallo_garantia_usd de fallos_detalle"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "skill": "preparacion-modelo",
+  "version_skill": "15/11/2026 (WF-134)",
+  "script": "scripts/12_particion.py",
+  "encargo": "prompts/20_encargo_particion_y_preparacion.md, primera parte",
+  "fecha_datos": "2025-06-30",
+  "fecha_ejecucion": "2026-11-18T15:19:57",
+  "entradas": [
+    {
+      "ruta": "data/processed/fotos_riesgo.parquet",
+      "sha256": "5a84a6ae35d20108e94875f87d0ec9f35c8ac71f9e67aab4444f919dde354a71",
+      "filas": 14604861,
+      "columnas": 144,
+      "grupos_de_filas": 66
+    },
+    {
+      "ruta": "informes/transformacion-datos.json",
+      "estado": "OK"
+    }
+  ],
+  "resultado": {
+    "estado": "OK",
+    "riesgo": "bajo",
+    "resumen": "Construcción: 11.026.052 fotos y 11.962 con fallo a 30 días (0,1085 %), del 2020-01-01 al 2024-06-01. Validación: 3.578.809 fotos y 4.304 con fallo (0,1203 %), del 2024-07-01 al 2025-06-01; 282.422 discos están en las dos partes.",
+    "artefactos": [
+      "data/processed/fotos_riesgo_entrenamiento.parquet",
+      "data/processed/fotos_riesgo_validacion.parquet",
+      "informes/particion.json"
+    ],
+    "siguiente": "preparacion-modelo §2 y §3: el desequilibrio descrito y la matriz de transformaciones propuesta, con la tabla de entrenamiento (encargo 20, segunda parte)"
+  },
+  "pendientes": [],
+  "estrategia": "fecha",
+  "por_que": "Por fecha, como manda reglas-negocio §7 (Juan, 17/11/2026): el modelo se usará hacia adelante, cada mes con las fotos nuevas, así que la validación es el periodo más reciente, del 01/07/2024 al 30/06/2025, y la construcción va del 01/01/2020 al 30/06/2024. Un disco sigue en servicio de una parte a la otra, como seguirá en producción: no se parte por disco.",
+  "semilla": 42,
+  "columna_fecha": "fecha",
+  "columna_grupo": null,
+  "columna_periodo": "periodo",
+  "partes": [
+    {
+      "parte": "entrenamiento",
+      "periodo": "construcción",
+      "regla": {
+        "desde": "2020-01-01",
+        "hasta": "2024-06-30"
+      },
+      "ruta": "data/processed/fotos_riesgo_entrenamiento.parquet",
+      "sha256": "876b3793c788dcbfbda8a9262ef6e483ac626efbbd078f24e59bbab2bd8553e0",
+      "filas": 11026052,
+      "fotos_con_objetivo": 11962,
+      "tasa_objetivo": 0.0010848851429323932,
+      "tasa_objetivo_pct": 0.10848851429323932,
+      "fecha_min": "2020-01-01",
+      "fecha_max": "2024-06-01",
+      "fotos_mensuales": 54,
+      "horizonte_hasta_max": "2024-06-30",
+      "horizonte_vacio": 0,
+      "discos": 352642
+    },
+    {
+      "parte": "validacion",
+      "periodo": "validación",
+      "regla": {
+        "desde": "2024-07-01",
+        "hasta": "2025-06-30"
+      },
+      "ruta": "data/processed/fotos_riesgo_validacion.parquet",
+      "sha256": "fc0a0900543ea2fd96608bf21760f3e21e14a57cf0f7df9c19476d4f4f62d9c0",
+      "filas": 3578809,
+      "fotos_con_objetivo": 4304,
+      "tasa_objetivo": 0.0012026347312751253,
+      "tasa_objetivo_pct": 0.12026347312751252,
+      "fecha_min": "2024-07-01",
+      "fecha_max": "2025-06-01",
+      "fotos_mensuales": 12,
+      "horizonte_hasta_max": "2025-06-30",
+      "horizonte_vacio": 0,
+      "discos": 332218
+    },
+    {
+      "parte": "lote_produccion",
+      "ruta": null,
+      "sha256": null,
+      "filas": null,
+      "tasa_objetivo": null,
+      "fecha_min": null,
+      "fecha_max": null,
+      "motivo": "No hay lote de producción en el caso: la prueba final es la reserva, del 01/07/2025 al 30/06/2026, que está fuera de los datos de trabajo y no se mira hasta entonces (reglas-negocio §5 y §7)."
+    }
+  ],
+  "parametros": [
+    {
+      "nombre": "semilla",
+      "valor": 42,
+      "origen": "parametros.md; no se usa, la partición por fecha no sortea"
+    },
+    {
+      "nombre": "tolerancia de la tasa del objetivo entre partes",
+      "valor": 2.0,
+      "origen": "parametros.md, 2 puntos porcentuales"
+    },
+    {
+      "nombre": "proporción de validación",
+      "valor": null,
+      "origen": "parametros.md da 30 %; no aplica: las fechas de la regla §7 fijan las partes"
+    }
+  ],
+  "teoria": [
+    "20.2, entrenamiento, validación y prueba: la validación se aparta y se mira una sola vez, al medir el modelo; la prueba final es la reserva, fuera del caso.",
+    "20.8, las fugas: datos con fecha no se parten al azar. Un mismo disco a los dos lados es lo que pasará en producción, porque el modelo puntúa cada mes los discos que ya vio; se cuenta y se dice, y el horizonte de construcción no pasa del 30/06/2024, para que ninguna foto de construcción sepa nada de la validación."
+  ],
+  "datos_personales": "Ninguno: los datos son de discos y no traen nada de personas; serial_number identifica un disco (reglas-negocio §9). No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
+  "objetivo_entrada": 16266,
+  "claves_compartidas": 0,
+  "claves_repetidas": 0,
+  "filas_que_no_coinciden_con_periodo": 0,
+  "filas_fuera_de_las_reglas": 0,
+  "filas_sin_parte": 0,
+  "discos_en_las_dos_partes": 282422,
+  "diferencia_tasa_puntos": 0.011774958834273206,
+  "tolerancia_puntos": 2.0,
+  "comprobaciones": {
+    "sin_filas_compartidas": true,
+    "sin_entidades_compartidas": null,
+    "suman_la_entrada": true,
+    "tasa_dentro_de_tolerancia": true,
+    "fechas_sin_solape": true,
+    "horizonte_cerrado": true,
+    "coincide_con_periodo": true
+  },
+  "validaciones_salida": {
+    "mismas_columnas_y_tipos": true,
+    "un_grupo_por_fecha": true,
+    "filas_escritas": true
+  },
+  "avisos": [
+    "282.422 discos tienen fotos en las dos partes: es lo esperado en una partición por fecha, y la validación cruzada de construcción irá por fecha."
+  ],
+  "ejecucion": {
+    "python": "3.13.15",
+    "ejecutable": "python",
+    "pyarrow": "24.0.0",
+    "segundos": 56.9
+  }
+}

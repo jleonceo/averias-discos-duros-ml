@@ -1,0 +1,3811 @@
+{
+  "skill": "transformacion-datos",
+  "version_skill": "06/10/2026 (SC-64)",
+  "script": "scripts/05_transformacion_datos.py",
+  "fecha_datos": "2025-06-30",
+  "fecha_ejecucion": "2026-11-17T20:06:35",
+  "entradas": [
+    {
+      "ruta": "data/processed/fotos_mensuales_corregido.parquet",
+      "sha256": "998d1edec335d5cfefb6d8177a173b019f8983a519fa7353d754f0233efebedb",
+      "filas": 14851669,
+      "columnas": 130
+    },
+    {
+      "ruta": "data/processed/ventanas_fallo_corregido.parquet",
+      "sha256": "63d4379a89b96f54984bb87ea73b4dfd292442d4c7efac05852bc6d5ca73d095",
+      "filas": 536597,
+      "columnas": 131
+    },
+    {
+      "ruta": "data/processed/recuento_diario_corregido.parquet",
+      "sha256": "320f487a6a82bbd173c4f4d2708fbbfc3319d005e1cc5740f19a05ec55477465",
+      "filas": 197871,
+      "columnas": 6
+    },
+    {
+      "ruta": "data/processed/fallos_corregido.parquet",
+      "sha256": "59e45676a6a7a2dae43d3645017b74710049c2187895b7973abaacd21815acbe",
+      "filas": 17960,
+      "columnas": 2
+    },
+    {
+      "ruta": "data/processed/calendario.parquet",
+      "sha256": "e76a8d08242661d80a5c317b57a8f00c2aab04ebb8db9291b04ec38bd001ce78",
+      "filas": 2008,
+      "columnas": 7
+    }
+  ],
+  "resultado": {
+    "estado": "OK",
+    "riesgo": "bajo",
+    "resumen": "Nueve tablas en data/processed/: 14.604.861 fotos de riesgo, 17.960 fallos y 402.643 discos, con todas las validaciones en verde. Ninguna celda queda pendiente.",
+    "artefactos": [
+      "data/processed/dim_modelo.parquet",
+      "data/processed/dim_precio_gb.parquet",
+      "data/processed/fotos_riesgo.parquet",
+      "data/processed/fallos_detalle.parquet",
+      "data/processed/vida_discos.parquet",
+      "data/processed/dias_por_tramo.parquet",
+      "data/processed/inicio_trimestre.parquet",
+      "data/processed/modelo_trimestre.parquet",
+      "data/processed/centro_mes.parquet",
+      "informes/transformacion-datos.json",
+      "informes/transformacion-datos.md",
+      "contexto-proyecto/modelo/registro-transformaciones.md"
+    ],
+    "siguiente": "analisis-exploratorio, con las tablas de data/processed/; el objetivo de fotos_riesgo solo con el periodo de construcción"
+  },
+  "pendientes": [],
+  "salidas": [
+    {
+      "tabla": "dim_modelo",
+      "ruta": "data/processed/dim_modelo.parquet",
+      "sha256": "543441fa6c7c8bb023d40bfacd6357c85fd0cd37013a2305c3fe97bc9512a3af",
+      "filas": 94,
+      "columnas": 10,
+      "que_es_una_fila": "un modelo de disco"
+    },
+    {
+      "tabla": "dim_precio_gb",
+      "ruta": "data/processed/dim_precio_gb.parquet",
+      "sha256": "c2a444fbc373fc42d05364ad47e251a646415e7d7fc38f82f2096261894cd2a8",
+      "filas": 66,
+      "columnas": 5,
+      "que_es_una_fila": "una capacidad de datos en un año: lo que costaba el GB el 1 de julio"
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "ruta": "data/processed/fotos_riesgo.parquet",
+      "sha256": "5a84a6ae35d20108e94875f87d0ec9f35c8ac71f9e67aab4444f919dde354a71",
+      "filas": 14604861,
+      "columnas": 144,
+      "que_es_una_fila": "un disco de datos en una foto mensual, sin la foto del día en que falla"
+    },
+    {
+      "tabla": "fallos_detalle",
+      "ruta": "data/processed/fallos_detalle.parquet",
+      "sha256": "ff67f9a515527ffb6e1dd6b7474067836c1d401c3e1a33901f290f1b56c236ad",
+      "filas": 17960,
+      "columnas": 32,
+      "que_es_una_fila": "un fallo de la lista: un disco el día que Backblaze lo da por fallado"
+    },
+    {
+      "tabla": "vida_discos",
+      "ruta": "data/processed/vida_discos.parquet",
+      "sha256": "af034d17ebc92a1ff22e3c2e1688a585d39383cb8e2f94106ea4e0ffc709d504",
+      "filas": 402643,
+      "columnas": 11,
+      "que_es_una_fila": "un disco de datos que sale en alguna foto o en alguna ventana"
+    },
+    {
+      "tabla": "dias_por_tramo",
+      "ruta": "data/processed/dias_por_tramo.parquet",
+      "sha256": "a8f2230c04a3c9717bb4aa2a9792297ef3b0dd2d37b234178d949eadd7c38c66",
+      "filas": 13275,
+      "columnas": 8,
+      "que_es_una_fila": "un modelo de datos, un centro, un mes y un año de edad cumplido"
+    },
+    {
+      "tabla": "inicio_trimestre",
+      "ruta": "data/processed/inicio_trimestre.parquet",
+      "sha256": "86169128b7862e772d1e1e6a755d8df287c74a4da7e469257b57b0b0ed14a03e",
+      "filas": 3117,
+      "columnas": 8,
+      "que_es_una_fila": "un trimestre, un modelo de datos y un año de edad cumplido, el primer día del trimestre"
+    },
+    {
+      "tabla": "modelo_trimestre",
+      "ruta": "data/processed/modelo_trimestre.parquet",
+      "sha256": "82be69d656509c36760f705d0d2bd21801702ddbf33795056e5cc92c7fff76cf",
+      "filas": 1028,
+      "columnas": 15,
+      "que_es_una_fila": "un modelo de datos en un trimestre"
+    },
+    {
+      "tabla": "centro_mes",
+      "ruta": "data/processed/centro_mes.parquet",
+      "sha256": "d6e8b53032fe7ff2be864922483b3a07a33fbf0fadbd20eca3b3c516a3b2fc57",
+      "filas": 186,
+      "columnas": 6,
+      "que_es_una_fila": "un centro de datos en un mes, solo discos de datos"
+    }
+  ],
+  "transformaciones": [
+    {
+      "id": "T-01",
+      "transformacion": "Igualar las claves antes de cruzar, sin guardarlo en las tablas corregidas",
+      "columnas": [
+        "dia_fallo",
+        "datacenter"
+      ],
+      "regla": "reglas de transformación, «De qué se parte»",
+      "ficha": "R-010",
+      "resultado": "17.960 fallos cruzados con dia_fallo en milisegundos; el centro vacío como «sin dato» al cruzar fotos y ventanas con el recuento."
+    },
+    {
+      "id": "T-02",
+      "transformacion": "Construir dim_modelo",
+      "columnas": [
+        "model",
+        "capacidad_tb",
+        "tipo_disco",
+        "fabricante",
+        "garantia_anos",
+        "fecha_compra",
+        "coste_gb_compra",
+        "precio_usd",
+        "origen_precio"
+      ],
+      "regla": "reglas de transformación §1",
+      "ficha": "R-011",
+      "resultado": "94 modelos, 57 con precio."
+    },
+    {
+      "id": "T-03",
+      "transformacion": "Construir dim_precio_gb",
+      "columnas": [
+        "capacidad_tb",
+        "ano",
+        "coste_gb",
+        "origen"
+      ],
+      "regla": "reglas de transformación §1",
+      "ficha": "R-012",
+      "resultado": "66 filas."
+    },
+    {
+      "id": "T-04",
+      "transformacion": "Construir fotos_riesgo bloque a bloque",
+      "columnas": [
+        "edad_anos",
+        "avisa",
+        "falla_30d",
+        "horizonte_hasta"
+      ],
+      "regla": "reglas de transformación §3",
+      "ficha": "R-013",
+      "resultado": "14.604.861 filas, 16.266 con objetivo 1."
+    },
+    {
+      "id": "T-05",
+      "transformacion": "Construir fallos_detalle",
+      "columnas": [
+        "model",
+        "edad_al_fallar_anos",
+        "sin_aviso",
+        "tomo",
+        "coincide_con_anterior",
+        "coste_fallo_usd"
+      ],
+      "regla": "reglas de transformación §4",
+      "ficha": "R-014",
+      "resultado": "17.960 fallos."
+    },
+    {
+      "id": "T-06",
+      "transformacion": "Construir vida_discos",
+      "columnas": [
+        "primera_aparicion",
+        "evento",
+        "desaparece_avisando"
+      ],
+      "regla": "reglas de transformación §5",
+      "ficha": "R-015",
+      "resultado": "402.643 discos."
+    },
+    {
+      "id": "T-07",
+      "transformacion": "Construir dias_por_tramo",
+      "columnas": [
+        "fotos",
+        "dias_disco",
+        "fallos",
+        "desaparecen_avisando"
+      ],
+      "regla": "reglas de transformación §6",
+      "ficha": "R-016",
+      "resultado": "13.275 filas."
+    },
+    {
+      "id": "T-08",
+      "transformacion": "Construir inicio_trimestre",
+      "columnas": [
+        "discos",
+        "dias_trimestre"
+      ],
+      "regla": "reglas de transformación §7",
+      "ficha": "R-017",
+      "resultado": "3.117 filas."
+    },
+    {
+      "id": "T-09",
+      "transformacion": "Construir modelo_trimestre",
+      "columnas": [
+        "dias_disco",
+        "fallos",
+        "coste_fallos_usd",
+        "pasa_minimo_ano"
+      ],
+      "regla": "reglas de transformación §8",
+      "ficha": "R-018",
+      "resultado": "1.028 filas."
+    },
+    {
+      "id": "T-10",
+      "transformacion": "Construir centro_mes",
+      "columnas": [
+        "dias_disco",
+        "fallos",
+        "con_sitio"
+      ],
+      "regla": "reglas de transformación §9",
+      "ficha": "R-019",
+      "resultado": "186 filas."
+    }
+  ],
+  "variables_generadas": [
+    {
+      "tabla": "dim_modelo",
+      "columna": "capacidad_tb",
+      "formula": "capacity_bytes / 10^12, a un decimal",
+      "columnas_origen": [
+        "capacity_bytes"
+      ],
+      "unidad": "TB",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "dim_modelo",
+      "columna": "tipo_disco",
+      "formula": "arranque hasta 2.048.408.248.320 bytes; datos por encima",
+      "columnas_origen": [
+        "capacity_bytes"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "dim_modelo",
+      "columna": "fabricante",
+      "formula": "prefijo del modelo y dos excepciones (reglas §3)",
+      "columnas_origen": [
+        "model"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "dim_modelo",
+      "columna": "garantia_anos",
+      "formula": "familia del modelo (reglas §6)",
+      "columnas_origen": [
+        "model"
+      ],
+      "unidad": "años",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "dim_modelo",
+      "columna": "fecha_compra",
+      "formula": "media de (primera foto - horas encendido) de los discos del modelo; ficha de hoy",
+      "columnas_origen": [
+        "fecha",
+        "smart_9_raw"
+      ],
+      "unidad": null,
+      "informacion_posterior": true,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "dim_modelo",
+      "columna": "coste_gb_compra",
+      "formula": "coste por GB de su capacidad en su fecha de compra (curva, inferido o vecinas)",
+      "columnas_origen": [
+        "capacidad_tb",
+        "fecha_compra"
+      ],
+      "unidad": "USD/GB",
+      "informacion_posterior": true,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "dim_modelo",
+      "columna": "precio_usd",
+      "formula": "coste_gb_compra × capacidad_tb × 1.000; ficha de hoy",
+      "columnas_origen": [
+        "coste_gb_compra",
+        "capacidad_tb"
+      ],
+      "unidad": "USD",
+      "informacion_posterior": true,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "dim_modelo",
+      "columna": "origen_precio",
+      "formula": "curva, inferido o vecinas",
+      "columnas_origen": [
+        "fecha_compra"
+      ],
+      "unidad": null,
+      "informacion_posterior": true,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "dim_precio_gb",
+      "columna": "coste_gb",
+      "formula": "coste por GB de la capacidad el 1 de julio del año",
+      "columnas_origen": [
+        "capacidad_tb",
+        "ano"
+      ],
+      "unidad": "USD/GB",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "edad_anos",
+      "formula": "smart_9_raw / 8.766; sin horas, días desde la primera aparición / 365,25",
+      "columnas_origen": [
+        "smart_9_raw",
+        "fecha"
+      ],
+      "unidad": "años",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "edad_de_horas",
+      "formula": "smart_9_raw no vacío",
+      "columnas_origen": [
+        "smart_9_raw"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "avisa",
+      "formula": "algún contador de avería > 0; un vacío no cuenta",
+      "columnas_origen": [
+        "smart_5_raw",
+        "smart_187_raw",
+        "smart_188_raw",
+        "smart_197_raw",
+        "smart_198_raw"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "contadores_que_avisan",
+      "formula": "cuántos de los cinco contadores > 0",
+      "columnas_origen": [
+        "smart_5_raw",
+        "smart_187_raw",
+        "smart_188_raw",
+        "smart_197_raw",
+        "smart_198_raw"
+      ],
+      "unidad": "contadores",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": true
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "suma_contadores_sin_188",
+      "formula": "smart_5 + smart_187 + smart_197 + smart_198 sin los vacíos; vacía si los cuatro lo están",
+      "columnas_origen": [
+        "smart_5_raw",
+        "smart_187_raw",
+        "smart_197_raw",
+        "smart_198_raw"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": true
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "smart_188_no_cero",
+      "formula": "1 si smart_188 > 0, 0 si vale 0, vacío si no consta",
+      "columnas_origen": [
+        "smart_188_raw"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "cambio_smart_5",
+      "formula": "smart_5_raw - smart_5_raw de la foto anterior del mismo disco",
+      "columnas_origen": [
+        "smart_5_raw"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": true
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "cambio_smart_187",
+      "formula": "smart_187_raw - smart_187_raw de la foto anterior del mismo disco",
+      "columnas_origen": [
+        "smart_187_raw"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": true
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "cambio_smart_197",
+      "formula": "smart_197_raw - smart_197_raw de la foto anterior del mismo disco",
+      "columnas_origen": [
+        "smart_197_raw"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": true
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "cambio_smart_198",
+      "formula": "smart_198_raw - smart_198_raw de la foto anterior del mismo disco",
+      "columnas_origen": [
+        "smart_198_raw"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": true
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "meses_desde_foto_anterior",
+      "formula": "meses entre la foto y la anterior del mismo disco",
+      "columnas_origen": [
+        "fecha"
+      ],
+      "unidad": "meses",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "capacidad_tb, fabricante, garantia_anos",
+      "formula": "de dim_modelo (cruce 9)",
+      "columnas_origen": [
+        "model"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "periodo",
+      "formula": "el del Calendario en la fecha de la foto (cruce 10)",
+      "columnas_origen": [
+        "fecha"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "horizonte_hasta",
+      "formula": "fecha + 30 días, recortado al último día de su periodo",
+      "columnas_origen": [
+        "fecha",
+        "periodo"
+      ],
+      "unidad": null,
+      "informacion_posterior": true,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fotos_riesgo",
+      "columna": "falla_30d",
+      "formula": "1 si el disco tiene un fallo con fecha < dia_fallo <= horizonte_hasta (cruce 12)",
+      "columnas_origen": [
+        "serial_number",
+        "fecha",
+        "dia_fallo"
+      ],
+      "unidad": null,
+      "informacion_posterior": true,
+      "sale_del_objetivo": true,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "horas_al_fallar",
+      "formula": "horas del día del fallo o, si no las trae, del anterior",
+      "columnas_origen": [
+        "smart_9_raw"
+      ],
+      "unidad": "horas",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "edad_al_fallar_anos",
+      "formula": "horas_al_fallar / 8.766; sin horas, días desde la primera aparición / 365,25",
+      "columnas_origen": [
+        "horas_al_fallar",
+        "dia_fallo"
+      ],
+      "unidad": "años",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "en_garantia",
+      "formula": "edad_al_fallar_anos < garantia_anos; falso sin garantía comprobada",
+      "columnas_origen": [
+        "edad_al_fallar_anos",
+        "garantia_anos"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "hay_dia_anterior, avisa_dia_anterior, sin_aviso",
+      "formula": "la fila del día anterior de la ventana y sus cinco contadores",
+      "columnas_origen": [
+        "smart_5_raw",
+        "smart_187_raw",
+        "smart_188_raw",
+        "smart_197_raw",
+        "smart_198_raw"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "tomo",
+      "formula": "centro|vault|ranura de la última fila con los cuatro datos de sitio",
+      "columnas_origen": [
+        "datacenter",
+        "vault_id",
+        "pod_id",
+        "pod_slot_num"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "plazo_reconstruccion_dias",
+      "formula": "capacidad_tb + 1",
+      "columnas_origen": [
+        "capacidad_tb"
+      ],
+      "unidad": "días",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": true
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "dias_desde_anterior_del_tomo, coincide_con_anterior",
+      "formula": "días desde el fallo anterior del tomo; coincide si son menos que su plazo",
+      "columnas_origen": [
+        "tomo",
+        "dia_fallo"
+      ],
+      "unidad": "días",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": true
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "precio_nuevo_usd",
+      "formula": "coste_gb del año del fallo × capacidad_tb × 1.000 (cruce 5)",
+      "columnas_origen": [
+        "capacidad_tb",
+        "dia_fallo"
+      ],
+      "unidad": "USD",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "coste_fallo_usd",
+      "formula": "precio_nuevo_usd + 37",
+      "columnas_origen": [
+        "precio_nuevo_usd"
+      ],
+      "unidad": "USD",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": true
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "coste_fallo_garantia_usd",
+      "formula": "37 si en_garantia; si no, coste_fallo_usd",
+      "columnas_origen": [
+        "coste_fallo_usd",
+        "en_garantia"
+      ],
+      "unidad": "USD",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "ultima_foto_anterior",
+      "formula": "última foto del disco anterior al fallo (cruce 13)",
+      "columnas_origen": [
+        "fecha"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "objetivo_de_alguna_foto",
+      "formula": "el fallo está en el horizonte de alguna fila de fotos_riesgo",
+      "columnas_origen": [
+        "falla_30d"
+      ],
+      "unidad": null,
+      "informacion_posterior": true,
+      "sale_del_objetivo": true,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "fallos_detalle",
+      "columna": "periodo, ano, trimestre, mes, primer_fallo_del_disco",
+      "formula": "del Calendario en dia_fallo (cruce 6); el primer fallo de cada disco",
+      "columnas_origen": [
+        "dia_fallo"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "vida_discos",
+      "columna": "primera_aparicion, edad_entrada_anos",
+      "formula": "primera foto o primer día de ventana; su edad ese día",
+      "columnas_origen": [
+        "fecha",
+        "smart_9_raw"
+      ],
+      "unidad": "años",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "vida_discos",
+      "columna": "ultima_foto, primer_fallo, evento, fecha_fin, edad_fin_anos",
+      "formula": "última foto; primer fallo; fallo, desaparece o sigue",
+      "columnas_origen": [
+        "fecha",
+        "dia_fallo"
+      ],
+      "unidad": null,
+      "informacion_posterior": true,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "vida_discos",
+      "columna": "avisa_ultima_foto, desaparece_avisando",
+      "formula": "aviso en la última foto; desaparece y avisaba",
+      "columnas_origen": [
+        "smart_5_raw",
+        "smart_187_raw",
+        "smart_188_raw",
+        "smart_197_raw",
+        "smart_198_raw"
+      ],
+      "unidad": null,
+      "informacion_posterior": true,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "dias_por_tramo",
+      "columna": "fotos, dias_disco, fallos, desaparecen_avisando",
+      "formula": "fotos por celda; días del recuento repartidos por sus fotos (cruce 11); fallos (cruce 15)",
+      "columnas_origen": [
+        "discos",
+        "fallos"
+      ],
+      "unidad": "días de disco",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "inicio_trimestre",
+      "columna": "discos, dias_trimestre",
+      "formula": "discos de la foto del primer día del trimestre; días del trimestre",
+      "columnas_origen": [
+        "fecha"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "modelo_trimestre",
+      "columna": "dias_disco, fallos, fallos_en_garantia, coste_fallos_usd, coste_fallos_garantia_usd, dias_disco_ano, pasa_minimo_ano",
+      "formula": "sumas del recuento y de fallos_detalle; mínimo de 50.000 días en el año",
+      "columnas_origen": [
+        "discos",
+        "dia_fallo"
+      ],
+      "unidad": null,
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    },
+    {
+      "tabla": "centro_mes",
+      "columna": "dias_disco, fallos, periodo, con_sitio",
+      "formula": "sumas del recuento; con_sitio desde julio de 2023",
+      "columnas_origen": [
+        "discos",
+        "fallos"
+      ],
+      "unidad": "días de disco",
+      "informacion_posterior": false,
+      "sale_del_objetivo": false,
+      "suma_de_otras": false
+    }
+  ],
+  "cambios_granularidad": [
+    {
+      "antes": "un disco el día 1 de un mes (fotos)",
+      "despues": "un disco de datos en una foto mensual, sin la foto del día en que falla",
+      "sumas_control": [
+        {
+          "magnitud": "filas: fotos de datos menos las del día del fallo",
+          "antes": 14604861,
+          "despues": 14604861,
+          "coincide": true
+        }
+      ]
+    },
+    {
+      "antes": "un disco un día de la ventana de un fallo, y la lista de fallos",
+      "despues": "un fallo de la lista: un disco el día que Backblaze lo da por fallado",
+      "sumas_control": [
+        {
+          "magnitud": "fallos de la lista",
+          "antes": 17960,
+          "despues": 17960,
+          "coincide": true
+        }
+      ]
+    },
+    {
+      "antes": "fotos y ventanas",
+      "despues": "un disco de datos que sale en alguna foto o en alguna ventana",
+      "sumas_control": [
+        {
+          "magnitud": "discos de datos distintos",
+          "antes": 402643,
+          "despues": 402643,
+          "coincide": true
+        }
+      ]
+    },
+    {
+      "antes": "un día, un modelo, una capacidad y un centro (recuento)",
+      "despues": "un modelo de datos, un centro, un mes y un año de edad cumplido",
+      "sumas_control": [
+        {
+          "magnitud": "días de disco de las celdas con foto",
+          "antes": 445189491,
+          "despues": 445189491,
+          "coincide": true
+        },
+        {
+          "magnitud": "fallos de discos de datos de la lista",
+          "antes": 16996,
+          "despues": 16996,
+          "coincide": true
+        }
+      ]
+    },
+    {
+      "antes": "fotos del primer día de cada trimestre",
+      "despues": "un trimestre, un modelo de datos y un año de edad cumplido, el primer día del trimestre",
+      "sumas_control": [
+        {
+          "magnitud": "discos de datos de esas fotos",
+          "antes": 4805590,
+          "despues": 4805590,
+          "coincide": true
+        }
+      ]
+    },
+    {
+      "antes": "un día, un modelo, una capacidad y un centro (recuento)",
+      "despues": "un modelo de datos en un trimestre",
+      "sumas_control": [
+        {
+          "magnitud": "días de disco de datos",
+          "antes": 446108683,
+          "despues": 446108683,
+          "coincide": true
+        },
+        {
+          "magnitud": "fallos de discos de datos de la lista",
+          "antes": 16996,
+          "despues": 16996,
+          "coincide": true
+        }
+      ]
+    },
+    {
+      "antes": "un día, un modelo, una capacidad y un centro (recuento)",
+      "despues": "un centro de datos en un mes, solo discos de datos",
+      "sumas_control": [
+        {
+          "magnitud": "días de disco de datos",
+          "antes": 446108683,
+          "despues": 446108683,
+          "coincide": true
+        },
+        {
+          "magnitud": "fallos del recuento de discos de datos",
+          "antes": 16996,
+          "despues": 16996,
+          "coincide": true
+        }
+      ]
+    }
+  ],
+  "cruces": [
+    {
+      "orden": 7,
+      "etiqueta": "recuento",
+      "partida": "recuento",
+      "se_une": "dim_modelo",
+      "clave_partida": [
+        "model"
+      ],
+      "clave_une": [
+        "model"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 0
+      },
+      "filas_antes": 197871,
+      "filas_despues": 197871,
+      "sumas_control": [
+        {
+          "magnitud": "discos",
+          "antes": 453609422,
+          "despues": 453609422,
+          "coincide": true
+        },
+        {
+          "magnitud": "fallos",
+          "antes": 17960,
+          "despues": 17960,
+          "coincide": true
+        }
+      ],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 8,
+      "etiqueta": "recuento",
+      "partida": "recuento",
+      "se_une": "Calendario",
+      "clave_partida": [
+        "fecha"
+      ],
+      "clave_une": [
+        "fecha"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 0
+      },
+      "filas_antes": 197871,
+      "filas_despues": 197871,
+      "sumas_control": [
+        {
+          "magnitud": "discos",
+          "antes": 453609422,
+          "despues": 453609422,
+          "coincide": true
+        }
+      ],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 1,
+      "etiqueta": "fallos_detalle, día del fallo",
+      "partida": "fallos",
+      "se_une": "ventanas (día del fallo)",
+      "clave_partida": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "clave_une": [
+        "serial_number",
+        "fecha"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "1:1",
+      "cardinalidad_observada": "1:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 0
+      },
+      "filas_antes": 17960,
+      "filas_despues": 17960,
+      "sumas_control": [],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 2,
+      "etiqueta": "fallos_detalle, día anterior",
+      "partida": "fallos",
+      "se_une": "ventanas (día anterior)",
+      "clave_partida": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "clave_une": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "1:1",
+      "cardinalidad_observada": "1:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 910
+      },
+      "huerfanas_maestro": {
+        "claves": 0
+      },
+      "filas_antes": 17960,
+      "filas_despues": 17960,
+      "sumas_control": [],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 3,
+      "etiqueta": "fallos_detalle, último día con centro",
+      "partida": "fallos",
+      "se_une": "ventanas (último día con centro)",
+      "clave_partida": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "clave_une": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "1:1",
+      "cardinalidad_observada": "1:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 9259
+      },
+      "huerfanas_maestro": {
+        "claves": 0
+      },
+      "filas_antes": 17960,
+      "filas_despues": 17960,
+      "sumas_control": [],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 3,
+      "etiqueta": "fallos_detalle, último día con ranura",
+      "partida": "fallos",
+      "se_une": "ventanas (último día con ranura)",
+      "clave_partida": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "clave_une": [
+        "serial_number",
+        "dia_fallo"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "1:1",
+      "cardinalidad_observada": "1:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 9467
+      },
+      "huerfanas_maestro": {
+        "claves": 0
+      },
+      "filas_antes": 17960,
+      "filas_despues": 17960,
+      "sumas_control": [],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 4,
+      "etiqueta": "fallos_detalle",
+      "partida": "fallos",
+      "se_une": "dim_modelo",
+      "clave_partida": [
+        "model"
+      ],
+      "clave_une": [
+        "model"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 23
+      },
+      "filas_antes": 17960,
+      "filas_despues": 17960,
+      "sumas_control": [],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 5,
+      "etiqueta": "fallos_detalle",
+      "partida": "fallos",
+      "se_une": "dim_precio_gb",
+      "clave_partida": [
+        "capacidad_tb",
+        "ano_fallo"
+      ],
+      "clave_une": [
+        "capacidad_tb",
+        "ano"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 964
+      },
+      "huerfanas_maestro": {
+        "claves": 14
+      },
+      "filas_antes": 17960,
+      "filas_despues": 17960,
+      "sumas_control": [],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 6,
+      "etiqueta": "fallos_detalle",
+      "partida": "fallos",
+      "se_une": "Calendario",
+      "clave_partida": [
+        "dia_fallo"
+      ],
+      "clave_une": [
+        "fecha"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 44
+      },
+      "filas_antes": 17960,
+      "filas_despues": 17960,
+      "sumas_control": [],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 9,
+      "etiqueta": "fotos",
+      "partida": "fotos",
+      "se_une": "dim_modelo",
+      "clave_partida": [
+        "model"
+      ],
+      "clave_une": [
+        "model"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 1833
+      },
+      "filas_antes": 14851669,
+      "filas_despues": 14851669,
+      "sumas_control": [],
+      "veces": 66,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 10,
+      "etiqueta": "fotos",
+      "partida": "fotos",
+      "se_une": "Calendario",
+      "clave_partida": [
+        "fecha"
+      ],
+      "clave_une": [
+        "fecha"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 132462
+      },
+      "filas_antes": 14851669,
+      "filas_despues": 14851669,
+      "sumas_control": [],
+      "veces": 66,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 13,
+      "etiqueta": "fallos y fotos",
+      "partida": "fallos",
+      "se_une": "fotos (última anterior al fallo)",
+      "clave_partida": [
+        "serial_number"
+      ],
+      "clave_une": [
+        "serial_number"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 624405
+      },
+      "huerfanas_maestro": {
+        "claves": 14291067
+      },
+      "filas_antes": 1185360,
+      "filas_despues": 1185360,
+      "sumas_control": [],
+      "veces": 66,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 12,
+      "etiqueta": "fotos_riesgo",
+      "partida": "fotos de discos de datos",
+      "se_une": "fallos (como horizontes)",
+      "clave_partida": [
+        "serial_number"
+      ],
+      "clave_une": [
+        "serial_number"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "1:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 14588595
+      },
+      "huerfanas_maestro": {
+        "claves": 0
+      },
+      "filas_antes": 14604861,
+      "filas_despues": 14604861,
+      "sumas_control": [],
+      "veces": 66,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 9,
+      "etiqueta": "vida_discos",
+      "partida": "discos (primera foto o ventana)",
+      "se_une": "dim_modelo",
+      "clave_partida": [
+        "model"
+      ],
+      "clave_une": [
+        "model"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 0
+      },
+      "filas_antes": 408418,
+      "filas_despues": 408418,
+      "sumas_control": [],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 13,
+      "etiqueta": "vida_discos",
+      "partida": "discos de datos",
+      "se_une": "fallos (por disco)",
+      "clave_partida": [
+        "serial_number"
+      ],
+      "clave_une": [
+        "serial_number"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "1:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 385659
+      },
+      "huerfanas_maestro": {
+        "claves": 964
+      },
+      "filas_antes": 402643,
+      "filas_despues": 402643,
+      "sumas_control": [],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 11,
+      "etiqueta": "dias_por_tramo",
+      "partida": "fotos agregadas",
+      "se_une": "recuento agregado",
+      "clave_partida": [
+        "model",
+        "centro",
+        "mes"
+      ],
+      "clave_une": [
+        "model",
+        "centro",
+        "mes"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 110
+      },
+      "filas_antes": 13211,
+      "filas_despues": 13211,
+      "sumas_control": [
+        {
+          "magnitud": "días de disco de las celdas con foto",
+          "antes": 445189491,
+          "despues": 445189491,
+          "coincide": true
+        }
+      ],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 15,
+      "etiqueta": "dias_por_tramo",
+      "partida": "días repartidos",
+      "se_une": "fallos agregados",
+      "clave_partida": [
+        "model",
+        "centro",
+        "mes",
+        "edad_anos_cumplidos"
+      ],
+      "clave_une": [
+        "model",
+        "centro",
+        "mes",
+        "edad_anos_cumplidos"
+      ],
+      "tipo_cruce": "outer",
+      "cardinalidad_esperada": "1:1",
+      "cardinalidad_observada": "1:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 9932
+      },
+      "huerfanas_maestro": {
+        "claves": 64
+      },
+      "filas_antes": 13211,
+      "filas_despues": 13275,
+      "sumas_control": [
+        {
+          "magnitud": "fallos de discos de datos",
+          "antes": 16996,
+          "despues": 16996,
+          "coincide": true
+        },
+        {
+          "magnitud": "días de disco repartidos",
+          "antes": 445189491,
+          "despues": 445189491,
+          "coincide": true
+        }
+      ],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 10,
+      "etiqueta": "inicio_trimestre",
+      "partida": "fotos del primer día del trimestre",
+      "se_une": "Calendario",
+      "clave_partida": [
+        "fecha"
+      ],
+      "clave_une": [
+        "fecha"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 1986
+      },
+      "filas_antes": 3117,
+      "filas_despues": 3117,
+      "sumas_control": [],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 14,
+      "etiqueta": "inicio_trimestre",
+      "partida": "fotos del primer día del trimestre",
+      "se_une": "recuento de ese día",
+      "clave_partida": [
+        "fecha",
+        "model"
+      ],
+      "clave_une": [
+        "fecha",
+        "model"
+      ],
+      "tipo_cruce": "outer",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "1:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 0
+      },
+      "filas_antes": 995,
+      "filas_despues": 995,
+      "sumas_control": [
+        {
+          "magnitud": "discos del primer día del trimestre",
+          "antes": 4805590,
+          "despues": 4805590,
+          "coincide": true
+        }
+      ],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 15,
+      "etiqueta": "modelo_trimestre",
+      "partida": "recuento por modelo y trimestre",
+      "se_une": "fallos por modelo y trimestre",
+      "clave_partida": [
+        "model",
+        "ano",
+        "trimestre"
+      ],
+      "clave_une": [
+        "model",
+        "ano",
+        "trimestre"
+      ],
+      "tipo_cruce": "outer",
+      "cardinalidad_esperada": "1:1",
+      "cardinalidad_observada": "1:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 477
+      },
+      "huerfanas_maestro": {
+        "claves": 0
+      },
+      "filas_antes": 1028,
+      "filas_despues": 1028,
+      "sumas_control": [
+        {
+          "magnitud": "fallos de discos de datos",
+          "antes": 16996,
+          "despues": 16996,
+          "coincide": true
+        },
+        {
+          "magnitud": "días de disco",
+          "antes": 446108683,
+          "despues": 446108683,
+          "coincide": true
+        }
+      ],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 7,
+      "etiqueta": "modelo_trimestre",
+      "partida": "modelo_trimestre",
+      "se_une": "dim_modelo",
+      "clave_partida": [
+        "model"
+      ],
+      "clave_une": [
+        "model"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 33
+      },
+      "filas_antes": 1028,
+      "filas_despues": 1028,
+      "sumas_control": [],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    },
+    {
+      "orden": 8,
+      "etiqueta": "centro_mes",
+      "partida": "recuento por centro y mes",
+      "se_une": "Calendario",
+      "clave_partida": [
+        "mes"
+      ],
+      "clave_une": [
+        "mes"
+      ],
+      "tipo_cruce": "left",
+      "cardinalidad_esperada": "N:1",
+      "cardinalidad_observada": "N:1",
+      "repetidas_maestro": {
+        "claves": 0,
+        "filas": 0
+      },
+      "claves_nulas": {
+        "partida": 0,
+        "se_une": 0
+      },
+      "huerfanas_partida": {
+        "filas": 0
+      },
+      "huerfanas_maestro": {
+        "claves": 1942
+      },
+      "filas_antes": 186,
+      "filas_despues": 186,
+      "sumas_control": [
+        {
+          "magnitud": "días de disco",
+          "antes": 446108683,
+          "despues": 446108683,
+          "coincide": true
+        },
+        {
+          "magnitud": "fallos",
+          "antes": 16996,
+          "despues": 16996,
+          "coincide": true
+        }
+      ],
+      "veces": 1,
+      "hecho": true,
+      "motivo_parada": null
+    }
+  ],
+  "validaciones": [
+    {
+      "validacion": "cada bloque de las fotos es un mes y van en orden de fecha",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "ninguna edad negativa ni vacía en las fotos",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "cada columna de fotos_riesgo está en un solo grupo",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "ningún modelo de las fotos sin fila en dim_modelo",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "ningún tipo de disco ni evento sin regla",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "ningún cruce gana filas",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "todas las sumas de control de los cruces coinciden",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "todas las sumas de control de los cambios de granularidad coinciden",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "dim_modelo: clave model única",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "dim_precio_gb: clave capacidad_tb, ano única",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "fallos_detalle: clave serial_number, dia_fallo única",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "vida_discos: clave serial_number única",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "dias_por_tramo: clave model, centro, mes, edad_anos_cumplidos única",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "inicio_trimestre: clave ano, trimestre, model, edad_anos_cumplidos única",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "modelo_trimestre: clave model, ano, trimestre única",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "centro_mes: clave datacenter, mes única",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "fotos_riesgo: clave serial_number, fecha única (cada bloque es una fecha distinta)",
+      "resultado": "pasa"
+    },
+    {
+      "validacion": "las huellas de las tablas corregidas son las mismas al terminar",
+      "resultado": "pasa"
+    }
+  ],
+  "comprobaciones": [
+    {
+      "comprobacion": "los fallos de cada centro desde el 01/07/2023 son los mismos en fallos_detalle y en el recuento",
+      "resultado": "pasa",
+      "detalle": "ams5: 476; iad1: 512; phx1: 2160; sac0: 2806; sac2: 2546; sin dato: 128; yyz1: 6"
+    },
+    {
+      "comprobacion": "en cada fila de modelo_trimestre, los fallos de la lista son los del recuento",
+      "resultado": "pasa",
+      "detalle": "1.028 de 1.028 filas"
+    },
+    {
+      "comprobacion": "el primer día de cada trimestre, los discos de la foto son los del recuento, modelo a modelo",
+      "resultado": "pasa",
+      "detalle": "22 de 22 trimestres"
+    },
+    {
+      "comprobacion": "todos los fallos tienen la fila del día del fallo en su ventana",
+      "resultado": "pasa",
+      "detalle": "0 sin ella"
+    },
+    {
+      "comprobacion": "cada disco que desaparece avisando tiene su fila en dias_por_tramo",
+      "resultado": "pasa",
+      "detalle": "0 sin fila"
+    }
+  ],
+  "pendiente_modelo": [
+    {
+      "columna": "serial_number",
+      "grupo": "identificacion_y_fecha",
+      "tipo": "identificador",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "fecha",
+      "grupo": "identificacion_y_fecha",
+      "tipo": "fecha",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "model",
+      "grupo": "del_modelo",
+      "tipo": "categorica",
+      "valores": 61,
+      "orden_real": false,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "capacity_bytes",
+      "grupo": "del_modelo",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": "bytes",
+      "minimo": 4000787030016,
+      "maximo": 24000277250048
+    },
+    {
+      "columna": "capacidad_tb",
+      "grupo": "del_modelo",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": "TB",
+      "minimo": 4,
+      "maximo": 24
+    },
+    {
+      "columna": "fabricante",
+      "grupo": "del_modelo",
+      "tipo": "categorica",
+      "valores": 4,
+      "orden_real": false,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "garantia_anos",
+      "grupo": "del_modelo",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": "años",
+      "minimo": 2,
+      "maximo": 5
+    },
+    {
+      "columna": "smart_5_raw",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 65529
+    },
+    {
+      "columna": "smart_187_raw",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 65535
+    },
+    {
+      "columna": "smart_188_raw",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 2207647150149
+    },
+    {
+      "columna": "smart_197_raw",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 278152
+    },
+    {
+      "columna": "smart_198_raw",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 278152
+    },
+    {
+      "columna": "smart_194_raw",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 12,
+      "maximo": 66
+    },
+    {
+      "columna": "smart_199_raw",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 819086
+    },
+    {
+      "columna": "smart_12_raw",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 30094
+    },
+    {
+      "columna": "smart_192_raw",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 24085987
+    },
+    {
+      "columna": "smart_1_raw",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 1514564171
+    },
+    {
+      "columna": "smart_7_raw",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 281471670783244
+    },
+    {
+      "columna": "edad_anos",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": "años",
+      "minimo": 0,
+      "maximo": 10.459389
+    },
+    {
+      "columna": "edad_de_horas",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "binaria",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "avisa",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "binaria",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "contadores_que_avisan",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": "contadores",
+      "minimo": 0,
+      "maximo": 5
+    },
+    {
+      "columna": "suma_contadores_sin_188",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 556317
+    },
+    {
+      "columna": "smart_188_no_cero",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "binaria",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "cambio_smart_5",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": -65392,
+      "maximo": 65112
+    },
+    {
+      "columna": "cambio_smart_187",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": -65535,
+      "maximo": 65535
+    },
+    {
+      "columna": "cambio_smart_197",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": -18680,
+      "maximo": 278136
+    },
+    {
+      "columna": "cambio_smart_198",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": -18680,
+      "maximo": 278136
+    },
+    {
+      "columna": "meses_desde_foto_anterior",
+      "grupo": "conocidas_el_dia_de_la_foto",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": "meses",
+      "minimo": 1,
+      "maximo": 31
+    },
+    {
+      "columna": "smart_1_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 200
+    },
+    {
+      "columna": "smart_2_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 150
+    },
+    {
+      "columna": "smart_2_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 20514
+    },
+    {
+      "columna": "smart_3_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 79,
+      "maximo": 253
+    },
+    {
+      "columna": "smart_3_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 11182
+    },
+    {
+      "columna": "smart_4_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 71,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_4_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 30092
+    },
+    {
+      "columna": "smart_5_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 200
+    },
+    {
+      "columna": "smart_7_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 200
+    },
+    {
+      "columna": "smart_8_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 142
+    },
+    {
+      "columna": "smart_8_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 520
+    },
+    {
+      "columna": "smart_9_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_9_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": "horas",
+      "minimo": 0,
+      "maximo": 91687
+    },
+    {
+      "columna": "smart_10_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_10_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 21475164160
+    },
+    {
+      "columna": "smart_11_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 100,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_11_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 0
+    },
+    {
+      "columna": "smart_12_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 71,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_13_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_13_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_16_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_17_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_22_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_22_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 6553700
+    },
+    {
+      "columna": "smart_24_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 52,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_27_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 11,
+      "maximo": 34148910
+    },
+    {
+      "columna": "smart_90_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 98784247808,
+      "maximo": 281470681743360
+    },
+    {
+      "columna": "smart_165_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_166_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_167_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_168_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_169_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_170_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_170_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_171_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_172_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_172_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_173_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_173_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_174_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_177_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_177_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_179_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_180_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_180_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_181_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_183_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_183_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 2142
+    },
+    {
+      "columna": "smart_184_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_184_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 268
+    },
+    {
+      "columna": "smart_187_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_188_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_189_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_189_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 65535
+    },
+    {
+      "columna": "smart_190_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 34,
+      "maximo": 86
+    },
+    {
+      "columna": "smart_190_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 14,
+      "maximo": 66
+    },
+    {
+      "columna": "smart_191_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_191_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 79928809
+    },
+    {
+      "columna": "smart_192_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 200
+    },
+    {
+      "columna": "smart_193_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 200
+    },
+    {
+      "columna": "smart_193_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 24086358
+    },
+    {
+      "columna": "smart_194_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 14,
+      "maximo": 253
+    },
+    {
+      "columna": "smart_195_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 116
+    },
+    {
+      "columna": "smart_195_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 244140504
+    },
+    {
+      "columna": "smart_196_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 200
+    },
+    {
+      "columna": "smart_196_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 15972
+    },
+    {
+      "columna": "smart_197_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 200
+    },
+    {
+      "columna": "smart_198_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_199_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 100,
+      "maximo": 200
+    },
+    {
+      "columna": "smart_200_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_200_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 0
+    },
+    {
+      "columna": "smart_201_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_202_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_202_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_206_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_211_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_212_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_218_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_220_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_220_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 287506622
+    },
+    {
+      "columna": "smart_222_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_222_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 75590
+    },
+    {
+      "columna": "smart_223_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 1,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_223_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 286458674
+    },
+    {
+      "columna": "smart_225_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_225_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_226_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 271,
+      "maximo": 1194
+    },
+    {
+      "columna": "smart_230_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_230_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_231_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_232_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_233_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_234_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_235_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_235_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_240_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 100,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_240_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 81740
+    },
+    {
+      "columna": "smart_241_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 100,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_241_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 0,
+      "maximo": 374305104562
+    },
+    {
+      "columna": "smart_242_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 100,
+      "maximo": 100
+    },
+    {
+      "columna": "smart_242_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": 4403,
+      "maximo": 128169549951173
+    },
+    {
+      "columna": "smart_244_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_245_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_245_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_246_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_247_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_248_raw",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "smart_254_normalized",
+      "grupo": "no_previstas",
+      "tipo": "magnitud",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "datacenter",
+      "grupo": "sitio",
+      "tipo": "categorica",
+      "valores": 6,
+      "orden_real": false,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "vault_id",
+      "grupo": "sitio",
+      "tipo": "codigo_numerico",
+      "valores": 247,
+      "orden_real": false,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "pod_id",
+      "grupo": "sitio",
+      "tipo": "codigo_numerico",
+      "valores": 20,
+      "orden_real": false,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "pod_slot_num",
+      "grupo": "sitio",
+      "tipo": "codigo_numerico",
+      "valores": 60,
+      "orden_real": false,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "periodo",
+      "grupo": "particion",
+      "tipo": "particion",
+      "valores": 2,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "horizonte_hasta",
+      "grupo": "objetivo",
+      "tipo": "fecha",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    },
+    {
+      "columna": "falla_30d",
+      "grupo": "objetivo",
+      "tipo": "objetivo",
+      "valores": null,
+      "orden_real": null,
+      "unidad": null,
+      "minimo": null,
+      "maximo": null
+    }
+  ],
+  "particion": {
+    "columna_fecha": "fecha",
+    "desarrollo": {
+      "desde": "2020-01-01",
+      "hasta": "2024-06-30"
+    },
+    "validacion": {
+      "desde": "2024-07-01",
+      "hasta": "2025-06-30"
+    },
+    "fuente": "reglas-negocio §7"
+  },
+  "grupos_fotos_riesgo": {
+    "identificacion_y_fecha": [
+      "serial_number",
+      "fecha"
+    ],
+    "del_modelo": [
+      "model",
+      "capacity_bytes",
+      "capacidad_tb",
+      "fabricante",
+      "garantia_anos"
+    ],
+    "conocidas_el_dia_de_la_foto": [
+      "smart_5_raw",
+      "smart_187_raw",
+      "smart_188_raw",
+      "smart_197_raw",
+      "smart_198_raw",
+      "smart_194_raw",
+      "smart_199_raw",
+      "smart_12_raw",
+      "smart_192_raw",
+      "smart_1_raw",
+      "smart_7_raw",
+      "edad_anos",
+      "edad_de_horas",
+      "avisa",
+      "contadores_que_avisan",
+      "suma_contadores_sin_188",
+      "smart_188_no_cero",
+      "cambio_smart_5",
+      "cambio_smart_187",
+      "cambio_smart_197",
+      "cambio_smart_198",
+      "meses_desde_foto_anterior"
+    ],
+    "no_previstas": [
+      "smart_1_normalized",
+      "smart_2_normalized",
+      "smart_2_raw",
+      "smart_3_normalized",
+      "smart_3_raw",
+      "smart_4_normalized",
+      "smart_4_raw",
+      "smart_5_normalized",
+      "smart_7_normalized",
+      "smart_8_normalized",
+      "smart_8_raw",
+      "smart_9_normalized",
+      "smart_9_raw",
+      "smart_10_normalized",
+      "smart_10_raw",
+      "smart_11_normalized",
+      "smart_11_raw",
+      "smart_12_normalized",
+      "smart_13_normalized",
+      "smart_13_raw",
+      "smart_16_raw",
+      "smart_17_raw",
+      "smart_22_normalized",
+      "smart_22_raw",
+      "smart_24_normalized",
+      "smart_27_raw",
+      "smart_90_raw",
+      "smart_165_raw",
+      "smart_166_raw",
+      "smart_167_raw",
+      "smart_168_raw",
+      "smart_169_raw",
+      "smart_170_normalized",
+      "smart_170_raw",
+      "smart_171_raw",
+      "smart_172_normalized",
+      "smart_172_raw",
+      "smart_173_normalized",
+      "smart_173_raw",
+      "smart_174_raw",
+      "smart_177_normalized",
+      "smart_177_raw",
+      "smart_179_raw",
+      "smart_180_normalized",
+      "smart_180_raw",
+      "smart_181_raw",
+      "smart_183_normalized",
+      "smart_183_raw",
+      "smart_184_normalized",
+      "smart_184_raw",
+      "smart_187_normalized",
+      "smart_188_normalized",
+      "smart_189_normalized",
+      "smart_189_raw",
+      "smart_190_normalized",
+      "smart_190_raw",
+      "smart_191_normalized",
+      "smart_191_raw",
+      "smart_192_normalized",
+      "smart_193_normalized",
+      "smart_193_raw",
+      "smart_194_normalized",
+      "smart_195_normalized",
+      "smart_195_raw",
+      "smart_196_normalized",
+      "smart_196_raw",
+      "smart_197_normalized",
+      "smart_198_normalized",
+      "smart_199_normalized",
+      "smart_200_normalized",
+      "smart_200_raw",
+      "smart_201_raw",
+      "smart_202_normalized",
+      "smart_202_raw",
+      "smart_206_raw",
+      "smart_211_raw",
+      "smart_212_raw",
+      "smart_218_raw",
+      "smart_220_normalized",
+      "smart_220_raw",
+      "smart_222_normalized",
+      "smart_222_raw",
+      "smart_223_normalized",
+      "smart_223_raw",
+      "smart_225_normalized",
+      "smart_225_raw",
+      "smart_226_raw",
+      "smart_230_normalized",
+      "smart_230_raw",
+      "smart_231_raw",
+      "smart_232_raw",
+      "smart_233_raw",
+      "smart_234_raw",
+      "smart_235_normalized",
+      "smart_235_raw",
+      "smart_240_normalized",
+      "smart_240_raw",
+      "smart_241_normalized",
+      "smart_241_raw",
+      "smart_242_normalized",
+      "smart_242_raw",
+      "smart_244_normalized",
+      "smart_245_normalized",
+      "smart_245_raw",
+      "smart_246_raw",
+      "smart_247_raw",
+      "smart_248_raw",
+      "smart_254_normalized"
+    ],
+    "sitio": [
+      "datacenter",
+      "vault_id",
+      "pod_id",
+      "pod_slot_num"
+    ],
+    "particion": [
+      "periodo"
+    ],
+    "objetivo": [
+      "horizonte_hasta",
+      "falla_30d"
+    ]
+  },
+  "exclusiones": [
+    {
+      "clase": "discos_de_arranque",
+      "que_sale": "los discos de 0,2 a 2 TB",
+      "sale_de": "todo cálculo",
+      "recuentos": {
+        "dias_de_disco": 7500739,
+        "fallos": 964,
+        "fotos": 246280
+      }
+    },
+    {
+      "clase": "sitio_antes",
+      "que_sale": "días y fallos de discos de datos antes del 01/07/2023",
+      "sale_de": "lo que va por centro y por tomo",
+      "recuentos": {
+        "dias_de_disco": 238811405,
+        "fallos": 8362
+      }
+    },
+    {
+      "clase": "centro_sin_dato_desde",
+      "que_sale": "días y fallos con el centro «sin dato» desde el 01/07/2023",
+      "sale_de": "las tasas por centro",
+      "recuentos": {
+        "dias_de_disco": 6621213,
+        "fallos": 128
+      }
+    },
+    {
+      "clase": "fallos_sin_tomo_desde",
+      "que_sale": "fallos de discos de datos sin tomo desde el 01/07/2023",
+      "sale_de": "los tomos y el aviso de tomos en peligro",
+      "recuentos": {
+        "fallos": 141
+      }
+    },
+    {
+      "clase": "fallos_sin_dia_anterior",
+      "que_sale": "fallos de discos de datos sin el día anterior en su ventana",
+      "sale_de": "el indicador de fallos sin aviso",
+      "recuentos": {
+        "fallos": 903
+      }
+    },
+    {
+      "clase": "fotos_del_dia_del_fallo",
+      "que_sale": "fotos de discos de datos con failure = 1",
+      "sale_de": "fotos_riesgo",
+      "recuentos": {
+        "fotos": 528
+      }
+    },
+    {
+      "clase": "fallos_sin_objetivo",
+      "que_sale": "fallos de discos de datos que no son objetivo de ninguna foto",
+      "sale_de": "el objetivo de fotos_riesgo",
+      "recuentos": {
+        "fallos": 808,
+        "dia_1_tras_mes_de_31_dias": 291,
+        "mas_de_31_dias_tras_la_ultima_foto": 222,
+        "de_discos_sin_foto": 193,
+        "antes_de_la_primera_foto": 78,
+        "recorte_del_horizonte": 16,
+        "otros": 8
+      },
+      "otros": [
+        {
+          "serial_number": "AAG26PSH",
+          "dia_fallo": "2023-12-02",
+          "ultima_foto_anterior": "2023-11-01"
+        },
+        {
+          "serial_number": "2AGNEDPY",
+          "dia_fallo": "2024-03-03",
+          "ultima_foto_anterior": "2024-02-01"
+        },
+        {
+          "serial_number": "2AGHB9XY",
+          "dia_fallo": "2024-12-02",
+          "ultima_foto_anterior": "2024-11-01"
+        },
+        {
+          "serial_number": "AAG6NW6H",
+          "dia_fallo": "2024-12-02",
+          "ultima_foto_anterior": "2024-11-01"
+        },
+        {
+          "serial_number": "AAGA4XDH",
+          "dia_fallo": "2024-12-02",
+          "ultima_foto_anterior": "2024-11-01"
+        },
+        {
+          "serial_number": "X8H0A03CF97G",
+          "dia_fallo": "2025-05-02",
+          "ultima_foto_anterior": "2025-04-01"
+        },
+        {
+          "serial_number": "ZA171VP0",
+          "dia_fallo": "2025-05-02",
+          "ultima_foto_anterior": "2025-04-01"
+        },
+        {
+          "serial_number": "ZLW0H32E",
+          "dia_fallo": "2025-05-02",
+          "ultima_foto_anterior": "2025-04-01"
+        }
+      ]
+    },
+    {
+      "clase": "dias_sin_foto",
+      "que_sale": "días de disco de celdas del recuento sin ninguna foto en su modelo, centro y mes",
+      "sale_de": "dias_por_tramo",
+      "recuentos": {
+        "dias_de_disco": 919192,
+        "celdas": 110,
+        "fallos_recuento": 26
+      }
+    },
+    {
+      "clase": "modelos_sin_precio",
+      "que_sale": "modelos de datos sin precio",
+      "sale_de": "el coste por TB y año",
+      "recuentos": {
+        "modelos": 4,
+        "dias_de_disco": 18840
+      },
+      "modelos": [
+        "ST6000DM001",
+        "ST6000DM004",
+        "TOSHIBA HDWE160",
+        "WDC WD60EFRX"
+      ]
+    }
+  ],
+  "cifras_de_control": {
+    "dim_modelo.modelos": 94,
+    "dim_modelo.arranque": 33,
+    "dim_modelo.datos": 61,
+    "dim_modelo.con_fecha_compra": 61,
+    "dim_modelo.con_precio": 57,
+    "dim_modelo.dias_sin_precio": 18840,
+    "dim_modelo.ST6000DX000.mes_compra": "2015-04",
+    "dim_modelo.ST6000DX000.precio_usd": 198.35,
+    "dim_precio_gb.filas": 66,
+    "fallos_2024.fallos": 4538,
+    "fallos_2024.coste_usd": 832698,
+    "fallos_2024.coste_garantia_usd": 305124,
+    "fotos_riesgo.filas": 14604861,
+    "fotos_riesgo.construccion": 11026052,
+    "fotos_riesgo.validacion": 3578809,
+    "fotos_riesgo.objetivo_construccion": 11962,
+    "fotos_riesgo.objetivo_validacion": 4304,
+    "fotos_riesgo.filas_objetivo": 16266,
+    "fotos_riesgo.pares_foto_fallo": 16266,
+    "fotos_riesgo.fallos_objetivo": 16188,
+    "fotos_riesgo.anterior_un_mes": 14194397,
+    "fotos_riesgo.anterior_mas_de_un_mes": 8026,
+    "fotos_riesgo.sin_anterior": 402438,
+    "fallos_detalle.filas": 17960,
+    "fallos_detalle.datos": 16996,
+    "fallos_detalle.datos_construccion": 12478,
+    "fallos_detalle.datos_validacion": 4518,
+    "fallos_detalle.arranque": 964,
+    "fallos_detalle.sin_fila_del_dia": 0,
+    "fallos_detalle.sin_horas": 82,
+    "fallos_detalle.sin_dia_anterior": 903,
+    "fallos_detalle.con_dia_anterior": 16093,
+    "fallos_detalle.sin_aviso": 4046,
+    "fallos_detalle.desde_sitio": 8634,
+    "fallos_detalle.desde_sitio_sin_centro": 128,
+    "fallos_detalle.desde_sitio_sin_tomo": 141,
+    "fallos_detalle.con_tomo": 8493,
+    "fallos_detalle.tomos": 5404,
+    "fallos_detalle.coinciden": 262,
+    "fallos_detalle.parte_en_garantia_pct": 66.6,
+    "fallos_detalle.sin_objetivo": 808,
+    "vida_discos.filas": 402643,
+    "vida_discos.solo_ventana": 193,
+    "vida_discos.fallo": 16984,
+    "vida_discos.desaparece": 71328,
+    "vida_discos.sigue": 314331,
+    "vida_discos.desaparece_avisando": 6557,
+    "vida_discos.entran_4_anos_o_mas": 16517,
+    "vida_discos.fallan_antes_de_su_primera_foto": 66,
+    "dias_por_tramo.filas": 13275,
+    "dias_por_tramo.filas_solo_fallos": 64,
+    "dias_por_tramo.dias_repartidos": 445189491,
+    "dias_por_tramo.dias_recuento": 446108683,
+    "dias_por_tramo.fallos": 16996,
+    "dias_por_tramo.fallos_sin_dias": 140,
+    "dias_por_tramo.dias_sin_foto": 919192,
+    "dias_por_tramo.celdas_sin_foto": 110,
+    "dias_por_tramo.fallos_recuento_sin_foto": 26,
+    "inicio_trimestre.filas": 3117,
+    "inicio_trimestre.trimestres": 22,
+    "inicio_trimestre.discos": 4805590,
+    "inicio_trimestre.trimestres_iguales_al_recuento": 22,
+    "modelo_trimestre.filas": 1028,
+    "modelo_trimestre.filas_fallos_iguales": 1028,
+    "modelo_trimestre.fallos": 16996,
+    "modelo_trimestre.dias": 446108683,
+    "modelo_trimestre.celdas_modelo_ano": 299,
+    "modelo_trimestre.celdas_pasan": 152,
+    "modelo_trimestre.modelos_pasan": 32,
+    "centro_mes.filas": 186,
+    "centro_mes.desde_sitio": 144
+  },
+  "fichas_nuevas": [
+    "R-010",
+    "R-011",
+    "R-012",
+    "R-013",
+    "R-014",
+    "R-015",
+    "R-016",
+    "R-017",
+    "R-018",
+    "R-019"
+  ],
+  "parametros": {
+    "horas_ano": 8766,
+    "dias_ano": 365.25,
+    "limite_arranque_bytes": 2048408248320,
+    "inicio_sitio": "2023-07-01",
+    "horizonte_dias": 30,
+    "minimo_dias_ano": 50000,
+    "coste_cambio_usd": 37,
+    "etiqueta_sin_dato": "sin dato",
+    "inicio_inferido": "2022-11-15",
+    "modelos_sin_precio": [
+      "WDC WD60EFRX",
+      "ST6000DM001",
+      "TOSHIBA HDWE160",
+      "ST6000DM004"
+    ]
+  },
+  "teoria": [
+    "11.9, retardos: el cambio de un contador y los meses desde la foto anterior se calculan dentro de cada disco, con las fotos en orden de fecha; la foto anterior se guarda de un bloque al siguiente.",
+    "13.9, primero y último de cada grupo: la primera aparición, la última foto y el último día de la ventana con sitio se toman de la fila real, ordenada por fecha, no con first(), que salta los vacíos.",
+    "14.7, tiempo transcurrido: la edad, los días entre fallos del mismo tomo y los meses entre fotos se miden en unidades totales (horas entre 8.766, días entre 365,25), no con las partes de la fecha.",
+    "12.6 y 11.14, cambiar el nivel: los días de disco y los fallos son flujos y se suman; cada agregación cuadra sus sumas antes y después, y las variables que usan información posterior quedan marcadas.",
+    "Skill, «Agregar por tiempo»: en un flujo, una celda sin registros vale cero solo si se sabe que no hubo nada; las filas de dias_por_tramo que solo tienen fallos dejan sus días de disco vacíos."
+  ],
+  "datos_personales_texto": [
+    "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+    "No hay datos de personas (reglas §9): el número de serie identifica un disco, no a una persona.",
+    "Esta transformación no usa ni deja ninguna columna de datos personales."
+  ],
+  "limites": [
+    "La fecha de compra y el precio de dim_modelo son una ficha de hoy, calculada con todo el periodo: no entran en fotos_riesgo.",
+    "En las tablas agregadas, «mes» es el primer día del mes y la clave de trimestre lleva el año al lado («ano» y «trimestre» del Calendario), porque el trimestre del Calendario va de 1 a 4.",
+    "suma_contadores_sin_188 queda vacía cuando los cuatro contadores lo están: un contador vacío no es un cero (reglas §5).",
+    "coincide_con_anterior queda vacía cuando no hay días desde el anterior del tomo (el primero de su tomo o sin tomo), como dias_desde_anterior_del_tomo.",
+    "En dias_por_tramo, las filas que solo tienen fallos dejan sus días de disco vacíos: hubo discos, pero ninguna foto con que repartir sus días.",
+    "Las fotos de dias_por_tramo e inicio_trimestre son todas las de discos de datos, también la del día del fallo, porque ese día el disco está en servicio y cuenta como día de disco.",
+    "No se calcula ninguna tasa, intervalo, ranking ni previsión: es el análisis de las preguntas 1 a 3."
+  ],
+  "ejecucion": {
+    "python": "3.13.15",
+    "pandas": "3.0.6",
+    "pyarrow": "24.0.0",
+    "numpy": "2.5.3",
+    "segundos_por_parte": {
+      "entradas": 0.7,
+      "primera_pasada": 5.4,
+      "fallos": 6.2,
+      "segunda_pasada": 270.6,
+      "agregados": 274.7,
+      "guardar": 278.1,
+      "total": 278.8
+    }
+  },
+  "artefactos": [
+    "data/processed/dim_modelo.parquet",
+    "data/processed/dim_precio_gb.parquet",
+    "data/processed/fotos_riesgo.parquet",
+    "data/processed/fallos_detalle.parquet",
+    "data/processed/vida_discos.parquet",
+    "data/processed/dias_por_tramo.parquet",
+    "data/processed/inicio_trimestre.parquet",
+    "data/processed/modelo_trimestre.parquet",
+    "data/processed/centro_mes.parquet"
+  ]
+}

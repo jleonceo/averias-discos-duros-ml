@@ -1,0 +1,67 @@
+{
+ "script": "scripts/22_punto_ciego.py",
+ "origen": "auditor sin memoria antes de entregar (R68-153)",
+ "fecha_datos": "2026-06-30",
+ "fecha_ejecucion": "2026-11-20T11:02:27",
+ "estado": "OK",
+ "definicion": "Parte de los fallos a 30 días cuya foto mensual, la del día 1 del mes, no tiene ningún aviso de los cinco contadores de la regla de los cinco avisos SMART.",
+ "validacion": {
+  "meses": [
+   "2024-07-01",
+   "2024-08-01",
+   "2024-09-01",
+   "2024-10-01",
+   "2024-11-01",
+   "2024-12-01",
+   "2025-01-01",
+   "2025-02-01",
+   "2025-03-01",
+   "2025-04-01",
+   "2025-05-01",
+   "2025-06-01"
+  ],
+  "fallos": 4304,
+  "sin_aviso_en_la_foto": 1147,
+  "parte": 0.26649628252788105
+ },
+ "ano_guardado": {
+  "meses": [
+   "2025-07-01",
+   "2025-08-01",
+   "2025-09-01",
+   "2025-10-01",
+   "2025-11-01",
+   "2025-12-01",
+   "2026-01-01",
+   "2026-02-01",
+   "2026-03-01",
+   "2026-04-01",
+   "2026-05-01"
+  ],
+  "fallos": 3773,
+  "sin_aviso_en_la_foto": 1215,
+  "parte": 0.32202491386164855
+ },
+ "validaciones": {
+  "entradas_sin_cambios": true,
+  "fallos_de_validacion_como_el_modelo": true,
+  "fallos_del_ano_guardado_como_el_modelo": true,
+  "ano_guardado_con_sus_meses": true
+ },
+ "entradas": {
+  "validacion": {
+   "ruta": "data\\processed\\fotos_riesgo_validacion.parquet",
+   "huella": "fc0a0900543ea2fd96608bf21760f3e21e14a57cf0f7df9c19476d4f4f62d9c0"
+  },
+  "ano_guardado": {
+   "ruta": "data\\processed\\fotos_riesgo_reserva.parquet",
+   "huella": "d8e9a1d2eca3f13aa02b39a53eda65604a4473aca489ec71a461bb54ce56941f"
+  }
+ },
+ "ejecucion": {
+  "python": "3.13.15",
+  "ejecutable": "python",
+  "pandas": "3.0.6",
+  "segundos": 2.4
+ }
+}

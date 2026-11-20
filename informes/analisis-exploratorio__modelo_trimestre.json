@@ -1,0 +1,7110 @@
+{
+ "skill": "analisis-exploratorio",
+ "version_skill": "11/11/2026 (WF-87)",
+ "script": "scripts/06_analisis_exploratorio.py",
+ "encargo": "prompts/10_encargo_exploratorio.md",
+ "fecha_datos": "2025-06-30",
+ "fecha_ejecucion": "2026-11-17T21:05:33",
+ "tabla": "modelo_trimestre",
+ "entradas": [
+  {
+   "ruta": "data/processed/modelo_trimestre.parquet",
+   "sha256": "82be69d656509c36760f705d0d2bd21801702ddbf33795056e5cc92c7fff76cf",
+   "filas": 1028,
+   "columnas": 15
+  },
+  {
+   "ruta": "data/processed/inicio_trimestre.parquet",
+   "sha256": "86169128b7862e772d1e1e6a755d8df287c74a4da7e469257b57b0b0ed14a03e",
+   "filas": 3117,
+   "columnas": 8
+  },
+  {
+   "ruta": "data/processed/dim_modelo.parquet",
+   "sha256": "543441fa6c7c8bb023d40bfacd6357c85fd0cd37013a2305c3fe97bc9512a3af",
+   "filas": 94,
+   "columnas": 10
+  },
+  {
+   "ruta": "data/processed/dim_precio_gb.parquet",
+   "sha256": "c2a444fbc373fc42d05364ad47e251a646415e7d7fc38f82f2096261894cd2a8",
+   "filas": 66,
+   "columnas": 5
+  },
+  {
+   "ruta": "data/processed/fallos_detalle.parquet",
+   "sha256": "ff67f9a515527ffb6e1dd6b7474067836c1d401c3e1a33901f290f1b56c236ad",
+   "filas": 17960,
+   "columnas": 32
+  }
+ ],
+ "resultado": {
+  "estado": "AVISO",
+  "riesgo": "medio",
+  "resumen": "1.028 filas descritas: 1 hallazgos, 6 alertas y 2 hipótesis. Los dos periodos, enteros.",
+  "artefactos": [
+   "informes/analisis-exploratorio__modelo_trimestre.json",
+   "informes/analisis-exploratorio__modelo_trimestre.html"
+  ],
+  "siguiente": "paso 5: los bloques del plan de la analítica con esta tabla"
+ },
+ "pendientes": [
+  {
+   "id": "P-01",
+   "tabla": "modelo_trimestre",
+   "columna": null,
+   "pregunta": "Observaciones de la persona sobre este exploratorio (comprobación 16)",
+   "opciones": [
+    "escribirlas en «observaciones» de este JSON y volver a ejecutar",
+    "ninguna"
+   ]
+  }
+ ],
+ "dataset": {
+  "ruta": "data/processed/modelo_trimestre.parquet",
+  "sha256": "82be69d656509c36760f705d0d2bd21801702ddbf33795056e5cc92c7fff76cf",
+  "bytes": 27221
+ },
+ "premisa": {
+  "afirmacion": null,
+  "la_sostienen_los_datos": null
+ },
+ "contexto": {
+  "limitaciones": [],
+  "que_es_una_fila": "un modelo de datos en un trimestre",
+  "clave": [
+   "model",
+   "ano",
+   "trimestre"
+  ],
+  "granularidad": "un modelo de datos en un trimestre",
+  "periodo": {
+   "desde": "2020 T1",
+   "hasta": "2025 T2"
+  },
+  "reglas": "reglas-transformacion.md §8; describe también §1 (dimensiones) y §7 (inicio_trimestre)"
+ },
+ "vision_general": {
+  "filas": 1028,
+  "columnas": 15,
+  "tipos": {
+   "continua": 8,
+   "temporal": 2,
+   "categorica": 2,
+   "alta_cardinalidad": 1,
+   "fecha": 1,
+   "booleana": 1
+  },
+  "modelos": 61,
+  "trimestres": 22,
+  "dias_disco": 446108683,
+  "fallos": 16996,
+  "dim_modelo": {
+   "modelos": 94,
+   "por_tipo": {
+    "datos": 61,
+    "arranque": 33
+   },
+   "datos_por_fabricante": {
+    "Seagate": 30,
+    "HGST": 15,
+    "Toshiba": 10,
+    "WDC": 6
+   },
+   "datos_por_capacidad": {
+    "4.0": 12,
+    "6.0": 5,
+    "8.0": 9,
+    "10.0": 3,
+    "12.0": 9,
+    "14.0": 8,
+    "16.0": 11,
+    "18.0": 1,
+    "20.0": 1,
+    "22.0": 1,
+    "24.0": 1
+   },
+   "datos_por_garantia": {
+    "5": 42,
+    "2": 8,
+    "(vacío)": 8,
+    "3": 3
+   },
+   "datos_por_origen_precio": {
+    "curva": 23,
+    "vecinas": 20,
+    "inferido": 14,
+    "(vacío)": 4
+   },
+   "sin_precio": [
+    "ST6000DM001",
+    "ST6000DM004",
+    "TOSHIBA HDWE160",
+    "WDC WD60EFRX"
+   ],
+   "dias_sin_precio": 18840,
+   "dias_con_precio_inferido_pct": 14.1335
+  },
+  "dim_precio_gb": [
+   {
+    "capacidad_tb": 4.0,
+    "ano": 2020,
+    "coste_gb": 0.01625,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 4.0,
+    "ano": 2021,
+    "coste_gb": 0.015601,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 4.0,
+    "ano": 2022,
+    "coste_gb": 0.015103,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 4.0,
+    "ano": 2023,
+    "coste_gb": 0.0132,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 4.0,
+    "ano": 2024,
+    "coste_gb": 0.0115,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 4.0,
+    "ano": 2025,
+    "coste_gb": 0.01,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 6.0,
+    "ano": 2020,
+    "coste_gb": 0.01625,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 6.0,
+    "ano": 2021,
+    "coste_gb": 0.015601,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 6.0,
+    "ano": 2022,
+    "coste_gb": 0.015103,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 6.0,
+    "ano": 2023,
+    "coste_gb": 0.0132,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 6.0,
+    "ano": 2024,
+    "coste_gb": 0.0115,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 6.0,
+    "ano": 2025,
+    "coste_gb": 0.01,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 8.0,
+    "ano": 2020,
+    "coste_gb": 0.01625,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 8.0,
+    "ano": 2021,
+    "coste_gb": 0.015601,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 8.0,
+    "ano": 2022,
+    "coste_gb": 0.015103,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 8.0,
+    "ano": 2023,
+    "coste_gb": 0.0132,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 8.0,
+    "ano": 2024,
+    "coste_gb": 0.0115,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 8.0,
+    "ano": 2025,
+    "coste_gb": 0.01,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 10.0,
+    "ano": 2020,
+    "coste_gb": 0.01625,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 10.0,
+    "ano": 2021,
+    "coste_gb": 0.015601,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 10.0,
+    "ano": 2022,
+    "coste_gb": 0.015103,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 10.0,
+    "ano": 2023,
+    "coste_gb": 0.0132,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 10.0,
+    "ano": 2024,
+    "coste_gb": 0.0115,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 10.0,
+    "ano": 2025,
+    "coste_gb": 0.01,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 12.0,
+    "ano": 2020,
+    "coste_gb": 0.0167,
+    "origen": "curva"
+   },
+   {
+    "capacidad_tb": 12.0,
+    "ano": 2021,
+    "coste_gb": 0.015601,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 12.0,
+    "ano": 2022,
+    "coste_gb": 0.015103,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 12.0,
+    "ano": 2023,
+    "coste_gb": 0.0132,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 12.0,
+    "ano": 2024,
+    "coste_gb": 0.0115,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 12.0,
+    "ano": 2025,
+    "coste_gb": 0.01,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 14.0,
+    "ano": 2020,
+    "coste_gb": 0.0158,
+    "origen": "curva"
+   },
+   {
+    "capacidad_tb": 14.0,
+    "ano": 2021,
+    "coste_gb": 0.015251,
+    "origen": "curva"
+   },
+   {
+    "capacidad_tb": 14.0,
+    "ano": 2022,
+    "coste_gb": 0.015103,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 14.0,
+    "ano": 2023,
+    "coste_gb": 0.0132,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 14.0,
+    "ano": 2024,
+    "coste_gb": 0.0115,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 14.0,
+    "ano": 2025,
+    "coste_gb": 0.01,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 16.0,
+    "ano": 2020,
+    "coste_gb": 0.01625,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 16.0,
+    "ano": 2021,
+    "coste_gb": 0.015951,
+    "origen": "curva"
+   },
+   {
+    "capacidad_tb": 16.0,
+    "ano": 2022,
+    "coste_gb": 0.015103,
+    "origen": "curva"
+   },
+   {
+    "capacidad_tb": 16.0,
+    "ano": 2023,
+    "coste_gb": 0.0132,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 16.0,
+    "ano": 2024,
+    "coste_gb": 0.0115,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 16.0,
+    "ano": 2025,
+    "coste_gb": 0.01,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 18.0,
+    "ano": 2020,
+    "coste_gb": 0.01625,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 18.0,
+    "ano": 2021,
+    "coste_gb": 0.015601,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 18.0,
+    "ano": 2022,
+    "coste_gb": 0.015103,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 18.0,
+    "ano": 2023,
+    "coste_gb": 0.0132,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 18.0,
+    "ano": 2024,
+    "coste_gb": 0.0115,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 18.0,
+    "ano": 2025,
+    "coste_gb": 0.01,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 20.0,
+    "ano": 2020,
+    "coste_gb": 0.01625,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 20.0,
+    "ano": 2021,
+    "coste_gb": 0.015601,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 20.0,
+    "ano": 2022,
+    "coste_gb": 0.015103,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 20.0,
+    "ano": 2023,
+    "coste_gb": 0.0132,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 20.0,
+    "ano": 2024,
+    "coste_gb": 0.0115,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 20.0,
+    "ano": 2025,
+    "coste_gb": 0.01,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 22.0,
+    "ano": 2020,
+    "coste_gb": 0.01625,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 22.0,
+    "ano": 2021,
+    "coste_gb": 0.015601,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 22.0,
+    "ano": 2022,
+    "coste_gb": 0.015103,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 22.0,
+    "ano": 2023,
+    "coste_gb": 0.0132,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 22.0,
+    "ano": 2024,
+    "coste_gb": 0.0115,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 22.0,
+    "ano": 2025,
+    "coste_gb": 0.01,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 24.0,
+    "ano": 2020,
+    "coste_gb": 0.01625,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 24.0,
+    "ano": 2021,
+    "coste_gb": 0.015601,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 24.0,
+    "ano": 2022,
+    "coste_gb": 0.015103,
+    "origen": "vecinas"
+   },
+   {
+    "capacidad_tb": 24.0,
+    "ano": 2023,
+    "coste_gb": 0.0132,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 24.0,
+    "ano": 2024,
+    "coste_gb": 0.0115,
+    "origen": "inferido"
+   },
+   {
+    "capacidad_tb": 24.0,
+    "ano": 2025,
+    "coste_gb": 0.01,
+    "origen": "inferido"
+   }
+  ],
+  "minimo_ranking": {
+   "celdas_modelo_ano": 299,
+   "pasan": 152,
+   "dias_en_celdas_que_pasan_pct": 99.7126
+  },
+  "cuadre_con_fallos_detalle": [
+   {
+    "ano": 2020,
+    "fallos_modelo_trimestre": 1307,
+    "fallos_fallos_detalle": 1307,
+    "coste_modelo_trimestre": 250485.2,
+    "coste_fallos_detalle": 250485.2,
+    "iguales": true
+   },
+   {
+    "ano": 2021,
+    "fallos_modelo_trimestre": 1823,
+    "fallos_fallos_detalle": 1823,
+    "coste_modelo_trimestre": 352673.77,
+    "coste_fallos_detalle": 352673.77,
+    "iguales": true
+   },
+   {
+    "ano": 2022,
+    "fallos_modelo_trimestre": 2999,
+    "fallos_fallos_detalle": 2999,
+    "coste_modelo_trimestre": 565844.09,
+    "coste_fallos_detalle": 565844.09,
+    "iguales": true
+   },
+   {
+    "ano": 2023,
+    "fallos_modelo_trimestre": 4201,
+    "fallos_fallos_detalle": 4201,
+    "coste_modelo_trimestre": 755878.6,
+    "coste_fallos_detalle": 755878.6,
+    "iguales": true
+   },
+   {
+    "ano": 2024,
+    "fallos_modelo_trimestre": 4538,
+    "fallos_fallos_detalle": 4538,
+    "coste_modelo_trimestre": 832698.0,
+    "coste_fallos_detalle": 832698.0,
+    "iguales": true
+   },
+   {
+    "ano": 2025,
+    "fallos_modelo_trimestre": 2128,
+    "fallos_fallos_detalle": 2128,
+    "coste_modelo_trimestre": 366916.0,
+    "coste_fallos_detalle": 366916.0,
+    "iguales": true
+   }
+  ]
+ },
+ "tipificacion": [
+  {
+   "columna": "model",
+   "tipo": "alta_cardinalidad",
+   "nivel": "fila",
+   "distintos": 61,
+   "entera": null,
+   "filas_del_nivel": 1028
+  },
+  {
+   "columna": "ano",
+   "tipo": "temporal",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 1028
+  },
+  {
+   "columna": "trimestre",
+   "tipo": "temporal",
+   "nivel": "fila",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 1028
+  },
+  {
+   "columna": "capacidad_tb",
+   "tipo": "continua",
+   "nivel": "model",
+   "distintos": 11,
+   "entera": true,
+   "filas_del_nivel": 61
+  },
+  {
+   "columna": "fabricante",
+   "tipo": "categorica",
+   "nivel": "model",
+   "distintos": 4,
+   "entera": null,
+   "filas_del_nivel": 61
+  },
+  {
+   "columna": "fecha_compra",
+   "tipo": "fecha",
+   "nivel": "model",
+   "distintos": null,
+   "entera": null,
+   "filas_del_nivel": 61
+  },
+  {
+   "columna": "precio_usd",
+   "tipo": "continua",
+   "nivel": "model",
+   "distintos": 55,
+   "entera": false,
+   "filas_del_nivel": 61
+  },
+  {
+   "columna": "origen_precio",
+   "tipo": "categorica",
+   "nivel": "model",
+   "distintos": 3,
+   "entera": null,
+   "filas_del_nivel": 61
+  },
+  {
+   "columna": "dias_disco",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 812,
+   "entera": true,
+   "filas_del_nivel": 1028
+  },
+  {
+   "columna": "fallos",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 119,
+   "entera": true,
+   "filas_del_nivel": 1028
+  },
+  {
+   "columna": "fallos_en_garantia",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 97,
+   "entera": true,
+   "filas_del_nivel": 1028
+  },
+  {
+   "columna": "coste_fallos_usd",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 439,
+   "entera": false,
+   "filas_del_nivel": 1028
+  },
+  {
+   "columna": "coste_fallos_garantia_usd",
+   "tipo": "continua",
+   "nivel": "fila",
+   "distintos": 249,
+   "entera": false,
+   "filas_del_nivel": 1028
+  },
+  {
+   "columna": "dias_disco_ano",
+   "tipo": "continua",
+   "nivel": "model+ano",
+   "distintos": 283,
+   "entera": true,
+   "filas_del_nivel": 299
+  },
+  {
+   "columna": "pasa_minimo_ano",
+   "tipo": "booleana",
+   "nivel": "model+ano",
+   "distintos": 2,
+   "entera": null,
+   "filas_del_nivel": 299
+  }
+ ],
+ "numericas": [
+  {
+   "conteo": 61,
+   "nulos": 0,
+   "media": 10.819672,
+   "mediana": 12.0,
+   "desviacion": 5.116992,
+   "minimo": 4.0,
+   "maximo": 24.0,
+   "p01": 4.0,
+   "p05": 4.0,
+   "p25": 6.0,
+   "p75": 14.0,
+   "p95": 18.0,
+   "p99": 22.8,
+   "columna": "capacidad_tb",
+   "tipo": "continua",
+   "nivel": "model",
+   "base": "61 filas (model)",
+   "senales": []
+  },
+  {
+   "conteo": 57,
+   "nulos": 4,
+   "media": 184.185127,
+   "mediana": 200.4,
+   "desviacion": 60.412241,
+   "minimo": 53.877948,
+   "maximo": 285.11604,
+   "p01": 58.396343,
+   "p05": 89.47229,
+   "p25": 131.235154,
+   "p75": 227.149191,
+   "p95": 262.677752,
+   "p99": 281.735871,
+   "columna": "precio_usd",
+   "tipo": "continua",
+   "nivel": "model",
+   "base": "61 filas (model)",
+   "senales": []
+  },
+  {
+   "conteo": 1028,
+   "nulos": 0,
+   "media": 433957.86284,
+   "mediana": 27551.5,
+   "desviacion": 757189.554635,
+   "minimo": 3.0,
+   "maximo": 3692064.0,
+   "p01": 51.08,
+   "p05": 92.0,
+   "p25": 1820.0,
+   "p75": 703984.0,
+   "p95": 1856551.45,
+   "p99": 3479465.87,
+   "columna": "dias_disco",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "1.028 filas (fila)",
+   "senales": [
+    "media lejos de la mediana",
+    "mínimo y máximo de órdenes de magnitud distintos"
+   ]
+  },
+  {
+   "conteo": 1028,
+   "nulos": 0,
+   "media": 16.533074,
+   "mediana": 1.0,
+   "desviacion": 33.135817,
+   "minimo": 0.0,
+   "maximo": 215.0,
+   "p01": 0.0,
+   "p05": 0.0,
+   "p25": 0.0,
+   "p75": 16.0,
+   "p95": 98.3,
+   "p99": 157.73,
+   "columna": "fallos",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "1.028 filas (fila)",
+   "senales": []
+  },
+  {
+   "conteo": 1028,
+   "nulos": 0,
+   "media": 11.01751,
+   "mediana": 0.0,
+   "desviacion": 25.437548,
+   "minimo": 0.0,
+   "maximo": 181.0,
+   "p01": 0.0,
+   "p05": 0.0,
+   "p25": 0.0,
+   "p75": 8.0,
+   "p95": 65.65,
+   "p99": 123.46,
+   "columna": "fallos_en_garantia",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "1.028 filas (fila)",
+   "senales": []
+  },
+  {
+   "conteo": 1028,
+   "nulos": 0,
+   "media": 3039.392665,
+   "mediana": 157.826374,
+   "desviacion": 5929.281274,
+   "minimo": 0.0,
+   "maximo": 40001.0,
+   "p01": 0.0,
+   "p05": 0.0,
+   "p25": 0.0,
+   "p75": 3475.661538,
+   "p95": 16309.45,
+   "p99": 28526.446484,
+   "columna": "coste_fallos_usd",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "1.028 filas (fila)",
+   "senales": []
+  },
+  {
+   "conteo": 1028,
+   "nulos": 0,
+   "media": 1118.864496,
+   "mediana": 37.0,
+   "desviacion": 2983.093491,
+   "minimo": 0.0,
+   "maximo": 29180.6,
+   "p01": 0.0,
+   "p05": 0.0,
+   "p25": 0.0,
+   "p75": 756.75,
+   "p95": 5931.273462,
+   "p99": 15276.95,
+   "columna": "coste_fallos_garantia_usd",
+   "tipo": "continua",
+   "nivel": "fila",
+   "base": "1.028 filas (fila)",
+   "senales": []
+  },
+  {
+   "conteo": 299,
+   "nulos": 0,
+   "media": 1492002.284281,
+   "mediana": 55394.0,
+   "desviacion": 2693840.170033,
+   "minimo": 26.0,
+   "maximo": 14089908.0,
+   "p01": 143.62,
+   "p05": 364.9,
+   "p25": 6191.0,
+   "p75": 1864771.5,
+   "p95": 6869629.9,
+   "p99": 13838261.86,
+   "columna": "dias_disco_ano",
+   "tipo": "continua",
+   "nivel": "model+ano",
+   "base": "299 filas (model+ano)",
+   "senales": [
+    "media lejos de la mediana",
+    "mínimo y máximo de órdenes de magnitud distintos"
+   ]
+  }
+ ],
+ "categoricas": [
+  {
+   "cardinalidad": 61,
+   "nulos": 0,
+   "dominante": "HGST HMS5C4040ALE640",
+   "pct_dominante": 2.1401,
+   "pct_10_mas_frecuentes": 21.4008,
+   "frecuencias": [
+    {
+     "valor": "HGST HMS5C4040ALE640",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "HGST HMS5C4040BLE640",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "HGST HUH721010ALE600",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "HGST HUH721212ALE600",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "HGST HUH721212ALN604",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "HGST HUH728080ALE600",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "ST10000NM0086",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "ST12000NM0007",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "ST12000NM0008",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "ST16000NM001G",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "ST8000DM002",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "ST8000DM005",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "ST8000NM0055",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "TOSHIBA HDWF180",
+     "filas": 22,
+     "pct": 2.1401
+    },
+    {
+     "valor": "TOSHIBA MG07ACA14TA",
+     "filas": 22,
+     "pct": 2.1401
+    }
+   ],
+   "total": 1028,
+   "columna": "model",
+   "tipo": "alta_cardinalidad",
+   "nivel": "fila"
+  },
+  {
+   "cardinalidad": 4,
+   "nulos": 0,
+   "dominante": "Seagate",
+   "pct_dominante": 49.1803,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": "Seagate",
+     "filas": 30,
+     "pct": 49.1803
+    },
+    {
+     "valor": "HGST",
+     "filas": 15,
+     "pct": 24.5902
+    },
+    {
+     "valor": "Toshiba",
+     "filas": 10,
+     "pct": 16.3934
+    },
+    {
+     "valor": "WDC",
+     "filas": 6,
+     "pct": 9.8361
+    }
+   ],
+   "total": 61,
+   "columna": "fabricante",
+   "tipo": "categorica",
+   "nivel": "model"
+  },
+  {
+   "cardinalidad": 3,
+   "nulos": 4,
+   "dominante": "curva",
+   "pct_dominante": 37.7049,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": "curva",
+     "filas": 23,
+     "pct": 37.7049
+    },
+    {
+     "valor": "vecinas",
+     "filas": 20,
+     "pct": 32.7869
+    },
+    {
+     "valor": "inferido",
+     "filas": 14,
+     "pct": 22.9508
+    },
+    {
+     "valor": "(vacío)",
+     "filas": 4,
+     "pct": 6.5574
+    }
+   ],
+   "total": 61,
+   "columna": "origen_precio",
+   "tipo": "categorica",
+   "nivel": "model"
+  },
+  {
+   "cardinalidad": 2,
+   "nulos": 0,
+   "dominante": true,
+   "pct_dominante": 50.8361,
+   "pct_10_mas_frecuentes": 100.0,
+   "frecuencias": [
+    {
+     "valor": true,
+     "filas": 152,
+     "pct": 50.8361
+    },
+    {
+     "valor": false,
+     "filas": 147,
+     "pct": 49.1639
+    }
+   ],
+   "total": 299,
+   "columna": "pasa_minimo_ano",
+   "tipo": "booleana",
+   "nivel": "model+ano"
+  }
+ ],
+ "fechas": [
+  {
+   "columna": "fecha_compra",
+   "minimo": "2015-04-25",
+   "maximo": "2025-03-03",
+   "nulos": 0
+  }
+ ],
+ "temporal": {
+  "periodos_incompletos": [
+   {
+    "periodo": "2025",
+    "motivo": "año que acaba después de la fecha de los datos"
+   }
+  ],
+  "por_ano": [
+   {
+    "ano": 2020,
+    "dias_disco": 51345918,
+    "fallos": 1307,
+    "tasa_anual_pct": 0.9291,
+    "fallos_en_garantia": 907,
+    "coste_fallos_usd": 250485.2,
+    "coste_fallos_garantia_usd": 80209.0,
+    "completo": true
+   },
+   {
+    "ano": 2021,
+    "dias_disco": 66072034,
+    "fallos": 1823,
+    "tasa_anual_pct": 1.007075,
+    "fallos_en_garantia": 1289,
+    "coste_fallos_usd": 352673.77,
+    "coste_fallos_garantia_usd": 109169.07,
+    "completo": true
+   },
+   {
+    "ano": 2022,
+    "dias_disco": 78890669,
+    "fallos": 2999,
+    "tasa_anual_pct": 1.387534,
+    "fallos_en_garantia": 1890,
+    "coste_fallos_usd": 565844.09,
+    "coste_fallos_garantia_usd": 200888.03,
+    "completo": true
+   },
+   {
+    "ano": 2023,
+    "dias_disco": 90077756,
+    "fallos": 4201,
+    "tasa_anual_pct": 1.702268,
+    "fallos_en_garantia": 2691,
+    "coste_fallos_usd": 755878.6,
+    "coste_fallos_garantia_usd": 284506.6,
+    "completo": true
+   },
+   {
+    "ano": 2024,
+    "dias_disco": 103839696,
+    "fallos": 4538,
+    "tasa_anual_pct": 1.595122,
+    "fallos_en_garantia": 3258,
+    "coste_fallos_usd": 832698.0,
+    "coste_fallos_garantia_usd": 305124.0,
+    "completo": true
+   },
+   {
+    "ano": 2025,
+    "dias_disco": 55882610,
+    "fallos": 2128,
+    "tasa_anual_pct": 1.389914,
+    "fallos_en_garantia": 1291,
+    "coste_fallos_usd": 366916.0,
+    "coste_fallos_garantia_usd": 170296.0,
+    "completo": false
+   }
+  ]
+ },
+ "tasas": [
+  {
+   "nombre": "año",
+   "dimension": "ano",
+   "medida": {
+    "numerador": "fallos",
+    "denominador": "dias_disco",
+    "factor": 36500,
+    "minimo": 50000
+   },
+   "total": [
+    {
+     "categoria": 2020,
+     "num": 1307.0,
+     "den": 51345918.0,
+     "valor": 0.9291001477468959,
+     "comparada": true
+    },
+    {
+     "categoria": 2021,
+     "num": 1823.0,
+     "den": 66072034.0,
+     "valor": 1.0070750962502533,
+     "comparada": true
+    },
+    {
+     "categoria": 2022,
+     "num": 2999.0,
+     "den": 78890669.0,
+     "valor": 1.3875341835420358,
+     "comparada": true
+    },
+    {
+     "categoria": 2023,
+     "num": 4201.0,
+     "den": 90077756.0,
+     "valor": 1.7022682048162923,
+     "comparada": true
+    },
+    {
+     "categoria": 2024,
+     "num": 4538.0,
+     "den": 103839696.0,
+     "valor": 1.5951221582929134,
+     "comparada": true
+    },
+    {
+     "categoria": 2025,
+     "num": 2128.0,
+     "den": 55882610.0,
+     "valor": 1.3899136063974105,
+     "comparada": true
+    }
+   ],
+   "par": [
+    2024,
+    2020
+   ],
+   "por_grupo": {
+    "fabricante": {
+     "HGST": [
+      {
+       "categoria": 2020,
+       "num": 112.0,
+       "den": 11211413.0,
+       "valor": 0.36462843711136145,
+       "comparada": true
+      },
+      {
+       "categoria": 2021,
+       "num": 150.0,
+       "den": 14466638.0,
+       "valor": 0.3784569711359336,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 280.0,
+       "den": 16104689.0,
+       "valor": 0.6345977870171848,
+       "comparada": true
+      },
+      {
+       "categoria": 2023,
+       "num": 622.0,
+       "den": 15431088.0,
+       "valor": 1.4712507633940004,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 1108.0,
+       "den": 13452783.0,
+       "valor": 3.0062181185855743,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 430.0,
+       "den": 5272634.0,
+       "valor": 2.9766905876645335,
+       "comparada": true
+      }
+     ],
+     "Seagate": [
+      {
+       "categoria": 2021,
+       "num": 1358.0,
+       "den": 35663254.0,
+       "valor": 1.389861957072117,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 2169.0,
+       "den": 39163646.0,
+       "valor": 2.0214793076211546,
+       "comparada": true
+      },
+      {
+       "categoria": 2023,
+       "num": 2781.0,
+       "den": 41602270.0,
+       "valor": 2.4399269559088963,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 2009.0,
+       "den": 39129458.0,
+       "valor": 1.873997334693468,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 873.0,
+       "den": 19551898.0,
+       "valor": 1.6297394759322088,
+       "comparada": true
+      },
+      {
+       "categoria": 2020,
+       "num": 1094.0,
+       "den": 35705657.0,
+       "valor": 1.1183381949812603,
+       "comparada": true
+      }
+     ],
+     "Toshiba": [
+      {
+       "categoria": 2020,
+       "num": 100.0,
+       "den": 4194069.0,
+       "valor": 0.8702765738951839,
+       "comparada": true
+      },
+      {
+       "categoria": 2021,
+       "num": 279.0,
+       "den": 12723591.0,
+       "valor": 0.8003636709164889,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 524.0,
+       "den": 18304141.0,
+       "valor": 1.044900167672441,
+       "comparada": true
+      },
+      {
+       "categoria": 2023,
+       "num": 704.0,
+       "den": 23145545.0,
+       "valor": 1.1101920477569225,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 1079.0,
+       "den": 32936984.0,
+       "valor": 1.1957227170526603,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 593.0,
+       "den": 18063757.0,
+       "valor": 1.198228031964779,
+       "comparada": true
+      }
+     ],
+     "WDC": [
+      {
+       "categoria": 2020,
+       "num": 1.0,
+       "den": 234779.0,
+       "valor": 0.155465352523011,
+       "comparada": true
+      },
+      {
+       "categoria": 2021,
+       "num": 36.0,
+       "den": 3218551.0,
+       "valor": 0.4082582503741591,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 26.0,
+       "den": 5318193.0,
+       "valor": 0.1784440692543501,
+       "comparada": true
+      },
+      {
+       "categoria": 2023,
+       "num": 94.0,
+       "den": 9898853.0,
+       "valor": 0.3466058138250967,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 342.0,
+       "den": 18320471.0,
+       "valor": 0.6813689451543031,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 232.0,
+       "den": 12994321.0,
+       "valor": 0.6516692946095451,
+       "comparada": true
+      }
+     ]
+    },
+    "capacidad_tb": {
+     "4.0": [
+      {
+       "categoria": 2020,
+       "num": 313.0,
+       "den": 12801414.0,
+       "valor": 0.8924404757161982,
+       "comparada": true
+      },
+      {
+       "categoria": 2021,
+       "num": 399.0,
+       "den": 12764046.0,
+       "valor": 1.1409783386866517,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 739.0,
+       "den": 12744303.0,
+       "valor": 2.1165143358565786,
+       "comparada": true
+      },
+      {
+       "categoria": 2023,
+       "num": 620.0,
+       "den": 11630637.0,
+       "valor": 1.9457231792205363,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 163.0,
+       "den": 4660424.0,
+       "valor": 1.2766005839812,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 4.0,
+       "den": 364866.0,
+       "valor": 0.4001469032466714,
+       "comparada": true
+      }
+     ],
+     "6.0": [
+      {
+       "categoria": 2020,
+       "num": 2.0,
+       "den": 328667.0,
+       "valor": 0.22210930820556976,
+       "comparada": true
+      },
+      {
+       "categoria": 2021,
+       "num": 1.0,
+       "den": 327770.0,
+       "valor": 0.111358574610245,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 6.0,
+       "den": 327767.0,
+       "valor": 0.6681575631469916,
+       "comparada": true
+      },
+      {
+       "categoria": 2023,
+       "num": 6.0,
+       "den": 326841.0,
+       "valor": 0.6700505750502538,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 0.0,
+       "den": 97445.0,
+       "valor": 0.0,
+       "comparada": true
+      }
+     ],
+     "8.0": [
+      {
+       "categoria": 2020,
+       "num": 273.0,
+       "den": 9260020.0,
+       "valor": 1.0760775894652495,
+       "comparada": true
+      },
+      {
+       "categoria": 2021,
+       "num": 359.0,
+       "den": 9233075.0,
+       "valor": 1.4191913311654027,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 558.0,
+       "den": 9213698.0,
+       "valor": 2.2105130860594735,
+       "comparada": true
+      },
+      {
+       "categoria": 2023,
+       "num": 848.0,
+       "den": 9075797.0,
+       "valor": 3.4103891922659795,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 553.0,
+       "den": 8932830.0,
+       "valor": 2.2595862677337415,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 279.0,
+       "den": 4333056.0,
+       "valor": 2.3501888736263736,
+       "comparada": true
+      }
+     ],
+     "10.0": [
+      {
+       "categoria": 2020,
+       "num": 16.0,
+       "den": 446567.0,
+       "valor": 1.3077544914872796,
+       "comparada": true
+      },
+      {
+       "categoria": 2021,
+       "num": 28.0,
+       "den": 445674.0,
+       "valor": 2.293155983970346,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 45.0,
+       "den": 444753.0,
+       "valor": 3.693061092336645,
+       "comparada": true
+      },
+      {
+       "categoria": 2023,
+       "num": 74.0,
+       "den": 428392.0,
+       "valor": 6.304973015369101,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 58.0,
+       "den": 408689.0,
+       "valor": 5.179977929428,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 24.0,
+       "den": 193839.0,
+       "valor": 4.519214399579032,
+       "comparada": true
+      }
+     ],
+     "12.0": [
+      {
+       "categoria": 2020,
+       "num": 586.0,
+       "den": 23638683.0,
+       "valor": 0.9048304425419977,
+       "comparada": true
+      },
+      {
+       "categoria": 2021,
+       "num": 510.0,
+       "den": 22118624.0,
+       "valor": 0.8415984647146224,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 742.0,
+       "den": 21947375.0,
+       "valor": 1.2339972320152182,
+       "comparada": true
+      },
+      {
+       "categoria": 2023,
+       "num": 1358.0,
+       "den": 21842673.0,
+       "valor": 2.2692735454126884,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 1868.0,
+       "den": 22050285.0,
+       "valor": 3.0921142289090593,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 761.0,
+       "den": 10856153.0,
+       "valor": 2.5585951119148747,
+       "comparada": true
+      }
+     ],
+     "14.0": [
+      {
+       "categoria": 2023,
+       "num": 793.0,
+       "den": 21590753.0,
+       "valor": 1.3405970602322208,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 748.0,
+       "den": 21715239.0,
+       "valor": 1.2572737513964272,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 390.0,
+       "den": 10691056.0,
+       "valor": 1.3314868054194084,
+       "comparada": true
+      },
+      {
+       "categoria": 2020,
+       "num": 114.0,
+       "den": 4800065.0,
+       "valor": 0.8668632612266709,
+       "comparada": true
+      },
+      {
+       "categoria": 2021,
+       "num": 449.0,
+       "den": 18369625.0,
+       "valor": 0.8921521261321339,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 620.0,
+       "den": 21666429.0,
+       "valor": 1.0444729955268586,
+       "comparada": true
+      }
+     ],
+     "16.0": [
+      {
+       "categoria": 2023,
+       "num": 497.0,
+       "den": 25036154.0,
+       "valor": 0.7245721527355999,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 993.0,
+       "den": 40561213.0,
+       "valor": 0.8935753474631047,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 501.0,
+       "den": 20820518.0,
+       "valor": 0.8782922691933025,
+       "comparada": true
+      },
+      {
+       "categoria": 2020,
+       "num": 1.0,
+       "den": 64682.0,
+       "valor": 0.564299186790761,
+       "comparada": true
+      },
+      {
+       "categoria": 2021,
+       "num": 75.0,
+       "den": 2791320.0,
+       "valor": 0.9807187997076652,
+       "comparada": true
+      },
+      {
+       "categoria": 2022,
+       "num": 287.0,
+       "den": 12524504.0,
+       "valor": 0.8364003875921953,
+       "comparada": true
+      }
+     ],
+     "18.0": [
+      {
+       "categoria": 2020,
+       "num": 2.0,
+       "den": 5820.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 2021,
+       "num": 2.0,
+       "den": 21900.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 2022,
+       "num": 2.0,
+       "den": 21840.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 2023,
+       "num": 3.0,
+       "den": 21630.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 2024,
+       "num": 1.0,
+       "den": 21960.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 2025,
+       "num": 1.0,
+       "den": 10797.0,
+       "valor": null,
+       "comparada": false
+      }
+     ],
+     "20.0": [
+      {
+       "categoria": 2023,
+       "num": 0.0,
+       "den": 232.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 2024,
+       "num": 15.0,
+       "den": 632029.0,
+       "valor": 0.8662577191869361,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 31.0,
+       "den": 1837125.0,
+       "valor": 0.615908008437096,
+       "comparada": true
+      }
+     ],
+     "22.0": [
+      {
+       "categoria": 2023,
+       "num": 2.0,
+       "den": 124647.0,
+       "valor": 0.5856538865756897,
+       "comparada": true
+      },
+      {
+       "categoria": 2024,
+       "num": 139.0,
+       "den": 4741582.0,
+       "valor": 1.0700015311345454,
+       "comparada": true
+      },
+      {
+       "categoria": 2025,
+       "num": 102.0,
+       "den": 6112143.0,
+       "valor": 0.6091153299260178,
+       "comparada": true
+      }
+     ],
+     "24.0": [
+      {
+       "categoria": 2024,
+       "num": 0.0,
+       "den": 18000.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 2025,
+       "num": 35.0,
+       "den": 663057.0,
+       "valor": 1.9266820197961865,
+       "comparada": true
+      }
+     ]
+    }
+   },
+   "anidada": [],
+   "alertas": [
+    {
+     "grupo_dim": "fabricante",
+     "grupo": "HGST",
+     "a": 2024,
+     "b": 2020,
+     "diferencia_total": 0.666022,
+     "diferencia_grupo": 2.64159,
+     "tipo": "cambia de tamaño"
+    },
+    {
+     "grupo_dim": "fabricante",
+     "grupo": "Toshiba",
+     "a": 2024,
+     "b": 2020,
+     "diferencia_total": 0.666022,
+     "diferencia_grupo": 0.325446,
+     "tipo": "cambia de tamaño"
+    },
+    {
+     "grupo_dim": "capacidad_tb",
+     "grupo": "6.0",
+     "a": 2024,
+     "b": 2020,
+     "diferencia_total": 0.666022,
+     "diferencia_grupo": -0.222109,
+     "tipo": "se invierte"
+    },
+    {
+     "grupo_dim": "capacidad_tb",
+     "grupo": "10.0",
+     "a": 2024,
+     "b": 2020,
+     "diferencia_total": 0.666022,
+     "diferencia_grupo": 3.872223,
+     "tipo": "cambia de tamaño"
+    },
+    {
+     "grupo_dim": "capacidad_tb",
+     "grupo": "12.0",
+     "a": 2024,
+     "b": 2020,
+     "diferencia_total": 0.666022,
+     "diferencia_grupo": 2.187284,
+     "tipo": "cambia de tamaño"
+    },
+    {
+     "grupo_dim": "capacidad_tb",
+     "grupo": "16.0",
+     "a": 2024,
+     "b": 2020,
+     "diferencia_total": 0.666022,
+     "diferencia_grupo": 0.329276,
+     "tipo": "cambia de tamaño"
+    }
+   ]
+  },
+  {
+   "nombre": "fabricante",
+   "dimension": "fabricante",
+   "medida": {
+    "numerador": "fallos",
+    "denominador": "dias_disco",
+    "factor": 36500,
+    "minimo": 50000
+   },
+   "total": [
+    {
+     "categoria": "HGST",
+     "num": 2702.0,
+     "den": 75939245.0,
+     "valor": 1.298709251059844,
+     "comparada": true
+    },
+    {
+     "categoria": "Seagate",
+     "num": 10284.0,
+     "den": 210816183.0,
+     "valor": 1.7805369334478465,
+     "comparada": true
+    },
+    {
+     "categoria": "Toshiba",
+     "num": 3279.0,
+     "den": 109368087.0,
+     "valor": 1.0943183087768555,
+     "comparada": true
+    },
+    {
+     "categoria": "WDC",
+     "num": 731.0,
+     "den": 49985168.0,
+     "valor": 0.5337883429740599,
+     "comparada": true
+    }
+   ],
+   "par": [
+    "Seagate",
+    "WDC"
+   ],
+   "por_grupo": {
+    "capacidad_tb": {
+     "4.0": [
+      {
+       "categoria": "HGST",
+       "num": 283.0,
+       "den": 26823857.0,
+       "valor": 0.38508630582097125,
+       "comparada": true
+      },
+      {
+       "categoria": "Seagate",
+       "num": 1949.0,
+       "den": 27999642.0,
+       "valor": 2.5406931988630426,
+       "comparada": true
+      },
+      {
+       "categoria": "Toshiba",
+       "num": 6.0,
+       "den": 142191.0,
+       "valor": 1.5401818680507204,
+       "comparada": true
+      }
+     ],
+     "6.0": [
+      {
+       "categoria": "Seagate",
+       "num": 15.0,
+       "den": 1397500.0,
+       "valor": 0.39177101967799643,
+       "comparada": true
+      },
+      {
+       "categoria": "Toshiba",
+       "num": 0.0,
+       "den": 6280.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": "WDC",
+       "num": 0.0,
+       "den": 4710.0,
+       "valor": null,
+       "comparada": false
+      }
+     ],
+     "8.0": [
+      {
+       "categoria": "HGST",
+       "num": 96.0,
+       "den": 2302075.0,
+       "valor": 1.522105057393873,
+       "comparada": true
+      },
+      {
+       "categoria": "Seagate",
+       "num": 2762.0,
+       "den": 47676715.0,
+       "valor": 2.1145122938944096,
+       "comparada": true
+      },
+      {
+       "categoria": "Toshiba",
+       "num": 12.0,
+       "den": 69686.0,
+       "valor": 6.285337083488793,
+       "comparada": true
+      }
+     ],
+     "10.0": [
+      {
+       "categoria": "HGST",
+       "num": 0.0,
+       "den": 40093.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": "Seagate",
+       "num": 245.0,
+       "den": 2327821.0,
+       "valor": 3.8415754475967008,
+       "comparada": true
+      }
+     ],
+     "12.0": [
+      {
+       "categoria": "HGST",
+       "num": 2323.0,
+       "den": 46773220.0,
+       "valor": 1.8127787652849217,
+       "comparada": true
+      },
+      {
+       "categoria": "Seagate",
+       "num": 3502.0,
+       "den": 75680573.0,
+       "valor": 1.6889803410975759,
+       "comparada": true
+      }
+     ],
+     "14.0": [
+      {
+       "categoria": "Seagate",
+       "num": 1074.0,
+       "den": 19750738.0,
+       "valor": 1.9847865937971534,
+       "comparada": true
+      },
+      {
+       "categoria": "Toshiba",
+       "num": 1850.0,
+       "den": 65104225.0,
+       "valor": 1.0371830706839686,
+       "comparada": true
+      },
+      {
+       "categoria": "WDC",
+       "num": 190.0,
+       "den": 13978204.0,
+       "valor": 0.49612954568412365,
+       "comparada": true
+      }
+     ],
+     "16.0": [
+      {
+       "categoria": "Seagate",
+       "num": 691.0,
+       "den": 35198190.0,
+       "valor": 0.7165567320365053,
+       "comparada": true
+      },
+      {
+       "categoria": "Toshiba",
+       "num": 1365.0,
+       "den": 41576319.0,
+       "valor": 1.1983384099010785,
+       "comparada": true
+      },
+      {
+       "categoria": "WDC",
+       "num": 298.0,
+       "den": 25023882.0,
+       "valor": 0.4346647734352328,
+       "comparada": true
+      }
+     ],
+     "18.0": [
+      {
+       "categoria": "Seagate",
+       "num": 11.0,
+       "den": 103947.0,
+       "valor": 3.862545335603721,
+       "comparada": true
+      }
+     ],
+     "20.0": [
+      {
+       "categoria": "Toshiba",
+       "num": 46.0,
+       "den": 2469386.0,
+       "valor": 0.6799261030879741,
+       "comparada": true
+      }
+     ],
+     "22.0": [
+      {
+       "categoria": "WDC",
+       "num": 243.0,
+       "den": 10978372.0,
+       "valor": 0.8079066732298742,
+       "comparada": true
+      }
+     ],
+     "24.0": [
+      {
+       "categoria": "Seagate",
+       "num": 35.0,
+       "den": 681057.0,
+       "valor": 1.8757607659858133,
+       "comparada": true
+      }
+     ]
+    }
+   },
+   "anidada": [],
+   "alertas": [
+    {
+     "grupo_dim": "capacidad_tb",
+     "grupo": "16.0",
+     "a": "Seagate",
+     "b": "WDC",
+     "diferencia_total": 1.246749,
+     "diferencia_grupo": 0.281892,
+     "tipo": "cambia de tamaño"
+    }
+   ]
+  },
+  {
+   "nombre": "capacidad",
+   "dimension": "capacidad_tb",
+   "medida": {
+    "numerador": "fallos",
+    "denominador": "dias_disco",
+    "factor": 36500,
+    "minimo": 50000
+   },
+   "total": [
+    {
+     "categoria": 4.0,
+     "num": 2238.0,
+     "den": 54965690.0,
+     "valor": 1.4861452662560954,
+     "comparada": true
+    },
+    {
+     "categoria": 10.0,
+     "num": 245.0,
+     "den": 2367914.0,
+     "valor": 3.7765307354912383,
+     "comparada": true
+    },
+    {
+     "categoria": 12.0,
+     "num": 5825.0,
+     "den": 122453793.0,
+     "valor": 1.7362671648725492,
+     "comparada": true
+    },
+    {
+     "categoria": 8.0,
+     "num": 2870.0,
+     "den": 50048476.0,
+     "valor": 2.093070726069661,
+     "comparada": true
+    },
+    {
+     "categoria": 14.0,
+     "num": 3114.0,
+     "den": 98833167.0,
+     "valor": 1.1500289169120725,
+     "comparada": true
+    },
+    {
+     "categoria": 16.0,
+     "num": 2354.0,
+     "den": 101798391.0,
+     "valor": 0.8440310220620285,
+     "comparada": true
+    },
+    {
+     "categoria": 18.0,
+     "num": 11.0,
+     "den": 103947.0,
+     "valor": 3.862545335603721,
+     "comparada": true
+    },
+    {
+     "categoria": 24.0,
+     "num": 35.0,
+     "den": 681057.0,
+     "valor": 1.8757607659858133,
+     "comparada": true
+    },
+    {
+     "categoria": 6.0,
+     "num": 15.0,
+     "den": 1408490.0,
+     "valor": 0.388714154875079,
+     "comparada": true
+    },
+    {
+     "categoria": 20.0,
+     "num": 46.0,
+     "den": 2469386.0,
+     "valor": 0.6799261030879741,
+     "comparada": true
+    },
+    {
+     "categoria": 22.0,
+     "num": 243.0,
+     "den": 10978372.0,
+     "valor": 0.8079066732298742,
+     "comparada": true
+    }
+   ],
+   "par": [
+    18.0,
+    6.0
+   ],
+   "por_grupo": {
+    "fabricante": {
+     "HGST": [
+      {
+       "categoria": 4.0,
+       "num": 283.0,
+       "den": 26823857.0,
+       "valor": 0.38508630582097125,
+       "comparada": true
+      },
+      {
+       "categoria": 10.0,
+       "num": 0.0,
+       "den": 40093.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 12.0,
+       "num": 2323.0,
+       "den": 46773220.0,
+       "valor": 1.8127787652849217,
+       "comparada": true
+      },
+      {
+       "categoria": 8.0,
+       "num": 96.0,
+       "den": 2302075.0,
+       "valor": 1.522105057393873,
+       "comparada": true
+      }
+     ],
+     "Seagate": [
+      {
+       "categoria": 10.0,
+       "num": 245.0,
+       "den": 2327821.0,
+       "valor": 3.8415754475967008,
+       "comparada": true
+      },
+      {
+       "categoria": 12.0,
+       "num": 3502.0,
+       "den": 75680573.0,
+       "valor": 1.6889803410975759,
+       "comparada": true
+      },
+      {
+       "categoria": 14.0,
+       "num": 1074.0,
+       "den": 19750738.0,
+       "valor": 1.9847865937971534,
+       "comparada": true
+      },
+      {
+       "categoria": 16.0,
+       "num": 691.0,
+       "den": 35198190.0,
+       "valor": 0.7165567320365053,
+       "comparada": true
+      },
+      {
+       "categoria": 18.0,
+       "num": 11.0,
+       "den": 103947.0,
+       "valor": 3.862545335603721,
+       "comparada": true
+      },
+      {
+       "categoria": 24.0,
+       "num": 35.0,
+       "den": 681057.0,
+       "valor": 1.8757607659858133,
+       "comparada": true
+      },
+      {
+       "categoria": 4.0,
+       "num": 1949.0,
+       "den": 27999642.0,
+       "valor": 2.5406931988630426,
+       "comparada": true
+      },
+      {
+       "categoria": 6.0,
+       "num": 15.0,
+       "den": 1397500.0,
+       "valor": 0.39177101967799643,
+       "comparada": true
+      },
+      {
+       "categoria": 8.0,
+       "num": 2762.0,
+       "den": 47676715.0,
+       "valor": 2.1145122938944096,
+       "comparada": true
+      }
+     ],
+     "Toshiba": [
+      {
+       "categoria": 6.0,
+       "num": 0.0,
+       "den": 6280.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 8.0,
+       "num": 12.0,
+       "den": 69686.0,
+       "valor": 6.285337083488793,
+       "comparada": true
+      },
+      {
+       "categoria": 4.0,
+       "num": 6.0,
+       "den": 142191.0,
+       "valor": 1.5401818680507204,
+       "comparada": true
+      },
+      {
+       "categoria": 14.0,
+       "num": 1850.0,
+       "den": 65104225.0,
+       "valor": 1.0371830706839686,
+       "comparada": true
+      },
+      {
+       "categoria": 16.0,
+       "num": 1365.0,
+       "den": 41576319.0,
+       "valor": 1.1983384099010785,
+       "comparada": true
+      },
+      {
+       "categoria": 20.0,
+       "num": 46.0,
+       "den": 2469386.0,
+       "valor": 0.6799261030879741,
+       "comparada": true
+      }
+     ],
+     "WDC": [
+      {
+       "categoria": 6.0,
+       "num": 0.0,
+       "den": 4710.0,
+       "valor": null,
+       "comparada": false
+      },
+      {
+       "categoria": 14.0,
+       "num": 190.0,
+       "den": 13978204.0,
+       "valor": 0.49612954568412365,
+       "comparada": true
+      },
+      {
+       "categoria": 16.0,
+       "num": 298.0,
+       "den": 25023882.0,
+       "valor": 0.4346647734352328,
+       "comparada": true
+      },
+      {
+       "categoria": 22.0,
+       "num": 243.0,
+       "den": 10978372.0,
+       "valor": 0.8079066732298742,
+       "comparada": true
+      }
+     ]
+    }
+   },
+   "anidada": [],
+   "alertas": []
+  }
+ ],
+ "partes": [],
+ "pareto": [
+  {
+   "pareja": "fallos por modelos",
+   "elemento": "modelos",
+   "magnitud": "fallos",
+   "elementos": 61,
+   "total": 16996.0,
+   "pct_elementos_80": 18.0328,
+   "clases": {
+    "A": {
+     "elementos": 11,
+     "parte_pct": 81.5251
+    },
+    "B": {
+     "elementos": 8,
+     "parte_pct": 13.968
+    },
+    "C": {
+     "elementos": 42,
+     "parte_pct": 4.5069
+    }
+   },
+   "tabla": [
+    {
+     "elemento": "ST12000NM0008",
+     "valor": 2084.0,
+     "acumulado_pct": 12.2617,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST4000DM000",
+     "valor": 1942.0,
+     "acumulado_pct": 23.6879,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST8000NM0055",
+     "valor": 1819.0,
+     "acumulado_pct": 34.3904,
+     "clase": "A"
+    },
+    {
+     "elemento": "TOSHIBA MG07ACA14TA",
+     "valor": 1811.0,
+     "acumulado_pct": 45.0459,
+     "clase": "A"
+    },
+    {
+     "elemento": "HGST HUH721212ALN604",
+     "valor": 1367.0,
+     "acumulado_pct": 53.089,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST8000DM002",
+     "valor": 937.0,
+     "acumulado_pct": 58.602,
+     "clase": "A"
+    },
+    {
+     "elemento": "HGST HUH721212ALE604",
+     "valor": 878.0,
+     "acumulado_pct": 63.7679,
+     "clase": "A"
+    },
+    {
+     "elemento": "TOSHIBA MG08ACA16TA",
+     "valor": 858.0,
+     "acumulado_pct": 68.8162,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST12000NM0007",
+     "valor": 813.0,
+     "acumulado_pct": 73.5997,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST16000NM001G",
+     "valor": 684.0,
+     "acumulado_pct": 77.6241,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST14000NM001G",
+     "valor": 663.0,
+     "acumulado_pct": 81.5251,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST12000NM001G",
+     "valor": 584.0,
+     "acumulado_pct": 84.9612,
+     "clase": "B"
+    },
+    {
+     "elemento": "ST14000NM0138",
+     "valor": 391.0,
+     "acumulado_pct": 87.2617,
+     "clase": "B"
+    },
+    {
+     "elemento": "TOSHIBA MG08ACA16TE",
+     "valor": 279.0,
+     "acumulado_pct": 88.9033,
+     "clase": "B"
+    },
+    {
+     "elemento": "ST10000NM0086",
+     "valor": 243.0,
+     "acumulado_pct": 90.333,
+     "clase": "B"
+    },
+    {
+     "elemento": "WDC WUH722222ALE6L4",
+     "valor": 243.0,
+     "acumulado_pct": 91.7628,
+     "clase": "B"
+    },
+    {
+     "elemento": "TOSHIBA MG08ACA16TEY",
+     "valor": 227.0,
+     "acumulado_pct": 93.0984,
+     "clase": "B"
+    },
+    {
+     "elemento": "WDC WUH721816ALE6L4",
+     "valor": 214.0,
+     "acumulado_pct": 94.3575,
+     "clase": "B"
+    },
+    {
+     "elemento": "HGST HMS5C4040BLE640",
+     "valor": 193.0,
+     "acumulado_pct": 95.4931,
+     "clase": "B"
+    },
+    {
+     "elemento": "WDC WUH721414ALE6L4",
+     "valor": 190.0,
+     "acumulado_pct": 96.611,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HMS5C4040ALE640",
+     "valor": 88.0,
+     "acumulado_pct": 97.1287,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH721212ALE600",
+     "valor": 78.0,
+     "acumulado_pct": 97.5877,
+     "clase": "C"
+    },
+    {
+     "elemento": "WDC WUH721816ALE6L0",
+     "valor": 78.0,
+     "acumulado_pct": 98.0466,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH728080ALE600",
+     "valor": 76.0,
+     "acumulado_pct": 98.4938,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MG10ACA20TE",
+     "valor": 46.0,
+     "acumulado_pct": 98.7644,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MG07ACA14TEY",
+     "valor": 39.0,
+     "acumulado_pct": 98.9939,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST24000NM002H",
+     "valor": 35.0,
+     "acumulado_pct": 99.1998,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH728080ALE604",
+     "valor": 19.0,
+     "acumulado_pct": 99.3116,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST12000NM000J",
+     "valor": 18.0,
+     "acumulado_pct": 99.4175,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST6000DX000",
+     "valor": 15.0,
+     "acumulado_pct": 99.5058,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM0018",
+     "valor": 14.0,
+     "acumulado_pct": 99.5881,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA HDWF180",
+     "valor": 12.0,
+     "acumulado_pct": 99.6587,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST18000NM000J",
+     "valor": 11.0,
+     "acumulado_pct": 99.7235,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM000J",
+     "valor": 6.0,
+     "acumulado_pct": 99.7588,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST16000NM002J",
+     "valor": 6.0,
+     "acumulado_pct": 99.7941,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST4000DM005",
+     "valor": 6.0,
+     "acumulado_pct": 99.8294,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MD04ABA400V",
+     "valor": 6.0,
+     "acumulado_pct": 99.8647,
+     "clase": "C"
+    },
+    {
+     "elemento": "WUH721816ALE6L4",
+     "valor": 6.0,
+     "acumulado_pct": 99.9,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST12000NM0117",
+     "valor": 3.0,
+     "acumulado_pct": 99.9176,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST8000DM004",
+     "valor": 3.0,
+     "acumulado_pct": 99.9353,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST10000NM001G",
+     "valor": 2.0,
+     "acumulado_pct": 99.947,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST8000NM000A",
+     "valor": 2.0,
+     "acumulado_pct": 99.9588,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HDS5C4040ALE630",
+     "valor": 1.0,
+     "acumulado_pct": 99.9647,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUS728T8TALE6L4",
+     "valor": 1.0,
+     "acumulado_pct": 99.9706,
+     "clase": "C"
+    },
+    {
+     "elemento": "Hitachi HDS5C4040ALE630",
+     "valor": 1.0,
+     "acumulado_pct": 99.9765,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST16000NM000J",
+     "valor": 1.0,
+     "acumulado_pct": 99.9823,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST4000DM004",
+     "valor": 1.0,
+     "acumulado_pct": 99.9882,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST8000DM005",
+     "valor": 1.0,
+     "acumulado_pct": 99.9941,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MG09ACA16TE",
+     "valor": 1.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HDS724040ALE640",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HMS5C4040BLE641",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH721010ALE600",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUS726040ALE610",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUS726040ALN610",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST12000NM003G",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM002J",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST16000NM005G",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST6000DM001",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST6000DM004",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA HDWE160",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "WDC WD60EFRX",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    }
+   ],
+   "valores_ordenados": [
+    2084.0,
+    1942.0,
+    1819.0,
+    1811.0,
+    1367.0,
+    937.0,
+    878.0,
+    858.0,
+    813.0,
+    684.0,
+    663.0,
+    584.0,
+    391.0,
+    279.0,
+    243.0,
+    243.0,
+    227.0,
+    214.0,
+    193.0,
+    190.0,
+    88.0,
+    78.0,
+    78.0,
+    76.0,
+    46.0,
+    39.0,
+    35.0,
+    19.0,
+    18.0,
+    15.0,
+    14.0,
+    12.0,
+    11.0,
+    6.0,
+    6.0,
+    6.0,
+    6.0,
+    6.0,
+    3.0,
+    3.0,
+    2.0,
+    2.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "pocos_elementos": false
+  },
+  {
+   "pareja": "dias_disco por modelos",
+   "elemento": "modelos",
+   "magnitud": "dias_disco",
+   "elementos": 61,
+   "total": 446108683.0,
+   "pct_elementos_80": 21.3115,
+   "clases": {
+    "A": {
+     "elementos": 13,
+     "parte_pct": 81.1
+    },
+    "B": {
+     "elementos": 7,
+     "parte_pct": 14.785
+    },
+    "C": {
+     "elementos": 41,
+     "parte_pct": 4.115
+    }
+   },
+   "tabla": [
+    {
+     "elemento": "TOSHIBA MG07ACA14TA",
+     "valor": 64132410.0,
+     "acumulado_pct": 14.376,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST12000NM0008",
+     "valor": 37582572.0,
+     "acumulado_pct": 22.8005,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST16000NM001G",
+     "valor": 34690953.0,
+     "acumulado_pct": 30.5768,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST8000NM0055",
+     "valor": 28364773.0,
+     "acumulado_pct": 36.9351,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST4000DM000",
+     "valor": 27930805.0,
+     "acumulado_pct": 43.1961,
+     "clase": "A"
+    },
+    {
+     "elemento": "TOSHIBA MG08ACA16TA",
+     "valor": 27000887.0,
+     "acumulado_pct": 49.2486,
+     "clase": "A"
+    },
+    {
+     "elemento": "HGST HMS5C4040BLE640",
+     "valor": 21590966.0,
+     "acumulado_pct": 54.0885,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST12000NM001G",
+     "valor": 21487178.0,
+     "acumulado_pct": 58.9051,
+     "clase": "A"
+    },
+    {
+     "elemento": "HGST HUH721212ALN604",
+     "valor": 21311976.0,
+     "acumulado_pct": 63.6824,
+     "clase": "A"
+    },
+    {
+     "elemento": "WDC WUH721816ALE6L4",
+     "valor": 21131309.0,
+     "acumulado_pct": 68.4192,
+     "clase": "A"
+    },
+    {
+     "elemento": "HGST HUH721212ALE604",
+     "valor": 20386683.0,
+     "acumulado_pct": 72.9891,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST8000DM002",
+     "valor": 19043449.0,
+     "acumulado_pct": 77.2578,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST14000NM001G",
+     "valor": 17140132.0,
+     "acumulado_pct": 81.1,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST12000NM0007",
+     "valor": 16241695.0,
+     "acumulado_pct": 84.7407,
+     "clase": "B"
+    },
+    {
+     "elemento": "WDC WUH721414ALE6L4",
+     "valor": 13978204.0,
+     "acumulado_pct": 87.8741,
+     "clase": "B"
+    },
+    {
+     "elemento": "WDC WUH722222ALE6L4",
+     "valor": 10978372.0,
+     "acumulado_pct": 90.335,
+     "clase": "B"
+    },
+    {
+     "elemento": "TOSHIBA MG08ACA16TE",
+     "valor": 7868882.0,
+     "acumulado_pct": 92.0989,
+     "clase": "B"
+    },
+    {
+     "elemento": "TOSHIBA MG08ACA16TEY",
+     "valor": 6688214.0,
+     "acumulado_pct": 93.5981,
+     "clase": "B"
+    },
+    {
+     "elemento": "HGST HMS5C4040ALE640",
+     "valor": 5127308.0,
+     "acumulado_pct": 94.7475,
+     "clase": "B"
+    },
+    {
+     "elemento": "HGST HUH721212ALE600",
+     "valor": 5074561.0,
+     "acumulado_pct": 95.885,
+     "clase": "B"
+    },
+    {
+     "elemento": "WDC WUH721816ALE6L0",
+     "valor": 3848250.0,
+     "acumulado_pct": 96.7476,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MG10ACA20TE",
+     "valor": 2469386.0,
+     "acumulado_pct": 97.3012,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM0138",
+     "valor": 2423426.0,
+     "acumulado_pct": 97.8444,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST10000NM0086",
+     "valor": 2293552.0,
+     "acumulado_pct": 98.3585,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH728080ALE600",
+     "valor": 2175081.0,
+     "acumulado_pct": 98.8461,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST6000DX000",
+     "valor": 1389650.0,
+     "acumulado_pct": 99.1576,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MG07ACA14TEY",
+     "valor": 971815.0,
+     "acumulado_pct": 99.3754,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST24000NM002H",
+     "valor": 681057.0,
+     "acumulado_pct": 99.5281,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST16000NM002J",
+     "valor": 425347.0,
+     "acumulado_pct": 99.6235,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST12000NM000J",
+     "valor": 348111.0,
+     "acumulado_pct": 99.7015,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST8000NM000A",
+     "valor": 218151.0,
+     "acumulado_pct": 99.7504,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MD04ABA400V",
+     "valor": 142191.0,
+     "acumulado_pct": 99.7823,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM000J",
+     "valor": 110163.0,
+     "acumulado_pct": 99.807,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH728080ALE604",
+     "valor": 106831.0,
+     "acumulado_pct": 99.8309,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST18000NM000J",
+     "valor": 103947.0,
+     "acumulado_pct": 99.8542,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM0018",
+     "valor": 76042.0,
+     "acumulado_pct": 99.8713,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA HDWF180",
+     "valor": 69686.0,
+     "acumulado_pct": 99.8869,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST4000DM005",
+     "valor": 55183.0,
+     "acumulado_pct": 99.8992,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUS726040ALE610",
+     "valor": 53586.0,
+     "acumulado_pct": 99.9113,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST8000DM005",
+     "valor": 49487.0,
+     "acumulado_pct": 99.9223,
+     "clase": "C"
+    },
+    {
+     "elemento": "WUH721816ALE6L4",
+     "valor": 44323.0,
+     "acumulado_pct": 99.9323,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST16000NM005G",
+     "valor": 41796.0,
+     "acumulado_pct": 99.9417,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST16000NM000J",
+     "valor": 40094.0,
+     "acumulado_pct": 99.9506,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH721010ALE600",
+     "valor": 40093.0,
+     "acumulado_pct": 99.9596,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HDS5C4040ALE630",
+     "valor": 37415.0,
+     "acumulado_pct": 99.968,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST10000NM001G",
+     "valor": 34269.0,
+     "acumulado_pct": 99.9757,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUS728T8TALE6L4",
+     "valor": 20163.0,
+     "acumulado_pct": 99.9802,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MG09ACA16TE",
+     "valor": 18336.0,
+     "acumulado_pct": 99.9843,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST12000NM0117",
+     "valor": 15760.0,
+     "acumulado_pct": 99.9879,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST4000DM004",
+     "valor": 13654.0,
+     "acumulado_pct": 99.9909,
+     "clase": "C"
+    },
+    {
+     "elemento": "Hitachi HDS5C4040ALE630",
+     "valor": 7203.0,
+     "acumulado_pct": 99.9925,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST6000DM001",
+     "valor": 6280.0,
+     "acumulado_pct": 99.9939,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA HDWE160",
+     "valor": 6280.0,
+     "acumulado_pct": 99.9953,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST12000NM003G",
+     "valor": 5257.0,
+     "acumulado_pct": 99.9965,
+     "clase": "C"
+    },
+    {
+     "elemento": "WDC WD60EFRX",
+     "valor": 4710.0,
+     "acumulado_pct": 99.9976,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUS726040ALN610",
+     "valor": 4334.0,
+     "acumulado_pct": 99.9986,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HMS5C4040BLE641",
+     "valor": 1744.0,
+     "acumulado_pct": 99.9989,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST6000DM004",
+     "valor": 1570.0,
+     "acumulado_pct": 99.9993,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HDS724040ALE640",
+     "valor": 1301.0,
+     "acumulado_pct": 99.9996,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM002J",
+     "valor": 975.0,
+     "acumulado_pct": 99.9998,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST8000DM004",
+     "valor": 855.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    }
+   ],
+   "valores_ordenados": [
+    64132410.0,
+    37582572.0,
+    34690953.0,
+    28364773.0,
+    27930805.0,
+    27000887.0,
+    21590966.0,
+    21487178.0,
+    21311976.0,
+    21131309.0,
+    20386683.0,
+    19043449.0,
+    17140132.0,
+    16241695.0,
+    13978204.0,
+    10978372.0,
+    7868882.0,
+    6688214.0,
+    5127308.0,
+    5074561.0,
+    3848250.0,
+    2469386.0,
+    2423426.0,
+    2293552.0,
+    2175081.0,
+    1389650.0,
+    971815.0,
+    681057.0,
+    425347.0,
+    348111.0,
+    218151.0,
+    142191.0,
+    110163.0,
+    106831.0,
+    103947.0,
+    76042.0,
+    69686.0,
+    55183.0,
+    53586.0,
+    49487.0,
+    44323.0,
+    41796.0,
+    40094.0,
+    40093.0,
+    37415.0,
+    34269.0,
+    20163.0,
+    18336.0,
+    15760.0,
+    13654.0,
+    7203.0,
+    6280.0,
+    6280.0,
+    5257.0,
+    4710.0,
+    4334.0,
+    1744.0,
+    1570.0,
+    1301.0,
+    975.0,
+    855.0
+   ],
+   "pocos_elementos": false
+  },
+  {
+   "pareja": "coste_fallos_usd por modelos",
+   "elemento": "modelos",
+   "magnitud": "coste_fallos_usd",
+   "elementos": 61,
+   "total": 3124495.659341,
+   "pct_elementos_80": 19.6721,
+   "clases": {
+    "A": {
+     "elementos": 12,
+     "parte_pct": 83.1082
+    },
+    "B": {
+     "elementos": 7,
+     "parte_pct": 12.9546
+    },
+    "C": {
+     "elementos": 42,
+     "parte_pct": 3.9372
+    }
+   },
+   "tabla": [
+    {
+     "elemento": "ST12000NM0008",
+     "valor": 409292.359341,
+     "acumulado_pct": 13.0995,
+     "clase": "A"
+    },
+    {
+     "elemento": "TOSHIBA MG07ACA14TA",
+     "valor": 401957.061538,
+     "acumulado_pct": 25.9642,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST8000NM0055",
+     "valor": 263592.92967,
+     "acumulado_pct": 34.4005,
+     "clase": "A"
+    },
+    {
+     "elemento": "HGST HUH721212ALN604",
+     "valor": 252514.221978,
+     "acumulado_pct": 42.4823,
+     "clase": "A"
+    },
+    {
+     "elemento": "TOSHIBA MG08ACA16TA",
+     "valor": 189658.659341,
+     "acumulado_pct": 48.5523,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST4000DM000",
+     "valor": 184790.00989,
+     "acumulado_pct": 54.4666,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST12000NM0007",
+     "valor": 175321.951648,
+     "acumulado_pct": 60.0778,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST16000NM001G",
+     "valor": 165543.767033,
+     "acumulado_pct": 65.376,
+     "clase": "A"
+    },
+    {
+     "elemento": "HGST HUH721212ALE604",
+     "valor": 157474.116484,
+     "acumulado_pct": 70.416,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST14000NM001G",
+     "valor": 146052.869231,
+     "acumulado_pct": 75.0905,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST8000DM002",
+     "valor": 136818.679121,
+     "acumulado_pct": 79.4694,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST12000NM001G",
+     "valor": 113696.679121,
+     "acumulado_pct": 83.1082,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST14000NM0138",
+     "valor": 87956.488462,
+     "acumulado_pct": 85.9233,
+     "clase": "B"
+    },
+    {
+     "elemento": "TOSHIBA MG08ACA16TE",
+     "valor": 67817.681319,
+     "acumulado_pct": 88.0938,
+     "clase": "B"
+    },
+    {
+     "elemento": "WDC WUH722222ALE6L4",
+     "valor": 67178.8,
+     "acumulado_pct": 90.2439,
+     "clase": "B"
+    },
+    {
+     "elemento": "TOSHIBA MG08ACA16TEY",
+     "valor": 52663.707692,
+     "acumulado_pct": 91.9294,
+     "clase": "B"
+    },
+    {
+     "elemento": "WDC WUH721816ALE6L4",
+     "valor": 47737.885714,
+     "acumulado_pct": 93.4573,
+     "clase": "B"
+    },
+    {
+     "elemento": "ST10000NM0086",
+     "valor": 41286.821429,
+     "acumulado_pct": 94.7786,
+     "clase": "B"
+    },
+    {
+     "elemento": "WDC WUH721414ALE6L4",
+     "valor": 40123.634615,
+     "acumulado_pct": 96.0628,
+     "clase": "B"
+    },
+    {
+     "elemento": "HGST HMS5C4040BLE640",
+     "valor": 18358.326374,
+     "acumulado_pct": 96.6504,
+     "clase": "C"
+    },
+    {
+     "elemento": "WDC WUH721816ALE6L0",
+     "valor": 17054.98022,
+     "acumulado_pct": 97.1962,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH721212ALE600",
+     "valor": 15090.392308,
+     "acumulado_pct": 97.6792,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MG10ACA20TE",
+     "valor": 11352.0,
+     "acumulado_pct": 98.0425,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH728080ALE600",
+     "valor": 10916.098901,
+     "acumulado_pct": 98.3919,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST24000NM002H",
+     "valor": 9695.0,
+     "acumulado_pct": 98.7022,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MG07ACA14TEY",
+     "valor": 8557.603846,
+     "acumulado_pct": 98.9761,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HMS5C4040ALE640",
+     "valor": 8497.897802,
+     "acumulado_pct": 99.248,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST18000NM000J",
+     "valor": 3197.168132,
+     "acumulado_pct": 99.3504,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST12000NM000J",
+     "valor": 3152.4,
+     "acumulado_pct": 99.4513,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM0018",
+     "valor": 3089.892308,
+     "acumulado_pct": 99.5501,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH728080ALE604",
+     "valor": 2622.305495,
+     "acumulado_pct": 99.6341,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST6000DX000",
+     "valor": 1862.526923,
+     "acumulado_pct": 99.6937,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA HDWF180",
+     "valor": 1677.637363,
+     "acumulado_pct": 99.7474,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST16000NM002J",
+     "valor": 1471.705495,
+     "acumulado_pct": 99.7945,
+     "clase": "C"
+    },
+    {
+     "elemento": "WUH721816ALE6L4",
+     "valor": 1326.0,
+     "acumulado_pct": 99.8369,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM000J",
+     "valor": 1238.4,
+     "acumulado_pct": 99.8766,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST12000NM0117",
+     "valor": 588.63956,
+     "acumulado_pct": 99.8954,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MD04ABA400V",
+     "valor": 580.850549,
+     "acumulado_pct": 99.914,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST4000DM005",
+     "valor": 573.83956,
+     "acumulado_pct": 99.9324,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST8000DM004",
+     "valor": 495.810989,
+     "acumulado_pct": 99.9482,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST10000NM001G",
+     "valor": 381.046703,
+     "acumulado_pct": 99.9604,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST8000NM000A",
+     "valor": 258.0,
+     "acumulado_pct": 99.9687,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST16000NM000J",
+     "valor": 221.0,
+     "acumulado_pct": 99.9757,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MG09ACA16TE",
+     "valor": 197.0,
+     "acumulado_pct": 99.9821,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST8000DM005",
+     "valor": 142.6,
+     "acumulado_pct": 99.9866,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUS728T8TALE6L4",
+     "valor": 129.0,
+     "acumulado_pct": 99.9907,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HDS5C4040ALE630",
+     "valor": 102.0,
+     "acumulado_pct": 99.994,
+     "clase": "C"
+    },
+    {
+     "elemento": "Hitachi HDS5C4040ALE630",
+     "valor": 97.413187,
+     "acumulado_pct": 99.9971,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST4000DM004",
+     "valor": 89.8,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HDS724040ALE640",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HMS5C4040BLE641",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH721010ALE600",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUS726040ALE610",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUS726040ALN610",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST12000NM003G",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM002J",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST16000NM005G",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST6000DM001",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST6000DM004",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA HDWE160",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "WDC WD60EFRX",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    }
+   ],
+   "valores_ordenados": [
+    409292.359341,
+    401957.061538,
+    263592.92967,
+    252514.221978,
+    189658.659341,
+    184790.00989,
+    175321.951648,
+    165543.767033,
+    157474.116484,
+    146052.869231,
+    136818.679121,
+    113696.679121,
+    87956.488462,
+    67817.681319,
+    67178.8,
+    52663.707692,
+    47737.885714,
+    41286.821429,
+    40123.634615,
+    18358.326374,
+    17054.98022,
+    15090.392308,
+    11352.0,
+    10916.098901,
+    9695.0,
+    8557.603846,
+    8497.897802,
+    3197.168132,
+    3152.4,
+    3089.892308,
+    2622.305495,
+    1862.526923,
+    1677.637363,
+    1471.705495,
+    1326.0,
+    1238.4,
+    588.63956,
+    580.850549,
+    573.83956,
+    495.810989,
+    381.046703,
+    258.0,
+    221.0,
+    197.0,
+    142.6,
+    129.0,
+    102.0,
+    97.413187,
+    89.8,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "pocos_elementos": false
+  },
+  {
+   "pareja": "coste_fallos_garantia_usd por modelos",
+   "elemento": "modelos",
+   "magnitud": "coste_fallos_garantia_usd",
+   "elementos": 61,
+   "total": 1150192.701648,
+   "pct_elementos_80": 14.7541,
+   "clases": {
+    "A": {
+     "elementos": 9,
+     "parte_pct": 81.2164
+    },
+    "B": {
+     "elementos": 9,
+     "parte_pct": 14.1099
+    },
+    "C": {
+     "elementos": 43,
+     "parte_pct": 4.6737
+    }
+   },
+   "tabla": [
+    {
+     "elemento": "ST8000NM0055",
+     "valor": 184861.567033,
+     "acumulado_pct": 16.0722,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST4000DM000",
+     "valor": 184790.00989,
+     "acumulado_pct": 32.1382,
+     "clase": "A"
+    },
+    {
+     "elemento": "HGST HUH721212ALN604",
+     "valor": 135878.6,
+     "acumulado_pct": 43.9518,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST8000DM002",
+     "valor": 135026.582418,
+     "acumulado_pct": 55.6913,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST12000NM0008",
+     "valor": 98672.0,
+     "acumulado_pct": 64.27,
+     "clase": "A"
+    },
+    {
+     "elemento": "TOSHIBA MG07ACA14TA",
+     "valor": 92582.2,
+     "acumulado_pct": 72.3193,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST12000NM0007",
+     "valor": 38101.8,
+     "acumulado_pct": 75.6319,
+     "clase": "A"
+    },
+    {
+     "elemento": "HGST HUH721212ALE604",
+     "valor": 32486.0,
+     "acumulado_pct": 78.4563,
+     "clase": "A"
+    },
+    {
+     "elemento": "TOSHIBA MG08ACA16TA",
+     "valor": 31746.0,
+     "acumulado_pct": 81.2164,
+     "clase": "A"
+    },
+    {
+     "elemento": "ST10000NM0086",
+     "valor": 29808.626374,
+     "acumulado_pct": 83.808,
+     "clase": "B"
+    },
+    {
+     "elemento": "ST16000NM001G",
+     "valor": 25308.0,
+     "acumulado_pct": 86.0083,
+     "clase": "B"
+    },
+    {
+     "elemento": "ST14000NM001G",
+     "valor": 24531.0,
+     "acumulado_pct": 88.1411,
+     "clase": "B"
+    },
+    {
+     "elemento": "ST12000NM001G",
+     "valor": 22448.0,
+     "acumulado_pct": 90.0928,
+     "clase": "B"
+    },
+    {
+     "elemento": "HGST HMS5C4040BLE640",
+     "valor": 17977.5,
+     "acumulado_pct": 91.6558,
+     "clase": "B"
+    },
+    {
+     "elemento": "ST14000NM0138",
+     "valor": 14467.0,
+     "acumulado_pct": 92.9136,
+     "clase": "B"
+    },
+    {
+     "elemento": "TOSHIBA MG08ACA16TE",
+     "valor": 10323.0,
+     "acumulado_pct": 93.8111,
+     "clase": "B"
+    },
+    {
+     "elemento": "WDC WUH722222ALE6L4",
+     "valor": 8991.0,
+     "acumulado_pct": 94.5927,
+     "clase": "B"
+    },
+    {
+     "elemento": "HGST HMS5C4040ALE640",
+     "valor": 8437.484615,
+     "acumulado_pct": 95.3263,
+     "clase": "B"
+    },
+    {
+     "elemento": "TOSHIBA MG08ACA16TEY",
+     "valor": 8399.0,
+     "acumulado_pct": 96.0565,
+     "clase": "C"
+    },
+    {
+     "elemento": "WDC WUH721816ALE6L4",
+     "valor": 7918.0,
+     "acumulado_pct": 96.745,
+     "clase": "C"
+    },
+    {
+     "elemento": "WDC WUH721414ALE6L4",
+     "valor": 7030.0,
+     "acumulado_pct": 97.3562,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH728080ALE600",
+     "valor": 6809.6,
+     "acumulado_pct": 97.9482,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH721212ALE600",
+     "valor": 6024.0,
+     "acumulado_pct": 98.4719,
+     "clase": "C"
+    },
+    {
+     "elemento": "WDC WUH721816ALE6L0",
+     "valor": 2886.0,
+     "acumulado_pct": 98.7228,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH728080ALE604",
+     "valor": 2183.052747,
+     "acumulado_pct": 98.9126,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST6000DX000",
+     "valor": 1862.526923,
+     "acumulado_pct": 99.0746,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MG10ACA20TE",
+     "valor": 1702.0,
+     "acumulado_pct": 99.2226,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA HDWF180",
+     "valor": 1677.637363,
+     "acumulado_pct": 99.3684,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MG07ACA14TEY",
+     "valor": 1443.0,
+     "acumulado_pct": 99.4939,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST24000NM002H",
+     "valor": 1295.0,
+     "acumulado_pct": 99.6065,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST12000NM000J",
+     "valor": 666.0,
+     "acumulado_pct": 99.6644,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MD04ABA400V",
+     "valor": 580.850549,
+     "acumulado_pct": 99.7149,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST4000DM005",
+     "valor": 573.83956,
+     "acumulado_pct": 99.7648,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM0018",
+     "valor": 518.0,
+     "acumulado_pct": 99.8098,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST18000NM000J",
+     "valor": 407.0,
+     "acumulado_pct": 99.8452,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST8000DM004",
+     "valor": 365.810989,
+     "acumulado_pct": 99.877,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM000J",
+     "valor": 222.0,
+     "acumulado_pct": 99.8963,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST16000NM002J",
+     "valor": 222.0,
+     "acumulado_pct": 99.9156,
+     "clase": "C"
+    },
+    {
+     "elemento": "WUH721816ALE6L4",
+     "valor": 222.0,
+     "acumulado_pct": 99.9349,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST8000DM005",
+     "valor": 142.6,
+     "acumulado_pct": 99.9473,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST12000NM0117",
+     "valor": 111.0,
+     "acumulado_pct": 99.9569,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HDS5C4040ALE630",
+     "valor": 102.0,
+     "acumulado_pct": 99.9658,
+     "clase": "C"
+    },
+    {
+     "elemento": "Hitachi HDS5C4040ALE630",
+     "valor": 97.413187,
+     "acumulado_pct": 99.9743,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST10000NM001G",
+     "valor": 74.0,
+     "acumulado_pct": 99.9807,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST8000NM000A",
+     "valor": 74.0,
+     "acumulado_pct": 99.9871,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUS728T8TALE6L4",
+     "valor": 37.0,
+     "acumulado_pct": 99.9903,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST16000NM000J",
+     "valor": 37.0,
+     "acumulado_pct": 99.9936,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST4000DM004",
+     "valor": 37.0,
+     "acumulado_pct": 99.9968,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA MG09ACA16TE",
+     "valor": 37.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HDS724040ALE640",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HMS5C4040BLE641",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUH721010ALE600",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUS726040ALE610",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "HGST HUS726040ALN610",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST12000NM003G",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST14000NM002J",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST16000NM005G",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST6000DM001",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "ST6000DM004",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "TOSHIBA HDWE160",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    },
+    {
+     "elemento": "WDC WD60EFRX",
+     "valor": 0.0,
+     "acumulado_pct": 100.0,
+     "clase": "C"
+    }
+   ],
+   "valores_ordenados": [
+    184861.567033,
+    184790.00989,
+    135878.6,
+    135026.582418,
+    98672.0,
+    92582.2,
+    38101.8,
+    32486.0,
+    31746.0,
+    29808.626374,
+    25308.0,
+    24531.0,
+    22448.0,
+    17977.5,
+    14467.0,
+    10323.0,
+    8991.0,
+    8437.484615,
+    8399.0,
+    7918.0,
+    7030.0,
+    6809.6,
+    6024.0,
+    2886.0,
+    2183.052747,
+    1862.526923,
+    1702.0,
+    1677.637363,
+    1443.0,
+    1295.0,
+    666.0,
+    580.850549,
+    573.83956,
+    518.0,
+    407.0,
+    365.810989,
+    222.0,
+    222.0,
+    222.0,
+    142.6,
+    111.0,
+    102.0,
+    97.413187,
+    74.0,
+    74.0,
+    37.0,
+    37.0,
+    37.0,
+    37.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "pocos_elementos": false
+  }
+ ],
+ "series_negocio": [
+  {
+   "serie": "días de disco por trimestre",
+   "frecuencia": "trimestre",
+   "tipo": "flujo",
+   "periodos": 22,
+   "ventana_movil": 4,
+   "fuera": 0,
+   "detalle": [
+    {
+     "periodo": "2020-01-01",
+     "valor": 11393540.0,
+     "movil": null,
+     "var_anterior_pct": null,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-04-01",
+     "valor": 12273246.0,
+     "movil": null,
+     "var_anterior_pct": 7.7211,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-07-01",
+     "valor": 13310187.0,
+     "movil": null,
+     "var_anterior_pct": 8.4488,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-10-01",
+     "valor": 14368945.0,
+     "movil": 12836479.5,
+     "var_anterior_pct": 7.9545,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2021-01-01",
+     "valor": 15010015.0,
+     "movil": 13740598.25,
+     "var_anterior_pct": 4.4615,
+     "interanual_pct": 31.7415
+    },
+    {
+     "periodo": "2021-04-01",
+     "valor": 15931943.0,
+     "movil": 14655272.5,
+     "var_anterior_pct": 6.1421,
+     "interanual_pct": 29.8103
+    },
+    {
+     "periodo": "2021-07-01",
+     "valor": 17079013.0,
+     "movil": 15597479.0,
+     "var_anterior_pct": 7.1998,
+     "interanual_pct": 28.3153
+    },
+    {
+     "periodo": "2021-10-01",
+     "valor": 18051063.0,
+     "movil": 16518008.5,
+     "var_anterior_pct": 5.6915,
+     "interanual_pct": 25.6255
+    },
+    {
+     "periodo": "2022-01-01",
+     "valor": 18502257.0,
+     "movil": 17391069.0,
+     "var_anterior_pct": 2.4995,
+     "interanual_pct": 23.2661
+    },
+    {
+     "periodo": "2022-04-01",
+     "valor": 19069267.0,
+     "movil": 18175400.0,
+     "var_anterior_pct": 3.0645,
+     "interanual_pct": 19.692
+    },
+    {
+     "periodo": "2022-07-01",
+     "valor": 20214708.0,
+     "movil": 18959323.75,
+     "var_anterior_pct": 6.0067,
+     "interanual_pct": 18.3599
+    },
+    {
+     "periodo": "2022-10-01",
+     "valor": 21104437.0,
+     "movil": 19722667.25,
+     "var_anterior_pct": 4.4014,
+     "interanual_pct": 16.9152
+    },
+    {
+     "periodo": "2023-01-01",
+     "valor": 21064205.0,
+     "movil": 20363154.25,
+     "var_anterior_pct": -0.1906,
+     "interanual_pct": 13.8467
+    },
+    {
+     "periodo": "2023-04-01",
+     "valor": 21438579.0,
+     "movil": 20955482.25,
+     "var_anterior_pct": 1.7773,
+     "interanual_pct": 12.4248
+    },
+    {
+     "periodo": "2023-07-01",
+     "valor": 23191949.0,
+     "movil": 21699792.5,
+     "var_anterior_pct": 8.1786,
+     "interanual_pct": 14.7281
+    },
+    {
+     "periodo": "2023-10-01",
+     "valor": 24383023.0,
+     "movil": 22519439.0,
+     "var_anterior_pct": 5.1357,
+     "interanual_pct": 15.5351
+    },
+    {
+     "periodo": "2024-01-01",
+     "valor": 24793711.0,
+     "movil": 23451815.5,
+     "var_anterior_pct": 1.6843,
+     "interanual_pct": 17.7054
+    },
+    {
+     "periodo": "2024-04-01",
+     "valor": 25637630.0,
+     "movil": 24501578.25,
+     "var_anterior_pct": 3.4038,
+     "interanual_pct": 19.5864
+    },
+    {
+     "periodo": "2024-07-01",
+     "valor": 26438405.0,
+     "movil": 25313192.25,
+     "var_anterior_pct": 3.1234,
+     "interanual_pct": 13.9982
+    },
+    {
+     "periodo": "2024-10-01",
+     "valor": 26969950.0,
+     "movil": 25959924.0,
+     "var_anterior_pct": 2.0105,
+     "interanual_pct": 10.6095
+    },
+    {
+     "periodo": "2025-01-01",
+     "valor": 27435679.0,
+     "movil": 26620416.0,
+     "var_anterior_pct": 1.7268,
+     "interanual_pct": 10.6558
+    },
+    {
+     "periodo": "2025-04-01",
+     "valor": 28446931.0,
+     "movil": 27322741.25,
+     "var_anterior_pct": 3.6859,
+     "interanual_pct": 10.9577
+    }
+   ],
+   "anos_completos": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+   ],
+   "estacionalidad": [
+    {
+     "posicion": 1,
+     "media": 18152745.6
+    },
+    {
+     "posicion": 2,
+     "media": 18870133.0
+    },
+    {
+     "posicion": 3,
+     "media": 20046852.4
+    },
+    {
+     "posicion": 4,
+     "media": 20975483.6
+    }
+   ],
+   "cagr_pct": 19.2516,
+   "cagr_base": {
+    "desde": 2020,
+    "hasta": 2024,
+    "agregado": "suma"
+   },
+   "tendencia_lineal": {
+    "pendiente_por_periodo": 800893.391869,
+    "r2": 0.9952
+   },
+   "tendencia_exponencial": {
+    "crecimiento_por_periodo_pct": 4.2382,
+    "r2": 0.9719
+   }
+  },
+  {
+   "serie": "fallos por trimestre",
+   "frecuencia": "trimestre",
+   "tipo": "flujo",
+   "periodos": 22,
+   "ventana_movil": 4,
+   "fuera": 0,
+   "detalle": [
+    {
+     "periodo": "2020-01-01",
+     "valor": 336.0,
+     "movil": null,
+     "var_anterior_pct": null,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-04-01",
+     "valor": 272.0,
+     "movil": null,
+     "var_anterior_pct": -19.0476,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-07-01",
+     "valor": 327.0,
+     "movil": null,
+     "var_anterior_pct": 20.2206,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2020-10-01",
+     "valor": 372.0,
+     "movil": 326.75,
+     "var_anterior_pct": 13.7615,
+     "interanual_pct": null
+    },
+    {
+     "periodo": "2021-01-01",
+     "valor": 350.0,
+     "movil": 330.25,
+     "var_anterior_pct": -5.914,
+     "interanual_pct": 4.1667
+    },
+    {
+     "periodo": "2021-04-01",
+     "valor": 441.0,
+     "movil": 372.5,
+     "var_anterior_pct": 26.0,
+     "interanual_pct": 62.1324
+    },
+    {
+     "periodo": "2021-07-01",
+     "valor": 510.0,
+     "movil": 418.25,
+     "var_anterior_pct": 15.6463,
+     "interanual_pct": 55.9633
+    },
+    {
+     "periodo": "2021-10-01",
+     "valor": 522.0,
+     "movil": 455.75,
+     "var_anterior_pct": 2.3529,
+     "interanual_pct": 40.3226
+    },
+    {
+     "periodo": "2022-01-01",
+     "valor": 618.0,
+     "movil": 522.75,
+     "var_anterior_pct": 18.3908,
+     "interanual_pct": 76.5714
+    },
+    {
+     "periodo": "2022-04-01",
+     "valor": 763.0,
+     "movil": 603.25,
+     "var_anterior_pct": 23.4628,
+     "interanual_pct": 73.0159
+    },
+    {
+     "periodo": "2022-07-01",
+     "valor": 916.0,
+     "movil": 704.75,
+     "var_anterior_pct": 20.0524,
+     "interanual_pct": 79.6078
+    },
+    {
+     "periodo": "2022-10-01",
+     "valor": 702.0,
+     "movil": 749.75,
+     "var_anterior_pct": -23.3624,
+     "interanual_pct": 34.4828
+    },
+    {
+     "periodo": "2023-01-01",
+     "valor": 892.0,
+     "movil": 818.25,
+     "var_anterior_pct": 27.0655,
+     "interanual_pct": 44.3366
+    },
+    {
+     "periodo": "2023-04-01",
+     "valor": 1341.0,
+     "movil": 962.75,
+     "var_anterior_pct": 50.3363,
+     "interanual_pct": 75.7536
+    },
+    {
+     "periodo": "2023-07-01",
+     "valor": 943.0,
+     "movil": 969.5,
+     "var_anterior_pct": -29.6793,
+     "interanual_pct": 2.9476
+    },
+    {
+     "periodo": "2023-10-01",
+     "valor": 1025.0,
+     "movil": 1050.25,
+     "var_anterior_pct": 8.6957,
+     "interanual_pct": 46.0114
+    },
+    {
+     "periodo": "2024-01-01",
+     "valor": 949.0,
+     "movil": 1064.5,
+     "var_anterior_pct": -7.4146,
+     "interanual_pct": 6.3901
+    },
+    {
+     "periodo": "2024-04-01",
+     "valor": 1199.0,
+     "movil": 1029.0,
+     "var_anterior_pct": 26.3435,
+     "interanual_pct": -10.5891
+    },
+    {
+     "periodo": "2024-07-01",
+     "valor": 1389.0,
+     "movil": 1140.5,
+     "var_anterior_pct": 15.8465,
+     "interanual_pct": 47.2959
+    },
+    {
+     "periodo": "2024-10-01",
+     "valor": 1001.0,
+     "movil": 1134.5,
+     "var_anterior_pct": -27.9338,
+     "interanual_pct": -2.3415
+    },
+    {
+     "periodo": "2025-01-01",
+     "valor": 1067.0,
+     "movil": 1164.0,
+     "var_anterior_pct": 6.5934,
+     "interanual_pct": 12.4341
+    },
+    {
+     "periodo": "2025-04-01",
+     "valor": 1061.0,
+     "movil": 1129.5,
+     "var_anterior_pct": -0.5623,
+     "interanual_pct": -11.5096
+    }
+   ],
+   "anos_completos": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+   ],
+   "estacionalidad": [
+    {
+     "posicion": 1,
+     "media": 629.0
+    },
+    {
+     "posicion": 2,
+     "media": 803.2
+    },
+    {
+     "posicion": 3,
+     "media": 817.0
+    },
+    {
+     "posicion": 4,
+     "media": 724.4
+    }
+   ],
+   "cagr_pct": 36.5046,
+   "cagr_base": {
+    "desde": 2020,
+    "hasta": 2024,
+    "agregado": "suma"
+   },
+   "tendencia_lineal": {
+    "pendiente_por_periodo": 48.01694,
+    "r2": 0.8118
+   },
+   "tendencia_exponencial": {
+    "crecimiento_por_periodo_pct": 7.485,
+    "r2": 0.8499
+   }
+  }
+ ],
+ "anomalias": [],
+ "frente_al_objetivo": null,
+ "hallazgos": [
+  {
+   "id": "H-01",
+   "texto": "Tasa anual de fallo por capacidad: 3,86 % en 18 (11 fallos en 103.947 días de disco) frente a 0,39 % en 6 (15 fallos en 1.408.490).",
+   "cifra": 3.862545,
+   "filas": 26,
+   "columnas": [
+    "fallos",
+    "dias_disco",
+    "capacidad_tb"
+   ],
+   "dimensiones_comprobadas": [
+    "fabricante",
+    "capacidad_tb"
+   ],
+   "grafico": "tasa-capacidad"
+  }
+ ],
+ "alertas": [
+  {
+   "id": "A-01",
+   "tipo": "separar",
+   "origen": null,
+   "texto": "Tasa anual de fallo por año: 1,60 % en 2024 (4.538 fallos en 103.839.696 días de disco) frente a 0,93 % en 2020 (1.307 fallos en 51.345.918). Al separar por fabricante, capacidad_tb cambia: tasa anual de fallo por año: la diferencia entre 2024 y 2020 es de 0,67 puntos en el total y de 2,64 dentro de fabricante = HGST: cambia de tamaño.; tasa anual de fallo por año: la diferencia entre 2024 y 2020 es de 0,67 puntos en el total y de 0,33 dentro de fabricante = Toshiba: cambia de tamaño.; tasa anual de fallo por año: la diferencia entre 2024 y 2020 es de 0,67 puntos en el total y de −0,22 dentro de capacidad_tb = 6: se invierte. (y 3 más)",
+   "vista": "tasa anual de fallo por año"
+  },
+  {
+   "id": "A-02",
+   "tipo": "separar",
+   "origen": null,
+   "texto": "Tasa anual de fallo por fabricante: 1,78 % en Seagate (10.284 fallos en 210.816.183 días de disco) frente a 0,53 % en WDC (731 fallos en 49.985.168). Al separar por fabricante, capacidad_tb cambia: tasa anual de fallo por fabricante: la diferencia entre Seagate y WDC es de 1,25 puntos en el total y de 0,28 dentro de capacidad_tb = 16: cambia de tamaño.",
+   "vista": "tasa anual de fallo por fabricante"
+  },
+  {
+   "id": "A-03",
+   "tipo": "limitacion",
+   "origen": "transformacion-datos, exclusiones",
+   "texto": "4 modelos de datos no tienen precio (ST6000DM001, ST6000DM004, TOSHIBA HDWE160, WDC WD60EFRX), con 18.840 días de disco."
+  },
+  {
+   "id": "A-04",
+   "tipo": "limitacion",
+   "origen": null,
+   "texto": "El precio es inferido desde el 15/11/2022: los modelos con precio inferido suman el 14,1 % de los días de disco, y el coste vale lo que valga ese precio (reglas-negocio §6)."
+  },
+  {
+   "id": "A-05",
+   "tipo": "periodo_incompleto",
+   "origen": null,
+   "texto": "2025 solo llega al 30/06/2025: es un año incompleto y no se compara con los completos (reglas-negocio §5)."
+  },
+  {
+   "id": "A-06",
+   "tipo": "limitacion",
+   "origen": null,
+   "texto": "Comparar fabricantes o capacidades mezcla discos de edades y modelos distintos (reglas-negocio §7): la diferencia no es de la marca ni de la capacidad."
+  }
+ ],
+ "hipotesis": [
+  {
+   "id": "Hi-01",
+   "texto": "El cambio de tasa anual de fallo por año al separar puede venir de que cada grupo tiene otra mezcla de modelos y edades.",
+   "que_haria_falta": "compararla a igual modelo y edad, que es del paso 5 (reglas-negocio §7)",
+   "alternativas_repasadas": [
+    "el tamaño del grupo",
+    "el calendario",
+    "la regresión a la media",
+    "la causa al revés",
+    "una variable que no está en la tabla (edad, vault)"
+   ]
+  },
+  {
+   "id": "Hi-02",
+   "texto": "El cambio de tasa anual de fallo por fabricante al separar puede venir de que cada grupo tiene otra mezcla de modelos y edades.",
+   "que_haria_falta": "compararla a igual modelo y edad, que es del paso 5 (reglas-negocio §7)",
+   "alternativas_repasadas": [
+    "el tamaño del grupo",
+    "el calendario",
+    "la regresión a la media",
+    "la causa al revés",
+    "una variable que no está en la tabla (edad, vault)"
+   ]
+  }
+ ],
+ "comprobaciones": [
+  {
+   "comprobacion": "1 Tiempo",
+   "estado": "aplicada_con_resultado",
+   "detalle": "ordenado por fecha; dos granularidades (mes o trimestre y año); periodos incompletos: 2025; el primer mes de las fotos es ene 2020"
+  },
+  {
+   "comprobacion": "2 Pareto y ABC",
+   "estado": "aplicada_con_resultado",
+   "detalle": "fallos por modelos: el 18,0 % de los elementos suma el 80 %; dias_disco por modelos: el 21,3 % de los elementos suma el 80 %; coste_fallos_usd por modelos: el 19,7 % de los elementos suma el 80 %; coste_fallos_garantia_usd por modelos: el 14,8 % de los elementos suma el 80 %"
+  },
+  {
+   "comprobacion": "3 Respaldo de cada cifra",
+   "estado": "aplicada_con_resultado",
+   "detalle": "cada hallazgo lleva su cifra, sus filas y sus columnas"
+  },
+  {
+   "comprobacion": "4 Datos personales en el informe",
+   "estado": "aplicada_sin_nada_relevante",
+   "detalle": "ninguna columna trae nombres, correos, teléfonos, documentos ni cuentas (reglas-negocio §9); el número de serie identifica un disco y no sale en ningún gráfico"
+  },
+  {
+   "comprobacion": "5 Códigos sin etiqueta",
+   "estado": "aplicada_sin_nada_relevante",
+   "detalle": "todas las columnas tienen su significado en las reglas de transformación"
+  },
+  {
+   "comprobacion": "6 Reproducibilidad",
+   "estado": "aplicada_con_resultado",
+   "detalle": "versiones, fecha de ejecución, tamaño y huella en «Contexto»"
+  },
+  {
+   "comprobacion": "7 Correlaciones",
+   "estado": "no_aplica",
+   "detalle": "esta tabla no lleva el objetivo y nadie pidió correlaciones"
+  },
+  {
+   "comprobacion": "8 Forma de las hipótesis",
+   "estado": "aplicada_con_resultado",
+   "detalle": "2 hipótesis, cada una con lo que haría falta y las cinco alternativas repasadas"
+  },
+  {
+   "comprobacion": "9 Variables asimétricas",
+   "estado": "aplicada_con_resultado",
+   "detalle": "muy asimétricas, que se comparan con la mediana: dias_disco, dias_disco_ano"
+  },
+  {
+   "comprobacion": "10 Gráficos",
+   "estado": "aplicada_con_resultado",
+   "detalle": "un eje por gráfico, color por papel, meses con su nombre, títulos calculados del dato; gráficos repetidos quitados: ninguno; 2 gráficos no dibujados, con su motivo en el JSON"
+  },
+  {
+   "comprobacion": "11 Series de negocio",
+   "estado": "aplicada_con_resultado",
+   "detalle": "días de disco por trimestre: 22 periodos completos, CAGR 19,25 %; fallos por trimestre: 22 periodos completos, CAGR 36,50 %"
+  },
+  {
+   "comprobacion": "12 Frente al objetivo",
+   "estado": "no_aplica",
+   "detalle": "esta tabla no lleva el objetivo; se describe entera, con los dos periodos (reglas-negocio §7)"
+  },
+  {
+   "comprobacion": "13 Discreta o continua",
+   "estado": "aplicada_con_resultado",
+   "detalle": "discreta si es entera y tiene como mucho min(20, 5 % de las filas) valores distintos; 0 discretas y 8 continuas"
+  },
+  {
+   "comprobacion": "14 Texto",
+   "estado": "no_aplica",
+   "detalle": "no hay columnas de texto libre"
+  },
+  {
+   "comprobacion": "15 Alta cardinalidad",
+   "estado": "aplicada_con_resultado",
+   "detalle": "model: 61 valores, las 10 más frecuentes reúnen el 21,4 %"
+  },
+  {
+   "comprobacion": "16 Observaciones de la persona",
+   "estado": "aplicada_sin_nada_relevante",
+   "detalle": "apartado vacío: la persona escribe sus observaciones y se vuelve a ejecutar"
+  },
+  {
+   "comprobacion": "17 La tabla de estadísticos se lee",
+   "estado": "aplicada_con_resultado",
+   "detalle": "dias_disco (media lejos de la mediana, mínimo y máximo de órdenes de magnitud distintos); dias_disco_ano (media lejos de la mediana, mínimo y máximo de órdenes de magnitud distintos)"
+  },
+  {
+   "comprobacion": "18 Lo esperable",
+   "estado": "no_aplica",
+   "detalle": "las reglas de negocio no tienen la tabla «Lo esperable»"
+  }
+ ],
+ "observaciones": [],
+ "parametros": [
+  {
+   "nombre": "numérica discreta",
+   "valor": "entera y con como mucho min(20, 5 % de las filas) valores distintos",
+   "origen": "por defecto (parametros.md)"
+  },
+  {
+   "nombre": "filas mínimas para comparar una categoría frente al objetivo",
+   "valor": 30,
+   "origen": "por defecto (parametros.md)"
+  },
+  {
+   "nombre": "alta cardinalidad",
+   "valor": "más de 50 valores distintos",
+   "origen": "por defecto"
+  },
+  {
+   "nombre": "las más frecuentes en alta cardinalidad",
+   "valor": 10,
+   "origen": "por defecto"
+  },
+  {
+   "nombre": "texto muy corto",
+   "valor": "menos de 3 caracteres",
+   "origen": "por defecto; no hay texto libre"
+  },
+  {
+   "nombre": "diagrama de caja",
+   "valor": "no se dibuja ninguno: todas las tablas pasan de 1.000 filas o el histograma ya lo enseña",
+   "origen": "por defecto"
+  },
+  {
+   "nombre": "parte con que se cruza el objetivo",
+   "valor": "construcción",
+   "origen": "reglas-negocio §7, la partición por fecha"
+  },
+  {
+   "nombre": "muestra fija de fotos",
+   "valor": "400000 fotos, semilla 42",
+   "origen": "encargo y criterio de este análisis"
+  },
+  {
+   "nombre": "valores distintos que se siguen por columna al leer por bloques",
+   "valor": 60,
+   "origen": "criterio de este análisis, por encima del límite de discreta y del de alta cardinalidad"
+  },
+  {
+   "nombre": "diferencia frente al objetivo",
+   "valor": "|2·AUC − 1|; se dibujan las de 0.1 o más; posible fuga desde 0.9",
+   "origen": "criterio de este análisis, fijado antes de calcular"
+  },
+  {
+   "nombre": "cambio al separar",
+   "valor": "se invierte, o la diferencia del grupo es menos de 1/2 o más de 2 veces la del total",
+   "origen": "criterio de este análisis, fijado antes de calcular"
+  },
+  {
+   "nombre": "días mínimos para comparar una tasa anual",
+   "valor": 50000,
+   "origen": "reglas-negocio §7, mínimo del ranking"
+  },
+  {
+   "nombre": "fallos mínimos para concluir sobre un año de edad",
+   "valor": 20,
+   "origen": "reglas-negocio §7, CP-009"
+  },
+  {
+   "nombre": "señales de la tabla de estadísticos",
+   "valor": "media y mediana a más de 0.5 desviaciones; máximo / mínimo positivo de 1.000 o más",
+   "origen": "criterio de este análisis"
+  },
+  {
+   "nombre": "correlación fuerte",
+   "valor": "|r| ≥ 0.9",
+   "origen": "criterio de este análisis"
+  },
+  {
+   "nombre": "anomalía en una serie de volumen",
+   "valor": "un periodo fuera de 0.8 a 1.25 veces la mediana de los 3 periodos de cada lado",
+   "origen": "criterio de este análisis"
+  },
+  {
+   "nombre": "media móvil",
+   "valor": "3 meses o 4 trimestres",
+   "origen": "criterio de este análisis"
+  }
+ ],
+ "siguiente_paso": "con_esto_basta",
+ "graficos": [
+  {
+   "id": "cat-model",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "model: «HGST HMS5C4040ALE640» reúne el 2,1 % de las filas",
+   "subtitulo": "Filas de cada valor (los 15 más frecuentes de 61 valores)",
+   "fuente": "1.028 filas, una por fila",
+   "datos": {
+    "etiquetas": [
+     "HGST HMS5C4040ALE640",
+     "HGST HMS5C4040BLE640",
+     "HGST HUH721010ALE600",
+     "HGST HUH721212ALE600",
+     "HGST HUH721212ALN604",
+     "HGST HUH728080ALE600",
+     "ST10000NM0086",
+     "ST12000NM0007",
+     "ST12000NM0008",
+     "ST16000NM001G",
+     "ST8000DM002",
+     "ST8000DM005",
+     "ST8000NM0055",
+     "TOSHIBA HDWF180",
+     "TOSHIBA MG07ACA14TA"
+    ],
+    "series": {
+     "filas": [
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22,
+      22
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "num-capacidad_tb",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "capacidad_tb: mediana 12,00 y media 10,82",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "61 valores, uno por model",
+   "datos": {
+    "bordes": [
+     4.0,
+     5.666666666666667,
+     7.333333333333334,
+     9.0,
+     10.666666666666668,
+     12.333333333333334,
+     14.0,
+     15.666666666666668,
+     17.333333333333336,
+     19.0,
+     20.666666666666668,
+     22.333333333333336,
+     24.0
+    ],
+    "cuentas": [
+     12,
+     5,
+     9,
+     3,
+     9,
+     0,
+     8,
+     11,
+     1,
+     1,
+     1,
+     1
+    ],
+    "log": false,
+    "etiqueta_x": "capacidad_tb"
+   }
+  },
+  {
+   "id": "cat-fabricante",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "fabricante: «Seagate» reúne el 49,2 % de las filas",
+   "subtitulo": "Filas de cada valor (4 valores)",
+   "fuente": "61 filas, una por model",
+   "datos": {
+    "etiquetas": [
+     "Seagate",
+     "HGST",
+     "Toshiba",
+     "WDC"
+    ],
+    "series": {
+     "filas": [
+      30,
+      15,
+      10,
+      6
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "num-precio_usd",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "precio_usd: mediana 200,40 y media 184,19",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "57 valores, uno por model",
+   "datos": {
+    "bordes": [
+     53.87794834307992,
+     73.14778935395783,
+     92.41763036483576,
+     111.68747137571367,
+     130.95731238659158,
+     150.2271533974695,
+     169.4969944083474,
+     188.76683541922534,
+     208.03667643010323,
+     227.30651744098117,
+     246.57635845185905,
+     265.846199462737,
+     285.11604047361493
+    ],
+    "cuentas": [
+     2,
+     2,
+     6,
+     4,
+     3,
+     4,
+     4,
+     6,
+     12,
+     4,
+     7,
+     3
+    ],
+    "log": false,
+    "etiqueta_x": "precio_usd"
+   }
+  },
+  {
+   "id": "cat-origen_precio",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "origen_precio: «curva» reúne el 37,7 % de las filas",
+   "subtitulo": "Filas de cada valor (3 valores)",
+   "fuente": "61 filas, una por model",
+   "datos": {
+    "etiquetas": [
+     "curva",
+     "vecinas",
+     "inferido",
+     "(vacío)"
+    ],
+    "series": {
+     "filas": [
+      23,
+      20,
+      14,
+      4
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "num-dias_disco",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "dias_disco: mediana 27.551,50 y media 433.957,86",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "1.028 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     3.0,
+     9.652361644233775,
+     31.056028437025102,
+     99.92133923592479,
+     321.4923007604375,
+     1034.3866509255054,
+     3328.0913449002564,
+     10707.980415340535,
+     34452.433149413184,
+     110849.11476064124,
+     356651.9145376276,
+     1147511.0867418454,
+     3692063.9999999977
+    ],
+    "cuentas": [
+     1,
+     5,
+     65,
+     45,
+     92,
+     159,
+     121,
+     32,
+     110,
+     99,
+     145,
+     153
+    ],
+    "log": true,
+    "etiqueta_x": "dias_disco"
+   }
+  },
+  {
+   "id": "num-fallos",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "fallos: mediana 1,00 y media 16,53",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "1.028 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     0.0,
+     17.916666666666668,
+     35.833333333333336,
+     53.75,
+     71.66666666666667,
+     89.58333333333334,
+     107.5,
+     125.41666666666667,
+     143.33333333333334,
+     161.25,
+     179.16666666666669,
+     197.08333333333334,
+     215.0
+    ],
+    "cuentas": [
+     780,
+     90,
+     57,
+     22,
+     18,
+     21,
+     17,
+     9,
+     4,
+     6,
+     2,
+     2
+    ],
+    "log": false,
+    "etiqueta_x": "fallos"
+   }
+  },
+  {
+   "id": "num-fallos_en_garantia",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "fallos_en_garantia: mediana 0,00 y media 11,02",
+   "subtitulo": "Cuántas filas caen en cada tramo; el 58,2 % vale cero y se dibujan los positivos",
+   "fuente": "430 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     1.0,
+     1.5421970968453085,
+     2.3783718855180975,
+     3.6679182170645124,
+     5.656652825822911,
+     8.723673565845905,
+     13.453624047073712,
+     20.748139947445313,
+     31.997721191890328,
+     49.34679272779886,
+     76.1024804834386,
+     117.36502446428572,
+     181.00000000000003
+    ],
+    "cuentas": [
+     68,
+     37,
+     17,
+     31,
+     27,
+     32,
+     50,
+     45,
+     56,
+     24,
+     30,
+     13
+    ],
+    "log": true,
+    "etiqueta_x": "fallos_en_garantia"
+   }
+  },
+  {
+   "id": "num-coste_fallos_usd",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "coste_fallos_usd: mediana 157,83 y media 3.039,39",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "1.028 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     0.0,
+     3333.4166666666665,
+     6666.833333333333,
+     10000.25,
+     13333.666666666666,
+     16667.083333333332,
+     20000.5,
+     23333.916666666664,
+     26667.333333333332,
+     30000.75,
+     33334.166666666664,
+     36667.58333333333,
+     40001.0
+    ],
+    "cuentas": [
+     763,
+     106,
+     57,
+     26,
+     26,
+     14,
+     14,
+     10,
+     4,
+     7,
+     0,
+     1
+    ],
+    "log": false,
+    "etiqueta_x": "coste_fallos_usd"
+   }
+  },
+  {
+   "id": "num-coste_fallos_garantia_usd",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "coste_fallos_garantia_usd: mediana 37,00 y media 1.118,86",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "1.028 valores, uno por fila",
+   "datos": {
+    "bordes": [
+     0.0,
+     2431.7166666666667,
+     4863.433333333333,
+     7295.15,
+     9726.866666666667,
+     12158.583333333334,
+     14590.3,
+     17022.016666666666,
+     19453.733333333334,
+     21885.45,
+     24317.166666666668,
+     26748.883333333335,
+     29180.6
+    ],
+    "cuentas": [
+     909,
+     54,
+     28,
+     10,
+     7,
+     4,
+     8,
+     3,
+     1,
+     1,
+     1,
+     2
+    ],
+    "log": false,
+    "etiqueta_x": "coste_fallos_garantia_usd"
+   }
+  },
+  {
+   "id": "num-dias_disco_ano",
+   "seccion": "numericas",
+   "tipo": "histograma",
+   "titulo": "dias_disco_ano: mediana 55.394,00 y media 1.492.002,28",
+   "subtitulo": "Cuántas filas caen en cada tramo",
+   "fuente": "299 valores, uno por model+ano",
+   "datos": {
+    "bordes": [
+     26.0,
+     78.12701809870526,
+     234.76272911520854,
+     705.4350764032815,
+     2119.751499293106,
+     6369.61014423192,
+     19139.947962311704,
+     57513.34849460776,
+     172821.0161059757,
+     519307.3328133916,
+     1560458.976519317,
+     4689000.257723534,
+     14089907.99999999
+    ],
+    "cuentas": [
+     1,
+     7,
+     19,
+     26,
+     23,
+     49,
+     25,
+     10,
+     33,
+     27,
+     42,
+     36
+    ],
+    "log": true,
+    "etiqueta_x": "dias_disco_ano"
+   }
+  },
+  {
+   "id": "cat-pasa_minimo_ano",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "pasa_minimo_ano: «True» reúne el 50,8 % de las filas",
+   "subtitulo": "Filas de cada valor (2 valores)",
+   "fuente": "299 filas, una por model+ano",
+   "datos": {
+    "etiquetas": [
+     "True",
+     "False"
+    ],
+    "series": {
+     "filas": [
+      152,
+      147
+     ]
+    },
+    "decimales": 0,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "tmp-tasa-ano",
+   "seccion": "temporal",
+   "tipo": "columnas",
+   "titulo": "La tasa anual de fallo va del 0,93 % en 2020 al 1,39 % en 2025",
+   "subtitulo": "Tasa anual de fallo en %, por año; 2025 incompleto, no se compara con los completos",
+   "fuente": "446.108.683 días de disco y 16.996 fallos de discos de datos",
+   "datos": {
+    "periodos": [
+     "2020",
+     "2021",
+     "2022",
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valores": [
+     0.9291,
+     1.007075,
+     1.387534,
+     1.702268,
+     1.595122,
+     1.389914
+    ],
+    "decimales": 2
+   }
+  },
+  {
+   "id": "tasa-fabricante",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "La tasa anual de fallo más alta por fabricante es la de Seagate: 1,78 %",
+   "subtitulo": "Tasa anual de fallo en %, con sus fallos (n); solo con 50.000 días de disco o más Comparar fabricantes o capacidades mezcla discos de edades y modelos distintos (reglas-negocio §7): la diferencia no es de la marca ni de la capacidad.",
+   "fuente": "446.108.683 días de disco y 16.996 fallos",
+   "datos": {
+    "etiquetas": [
+     "HGST",
+     "Seagate",
+     "Toshiba",
+     "WDC"
+    ],
+    "series": {
+     "tasa": [
+      1.298709251059844,
+      1.7805369334478465,
+      1.0943183087768555,
+      0.5337883429740599
+     ]
+    },
+    "n": [
+     2702,
+     10284,
+     3279,
+     731
+    ],
+    "decimales": 2,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "tasa-capacidad",
+   "seccion": "categoricas",
+   "tipo": "barras",
+   "titulo": "La tasa anual de fallo más alta por capacidad es la de 18: 3,86 %",
+   "subtitulo": "Tasa anual de fallo en %, con sus fallos (n); solo con 50.000 días de disco o más Comparar fabricantes o capacidades mezcla discos de edades y modelos distintos (reglas-negocio §7): la diferencia no es de la marca ni de la capacidad.",
+   "fuente": "446.108.683 días de disco y 16.996 fallos",
+   "datos": {
+    "etiquetas": [
+     "10",
+     "12",
+     "14",
+     "16",
+     "18",
+     "20",
+     "22",
+     "24",
+     "4",
+     "6",
+     "8"
+    ],
+    "series": {
+     "tasa": [
+      3.7765307354912383,
+      1.7362671648725492,
+      1.1500289169120725,
+      0.8440310220620285,
+      3.862545335603721,
+      0.6799261030879741,
+      0.8079066732298742,
+      1.8757607659858133,
+      1.4861452662560954,
+      0.388714154875079,
+      2.093070726069661
+     ]
+    },
+    "n": [
+     245,
+     5825,
+     3114,
+     2354,
+     11,
+     46,
+     243,
+     35,
+     2238,
+     15,
+     2870
+    ],
+    "decimales": 2,
+    "ordenar": true
+   }
+  },
+  {
+   "id": "tmp-días de disco por trimestre",
+   "seccion": "temporal",
+   "tipo": "linea",
+   "ancho": "completo",
+   "titulo": "Días de disco por trimestre: el máximo es 28.446.931 en 2025 T2",
+   "subtitulo": "Días de disco por trimestre, por trimestre",
+   "fuente": "22 periodos",
+   "datos": {
+    "periodos": [
+     "2020 T1",
+     "2020 T2",
+     "2020 T3",
+     "2020 T4",
+     "2021 T1",
+     "2021 T2",
+     "2021 T3",
+     "2021 T4",
+     "2022 T1",
+     "2022 T2",
+     "2022 T3",
+     "2022 T4",
+     "2023 T1",
+     "2023 T2",
+     "2023 T3",
+     "2023 T4",
+     "2024 T1",
+     "2024 T2",
+     "2024 T3",
+     "2024 T4",
+     "2025 T1",
+     "2025 T2"
+    ],
+    "series": {
+     "días de disco por trimestre": [
+      11393540.0,
+      12273246.0,
+      13310187.0,
+      14368945.0,
+      15010015.0,
+      15931943.0,
+      17079013.0,
+      18051063.0,
+      18502257.0,
+      19069267.0,
+      20214708.0,
+      21104437.0,
+      21064205.0,
+      21438579.0,
+      23191949.0,
+      24383023.0,
+      24793711.0,
+      25637630.0,
+      26438405.0,
+      26969950.0,
+      27435679.0,
+      28446931.0
+     ]
+    },
+    "decimales": 0
+   }
+  },
+  {
+   "id": "tmp-fallos por trimestre",
+   "seccion": "temporal",
+   "tipo": "linea",
+   "ancho": "completo",
+   "titulo": "Fallos por trimestre: el máximo es 1.389 en 2024 T3",
+   "subtitulo": "Fallos por trimestre, por trimestre",
+   "fuente": "22 periodos",
+   "datos": {
+    "periodos": [
+     "2020 T1",
+     "2020 T2",
+     "2020 T3",
+     "2020 T4",
+     "2021 T1",
+     "2021 T2",
+     "2021 T3",
+     "2021 T4",
+     "2022 T1",
+     "2022 T2",
+     "2022 T3",
+     "2022 T4",
+     "2023 T1",
+     "2023 T2",
+     "2023 T3",
+     "2023 T4",
+     "2024 T1",
+     "2024 T2",
+     "2024 T3",
+     "2024 T4",
+     "2025 T1",
+     "2025 T2"
+    ],
+    "series": {
+     "fallos por trimestre": [
+      336.0,
+      272.0,
+      327.0,
+      372.0,
+      350.0,
+      441.0,
+      510.0,
+      522.0,
+      618.0,
+      763.0,
+      916.0,
+      702.0,
+      892.0,
+      1341.0,
+      943.0,
+      1025.0,
+      949.0,
+      1199.0,
+      1389.0,
+      1001.0,
+      1067.0,
+      1061.0
+     ]
+    },
+    "decimales": 0
+   }
+  },
+  {
+   "id": "pareto-fallos-modelos",
+   "seccion": "categoricas",
+   "tipo": "curva",
+   "titulo": "El 18,0 % de los modelos reúne el 80 % de fallos",
+   "subtitulo": "Parte acumulada de fallos, con los modelos de mayor a menor",
+   "fuente": "61 modelos",
+   "datos": {
+    "valores": [
+     2084.0,
+     1942.0,
+     1819.0,
+     1811.0,
+     1367.0,
+     937.0,
+     878.0,
+     858.0,
+     813.0,
+     684.0,
+     663.0,
+     584.0,
+     391.0,
+     279.0,
+     243.0,
+     243.0,
+     227.0,
+     214.0,
+     193.0,
+     190.0,
+     88.0,
+     78.0,
+     78.0,
+     76.0,
+     46.0,
+     39.0,
+     35.0,
+     19.0,
+     18.0,
+     15.0,
+     14.0,
+     12.0,
+     11.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     3.0,
+     3.0,
+     2.0,
+     2.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  {
+   "id": "pareto-coste_fallos_usd-modelos",
+   "seccion": "categoricas",
+   "tipo": "curva",
+   "titulo": "El 19,7 % de los modelos reúne el 80 % de coste_fallos_usd",
+   "subtitulo": "Parte acumulada de coste_fallos_usd, con los modelos de mayor a menor",
+   "fuente": "61 modelos",
+   "datos": {
+    "valores": [
+     409292.359341,
+     401957.061538,
+     263592.92967,
+     252514.221978,
+     189658.659341,
+     184790.00989,
+     175321.951648,
+     165543.767033,
+     157474.116484,
+     146052.869231,
+     136818.679121,
+     113696.679121,
+     87956.488462,
+     67817.681319,
+     67178.8,
+     52663.707692,
+     47737.885714,
+     41286.821429,
+     40123.634615,
+     18358.326374,
+     17054.98022,
+     15090.392308,
+     11352.0,
+     10916.098901,
+     9695.0,
+     8557.603846,
+     8497.897802,
+     3197.168132,
+     3152.4,
+     3089.892308,
+     2622.305495,
+     1862.526923,
+     1677.637363,
+     1471.705495,
+     1326.0,
+     1238.4,
+     588.63956,
+     580.850549,
+     573.83956,
+     495.810989,
+     381.046703,
+     258.0,
+     221.0,
+     197.0,
+     142.6,
+     129.0,
+     102.0,
+     97.413187,
+     89.8,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  }
+ ],
+ "graficos_no_dibujados": [
+  {
+   "id": "num-fallos_en_garantia",
+   "motivo": "F2: el eje horizontal repite números (1, 2, 2, 4, 6, 9, 13, 21, 32, 49, 76, 117, 181); pide más decimales"
+  },
+  {
+   "id": "tmp-días de disco por trimestre",
+   "motivo": "los textos «2020 T1» y «10.000.000» se pisan: pide menos grupos o periodos, más ancho o, con muchos periodos, linea_tiempo"
+  }
+ ],
+ "cifras_para_siguiente": {
+  "por_ano": [
+   {
+    "ano": 2020,
+    "dias_disco": 51345918,
+    "fallos": 1307,
+    "tasa_anual_pct": 0.9291,
+    "fallos_en_garantia": 907,
+    "coste_fallos_usd": 250485.2,
+    "coste_fallos_garantia_usd": 80209.0,
+    "completo": true
+   },
+   {
+    "ano": 2021,
+    "dias_disco": 66072034,
+    "fallos": 1823,
+    "tasa_anual_pct": 1.007075,
+    "fallos_en_garantia": 1289,
+    "coste_fallos_usd": 352673.77,
+    "coste_fallos_garantia_usd": 109169.07,
+    "completo": true
+   },
+   {
+    "ano": 2022,
+    "dias_disco": 78890669,
+    "fallos": 2999,
+    "tasa_anual_pct": 1.387534,
+    "fallos_en_garantia": 1890,
+    "coste_fallos_usd": 565844.09,
+    "coste_fallos_garantia_usd": 200888.03,
+    "completo": true
+   },
+   {
+    "ano": 2023,
+    "dias_disco": 90077756,
+    "fallos": 4201,
+    "tasa_anual_pct": 1.702268,
+    "fallos_en_garantia": 2691,
+    "coste_fallos_usd": 755878.6,
+    "coste_fallos_garantia_usd": 284506.6,
+    "completo": true
+   },
+   {
+    "ano": 2024,
+    "dias_disco": 103839696,
+    "fallos": 4538,
+    "tasa_anual_pct": 1.595122,
+    "fallos_en_garantia": 3258,
+    "coste_fallos_usd": 832698.0,
+    "coste_fallos_garantia_usd": 305124.0,
+    "completo": true
+   },
+   {
+    "ano": 2025,
+    "dias_disco": 55882610,
+    "fallos": 2128,
+    "tasa_anual_pct": 1.389914,
+    "fallos_en_garantia": 1291,
+    "coste_fallos_usd": 366916.0,
+    "coste_fallos_garantia_usd": 170296.0,
+    "completo": false
+   }
+  ],
+  "inicio_trimestre": [
+   {
+    "ano": 2020,
+    "trimestre": 1,
+    "discos": 122696
+   },
+   {
+    "ano": 2020,
+    "trimestre": 2,
+    "discos": 129960
+   },
+   {
+    "ano": 2020,
+    "trimestre": 3,
+    "discos": 139938
+   },
+   {
+    "ano": 2020,
+    "trimestre": 4,
+    "discos": 150972
+   },
+   {
+    "ano": 2021,
+    "trimestre": 1,
+    "discos": 162532
+   },
+   {
+    "ano": 2021,
+    "trimestre": 2,
+    "discos": 172436
+   },
+   {
+    "ano": 2021,
+    "trimestre": 3,
+    "discos": 178954
+   },
+   {
+    "ano": 2021,
+    "trimestre": 4,
+    "discos": 191274
+   },
+   {
+    "ano": 2022,
+    "trimestre": 1,
+    "discos": 203194
+   },
+   {
+    "ano": 2022,
+    "trimestre": 2,
+    "discos": 207875
+   },
+   {
+    "ano": 2022,
+    "trimestre": 3,
+    "discos": 215423
+   },
+   {
+    "ano": 2022,
+    "trimestre": 4,
+    "discos": 226697
+   },
+   {
+    "ano": 2023,
+    "trimestre": 1,
+    "discos": 231298
+   },
+   {
+    "ano": 2023,
+    "trimestre": 2,
+    "discos": 237281
+   },
+   {
+    "ano": 2023,
+    "trimestre": 3,
+    "discos": 241297
+   },
+   {
+    "ano": 2023,
+    "trimestre": 4,
+    "discos": 260734
+   },
+   {
+    "ano": 2024,
+    "trimestre": 1,
+    "discos": 270260
+   },
+   {
+    "ano": 2024,
+    "trimestre": 2,
+    "discos": 279576
+   },
+   {
+    "ano": 2024,
+    "trimestre": 3,
+    "discos": 284877
+   },
+   {
+    "ano": 2024,
+    "trimestre": 4,
+    "discos": 288579
+   },
+   {
+    "ano": 2025,
+    "trimestre": 1,
+    "discos": 300901
+   },
+   {
+    "ano": 2025,
+    "trimestre": 2,
+    "discos": 308836
+   }
+  ],
+  "inicio_trimestre_por_capacidad": [
+   {
+    "ano": 2020,
+    "trimestre": 1,
+    "capacidad_tb": 4.0,
+    "discos": 34978
+   },
+   {
+    "ano": 2020,
+    "trimestre": 1,
+    "capacidad_tb": 6.0,
+    "discos": 898
+   },
+   {
+    "ano": 2020,
+    "trimestre": 1,
+    "capacidad_tb": 8.0,
+    "discos": 25304
+   },
+   {
+    "ano": 2020,
+    "trimestre": 1,
+    "capacidad_tb": 10.0,
+    "discos": 1220
+   },
+   {
+    "ano": 2020,
+    "trimestre": 1,
+    "capacidad_tb": 12.0,
+    "discos": 56636
+   },
+   {
+    "ano": 2020,
+    "trimestre": 1,
+    "capacidad_tb": 14.0,
+    "discos": 3620
+   },
+   {
+    "ano": 2020,
+    "trimestre": 1,
+    "capacidad_tb": 16.0,
+    "discos": 40
+   },
+   {
+    "ano": 2020,
+    "trimestre": 2,
+    "capacidad_tb": 4.0,
+    "discos": 34978
+   },
+   {
+    "ano": 2020,
+    "trimestre": 2,
+    "capacidad_tb": 6.0,
+    "discos": 898
+   },
+   {
+    "ano": 2020,
+    "trimestre": 2,
+    "capacidad_tb": 8.0,
+    "discos": 25304
+   },
+   {
+    "ano": 2020,
+    "trimestre": 2,
+    "capacidad_tb": 10.0,
+    "discos": 1220
+   },
+   {
+    "ano": 2020,
+    "trimestre": 2,
+    "capacidad_tb": 12.0,
+    "discos": 60280
+   },
+   {
+    "ano": 2020,
+    "trimestre": 2,
+    "capacidad_tb": 14.0,
+    "discos": 7200
+   },
+   {
+    "ano": 2020,
+    "trimestre": 2,
+    "capacidad_tb": 16.0,
+    "discos": 80
+   },
+   {
+    "ano": 2020,
+    "trimestre": 3,
+    "capacidad_tb": 4.0,
+    "discos": 34978
+   },
+   {
+    "ano": 2020,
+    "trimestre": 3,
+    "capacidad_tb": 6.0,
+    "discos": 898
+   },
+   {
+    "ano": 2020,
+    "trimestre": 3,
+    "capacidad_tb": 8.0,
+    "discos": 25301
+   },
+   {
+    "ano": 2020,
+    "trimestre": 3,
+    "capacidad_tb": 10.0,
+    "discos": 1220
+   },
+   {
+    "ano": 2020,
+    "trimestre": 3,
+    "capacidad_tb": 12.0,
+    "discos": 68704
+   },
+   {
+    "ano": 2020,
+    "trimestre": 3,
+    "capacidad_tb": 14.0,
+    "discos": 8758
+   },
+   {
+    "ano": 2020,
+    "trimestre": 3,
+    "capacidad_tb": 16.0,
+    "discos": 79
+   },
+   {
+    "ano": 2020,
+    "trimestre": 4,
+    "capacidad_tb": 4.0,
+    "discos": 34977
+   },
+   {
+    "ano": 2020,
+    "trimestre": 4,
+    "capacidad_tb": 6.0,
+    "discos": 898
+   },
+   {
+    "ano": 2020,
+    "trimestre": 4,
+    "capacidad_tb": 8.0,
+    "discos": 25299
+   },
+   {
+    "ano": 2020,
+    "trimestre": 4,
+    "capacidad_tb": 10.0,
+    "discos": 1220
+   },
+   {
+    "ano": 2020,
+    "trimestre": 4,
+    "capacidad_tb": 12.0,
+    "discos": 68701
+   },
+   {
+    "ano": 2020,
+    "trimestre": 4,
+    "capacidad_tb": 14.0,
+    "discos": 19718
+   },
+   {
+    "ano": 2020,
+    "trimestre": 4,
+    "capacidad_tb": 16.0,
+    "discos": 99
+   },
+   {
+    "ano": 2020,
+    "trimestre": 4,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2021,
+    "trimestre": 1,
+    "capacidad_tb": 4.0,
+    "discos": 34977
+   },
+   {
+    "ano": 2021,
+    "trimestre": 1,
+    "capacidad_tb": 6.0,
+    "discos": 898
+   },
+   {
+    "ano": 2021,
+    "trimestre": 1,
+    "capacidad_tb": 8.0,
+    "discos": 25298
+   },
+   {
+    "ano": 2021,
+    "trimestre": 1,
+    "capacidad_tb": 10.0,
+    "discos": 1221
+   },
+   {
+    "ano": 2021,
+    "trimestre": 1,
+    "capacidad_tb": 12.0,
+    "discos": 65399
+   },
+   {
+    "ano": 2021,
+    "trimestre": 1,
+    "capacidad_tb": 14.0,
+    "discos": 33541
+   },
+   {
+    "ano": 2021,
+    "trimestre": 1,
+    "capacidad_tb": 16.0,
+    "discos": 1138
+   },
+   {
+    "ano": 2021,
+    "trimestre": 1,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2021,
+    "trimestre": 2,
+    "capacidad_tb": 4.0,
+    "discos": 34977
+   },
+   {
+    "ano": 2021,
+    "trimestre": 2,
+    "capacidad_tb": 6.0,
+    "discos": 898
+   },
+   {
+    "ano": 2021,
+    "trimestre": 2,
+    "capacidad_tb": 8.0,
+    "discos": 25299
+   },
+   {
+    "ano": 2021,
+    "trimestre": 2,
+    "capacidad_tb": 10.0,
+    "discos": 1221
+   },
+   {
+    "ano": 2021,
+    "trimestre": 2,
+    "capacidad_tb": 12.0,
+    "discos": 61996
+   },
+   {
+    "ano": 2021,
+    "trimestre": 2,
+    "capacidad_tb": 14.0,
+    "discos": 43927
+   },
+   {
+    "ano": 2021,
+    "trimestre": 2,
+    "capacidad_tb": 16.0,
+    "discos": 4058
+   },
+   {
+    "ano": 2021,
+    "trimestre": 2,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2021,
+    "trimestre": 3,
+    "capacidad_tb": 4.0,
+    "discos": 34858
+   },
+   {
+    "ano": 2021,
+    "trimestre": 3,
+    "capacidad_tb": 6.0,
+    "discos": 898
+   },
+   {
+    "ano": 2021,
+    "trimestre": 3,
+    "capacidad_tb": 8.0,
+    "discos": 25297
+   },
+   {
+    "ano": 2021,
+    "trimestre": 3,
+    "capacidad_tb": 10.0,
+    "discos": 1221
+   },
+   {
+    "ano": 2021,
+    "trimestre": 3,
+    "capacidad_tb": 12.0,
+    "discos": 58753
+   },
+   {
+    "ano": 2021,
+    "trimestre": 3,
+    "capacidad_tb": 14.0,
+    "discos": 50889
+   },
+   {
+    "ano": 2021,
+    "trimestre": 3,
+    "capacidad_tb": 16.0,
+    "discos": 6978
+   },
+   {
+    "ano": 2021,
+    "trimestre": 3,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2021,
+    "trimestre": 4,
+    "capacidad_tb": 4.0,
+    "discos": 34978
+   },
+   {
+    "ano": 2021,
+    "trimestre": 4,
+    "capacidad_tb": 6.0,
+    "discos": 898
+   },
+   {
+    "ano": 2021,
+    "trimestre": 4,
+    "capacidad_tb": 8.0,
+    "discos": 25296
+   },
+   {
+    "ano": 2021,
+    "trimestre": 4,
+    "capacidad_tb": 10.0,
+    "discos": 1221
+   },
+   {
+    "ano": 2021,
+    "trimestre": 4,
+    "capacidad_tb": 12.0,
+    "discos": 59181
+   },
+   {
+    "ano": 2021,
+    "trimestre": 4,
+    "capacidad_tb": 14.0,
+    "discos": 59222
+   },
+   {
+    "ano": 2021,
+    "trimestre": 4,
+    "capacidad_tb": 16.0,
+    "discos": 10418
+   },
+   {
+    "ano": 2021,
+    "trimestre": 4,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2022,
+    "trimestre": 1,
+    "capacidad_tb": 4.0,
+    "discos": 34976
+   },
+   {
+    "ano": 2022,
+    "trimestre": 1,
+    "capacidad_tb": 6.0,
+    "discos": 898
+   },
+   {
+    "ano": 2022,
+    "trimestre": 1,
+    "capacidad_tb": 8.0,
+    "discos": 25266
+   },
+   {
+    "ano": 2022,
+    "trimestre": 1,
+    "capacidad_tb": 10.0,
+    "discos": 1222
+   },
+   {
+    "ano": 2022,
+    "trimestre": 1,
+    "capacidad_tb": 12.0,
+    "discos": 60261
+   },
+   {
+    "ano": 2022,
+    "trimestre": 1,
+    "capacidad_tb": 14.0,
+    "discos": 59455
+   },
+   {
+    "ano": 2022,
+    "trimestre": 1,
+    "capacidad_tb": 16.0,
+    "discos": 21056
+   },
+   {
+    "ano": 2022,
+    "trimestre": 1,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2022,
+    "trimestre": 2,
+    "capacidad_tb": 4.0,
+    "discos": 34976
+   },
+   {
+    "ano": 2022,
+    "trimestre": 2,
+    "capacidad_tb": 6.0,
+    "discos": 898
+   },
+   {
+    "ano": 2022,
+    "trimestre": 2,
+    "capacidad_tb": 8.0,
+    "discos": 25299
+   },
+   {
+    "ano": 2022,
+    "trimestre": 2,
+    "capacidad_tb": 10.0,
+    "discos": 1222
+   },
+   {
+    "ano": 2022,
+    "trimestre": 2,
+    "capacidad_tb": 12.0,
+    "discos": 60268
+   },
+   {
+    "ano": 2022,
+    "trimestre": 2,
+    "capacidad_tb": 14.0,
+    "discos": 59456
+   },
+   {
+    "ano": 2022,
+    "trimestre": 2,
+    "capacidad_tb": 16.0,
+    "discos": 25696
+   },
+   {
+    "ano": 2022,
+    "trimestre": 2,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2022,
+    "trimestre": 3,
+    "capacidad_tb": 4.0,
+    "discos": 34976
+   },
+   {
+    "ano": 2022,
+    "trimestre": 3,
+    "capacidad_tb": 6.0,
+    "discos": 897
+   },
+   {
+    "ano": 2022,
+    "trimestre": 3,
+    "capacidad_tb": 8.0,
+    "discos": 25299
+   },
+   {
+    "ano": 2022,
+    "trimestre": 3,
+    "capacidad_tb": 10.0,
+    "discos": 1221
+   },
+   {
+    "ano": 2022,
+    "trimestre": 3,
+    "capacidad_tb": 12.0,
+    "discos": 60264
+   },
+   {
+    "ano": 2022,
+    "trimestre": 3,
+    "capacidad_tb": 14.0,
+    "discos": 59453
+   },
+   {
+    "ano": 2022,
+    "trimestre": 3,
+    "capacidad_tb": 16.0,
+    "discos": 33253
+   },
+   {
+    "ano": 2022,
+    "trimestre": 3,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2022,
+    "trimestre": 4,
+    "capacidad_tb": 4.0,
+    "discos": 34979
+   },
+   {
+    "ano": 2022,
+    "trimestre": 4,
+    "capacidad_tb": 6.0,
+    "discos": 898
+   },
+   {
+    "ano": 2022,
+    "trimestre": 4,
+    "capacidad_tb": 8.0,
+    "discos": 25298
+   },
+   {
+    "ano": 2022,
+    "trimestre": 4,
+    "capacidad_tb": 10.0,
+    "discos": 1222
+   },
+   {
+    "ano": 2022,
+    "trimestre": 4,
+    "capacidad_tb": 12.0,
+    "discos": 60266
+   },
+   {
+    "ano": 2022,
+    "trimestre": 4,
+    "capacidad_tb": 14.0,
+    "discos": 59458
+   },
+   {
+    "ano": 2022,
+    "trimestre": 4,
+    "capacidad_tb": 16.0,
+    "discos": 44516
+   },
+   {
+    "ano": 2022,
+    "trimestre": 4,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2023,
+    "trimestre": 1,
+    "capacidad_tb": 4.0,
+    "discos": 34915
+   },
+   {
+    "ano": 2023,
+    "trimestre": 1,
+    "capacidad_tb": 6.0,
+    "discos": 898
+   },
+   {
+    "ano": 2023,
+    "trimestre": 1,
+    "capacidad_tb": 8.0,
+    "discos": 25294
+   },
+   {
+    "ano": 2023,
+    "trimestre": 1,
+    "capacidad_tb": 10.0,
+    "discos": 1222
+   },
+   {
+    "ano": 2023,
+    "trimestre": 1,
+    "capacidad_tb": 12.0,
+    "discos": 60255
+   },
+   {
+    "ano": 2023,
+    "trimestre": 1,
+    "capacidad_tb": 14.0,
+    "discos": 59448
+   },
+   {
+    "ano": 2023,
+    "trimestre": 1,
+    "capacidad_tb": 16.0,
+    "discos": 49206
+   },
+   {
+    "ano": 2023,
+    "trimestre": 1,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2023,
+    "trimestre": 2,
+    "capacidad_tb": 4.0,
+    "discos": 34737
+   },
+   {
+    "ano": 2023,
+    "trimestre": 2,
+    "capacidad_tb": 6.0,
+    "discos": 896
+   },
+   {
+    "ano": 2023,
+    "trimestre": 2,
+    "capacidad_tb": 8.0,
+    "discos": 25207
+   },
+   {
+    "ano": 2023,
+    "trimestre": 2,
+    "capacidad_tb": 10.0,
+    "discos": 1207
+   },
+   {
+    "ano": 2023,
+    "trimestre": 2,
+    "capacidad_tb": 12.0,
+    "discos": 60249
+   },
+   {
+    "ano": 2023,
+    "trimestre": 2,
+    "capacidad_tb": 14.0,
+    "discos": 59457
+   },
+   {
+    "ano": 2023,
+    "trimestre": 2,
+    "capacidad_tb": 16.0,
+    "discos": 55468
+   },
+   {
+    "ano": 2023,
+    "trimestre": 2,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2023,
+    "trimestre": 3,
+    "capacidad_tb": 4.0,
+    "discos": 33691
+   },
+   {
+    "ano": 2023,
+    "trimestre": 3,
+    "capacidad_tb": 6.0,
+    "discos": 895
+   },
+   {
+    "ano": 2023,
+    "trimestre": 3,
+    "capacidad_tb": 8.0,
+    "discos": 24937
+   },
+   {
+    "ano": 2023,
+    "trimestre": 3,
+    "capacidad_tb": 10.0,
+    "discos": 1172
+   },
+   {
+    "ano": 2023,
+    "trimestre": 3,
+    "capacidad_tb": 12.0,
+    "discos": 60279
+   },
+   {
+    "ano": 2023,
+    "trimestre": 3,
+    "capacidad_tb": 14.0,
+    "discos": 59459
+   },
+   {
+    "ano": 2023,
+    "trimestre": 3,
+    "capacidad_tb": 16.0,
+    "discos": 60800
+   },
+   {
+    "ano": 2023,
+    "trimestre": 3,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2023,
+    "trimestre": 3,
+    "capacidad_tb": 22.0,
+    "discos": 4
+   },
+   {
+    "ano": 2023,
+    "trimestre": 4,
+    "capacidad_tb": 4.0,
+    "discos": 29084
+   },
+   {
+    "ano": 2023,
+    "trimestre": 4,
+    "capacidad_tb": 6.0,
+    "discos": 895
+   },
+   {
+    "ano": 2023,
+    "trimestre": 4,
+    "capacidad_tb": 8.0,
+    "discos": 24741
+   },
+   {
+    "ano": 2023,
+    "trimestre": 4,
+    "capacidad_tb": 10.0,
+    "discos": 1160
+   },
+   {
+    "ano": 2023,
+    "trimestre": 4,
+    "capacidad_tb": 12.0,
+    "discos": 60282
+   },
+   {
+    "ano": 2023,
+    "trimestre": 4,
+    "capacidad_tb": 14.0,
+    "discos": 59457
+   },
+   {
+    "ano": 2023,
+    "trimestre": 4,
+    "capacidad_tb": 16.0,
+    "discos": 83849
+   },
+   {
+    "ano": 2023,
+    "trimestre": 4,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2023,
+    "trimestre": 4,
+    "capacidad_tb": 20.0,
+    "discos": 2
+   },
+   {
+    "ano": 2023,
+    "trimestre": 4,
+    "capacidad_tb": 22.0,
+    "discos": 1204
+   },
+   {
+    "ano": 2024,
+    "trimestre": 1,
+    "capacidad_tb": 4.0,
+    "discos": 23771
+   },
+   {
+    "ano": 2024,
+    "trimestre": 1,
+    "capacidad_tb": 6.0,
+    "discos": 894
+   },
+   {
+    "ano": 2024,
+    "trimestre": 1,
+    "capacidad_tb": 8.0,
+    "discos": 24664
+   },
+   {
+    "ano": 2024,
+    "trimestre": 1,
+    "capacidad_tb": 10.0,
+    "discos": 1145
+   },
+   {
+    "ano": 2024,
+    "trimestre": 1,
+    "capacidad_tb": 12.0,
+    "discos": 60263
+   },
+   {
+    "ano": 2024,
+    "trimestre": 1,
+    "capacidad_tb": 14.0,
+    "discos": 59448
+   },
+   {
+    "ano": 2024,
+    "trimestre": 1,
+    "capacidad_tb": 16.0,
+    "discos": 97610
+   },
+   {
+    "ano": 2024,
+    "trimestre": 1,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2024,
+    "trimestre": 1,
+    "capacidad_tb": 20.0,
+    "discos": 2
+   },
+   {
+    "ano": 2024,
+    "trimestre": 1,
+    "capacidad_tb": 22.0,
+    "discos": 2403
+   },
+   {
+    "ano": 2024,
+    "trimestre": 2,
+    "capacidad_tb": 4.0,
+    "discos": 17574
+   },
+   {
+    "ano": 2024,
+    "trimestre": 2,
+    "capacidad_tb": 6.0,
+    "discos": 894
+   },
+   {
+    "ano": 2024,
+    "trimestre": 2,
+    "capacidad_tb": 8.0,
+    "discos": 24574
+   },
+   {
+    "ano": 2024,
+    "trimestre": 2,
+    "capacidad_tb": 10.0,
+    "discos": 1135
+   },
+   {
+    "ano": 2024,
+    "trimestre": 2,
+    "capacidad_tb": 12.0,
+    "discos": 60256
+   },
+   {
+    "ano": 2024,
+    "trimestre": 2,
+    "capacidad_tb": 14.0,
+    "discos": 59404
+   },
+   {
+    "ano": 2024,
+    "trimestre": 2,
+    "capacidad_tb": 16.0,
+    "discos": 109674
+   },
+   {
+    "ano": 2024,
+    "trimestre": 2,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2024,
+    "trimestre": 2,
+    "capacidad_tb": 20.0,
+    "discos": 2
+   },
+   {
+    "ano": 2024,
+    "trimestre": 2,
+    "capacidad_tb": 22.0,
+    "discos": 6003
+   },
+   {
+    "ano": 2024,
+    "trimestre": 3,
+    "capacidad_tb": 4.0,
+    "discos": 13149
+   },
+   {
+    "ano": 2024,
+    "trimestre": 3,
+    "capacidad_tb": 8.0,
+    "discos": 24434
+   },
+   {
+    "ano": 2024,
+    "trimestre": 3,
+    "capacidad_tb": 10.0,
+    "discos": 1121
+   },
+   {
+    "ano": 2024,
+    "trimestre": 3,
+    "capacidad_tb": 12.0,
+    "discos": 60256
+   },
+   {
+    "ano": 2024,
+    "trimestre": 3,
+    "capacidad_tb": 14.0,
+    "discos": 59325
+   },
+   {
+    "ano": 2024,
+    "trimestre": 3,
+    "capacidad_tb": 16.0,
+    "discos": 113390
+   },
+   {
+    "ano": 2024,
+    "trimestre": 3,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2024,
+    "trimestre": 3,
+    "capacidad_tb": 20.0,
+    "discos": 2
+   },
+   {
+    "ano": 2024,
+    "trimestre": 3,
+    "capacidad_tb": 22.0,
+    "discos": 13140
+   },
+   {
+    "ano": 2024,
+    "trimestre": 4,
+    "capacidad_tb": 4.0,
+    "discos": 6167
+   },
+   {
+    "ano": 2024,
+    "trimestre": 4,
+    "capacidad_tb": 8.0,
+    "discos": 24242
+   },
+   {
+    "ano": 2024,
+    "trimestre": 4,
+    "capacidad_tb": 10.0,
+    "discos": 1100
+   },
+   {
+    "ano": 2024,
+    "trimestre": 4,
+    "capacidad_tb": 12.0,
+    "discos": 60265
+   },
+   {
+    "ano": 2024,
+    "trimestre": 4,
+    "capacidad_tb": 14.0,
+    "discos": 59260
+   },
+   {
+    "ano": 2024,
+    "trimestre": 4,
+    "capacidad_tb": 16.0,
+    "discos": 114683
+   },
+   {
+    "ano": 2024,
+    "trimestre": 4,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2024,
+    "trimestre": 4,
+    "capacidad_tb": 20.0,
+    "discos": 3601
+   },
+   {
+    "ano": 2024,
+    "trimestre": 4,
+    "capacidad_tb": 22.0,
+    "discos": 19201
+   },
+   {
+    "ano": 2025,
+    "trimestre": 1,
+    "capacidad_tb": 4.0,
+    "discos": 4385
+   },
+   {
+    "ano": 2025,
+    "trimestre": 1,
+    "capacidad_tb": 8.0,
+    "discos": 24075
+   },
+   {
+    "ano": 2025,
+    "trimestre": 1,
+    "capacidad_tb": 10.0,
+    "discos": 1082
+   },
+   {
+    "ano": 2025,
+    "trimestre": 1,
+    "capacidad_tb": 12.0,
+    "discos": 60084
+   },
+   {
+    "ano": 2025,
+    "trimestre": 1,
+    "capacidad_tb": 14.0,
+    "discos": 59203
+   },
+   {
+    "ano": 2025,
+    "trimestre": 1,
+    "capacidad_tb": 16.0,
+    "discos": 114868
+   },
+   {
+    "ano": 2025,
+    "trimestre": 1,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2025,
+    "trimestre": 1,
+    "capacidad_tb": 20.0,
+    "discos": 5943
+   },
+   {
+    "ano": 2025,
+    "trimestre": 1,
+    "capacidad_tb": 22.0,
+    "discos": 30001
+   },
+   {
+    "ano": 2025,
+    "trimestre": 1,
+    "capacidad_tb": 24.0,
+    "discos": 1200
+   },
+   {
+    "ano": 2025,
+    "trimestre": 2,
+    "capacidad_tb": 4.0,
+    "discos": 199
+   },
+   {
+    "ano": 2025,
+    "trimestre": 2,
+    "capacidad_tb": 8.0,
+    "discos": 23956
+   },
+   {
+    "ano": 2025,
+    "trimestre": 2,
+    "capacidad_tb": 10.0,
+    "discos": 1071
+   },
+   {
+    "ano": 2025,
+    "trimestre": 2,
+    "capacidad_tb": 12.0,
+    "discos": 60128
+   },
+   {
+    "ano": 2025,
+    "trimestre": 2,
+    "capacidad_tb": 14.0,
+    "discos": 59173
+   },
+   {
+    "ano": 2025,
+    "trimestre": 2,
+    "capacidad_tb": 16.0,
+    "discos": 115044
+   },
+   {
+    "ano": 2025,
+    "trimestre": 2,
+    "capacidad_tb": 18.0,
+    "discos": 60
+   },
+   {
+    "ano": 2025,
+    "trimestre": 2,
+    "capacidad_tb": 20.0,
+    "discos": 10803
+   },
+   {
+    "ano": 2025,
+    "trimestre": 2,
+    "capacidad_tb": 22.0,
+    "discos": 34802
+   },
+   {
+    "ano": 2025,
+    "trimestre": 2,
+    "capacidad_tb": 24.0,
+    "discos": 3600
+   }
+  ]
+ },
+ "cifras_de_control": {
+  "modelo_trimestre.2020.dias_disco": 51345918,
+  "modelo_trimestre.2020.fallos": 1307,
+  "modelo_trimestre.2020.tasa_anual_pct": 0.9291,
+  "modelo_trimestre.2020.coste_fallos_usd": 250485.2,
+  "modelo_trimestre.2020.coste_fallos_garantia_usd": 80209.0,
+  "modelo_trimestre.2021.dias_disco": 66072034,
+  "modelo_trimestre.2021.fallos": 1823,
+  "modelo_trimestre.2021.tasa_anual_pct": 1.007075,
+  "modelo_trimestre.2021.coste_fallos_usd": 352673.77,
+  "modelo_trimestre.2021.coste_fallos_garantia_usd": 109169.07,
+  "modelo_trimestre.2022.dias_disco": 78890669,
+  "modelo_trimestre.2022.fallos": 2999,
+  "modelo_trimestre.2022.tasa_anual_pct": 1.387534,
+  "modelo_trimestre.2022.coste_fallos_usd": 565844.09,
+  "modelo_trimestre.2022.coste_fallos_garantia_usd": 200888.03,
+  "modelo_trimestre.2023.dias_disco": 90077756,
+  "modelo_trimestre.2023.fallos": 4201,
+  "modelo_trimestre.2023.tasa_anual_pct": 1.702268,
+  "modelo_trimestre.2023.coste_fallos_usd": 755878.6,
+  "modelo_trimestre.2023.coste_fallos_garantia_usd": 284506.6,
+  "modelo_trimestre.2024.dias_disco": 103839696,
+  "modelo_trimestre.2024.fallos": 4538,
+  "modelo_trimestre.2024.tasa_anual_pct": 1.595122,
+  "modelo_trimestre.2024.coste_fallos_usd": 832698.0,
+  "modelo_trimestre.2024.coste_fallos_garantia_usd": 305124.0,
+  "modelo_trimestre.2025.dias_disco": 55882610,
+  "modelo_trimestre.2025.fallos": 2128,
+  "modelo_trimestre.2025.tasa_anual_pct": 1.389914,
+  "modelo_trimestre.2025.coste_fallos_usd": 366916.0,
+  "modelo_trimestre.2025.coste_fallos_garantia_usd": 170296.0
+ },
+ "teoria": [
+  "34.1 y 34.2, qué es y el esquema: cada columna se tipifica por su papel y cada análisis es una función que se aplica a todo el bloque.",
+  "3.1, descriptiva: el informe describe estos datos y no extrapola; no se dan intervalos ni contrastes.",
+  "34.3, 34.4, 3.5 y 3.6: frecuencias y cardinalidad en las categóricas; describe con la mediana al lado y la tabla leída con sus cuatro señales en las numéricas.",
+  "34.5, 34.6 y 10.6: barras para categóricas y discretas, histograma para continuas, sin cajas; la escala logarítmica se dice en el eje.",
+  "34.7 y 13.14: el cruce con el objetivo solo con la construcción; describe y no elige variables.",
+  "5.4, 5.5 y 5.6: cada tasa con su base, la tasa de un grupo como suma entre suma y cada comparación repetida por fabricante y capacidad, por si se invierte (paradoja de Simpson).",
+  "34.8, 34.9 y 34.10: hallazgo, alerta, anomalía e hipótesis separados; Pareto, ABC y series de negocio."
+ ],
+ "versiones": {
+  "python": "3.13.15",
+  "pandas": "3.0.6",
+  "numpy": "2.5.3",
+  "pyarrow": "24.0.0",
+  "matplotlib": "3.11.2"
+ },
+ "datos_personales_texto": [
+  "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+  "No hay datos de personas (reglas-negocio §9): el número de serie identifica un disco, no a una persona.",
+  "Este exploratorio no usa ni deja ninguna columna de datos personales."
+ ],
+ "huellas": [
+  {
+   "tabla": "dim_modelo",
+   "antes": "543441fa6c7c8bb023d40bfacd6357c85fd0cd37013a2305c3fe97bc9512a3af",
+   "despues": "543441fa6c7c8bb023d40bfacd6357c85fd0cd37013a2305c3fe97bc9512a3af",
+   "iguales": true
+  },
+  {
+   "tabla": "dim_precio_gb",
+   "antes": "c2a444fbc373fc42d05364ad47e251a646415e7d7fc38f82f2096261894cd2a8",
+   "despues": "c2a444fbc373fc42d05364ad47e251a646415e7d7fc38f82f2096261894cd2a8",
+   "iguales": true
+  },
+  {
+   "tabla": "fotos_riesgo",
+   "antes": "5a84a6ae35d20108e94875f87d0ec9f35c8ac71f9e67aab4444f919dde354a71",
+   "despues": "5a84a6ae35d20108e94875f87d0ec9f35c8ac71f9e67aab4444f919dde354a71",
+   "iguales": true
+  },
+  {
+   "tabla": "fallos_detalle",
+   "antes": "ff67f9a515527ffb6e1dd6b7474067836c1d401c3e1a33901f290f1b56c236ad",
+   "despues": "ff67f9a515527ffb6e1dd6b7474067836c1d401c3e1a33901f290f1b56c236ad",
+   "iguales": true
+  },
+  {
+   "tabla": "vida_discos",
+   "antes": "af034d17ebc92a1ff22e3c2e1688a585d39383cb8e2f94106ea4e0ffc709d504",
+   "despues": "af034d17ebc92a1ff22e3c2e1688a585d39383cb8e2f94106ea4e0ffc709d504",
+   "iguales": true
+  },
+  {
+   "tabla": "dias_por_tramo",
+   "antes": "a8f2230c04a3c9717bb4aa2a9792297ef3b0dd2d37b234178d949eadd7c38c66",
+   "despues": "a8f2230c04a3c9717bb4aa2a9792297ef3b0dd2d37b234178d949eadd7c38c66",
+   "iguales": true
+  },
+  {
+   "tabla": "inicio_trimestre",
+   "antes": "86169128b7862e772d1e1e6a755d8df287c74a4da7e469257b57b0b0ed14a03e",
+   "despues": "86169128b7862e772d1e1e6a755d8df287c74a4da7e469257b57b0b0ed14a03e",
+   "iguales": true
+  },
+  {
+   "tabla": "modelo_trimestre",
+   "antes": "82be69d656509c36760f705d0d2bd21801702ddbf33795056e5cc92c7fff76cf",
+   "despues": "82be69d656509c36760f705d0d2bd21801702ddbf33795056e5cc92c7fff76cf",
+   "iguales": true
+  },
+  {
+   "tabla": "centro_mes",
+   "antes": "d6e8b53032fe7ff2be864922483b3a07a33fbf0fadbd20eca3b3c516a3b2fc57",
+   "despues": "d6e8b53032fe7ff2be864922483b3a07a33fbf0fadbd20eca3b3c516a3b2fc57",
+   "iguales": true
+  }
+ ],
+ "ejecucion": {
+  "segundos_total": 105.3
+ }
+}

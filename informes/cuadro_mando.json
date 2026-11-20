@@ -1,0 +1,2601 @@
+{
+ "script": "scripts/21_cuadro_mando.py",
+ "fecha_datos": "2025-06-30",
+ "fecha_lista": "2026-06-01",
+ "fecha_ejecucion": "2026-11-20T10:37:19",
+ "entradas": [
+  {
+   "ruta": "informes/indicadores__discos_modelos_edad.json",
+   "script": "scripts/09_indicadores_discos_modelos_edad.py",
+   "sha256": "d9f6e1c95af555c62df0f42e0f4d16350e1536156fb18a3f4d6be542bb92d9d2"
+  },
+  {
+   "ruta": "informes/indicadores__coste_prevision.json",
+   "script": "scripts/10_indicadores_coste_prevision.py",
+   "sha256": "cb9896e7a51baafe4123b1633f54850044c80681ad178c034abe000c8a088558"
+  },
+  {
+   "ruta": "informes/indicadores__centros_avisos_tomos.json",
+   "script": "scripts/11_indicadores_centros_avisos_tomos.py",
+   "sha256": "1b23e7af47caa694746b02bc2510fd4fa89ef826fe1208a20b6b1a86f61c4135"
+  },
+  {
+   "ruta": "informes/consultas-informe-ejecutivo.json",
+   "script": "scripts/07_consultas_informe_ejecutivo.py",
+   "sha256": "ff1b546dd528225b8aebe7a8524bd3ccd51496db0d1242a5eb725b5d21ec5393"
+  },
+  {
+   "ruta": "informes/prueba_final.json",
+   "script": "scripts/19_prueba_final.py",
+   "sha256": "d719e99885e42e90dce8c11a162530a94050311f3432e8980f994590b9b67a2a"
+  },
+  {
+   "ruta": "data/predicciones/2026-11-20/predicciones_2026-06.parquet",
+   "script": "produccion/ejecutar.py",
+   "sha256": "decc9ea691a9dcff3344991da19a8e86975e41d6f7ede63eda1b4bbf06f94afe"
+  },
+  {
+   "ruta": "data/predicciones/2026-11-20/resumen_2026-06.json",
+   "script": "produccion/ejecutar.py",
+   "sha256": "f64d82e23ae12600443757add62affa7a77423be26b74ee4ef8a08195428c25d"
+  },
+  {
+   "ruta": "data/processed/dias_por_tramo.parquet",
+   "sha256": "a8f2230c04a3c9717bb4aa2a9792297ef3b0dd2d37b234178d949eadd7c38c66",
+   "igual_a_la_de_los_json": true
+  },
+  {
+   "ruta": "data/processed/dim_modelo.parquet",
+   "sha256": "543441fa6c7c8bb023d40bfacd6357c85fd0cd37013a2305c3fe97bc9512a3af",
+   "igual_a_la_de_los_json": true
+  }
+ ],
+ "cifras_sin_filtros": {
+  "vision": [
+   {
+    "id": "discos",
+    "valor": 314758
+   },
+   {
+    "id": "fallos",
+    "valor": 4518
+   },
+   {
+    "id": "tasa",
+    "valor": 1.5166270402975532
+   },
+   {
+    "id": "coste",
+    "valor": 832698.0
+   }
+  ],
+  "modelos": [
+   {
+    "id": "modelos",
+    "valor": 32
+   },
+   {
+    "id": "coste_min",
+    "valor": 1.8758470277
+   },
+   {
+    "id": "mediana_fallos",
+    "valor": 6.4411028408
+   }
+  ],
+  "edad": [
+   {
+    "id": "tasa_0",
+    "valor": 0.790295147
+   },
+   {
+    "id": "tasa_5",
+    "valor": 2.5834885305
+   },
+   {
+    "id": "anos_sube",
+    "valor": 4
+   }
+  ],
+  "centros": [
+   {
+    "id": "centros_mas",
+    "valor": 1
+   },
+   {
+    "id": "centros_menos",
+    "valor": 1
+   },
+   {
+    "id": "fallos_centros",
+    "valor": 8506
+   }
+  ],
+  "lista": [
+   {
+    "id": "discos_lista",
+    "valor": 100
+   },
+   {
+    "id": "tomos_peligro",
+    "valor": 197
+   },
+   {
+    "id": "final_100",
+    "valor": 22.636363636363637
+   }
+  ]
+ },
+ "cifras_de_control": {
+  "ultimo_ano": {
+   "dias_disco": 108732730.99999999,
+   "fallos": 4518,
+   "tasa": 1.5166270402975532,
+   "desde": 1.4727222721449305,
+   "hasta": 1.5615082687937185
+  },
+  "ano_anterior": {
+   "dias_disco": 97757559.0,
+   "fallos": 4116,
+   "tasa": 1.536801875341425,
+   "desde": 1.4902073008111045,
+   "hasta": 1.5844827952394018
+  }
+ },
+ "comparadas_con_los_json": [
+  {
+   "nombre": "discos de datos el 01/06/2025 (B1.tablas.serie_mensual)",
+   "cuadro": 314758,
+   "json": 314758,
+   "coinciden": true
+  },
+  {
+   "nombre": "coste de los fallos de 2024 (coste_fallos_usd_2024)",
+   "cuadro": 832698.0,
+   "json": 832698.0,
+   "coinciden": true
+  },
+  {
+   "nombre": "coste de los fallos de 2024 con garantía",
+   "cuadro": 305124.0,
+   "json": 305124.0,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HMS5C4040BLE640 tasa",
+   "cuadro": 0.3262707189664418,
+   "json": 0.326270719,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HMS5C4040BLE640 desde",
+   "cuadro": 0.2818615123185788,
+   "json": 0.2818615123,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HMS5C4040BLE640 hasta",
+   "cuadro": 0.37569077112102306,
+   "json": 0.3756907711,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HUH721212ALE600 tasa",
+   "cuadro": 0.5610337524763226,
+   "json": 0.5610337525,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HUH721212ALE600 desde",
+   "cuadro": 0.4434738999064633,
+   "json": 0.4434738999,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HUH721212ALE600 hasta",
+   "cuadro": 0.7001955138300135,
+   "json": 0.7001955138,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HMS5C4040ALE640 tasa",
+   "cuadro": 0.6293083720740688,
+   "json": 0.6293083721,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HMS5C4040ALE640 desde",
+   "cuadro": 0.5047237164607309,
+   "json": 0.5047237165,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HMS5C4040ALE640 hasta",
+   "cuadro": 0.775325515309823,
+   "json": 0.7753255153,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 WDC WUH721414ALE6L4 tasa",
+   "cuadro": 0.49612954568412365,
+   "json": 0.4961295457,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 WDC WUH721414ALE6L4 desde",
+   "cuadro": 0.4280893396273969,
+   "json": 0.4280893396,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 WDC WUH721414ALE6L4 hasta",
+   "cuadro": 0.5719110026655941,
+   "json": 0.5719110027,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 WDC WUH721816ALE6L4 tasa",
+   "cuadro": 0.3696410856516272,
+   "json": 0.3696410857,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 WDC WUH721816ALE6L4 desde",
+   "cuadro": 0.32177217981983436,
+   "json": 0.3217721798,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 WDC WUH721816ALE6L4 hasta",
+   "cuadro": 0.4226238364417832,
+   "json": 0.4226238364,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HUH728080ALE600 tasa",
+   "cuadro": 1.2753548028786055,
+   "json": 1.2753548029,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HUH728080ALE600 desde",
+   "cuadro": 1.0048345277672677,
+   "json": 1.0048345278,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HUH728080ALE600 hasta",
+   "cuadro": 1.59629671408173,
+   "json": 1.5962967141,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG07ACA14TA tasa",
+   "cuadro": 1.0307035085692242,
+   "json": 1.0307035086,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG07ACA14TA desde",
+   "cuadro": 0.9837744742173183,
+   "json": 0.9837744742,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG07ACA14TA hasta",
+   "cuadro": 1.079292855883507,
+   "json": 1.0792928559,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST16000NM001G tasa",
+   "cuadro": 0.7190587266146192,
+   "json": 0.7190587266,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST16000NM001G desde",
+   "cuadro": 0.666136220992706,
+   "json": 0.666136221,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST16000NM001G hasta",
+   "cuadro": 0.7750676002851538,
+   "json": 0.7750676003,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST12000NM001G tasa",
+   "cuadro": 0.9920334815488567,
+   "json": 0.9920334815,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST12000NM001G desde",
+   "cuadro": 0.9131965124599204,
+   "json": 0.9131965125,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST12000NM001G hasta",
+   "cuadro": 1.075855441638615,
+   "json": 1.0758554416,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 WDC WUH721816ALE6L0 tasa",
+   "cuadro": 0.739816799844085,
+   "json": 0.7398167998,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 WDC WUH721816ALE6L0 desde",
+   "cuadro": 0.5847944798241389,
+   "json": 0.5847944798,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 WDC WUH721816ALE6L0 hasta",
+   "cuadro": 0.9233248481405179,
+   "json": 0.9233248481,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG10ACA20TE tasa",
+   "cuadro": 0.679989988473785,
+   "json": 0.6799899885,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG10ACA20TE desde",
+   "cuadro": 0.4978381346110747,
+   "json": 0.4978381346,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG10ACA20TE hasta",
+   "cuadro": 0.9070113530530656,
+   "json": 0.9070113531,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HUH721212ALN604 tasa",
+   "cuadro": 2.3411953917365524,
+   "json": 2.3411953917,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HUH721212ALN604 desde",
+   "cuadro": 2.2187169234937834,
+   "json": 2.2187169235,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HUH721212ALN604 hasta",
+   "cuadro": 2.4686760174276774,
+   "json": 2.4686760174,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 WDC WUH722222ALE6L4 tasa",
+   "cuadro": 0.8079066732298742,
+   "json": 0.8079066732,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 WDC WUH722222ALE6L4 desde",
+   "cuadro": 0.7095118847743175,
+   "json": 0.7095118848,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 WDC WUH722222ALE6L4 hasta",
+   "cuadro": 0.9161312243370059,
+   "json": 0.9161312243,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST12000NM0008 tasa",
+   "cuadro": 2.0239700465417854,
+   "json": 2.0239700465,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST12000NM0008 desde",
+   "cuadro": 1.9379968367407525,
+   "json": 1.9379968367,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST12000NM0008 hasta",
+   "cuadro": 2.1127749747261806,
+   "json": 2.1127749747,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST8000DM002 tasa",
+   "cuadro": 1.7959194261501685,
+   "json": 1.7959194262,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST8000DM002 desde",
+   "cuadro": 1.6827540887695625,
+   "json": 1.6827540888,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST8000DM002 hasta",
+   "cuadro": 1.9146932639167578,
+   "json": 1.9146932639,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST8000NM0055 tasa",
+   "cuadro": 2.3407026737002266,
+   "json": 2.3407026737,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST8000NM0055 desde",
+   "cuadro": 2.2343598801967315,
+   "json": 2.2343598802,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST8000NM0055 hasta",
+   "cuadro": 2.4507993500158265,
+   "json": 2.45079935,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST4000DM000 tasa",
+   "cuadro": 2.537820354484271,
+   "json": 2.5378203545,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST4000DM000 desde",
+   "cuadro": 2.4261916391309044,
+   "json": 2.4261916391,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST4000DM000 hasta",
+   "cuadro": 2.653260337316882,
+   "json": 2.6532603373,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST14000NM001G tasa",
+   "cuadro": 1.4118619389862341,
+   "json": 1.411861939,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST14000NM001G desde",
+   "cuadro": 1.3064238181862264,
+   "json": 1.3064238182,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST14000NM001G hasta",
+   "cuadro": 1.5235440895459862,
+   "json": 1.5235440895,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG08ACA16TEY tasa",
+   "cuadro": 1.2451085290422637,
+   "json": 1.245108529,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG08ACA16TEY desde",
+   "cuadro": 1.0883917150313833,
+   "json": 1.088391715,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG08ACA16TEY hasta",
+   "cuadro": 1.418054007870264,
+   "json": 1.4180540079,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG08ACA16TA tasa",
+   "cuadro": 1.1527745862320282,
+   "json": 1.1527745862,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG08ACA16TA desde",
+   "cuadro": 1.076658311325432,
+   "json": 1.0766583113,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG08ACA16TA hasta",
+   "cuadro": 1.23285212108081,
+   "json": 1.2328521211,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG07ACA14TEY tasa",
+   "cuadro": 1.4686567903323486,
+   "json": 1.4686567903,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG07ACA14TEY desde",
+   "cuadro": 1.0443585481442217,
+   "json": 1.0443585481,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG07ACA14TEY hasta",
+   "cuadro": 2.0077021800323536,
+   "json": 2.00770218,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG08ACA16TE tasa",
+   "cuadro": 1.294148266551716,
+   "json": 1.2941482666,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG08ACA16TE desde",
+   "cuadro": 1.1467329199120952,
+   "json": 1.1467329199,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 TOSHIBA MG08ACA16TE hasta",
+   "cuadro": 1.455258641882739,
+   "json": 1.4552586419,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HUH721212ALE604 tasa",
+   "cuadro": 1.5719575371824834,
+   "json": 1.5719575372,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HUH721212ALE604 desde",
+   "cuadro": 1.4696855101259527,
+   "json": 1.4696855101,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 HGST HUH721212ALE604 hasta",
+   "cuadro": 1.6794704088274923,
+   "json": 1.6794704088,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST12000NM0007 tasa",
+   "cuadro": 1.8270568435129462,
+   "json": 1.8270568435,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST12000NM0007 desde",
+   "cuadro": 1.7036087971963743,
+   "json": 1.7036087972,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST12000NM0007 hasta",
+   "cuadro": 1.9570861171113305,
+   "json": 1.9570861171,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST10000NM0086 tasa",
+   "cuadro": 3.867145807027702,
+   "json": 3.867145807,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST10000NM0086 desde",
+   "cuadro": 3.3961669103092462,
+   "json": 3.3961669103,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST10000NM0086 hasta",
+   "cuadro": 4.385176085646675,
+   "json": 4.3851760856,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST24000NM002H tasa",
+   "cuadro": 1.9266820197961863,
+   "json": 1.9266820198,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST24000NM002H desde",
+   "cuadro": 1.3420046205559575,
+   "json": 1.3420046206,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST24000NM002H hasta",
+   "cuadro": 2.679548287660838,
+   "json": 2.6795482877,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST14000NM0138 tasa",
+   "cuadro": 5.903065879894542,
+   "json": 5.9030658799,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST14000NM0138 desde",
+   "cuadro": 5.332384219044392,
+   "json": 5.332384219,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST14000NM0138 hasta",
+   "cuadro": 6.518186559337659,
+   "json": 6.5181865593,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST6000DX000 tasa",
+   "cuadro": 0.3939840967150002,
+   "json": 0.3939840967,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST6000DX000 desde",
+   "cuadro": 0.22050990813988477,
+   "json": 0.2205099081,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST6000DX000 hasta",
+   "cuadro": 0.6498168523075835,
+   "json": 0.6498168523,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST8000NM000A tasa",
+   "cuadro": 0.524071388573808,
+   "json": 0.5240713886,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST8000NM000A desde",
+   "cuadro": 0.063467476465998,
+   "json": 0.0634674765,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST8000NM000A hasta",
+   "cuadro": 1.893126049018081,
+   "json": 1.893126049,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST16000NM002J tasa",
+   "cuadro": 0.5148737383830144,
+   "json": 0.5148737384,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST16000NM002J desde",
+   "cuadro": 0.1889495876364852,
+   "json": 0.1889495876,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST16000NM002J hasta",
+   "cuadro": 1.120663368548343,
+   "json": 1.1206633685,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST14000NM000J tasa",
+   "cuadro": 1.3178322562010325,
+   "json": 1.3178322562,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST14000NM000J desde",
+   "cuadro": 0.1595956000082089,
+   "json": 0.1595956,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST14000NM000J hasta",
+   "cuadro": 4.760463224752221,
+   "json": 4.7604632248,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST12000NM000J tasa",
+   "cuadro": 1.8674066070982518,
+   "json": 1.8674066071,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST12000NM000J desde",
+   "cuadro": 1.0878331647220143,
+   "json": 1.0878331647,
+   "coinciden": true
+  },
+  {
+   "nombre": "B2 ST12000NM000J hasta",
+   "cuadro": 2.989898876488106,
+   "json": 2.9898988765,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG10ACA20TE coste_tb_ano",
+   "cuadro": 1.8758470277,
+   "json": 1.8758470277,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG10ACA20TE coste_desde",
+   "cuadro": 1.8533710728,
+   "json": 1.8533710728,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG10ACA20TE coste_hasta",
+   "cuadro": 1.90385949,
+   "json": 1.90385949,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG10ACA20TE tasa",
+   "cuadro": 0.6799899885,
+   "json": 0.6799899885,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG10ACA20TE fallos",
+   "cuadro": 46,
+   "json": 46,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH722222ALE6L4 coste_tb_ano",
+   "cuadro": 1.9854478044,
+   "json": 1.9854478044,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH722222ALE6L4 coste_desde",
+   "cuadro": 1.9730833379,
+   "json": 1.9730833379,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH722222ALE6L4 coste_hasta",
+   "cuadro": 1.9990474967,
+   "json": 1.9990474967,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH722222ALE6L4 tasa",
+   "cuadro": 0.8079066732,
+   "json": 0.8079066732,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH722222ALE6L4 fallos",
+   "cuadro": 243,
+   "json": 243,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST24000NM002H coste_tb_ano",
+   "cuadro": 1.9865438336,
+   "json": 1.9865438336,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST24000NM002H coste_desde",
+   "cuadro": 1.9190623171,
+   "json": 1.9190623171,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST24000NM002H coste_hasta",
+   "cuadro": 2.0734371487,
+   "json": 2.0734371487,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST24000NM002H tasa",
+   "cuadro": 1.9266820198,
+   "json": 1.9266820198,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST24000NM002H fallos",
+   "cuadro": 35,
+   "json": 35,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721816ALE6L4 coste_tb_ano",
+   "cuadro": 2.3436899229,
+   "json": 2.3436899229,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721816ALE6L4 coste_desde",
+   "cuadro": 2.3370159732,
+   "json": 2.3370159732,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721816ALE6L4 coste_hasta",
+   "cuadro": 2.3510768519,
+   "json": 2.3510768519,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721816ALE6L4 tasa",
+   "cuadro": 0.3696410857,
+   "json": 0.3696410857,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721816ALE6L4 fallos",
+   "cuadro": 214,
+   "json": 214,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TA coste_tb_ano",
+   "cuadro": 2.3880804524,
+   "json": 2.3880804524,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TA coste_desde",
+   "cuadro": 2.3775884823,
+   "json": 2.3775884823,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TA coste_hasta",
+   "cuadro": 2.3991184478,
+   "json": 2.3991184478,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TA tasa",
+   "cuadro": 1.1527745862,
+   "json": 1.1527745862,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TA fallos",
+   "cuadro": 852,
+   "json": 852,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST16000NM001G coste_tb_ano",
+   "cuadro": 2.6050432458,
+   "json": 2.6050432458,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST16000NM001G coste_desde",
+   "cuadro": 2.5970406169,
+   "json": 2.5970406169,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST16000NM001G coste_hasta",
+   "cuadro": 2.6135125772,
+   "json": 2.6135125772,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST16000NM001G tasa",
+   "cuadro": 0.7190587266,
+   "json": 0.7190587266,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST16000NM001G fallos",
+   "cuadro": 683,
+   "json": 683,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721414ALE6L4 coste_tb_ano",
+   "cuadro": 2.6525917155,
+   "json": 2.6525917155,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721414ALE6L4 coste_desde",
+   "cuadro": 2.642328481,
+   "json": 2.642328481,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721414ALE6L4 coste_hasta",
+   "cuadro": 2.6640226459,
+   "json": 2.6640226459,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721414ALE6L4 tasa",
+   "cuadro": 0.4961295457,
+   "json": 0.4961295457,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721414ALE6L4 fallos",
+   "cuadro": 190,
+   "json": 190,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721816ALE6L0 coste_tb_ano",
+   "cuadro": 2.7185802952,
+   "json": 2.7185802952,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721816ALE6L0 coste_desde",
+   "cuadro": 2.6973951782,
+   "json": 2.6973951782,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721816ALE6L0 coste_hasta",
+   "cuadro": 2.743658229,
+   "json": 2.743658229,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721816ALE6L0 tasa",
+   "cuadro": 0.7398167998,
+   "json": 0.7398167998,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 WDC WUH721816ALE6L0 fallos",
+   "cuadro": 78,
+   "json": 78,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG07ACA14TEY coste_tb_ano",
+   "cuadro": 2.7481864868,
+   "json": 2.7481864868,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG07ACA14TEY coste_desde",
+   "cuadro": 2.6816850899,
+   "json": 2.6816850899,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG07ACA14TEY coste_hasta",
+   "cuadro": 2.8326725106,
+   "json": 2.8326725106,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG07ACA14TEY tasa",
+   "cuadro": 1.4686567903,
+   "json": 1.4686567903,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG07ACA14TEY fallos",
+   "cuadro": 39,
+   "json": 39,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM001G coste_tb_ano",
+   "cuadro": 2.792215517,
+   "json": 2.792215517,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM001G coste_desde",
+   "cuadro": 2.7794251323,
+   "json": 2.7794251323,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM001G coste_hasta",
+   "cuadro": 2.8058146587,
+   "json": 2.8058146587,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM001G tasa",
+   "cuadro": 0.9920334815,
+   "json": 0.9920334815,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM001G fallos",
+   "cuadro": 584,
+   "json": 584,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM001G coste_tb_ano",
+   "cuadro": 2.7931213386,
+   "json": 2.7931213386,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM001G coste_desde",
+   "cuadro": 2.7765305822,
+   "json": 2.7765305822,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM001G coste_hasta",
+   "cuadro": 2.8106945971,
+   "json": 2.8106945971,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM001G tasa",
+   "cuadro": 1.411861939,
+   "json": 1.411861939,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM001G fallos",
+   "cuadro": 663,
+   "json": 663,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG07ACA14TA coste_tb_ano",
+   "cuadro": 2.7967389315,
+   "json": 2.7967389315,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG07ACA14TA coste_desde",
+   "cuadro": 2.7892988997,
+   "json": 2.7892988997,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG07ACA14TA coste_hasta",
+   "cuadro": 2.8044421859,
+   "json": 2.8044421859,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG07ACA14TA tasa",
+   "cuadro": 1.0307035086,
+   "json": 1.0307035086,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG07ACA14TA fallos",
+   "cuadro": 1811,
+   "json": 1811,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TEY coste_tb_ano",
+   "cuadro": 2.8029320303,
+   "json": 2.8029320303,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TEY coste_desde",
+   "cuadro": 2.7802082184,
+   "json": 2.7802082184,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TEY coste_hasta",
+   "cuadro": 2.8280089856,
+   "json": 2.8280089856,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TEY tasa",
+   "cuadro": 1.245108529,
+   "json": 1.245108529,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TEY fallos",
+   "cuadro": 227,
+   "json": 227,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TE coste_tb_ano",
+   "cuadro": 2.827903284,
+   "json": 2.827903284,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TE coste_desde",
+   "cuadro": 2.8055077486,
+   "json": 2.8055077486,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TE coste_hasta",
+   "cuadro": 2.8523793864,
+   "json": 2.8523793864,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TE tasa",
+   "cuadro": 1.2941482666,
+   "json": 1.2941482666,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 TOSHIBA MG08ACA16TE fallos",
+   "cuadro": 279,
+   "json": 279,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALE604 coste_tb_ano",
+   "cuadro": 2.8399359994,
+   "json": 2.8399359994,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALE604 coste_desde",
+   "cuadro": 2.8246501252,
+   "json": 2.8246501252,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALE604 coste_hasta",
+   "cuadro": 2.8560051855,
+   "json": 2.8560051855,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALE604 tasa",
+   "cuadro": 1.5719575372,
+   "json": 1.5719575372,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALE604 fallos",
+   "cuadro": 878,
+   "json": 878,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALE600 coste_tb_ano",
+   "cuadro": 3.0509545415,
+   "json": 3.0509545415,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALE600 coste_desde",
+   "cuadro": 3.0320012905,
+   "json": 3.0320012905,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALE600 coste_hasta",
+   "cuadro": 3.0733904985,
+   "json": 3.0733904985,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALE600 tasa",
+   "cuadro": 0.5610337525,
+   "json": 0.5610337525,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALE600 fallos",
+   "cuadro": 78,
+   "json": 78,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM0008 coste_tb_ano",
+   "cuadro": 3.1145855229,
+   "json": 3.1145855229,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM0008 coste_desde",
+   "cuadro": 3.1005147544,
+   "json": 3.1005147544,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM0008 coste_hasta",
+   "cuadro": 3.1291197433,
+   "json": 3.1291197433,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM0008 tasa",
+   "cuadro": 2.0239700465,
+   "json": 2.0239700465,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM0008 fallos",
+   "cuadro": 2084,
+   "json": 2084,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM0138 coste_tb_ano",
+   "cuadro": 3.5818407246,
+   "json": 3.5818407246,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM0138 coste_desde",
+   "cuadro": 3.4901433279,
+   "json": 3.4901433279,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM0138 coste_hasta",
+   "cuadro": 3.6806786035,
+   "json": 3.6806786035,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM0138 tasa",
+   "cuadro": 5.9030658799,
+   "json": 5.9030658799,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM0138 fallos",
+   "cuadro": 391,
+   "json": 391,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALN604 coste_tb_ano",
+   "cuadro": 3.6937428407,
+   "json": 3.6937428407,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALN604 coste_desde",
+   "cuadro": 3.6748891739,
+   "json": 3.6748891739,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALN604 coste_hasta",
+   "cuadro": 3.7133665124,
+   "json": 3.7133665124,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALN604 tasa",
+   "cuadro": 2.3411953917,
+   "json": 2.3411953917,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH721212ALN604 fallos",
+   "cuadro": 1367,
+   "json": 1367,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HMS5C4040BLE640 coste_tb_ano",
+   "cuadro": 4.030324715,
+   "json": 4.030324715,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HMS5C4040BLE640 coste_desde",
+   "cuadro": 4.01976411,
+   "json": 4.01976411,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HMS5C4040BLE640 coste_hasta",
+   "cuadro": 4.0420769099,
+   "json": 4.0420769099,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HMS5C4040BLE640 tasa",
+   "cuadro": 0.326270719,
+   "json": 0.326270719,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HMS5C4040BLE640 fallos",
+   "cuadro": 193,
+   "json": 193,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH728080ALE600 coste_tb_ano",
+   "cuadro": 4.1538568844,
+   "json": 4.1538568844,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH728080ALE600 coste_desde",
+   "cuadro": 4.1052873766,
+   "json": 4.1052873766,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH728080ALE600 coste_hasta",
+   "cuadro": 4.2114791483,
+   "json": 4.2114791483,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH728080ALE600 tasa",
+   "cuadro": 1.2753548029,
+   "json": 1.2753548029,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HUH728080ALE600 fallos",
+   "cuadro": 76,
+   "json": 76,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM0007 coste_tb_ano",
+   "cuadro": 4.2044459797,
+   "json": 4.2044459797,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM0007 coste_desde",
+   "cuadro": 4.1822615266,
+   "json": 4.1822615266,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM0007 coste_hasta",
+   "cuadro": 4.227813124,
+   "json": 4.227813124,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM0007 tasa",
+   "cuadro": 1.8270568435,
+   "json": 1.8270568435,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM0007 fallos",
+   "cuadro": 813,
+   "json": 813,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HMS5C4040ALE640 coste_tb_ano",
+   "cuadro": 4.3286106951,
+   "json": 4.3286106951,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HMS5C4040ALE640 coste_desde",
+   "cuadro": 4.2985337726,
+   "json": 4.2985337726,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HMS5C4040ALE640 coste_hasta",
+   "cuadro": 4.3638617962,
+   "json": 4.3638617962,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HMS5C4040ALE640 tasa",
+   "cuadro": 0.6293083721,
+   "json": 0.6293083721,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 HGST HMS5C4040ALE640 fallos",
+   "cuadro": 88,
+   "json": 88,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST10000NM0086 coste_tb_ano",
+   "cuadro": 4.7750777213,
+   "json": 4.7750777213,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST10000NM0086 coste_desde",
+   "cuadro": 4.6950562332,
+   "json": 4.6950562332,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST10000NM0086 coste_hasta",
+   "cuadro": 4.8630934563,
+   "json": 4.8630934563,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST10000NM0086 tasa",
+   "cuadro": 3.867145807,
+   "json": 3.867145807,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST10000NM0086 fallos",
+   "cuadro": 243,
+   "json": 243,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000NM0055 coste_tb_ano",
+   "cuadro": 4.9162756754,
+   "json": 4.9162756754,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000NM0055 coste_desde",
+   "cuadro": 4.8970128878,
+   "json": 4.8970128878,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000NM0055 coste_hasta",
+   "cuadro": 4.9362184362,
+   "json": 4.9362184362,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000NM0055 tasa",
+   "cuadro": 2.3407026737,
+   "json": 2.3407026737,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000NM0055 fallos",
+   "cuadro": 1819,
+   "json": 1819,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST4000DM000 coste_tb_ano",
+   "cuadro": 5.846914892,
+   "json": 5.846914892,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST4000DM000 coste_desde",
+   "cuadro": 5.8203599597,
+   "json": 5.8203599597,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST4000DM000 coste_hasta",
+   "cuadro": 5.8743764723,
+   "json": 5.8743764723,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST4000DM000 tasa",
+   "cuadro": 2.5378203545,
+   "json": 2.5378203545,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST4000DM000 fallos",
+   "cuadro": 1942,
+   "json": 1942,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000DM002 coste_tb_ano",
+   "cuadro": 6.0233944224,
+   "json": 6.0233944224,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000DM002 coste_desde",
+   "cuadro": 6.0027392303,
+   "json": 6.0027392303,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000DM002 coste_hasta",
+   "cuadro": 6.0450732906,
+   "json": 6.0450732906,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000DM002 tasa",
+   "cuadro": 1.7959194262,
+   "json": 1.7959194262,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000DM002 fallos",
+   "cuadro": 937,
+   "json": 937,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM000J coste_tb_ano",
+   "cuadro": 2.1075451906,
+   "json": 2.1075451906,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM000J coste_desde",
+   "cuadro": 1.943737435,
+   "json": 1.943737435,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM000J coste_hasta",
+   "cuadro": 2.5944315705,
+   "json": 2.5944315705,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM000J tasa",
+   "cuadro": 1.3178322562,
+   "json": 1.3178322562,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST14000NM000J fallos",
+   "cuadro": 2,
+   "json": 2,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM000J coste_tb_ano",
+   "cuadro": 2.1890465703,
+   "json": 2.1890465703,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM000J coste_desde",
+   "cuadro": 2.0760466355,
+   "json": 2.0760466355,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM000J coste_hasta",
+   "cuadro": 2.3517529252,
+   "json": 2.3517529252,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM000J tasa",
+   "cuadro": 1.8674066071,
+   "json": 1.8674066071,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST12000NM000J fallos",
+   "cuadro": 17,
+   "json": 17,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000NM000A coste_tb_ano",
+   "cuadro": 2.4281060386,
+   "json": 2.4281060386,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000NM000A coste_desde",
+   "cuadro": 2.3538336578,
+   "json": 2.3538336578,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000NM000A coste_hasta",
+   "cuadro": 2.6488661026,
+   "json": 2.6488661026,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000NM000A tasa",
+   "cuadro": 0.5240713886,
+   "json": 0.5240713886,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST8000NM000A fallos",
+   "cuadro": 2,
+   "json": 2,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST16000NM002J coste_tb_ano",
+   "cuadro": 2.5228994425,
+   "json": 2.5228994425,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST16000NM002J coste_desde",
+   "cuadro": 2.4729344047,
+   "json": 2.4729344047,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST16000NM002J coste_hasta",
+   "cuadro": 2.6157686016,
+   "json": 2.6157686016,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST16000NM002J tasa",
+   "cuadro": 0.5148737384,
+   "json": 0.5148737384,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST16000NM002J fallos",
+   "cuadro": 6,
+   "json": 6,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST6000DX000 coste_tb_ano",
+   "cuadro": 5.5912529139,
+   "json": 5.5912529139,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST6000DX000 coste_desde",
+   "cuadro": 5.5553528754,
+   "json": 5.5553528754,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST6000DX000 coste_hasta",
+   "cuadro": 5.6441968467,
+   "json": 5.6441968467,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST6000DX000 tasa",
+   "cuadro": 0.3939840967,
+   "json": 0.3939840967,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 ST6000DX000 fallos",
+   "cuadro": 15,
+   "json": 15,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 mediana de la parte de los fallos",
+   "cuadro": 6.4411028408,
+   "json": 6.4411028408,
+   "coinciden": true
+  },
+  {
+   "nombre": "B4 modelos con puesto",
+   "cuadro": 27,
+   "json": 27,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 φ",
+   "cuadro": 5.018852314983195,
+   "json": 5.018852315,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 0 dias_disco",
+   "cuadro": 93340444.10971087,
+   "json": 93340444.10971087,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 0 fallos",
+   "cuadro": 2021,
+   "json": 2021,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 0 tasa",
+   "cuadro": 0.7902951470136144,
+   "json": 0.790295147,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 0 desde",
+   "cuadro": 0.7149813028776288,
+   "json": 0.7149813029,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 0 hasta",
+   "cuadro": 0.8713844403576763,
+   "json": 0.8713844404,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 0 sube",
+   "cuadro": null,
+   "json": null,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 0 sin_conclusion",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 1 dias_disco",
+   "cuadro": 87628779.68332565,
+   "json": 87628779.68332565,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 1 fallos",
+   "cuadro": 2064,
+   "json": 2064,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 1 tasa",
+   "cuadro": 0.8597175525238455,
+   "json": 0.8597175525,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 1 desde",
+   "cuadro": 0.7786244731006826,
+   "json": 0.7786244731,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 1 hasta",
+   "cuadro": 0.9469614732433644,
+   "json": 0.9469614732,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 1 sube",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 1 sin_conclusion",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 2 dias_disco",
+   "cuadro": 75893931.7670265,
+   "json": 75893931.7670265,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 2 fallos",
+   "cuadro": 2502,
+   "json": 2502,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 2 tasa",
+   "cuadro": 1.2032977851290731,
+   "json": 1.2032977851,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 2 desde",
+   "cuadro": 1.0999740453690783,
+   "json": 1.0999740454,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 2 hasta",
+   "cuadro": 1.3137128705373988,
+   "json": 1.3137128705,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 2 sube",
+   "cuadro": true,
+   "json": true,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 2 sin_conclusion",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 3 dias_disco",
+   "cuadro": 63943476.398066655,
+   "json": 63943476.398066655,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 3 fallos",
+   "cuadro": 2793,
+   "json": 2793,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 3 tasa",
+   "cuadro": 1.5942908603430626,
+   "json": 1.5942908603,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 3 desde",
+   "cuadro": 1.4645655518548761,
+   "json": 1.4645655519,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 3 hasta",
+   "cuadro": 1.7324261797856044,
+   "json": 1.7324261798,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 3 sube",
+   "cuadro": true,
+   "json": true,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 3 sin_conclusion",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 4 dias_disco",
+   "cuadro": 47330284.713802084,
+   "json": 47330284.713802084,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 4 fallos",
+   "cuadro": 2491,
+   "json": 2491,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 4 tasa",
+   "cuadro": 1.9210004873156024,
+   "json": 1.9210004873,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 4 desde",
+   "cuadro": 1.7556940622771406,
+   "json": 1.7556940623,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 4 hasta",
+   "cuadro": 2.097678227799848,
+   "json": 2.0976782278,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 4 sube",
+   "cuadro": true,
+   "json": true,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 4 sin_conclusion",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 5 dias_disco",
+   "cuadro": 29980005.36288728,
+   "json": 29980005.36288728,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 5 fallos",
+   "cuadro": 2122,
+   "json": 2122,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 5 tasa",
+   "cuadro": 2.5834885305217554,
+   "json": 2.5834885305,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 5 desde",
+   "cuadro": 2.3430715671786317,
+   "json": 2.3430715672,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 5 hasta",
+   "cuadro": 2.841879830125071,
+   "json": 2.8418798301,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 5 sube",
+   "cuadro": true,
+   "json": true,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 5 sin_conclusion",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 6 dias_disco",
+   "cuadro": 22283006.812930137,
+   "json": 22283006.812930137,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 6 fallos",
+   "cuadro": 1462,
+   "json": 1462,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 6 tasa",
+   "cuadro": 2.3947845301126556,
+   "json": 2.3947845301,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 6 desde",
+   "cuadro": 2.12764533961251,
+   "json": 2.1276453396,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 6 hasta",
+   "cuadro": 2.6861856714399974,
+   "json": 2.6861856714,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 6 sube",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 6 sin_conclusion",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 7 dias_disco",
+   "cuadro": 18269950.09029511,
+   "json": 18269950.09029511,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 7 fallos",
+   "cuadro": 1207,
+   "json": 1207,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 7 tasa",
+   "cuadro": 2.4113640038569137,
+   "json": 2.4113640039,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 7 desde",
+   "cuadro": 2.116208077575059,
+   "json": 2.1162080776,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 7 hasta",
+   "cuadro": 2.736167907877889,
+   "json": 2.7361679079,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 7 sube",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 7 sin_conclusion",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 8 dias_disco",
+   "cuadro": 6421014.482580194,
+   "json": 6421014.482580194,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 8 fallos",
+   "cuadro": 334,
+   "json": 334,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 8 tasa",
+   "cuadro": 1.8986096407465534,
+   "json": 1.8986096407,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 8 desde",
+   "cuadro": 1.4700462987563099,
+   "json": 1.4700462988,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 8 hasta",
+   "cuadro": 2.4131065739322115,
+   "json": 2.4131065739,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 8 sube",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 8 sin_conclusion",
+   "cuadro": false,
+   "json": false,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 9 dias_disco",
+   "cuadro": 96646.51175179497,
+   "json": 96646.511751795,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 9 fallos",
+   "cuadro": 0,
+   "json": 0,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 9 tasa",
+   "cuadro": 0.0,
+   "json": 0.0,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 9 desde",
+   "cuadro": 0.0,
+   "json": 0.0,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 9 hasta",
+   "cuadro": 6.992066667615537,
+   "json": 6.9920666676,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 9 sube",
+   "cuadro": null,
+   "json": null,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 9 sin_conclusion",
+   "cuadro": true,
+   "json": true,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 10 dias_disco",
+   "cuadro": 1951.0676237338637,
+   "json": 1951.0676237339,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 10 fallos",
+   "cuadro": 0,
+   "json": 0,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 10 tasa",
+   "cuadro": 0.0,
+   "json": 0.0,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 10 desde",
+   "cuadro": 0.0,
+   "json": 0.0,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 10 hasta",
+   "cuadro": 346.3533734765188,
+   "json": 346.3533734765,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 10 sube",
+   "cuadro": null,
+   "json": null,
+   "coinciden": true
+  },
+  {
+   "nombre": "B3 edad 10 sin_conclusion",
+   "cuadro": true,
+   "json": true,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 φ",
+   "cuadro": 1.0196037124373585,
+   "json": 1.0196037124,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 ams5 observados",
+   "cuadro": 476,
+   "json": 476,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 ams5 esperados",
+   "cuadro": 445.00049197745636,
+   "json": 445.0004919775,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 ams5 razon",
+   "cuadro": 1.0696617387652552,
+   "json": 1.0696617388,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 ams5 razon_desde",
+   "cuadro": 0.9748196209014984,
+   "json": 0.9748196209,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 ams5 razon_hasta",
+   "cuadro": 1.1712386272793185,
+   "json": 1.1712386273,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 ams5 veredicto",
+   "cuadro": "no se distingue",
+   "json": "no se distingue",
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 iad1 observados",
+   "cuadro": 512,
+   "json": 512,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 iad1 esperados",
+   "cuadro": 513.521442670042,
+   "json": 513.52144267,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 iad1 razon",
+   "cuadro": 0.9970372363379194,
+   "json": 0.9970372363,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 iad1 razon_desde",
+   "cuadro": 0.9117280218621232,
+   "json": 0.9117280219,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 iad1 razon_hasta",
+   "cuadro": 1.0881793978980603,
+   "json": 1.0881793979,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 iad1 veredicto",
+   "cuadro": "no se distingue",
+   "json": "no se distingue",
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 phx1 observados",
+   "cuadro": 2160,
+   "json": 2160,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 phx1 esperados",
+   "cuadro": 2075.436201586253,
+   "json": 2075.4362015863,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 phx1 razon",
+   "cuadro": 1.0407450724571128,
+   "json": 1.0407450725,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 phx1 razon_desde",
+   "cuadro": 0.9968940863889363,
+   "json": 0.9968940864,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 phx1 razon_hasta",
+   "cuadro": 1.0860283775404933,
+   "json": 1.0860283775,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 phx1 veredicto",
+   "cuadro": "no se distingue",
+   "json": "no se distingue",
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac0 observados",
+   "cuadro": 2806,
+   "json": 2806,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac0 esperados",
+   "cuadro": 3097.1610458553005,
+   "json": 3097.1610458553,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac0 razon",
+   "cuadro": 0.9059909893142497,
+   "json": 0.9059909893,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac0 razon_desde",
+   "cuadro": 0.8724550246539131,
+   "json": 0.8724550247,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac0 razon_hasta",
+   "cuadro": 0.9404859096658288,
+   "json": 0.9404859097,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac0 veredicto",
+   "cuadro": "falla menos",
+   "json": "falla menos",
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac2 observados",
+   "cuadro": 2546,
+   "json": 2546,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac2 esperados",
+   "cuadro": 2315.620188611586,
+   "json": 2315.6201886116,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac2 razon",
+   "cuadro": 1.0994894639982158,
+   "json": 1.099489464,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac2 razon_desde",
+   "cuadro": 1.0567833549851833,
+   "json": 1.056783355,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac2 razon_hasta",
+   "cuadro": 1.1434785916159227,
+   "json": 1.1434785916,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac2 veredicto",
+   "cuadro": "falla más por sí mismo",
+   "json": "falla más por sí mismo",
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sin dato observados",
+   "cuadro": 128,
+   "json": 128,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sin dato esperados",
+   "cuadro": 170.53227833598064,
+   "json": 170.532278336,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sin dato razon",
+   "cuadro": 0.7505910391217312,
+   "json": 0.7505910391,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sin dato razon_desde",
+   "cuadro": 0.6250431493792974,
+   "json": 0.6250431494,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sin dato razon_hasta",
+   "cuadro": 0.8939596217347074,
+   "json": 0.8939596217,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sin dato veredicto",
+   "cuadro": "aparte",
+   "json": "aparte",
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 yyz1 observados",
+   "cuadro": 6,
+   "json": 6,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 yyz1 esperados",
+   "cuadro": 11.72835096338182,
+   "json": 11.7283509634,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 yyz1 razon",
+   "cuadro": 0.5115808708942255,
+   "json": 0.5115808709,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 yyz1 razon_desde",
+   "cuadro": 0.18545555911119724,
+   "json": 0.1854555591,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 yyz1 razon_hasta",
+   "cuadro": 1.1215075296545847,
+   "json": 1.1215075297,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 yyz1 veredicto",
+   "cuadro": "sin conclusión",
+   "json": "sin conclusión",
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 ams5 esperados por fila",
+   "cuadro": 445.00049197745636,
+   "json": 445.00049197745636,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 iad1 esperados por fila",
+   "cuadro": 513.521442670042,
+   "json": 513.521442670042,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 phx1 esperados por fila",
+   "cuadro": 2075.436201586253,
+   "json": 2075.436201586253,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac0 esperados por fila",
+   "cuadro": 3097.1610458553005,
+   "json": 3097.1610458553005,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sac2 esperados por fila",
+   "cuadro": 2315.620188611586,
+   "json": 2315.620188611586,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 sin dato esperados por fila",
+   "cuadro": 170.53227833598066,
+   "json": 170.53227833598064,
+   "coinciden": true
+  },
+  {
+   "nombre": "B5 yyz1 esperados por fila",
+   "cuadro": 11.72835096338182,
+   "json": 11.72835096338182,
+   "coinciden": true
+  },
+  {
+   "nombre": "prueba final, lista de 100, modelo (media de los meses)",
+   "cuadro": 22.636363636363637,
+   "json": 22.636363636363637,
+   "coinciden": true
+  },
+  {
+   "nombre": "prueba final, lista de 100, regla (media de los meses)",
+   "cuadro": 14.909090909090908,
+   "json": 14.909090909090908,
+   "coinciden": true
+  }
+ ],
+ "tomos_en_peligro": {
+  "fecha": "2026-06-01",
+  "tomos": 197,
+  "fallos_rehaciendose": 200,
+  "aparte": {
+   "fallos_antes_de_la_fecha": 4411,
+   "plazo_mas_largo_dias": 27.0,
+   "recientes": 402,
+   "sin_ventana": 0,
+   "sin_capacidad": 0,
+   "de_arranque": 0,
+   "de_datos_sin_tomo": 3,
+   "de_datos_rehaciendose": 200
+  },
+  "segunda_via": {
+   "tomos": 197,
+   "aparte": {
+    "fallos_antes_de_la_fecha": 4411,
+    "plazo_mas_largo_dias": 27.0,
+    "recientes": 402,
+    "sin_ventana": 0,
+    "sin_capacidad": 0,
+    "de_arranque": 0,
+    "de_datos_sin_tomo": 3,
+    "de_datos_rehaciendose": 200
+   },
+   "de": "bucle fallo a fallo sobre las ventanas en bruto"
+  }
+ },
+ "lista": {
+  "carpeta": "data/predicciones/2026-11-20",
+  "huella_modelo_resumen": "6ff08f348207c3dced0d6569fedd957c64f2df450a0da2c2ed65da7170363b32",
+  "huella_modelo_en_uso": "6ff08f348207c3dced0d6569fedd957c64f2df450a0da2c2ed65da7170363b32",
+  "fecha_entrenamiento": "2025-07-01",
+  "motivos_iguales": true,
+  "filas": 353401,
+  "puntuadas": 349495,
+  "sin_puntuar": {
+   "disco de arranque: fuera del modelo (reglas §3 y §7)": 3893,
+   "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)": 13
+  },
+  "filas_con_foto": true,
+  "sin_horas": 6,
+  "sin_horas_ni_primera_foto": 2,
+  "edad_igual_con_toda_la_historia": true,
+  "historia_de_la_foto": "fotos de data/raw/podado/ (hasta junio de 2025) y ventanas de data/raw/podado/ y de la reserva; las fotos de la reserva de julio de 2025 a mayo de 2026 no se leen por el alcance del encargo. Solo cambian la edad de los discos sin horas que no salen en ninguna foto hasta junio de 2025: los dos casos tienen 0 años cumplidos",
+  "listas_iguales_a_los_primeros": true,
+  "en_la_lista_1000": 1000
+ },
+ "dias_repartidos": {
+  "fabricante": {
+   "suma": 445189491.0,
+   "total": 445189491.0,
+   "coinciden": true
+  },
+  "capacidad": {
+   "suma": 445189491.0,
+   "total": 445189491.0,
+   "coinciden": true
+  },
+  "edad": {
+   "suma": 445189491.0,
+   "total": 445189491.0,
+   "coinciden": true
+  },
+  "centro": {
+   "suma": 445189491.0,
+   "total": 445189491.0,
+   "coinciden": true
+  }
+ },
+ "combinacion_mas_estrecha": {
+  "fabricante": "Toshiba",
+  "capacidad": 8.0,
+  "edad": 5,
+  "centro": "sac2"
+ },
+ "huella_data": {
+  "antes": {
+   "ficheros": 183,
+   "sha256": "634d3296bf85713a73f61c1d87e5f67b0f2b4bd92581db7bc1a991d1f19c2df2"
+  },
+  "despues": {
+   "ficheros": 183,
+   "sha256": "634d3296bf85713a73f61c1d87e5f67b0f2b4bd92581db7bc1a991d1f19c2df2"
+  }
+ },
+ "validaciones": {
+  "fechas_iguales": true,
+  "entradas_mas_nuevas": true,
+  "huella_del_modelo": true,
+  "filas_con_foto": true,
+  "motivos_iguales": true,
+  "edad_igual_con_toda_la_historia": true,
+  "tomos_segunda_via": true,
+  "cifras_iguales_a_los_json": true,
+  "dias_repartidos_suman": true,
+  "sin_resultados_escritos": true,
+  "sin_palabras_vetadas": true,
+  "huella_data_igual": true
+ },
+ "decisiones": [
+  "Con un filtro, la tasa por edad lleva el φ de B3 (5,02), como hace el script 09 con los fabricantes y los modelos; los centros miden su φ con la selección, como ajustada() del 11.",
+  "Un trimestre va en gris si su año natural no llega a 50.000 días de disco o el trimestre a 20 fallos; un año de edad, si tiene menos de 20 fallos o de 50.000 días de disco por año del periodo.",
+  "Las entradas de tablas (dias_por_tramo y dim_modelo) se comparan por huella con la que usaron los JSON de análisis: son más viejas que scripts/05, que se editó después sin volver a lanzarse.",
+  "El modelo de un fallo de la reserva es el de la última fila de su ventana hasta el día del fallo; su capacidad, la única válida de su modelo en las ventanas y la foto de junio de 2026.",
+  "Los fallos sin tomo, sin capacidad o de arranque se cuentan entre los de menos días que el plazo más largo de los discos de datos (los que aún podían estar rehaciéndose)."
+ ]
+}
