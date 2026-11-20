@@ -2,7 +2,7 @@
 
 ## Fuente
 
-- Diseño: `contexto-proyecto/modelo/modelo-datos.md`. Ejecución: 2026-11-18T07:39:20. Fecha de los datos: 2025-06-30.
+- Diseño: `config/modelo/modelo-datos.md`. Ejecución: 2026-11-18T07:39:20. Fecha de los datos: 2025-06-30.
 - `data/processed/fotos_mensuales_corregido.parquet`: 14.851.669 filas, 130 columnas, huella `998d1edec335d5cf…`
 - `data/processed/ventanas_fallo_corregido.parquet`: 536.597 filas, 131 columnas, huella `63d4379a89b96f54…`
 - `data/processed/recuento_diario_corregido.parquet`: 197.871 filas, 6 columnas, huella `320f487a6a82bbd1…`
@@ -35,17 +35,17 @@ Siguiente: transformacion-datos, con el plan de cruces aprobado y los controles 
 
 | Desde | Hacia | Clave | Maestro | Cardinalidad | Mismo tipo | Procedencia |
 |---|---|---|---|---|---|---|
-| hechos_fotos | dim_modelo | model → model | dim_modelo | N:1 | sí | reglas §3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); como_estan_organizados_los_datos.md (dimensión modelo) |
-| hechos_ventanas | dim_modelo | model → model | dim_modelo | N:1 | sí | reglas §3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); como_estan_organizados_los_datos.md (dimensión modelo) |
-| hechos_recuento | dim_modelo | model → model | dim_modelo | N:1 | sí | reglas §3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); como_estan_organizados_los_datos.md (dimensión modelo) |
-| hechos_fotos | Calendario | fecha → fecha | Calendario | N:1 | sí | reglas §5 (cada registro es el estado de un disco un día; un día de disco es un disco un día) |
-| hechos_ventanas | Calendario | fecha → fecha | Calendario | N:1 | sí | reglas §5 (cada registro es el estado de un disco un día; un día de disco es un disco un día) |
-| hechos_recuento | Calendario | fecha → fecha | Calendario | N:1 | sí | reglas §5 (cada registro es el estado de un disco un día; un día de disco es un disco un día) |
-| hechos_fallos | Calendario | dia_fallo → fecha | Calendario | N:1 | **no** (dia_fallo timestamp[ns] / fecha timestamp[ms]) | reglas §3 (un fallo es el día en que Backblaze da un disco por fallado) |
-| hechos_ventanas | hechos_fallos | serial_number, dia_fallo → serial_number, dia_fallo | hechos_fallos | N:1 | sí | como_estan_organizados_los_datos.md (una ventana son los 30 días antes de un fallo y el del fallo); reglas §5 («salvo los 30 días antes de un fallo, que van día a día») |
-| hechos_fallos | hechos_ventanas | serial_number, dia_fallo → serial_number, fecha | hechos_ventanas (su fila del día del fallo) | 1:1 | **no** (dia_fallo timestamp[ns] / fecha timestamp[ms]) | reglas §5 (un registro por disco y día, el del fallo incluido); como_estan_organizados_los_datos.md |
-| hechos_fallos | dim_modelo | model → model | dim_modelo | N:1 | sí | reglas §3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); como_estan_organizados_los_datos.md (dimensión modelo); el modelo es el de la fila del día del fallo |
-| hechos_fallos | dim_precio_gb | capacidad_tb, ano_fallo → capacidad_tb, ano | dim_precio_gb | N:1 | sin tipo aún | reglas §6 (el disco nuevo que sustituye a uno que falla, al coste por GB del año del fallo) |
+| hechos_fotos | dim_modelo | model → model | dim_modelo | N:1 | sí | reglas, apartado 3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); como_estan_organizados_los_datos.md (dimensión modelo) |
+| hechos_ventanas | dim_modelo | model → model | dim_modelo | N:1 | sí | reglas, apartado 3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); como_estan_organizados_los_datos.md (dimensión modelo) |
+| hechos_recuento | dim_modelo | model → model | dim_modelo | N:1 | sí | reglas, apartado 3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); como_estan_organizados_los_datos.md (dimensión modelo) |
+| hechos_fotos | Calendario | fecha → fecha | Calendario | N:1 | sí | reglas, apartado 5 (cada registro es el estado de un disco un día; un día de disco es un disco un día) |
+| hechos_ventanas | Calendario | fecha → fecha | Calendario | N:1 | sí | reglas, apartado 5 (cada registro es el estado de un disco un día; un día de disco es un disco un día) |
+| hechos_recuento | Calendario | fecha → fecha | Calendario | N:1 | sí | reglas, apartado 5 (cada registro es el estado de un disco un día; un día de disco es un disco un día) |
+| hechos_fallos | Calendario | dia_fallo → fecha | Calendario | N:1 | **no** (dia_fallo timestamp[ns] / fecha timestamp[ms]) | reglas, apartado 3 (un fallo es el día en que Backblaze da un disco por fallado) |
+| hechos_ventanas | hechos_fallos | serial_number, dia_fallo → serial_number, dia_fallo | hechos_fallos | N:1 | sí | como_estan_organizados_los_datos.md (una ventana son los 30 días antes de un fallo y el del fallo); reglas, apartado 5 («salvo los 30 días antes de un fallo, que van día a día») |
+| hechos_fallos | hechos_ventanas | serial_number, dia_fallo → serial_number, fecha | hechos_ventanas (su fila del día del fallo) | 1:1 | **no** (dia_fallo timestamp[ns] / fecha timestamp[ms]) | reglas, apartado 5 (un registro por disco y día, el del fallo incluido); como_estan_organizados_los_datos.md |
+| hechos_fallos | dim_modelo | model → model | dim_modelo | N:1 | sí | reglas, apartado 3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); como_estan_organizados_los_datos.md (dimensión modelo); el modelo es el de la fila del día del fallo |
+| hechos_fallos | dim_precio_gb | capacidad_tb, ano_fallo → capacidad_tb, ano | dim_precio_gb | N:1 | sin tipo aún | reglas, apartado 6 (el disco nuevo que sustituye a uno que falla, al coste por GB del año del fallo) |
 
 ## Fechas y calendario
 
@@ -60,13 +60,13 @@ Siguiente: transformacion-datos, con el plan de cruces aprobado y los controles 
 |---|---|---|---|---|
 | los discos de 0,2 a 2 TB, con sus fotos, días de disco y fallos | todas las tasas, rankings, coste por terabyte, previsión y la pregunta 4 | fuera de todo cálculo; se pueden contar aparte | sí: siguen en las tablas y se cuentan aparte si una petición lo pide | modelos: 33; filas_fotos: 246280; filas_ventanas: 28546; dias_de_disco: 7500739; fallos_recuento: 964 |
 | los días de disco y fallos de discos de datos antes del 01/07/2023, sin centro | tasas por centro y fallos del mismo tomo (pregunta 3) | fuera de las cifras por sitio; siguen en las demás | no: el sitio no está en los datos | dias_de_disco: 238811405; fallos_recuento: 8362; fallos_lista: 8362; filas_fotos_sin_centro: 7821320 |
-| los días de disco y fallos de discos de datos desde el 01/07/2023 con el centro «sin dato» | tasas por centro (pregunta 3) | se cuentan y se dicen (reglas §5) | no, con estos datos | dias_de_disco: 6621213; fallos_recuento: 128; dias_de_disco_desde: 207297278; filas_fotos_sin_centro: 234446 |
-| los fallos de discos de datos desde el 01/07/2023 sin ningún día de su ventana, hasta el del fallo, con centro (sin centro) o con centro, vault y ranura (sin tomo) | tasas por centro (sin centro) y fallos del mismo tomo (sin tomo), pregunta 3 y aviso de tomos en peligro de la pregunta 4 | se cuentan y se dicen (reglas §5) | no, con estos datos | fallos_desde: 8634; fallos_sin_centro: 128; fallos_sin_tomo: 141 |
+| los días de disco y fallos de discos de datos desde el 01/07/2023 con el centro «sin dato» | tasas por centro (pregunta 3) | se cuentan y se dicen (reglas, apartado 5) | no, con estos datos | dias_de_disco: 6621213; fallos_recuento: 128; dias_de_disco_desde: 207297278; filas_fotos_sin_centro: 234446 |
+| los fallos de discos de datos desde el 01/07/2023 sin ningún día de su ventana, hasta el del fallo, con centro (sin centro) o con centro, vault y ranura (sin tomo) | tasas por centro (sin centro) y fallos del mismo tomo (sin tomo), pregunta 3 y aviso de tomos en peligro de la pregunta 4 | se cuentan y se dicen (reglas, apartado 5) | no, con estos datos | fallos_desde: 8634; fallos_sin_centro: 128; fallos_sin_tomo: 141 |
 | los fallos de discos de datos cuya ventana no trae el día anterior al fallo | el indicador de fallos sin aviso | fuera del indicador; se cuentan y se dicen | no: el día no está en los datos | fallos_de_datos: 16996; fallos: 903 |
-| los modelos de datos con menos de 50.000 días de disco en el año | los rankings de modelos (preguntas 1 y 2, bloque 2) | se enseñan aparte con su recuento (reglas §7) | sí: se enseñan aparte; no entran en el ranking | minimo_dias_ano: 50000; modelos_de_datos: 61; modelos_que_pasan_algun_ano: 32 |
-| los años de edad, de todos los discos o de un modelo, con menos de 20 fallos | la conclusión de la pregunta 2 (a qué edad sube la tasa) | se enseñan sin conclusión (reglas §7, CP-009) | sí: se enseñan, sin conclusión | todos_anos: 0; todos_fallos: 0; celdas_modelo_edad: 99; celdas_modelo_edad_total: 207; fallos_en_esas_celdas: 462; fallos_con_edad_por_primera_aparicion: 79 |
+| los modelos de datos con menos de 50.000 días de disco en el año | los rankings de modelos (preguntas 1 y 2, bloque 2) | se enseñan aparte con su recuento (reglas, apartado 7) | sí: se enseñan aparte; no entran en el ranking | minimo_dias_ano: 50000; modelos_de_datos: 61; modelos_que_pasan_algun_ano: 32 |
+| los años de edad, de todos los discos o de un modelo, con menos de 20 fallos | la conclusión de la pregunta 2 (a qué edad sube la tasa) | se enseñan sin conclusión (reglas, apartado 7, cuestión 009) | sí: se enseñan, sin conclusión | todos_anos: 0; todos_fallos: 0; celdas_modelo_edad: 99; celdas_modelo_edad_total: 207; fallos_en_esas_celdas: 462; fallos_con_edad_por_primera_aparicion: 79 |
 | las fotos de discos de datos con failure = 1, del mismo día del fallo | el tablón de la pregunta 4 | fuera del tablón; su fallo sigue siendo objetivo de la foto anterior si cae en su horizonte | no: no hay nada que predecir en ellas | filas: 528; construccion: 373; validacion: 155 |
-| los fallos que caen después del último día del periodo de la foto | el objetivo de la pregunta 4 | el horizonte se recorta al borde del periodo (reglas §7: «se recorta o se queda fuera») | el de construcción, no sin mezclar periodos; el de validación, solo con la reserva |  |
+| los fallos que caen después del último día del periodo de la foto | el objetivo de la pregunta 4 | el horizonte se recorta al borde del periodo (reglas, apartado 7: «se recorta o se queda fuera») | el de construcción, no sin mezclar periodos; el de validación, solo con la reserva |  |
 | las 228 filas de las ventanas fechadas el 10/12/2022 que eran copia del 11/12/2022 | las ventanas de fallo, ya en la corrección (R-007) | quitadas en la corrección; ninguna traía un fallo | no: eran copias; siguen en data/raw/ | filas: 228; fecha: 2022-12-10; fuente: informes/correccion-datos.json, controles |
 
 Modelos de datos por debajo del mínimo, por año:
@@ -110,9 +110,9 @@ Modelos de datos por debajo del mínimo, por año:
 
 ## Datos personales
 
-- No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.
-- No hay datos de personas (reglas §9): el número de serie identifica un disco, no a una persona.
-- Esta skill no usa ni deja ninguna columna de datos personales.
+- No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.
+- No hay datos de personas (reglas, apartado 9): el número de serie identifica un disco, no a una persona.
+- Este método no usa ni deja ninguna columna de datos personales.
 
 ## Teoría aplicada
 

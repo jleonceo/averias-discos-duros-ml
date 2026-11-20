@@ -1,8 +1,8 @@
 {
- "skill": "preproduccion",
- "version_skill": "11/11/2026 (WF-85)",
+ "metodo": "preproduccion",
+ "version_metodo": "11/11/2026",
  "script": "scripts/19_prueba_final.py",
- "encargo": "prompts/23_encargo_prueba_final_y_reentreno.md, segunda parte",
+ "peticion": "peticiones/23_prueba_final_y_reentreno.md, segunda parte",
  "modo": "--ensayo-validacion",
  "fecha_datos": "2025-06-30",
  "fecha_ejecucion": "2026-11-19T16:53:12",
@@ -113,7 +113,7 @@
    "fallos": 472,
    "sin_puntuar": [
     {
-     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
      "filas": 4219
     },
     {
@@ -155,7 +155,7 @@
    "fallos": 514,
    "sin_puntuar": [
     {
-     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
      "filas": 4219
     },
     {
@@ -197,7 +197,7 @@
    "fallos": 325,
    "sin_puntuar": [
     {
-     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
      "filas": 4158
     },
     {
@@ -239,7 +239,7 @@
    "fallos": 321,
    "sin_puntuar": [
     {
-     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
      "filas": 4100
     },
     {
@@ -281,7 +281,7 @@
    "fallos": 316,
    "sin_puntuar": [
     {
-     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
      "filas": 4080
     },
     {
@@ -323,7 +323,7 @@
    "fallos": 314,
    "sin_puntuar": [
     {
-     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
      "filas": 4080
     },
     {
@@ -365,7 +365,7 @@
    "fallos": 359,
    "sin_puntuar": [
     {
-     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
      "filas": 4056
     },
     {
@@ -407,7 +407,7 @@
    "fallos": 340,
    "sin_puntuar": [
     {
-     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
      "filas": 4058
     },
     {
@@ -449,7 +449,7 @@
    "fallos": 342,
    "sin_puntuar": [
     {
-     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
      "filas": 4058
     },
     {
@@ -491,7 +491,7 @@
    "fallos": 369,
    "sin_puntuar": [
     {
-     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
      "filas": 3976
     },
     {
@@ -533,7 +533,7 @@
    "fallos": 313,
    "sin_puntuar": [
     {
-     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
      "filas": 3981
     },
     {
@@ -575,7 +575,7 @@
    "fallos": 319,
    "sin_puntuar": [
     {
-     "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+     "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
      "filas": 3979
     },
     {
@@ -620,7 +620,7 @@
   "igual_al_modelado": true,
   "huella_de_data_raw_igual": true
  },
- "datos_personales": "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque son de discos y no de personas (reglas §9). serial_number identifica un disco; esta prueba no usa ni deja ninguna columna de datos personales.",
+ "datos_personales": "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque son de discos y no de personas (reglas, apartado 9). serial_number identifica un disco; esta prueba no usa ni deja ninguna columna de datos personales.",
  "modelo_en_uso": {
   "ruta": "modelos/en_uso/modelo_riesgo.joblib",
   "huella": "6f504f7a291255326aa771c2826333adf67d2a9b36f56e8433d8a13622f9bbd2"
@@ -673,7 +673,7 @@
   },
   "sin_puntuar": [
    {
-    "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+    "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
     "filas": 48964
    },
    {
@@ -875,12 +875,12 @@
   {
    "nombre": "periodo",
    "valor": "2024-07 a 2025-06, fin 2025-06-30",
-   "origen": "encargo 23; guion §2"
+   "origen": "petición 23; guion §2"
   },
   {
    "nombre": "horizonte",
    "valor": 30,
-   "origen": "reglas §7; reglas de transformación §3"
+   "origen": "reglas, apartado 7; reglas de transformación §3"
   },
   {
    "nombre": "listas",
@@ -900,12 +900,12 @@
   {
    "nombre": "remuestreos y semilla",
    "valor": "1000, 42",
-   "origen": "encargo 23; scripts/15_modelado.py"
+   "origen": "petición 23; scripts/15_modelado.py"
   },
   {
    "nombre": "parte de las fotos en tomos en peligro",
    "valor": "0.05",
-   "origen": "encargo 23"
+   "origen": "petición 23"
   }
  ],
  "ejecucion": {

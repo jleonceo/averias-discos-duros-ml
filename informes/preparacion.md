@@ -12,7 +12,7 @@ Lo que tarda y lo que deja cada familia:
 
 ## Partición
 
-Partición por fecha, la de informes/particion.json: Por fecha, como manda reglas-negocio §7 (Juan, 17/11/2026): el modelo se usará hacia adelante, cada mes con las fotos nuevas, así que la validación es el periodo más reciente, del 01/07/2024 al 30/06/2025, y la construcción va del 01/01/2020 al 30/06/2024. Un disco sigue en servicio de una parte a la otra, como seguirá en producción: no se parte por disco.
+Partición por fecha, la de informes/particion.json: Por fecha, como manda reglas-negocio §7 (El responsable del caso, 17/11/2026): el modelo se usará hacia adelante, cada mes con las fotos nuevas, así que la validación es el periodo más reciente, del 01/07/2024 al 30/06/2025, y la construcción va del 01/01/2020 al 30/06/2024. Un disco sigue en servicio de una parte a la otra, como seguirá en producción: no se parte por disco.
 
 - **Entrenamiento:** 11.026.052 fotos, con un 0,1085 % que falla en 30 días.
 - **Validacion:** 3.578.809 fotos, con un 0,1203 % que falla en 30 días.
@@ -28,15 +28,15 @@ En entrenamiento fallan en 30 días 11.962 de las 11.026.052 fotos. Por cada fot
 
 En las 54 fotos mensuales, el mes con menos fallos fue el 2020-06-01, con 64. El que más, el 2023-04-01, con 559; la mediana es 214,5.
 
-Se trata solo al entrenar, con la muestra de partida, y la probabilidad se recalibra después (reglas §7).
+Se trata solo al entrenar, con la muestra de partida, y la probabilidad se recalibra después (reglas, apartado 7).
 
 ## Matriz de transformaciones
 
-La matriz la aprobó Juan el 2026-11-18. Sus decisiones:
+La matriz la aprobó el responsable del caso el 2026-11-18. Sus decisiones:
 
-- **P-01:** aprueba la matriz tal como la propuso el encargo 20 («Sí, siguiente pregunta»).
+- **P-01:** aprueba la matriz tal como la propuso la petición 20 («Sí, siguiente pregunta»).
 - **P-04:** las cuatro variables nuevas candidatas no se crean ahora. Se prueban primero si el modelo no supera a la
-- **P-05:** seis variables que repetían a otra salen de la matriz (smart_190_raw, copia de smart_194_raw, y cinco normalizados que son función exacta de su bruto: 183, 184, 187, 189 y 222), y smart_197_normalized entra solo en los árboles («arréglalo y haz lo que tengas que hacer», R68-114).
+- **P-05:** seis variables que repetían a otra salen de la matriz (smart_190_raw, copia de smart_194_raw, y cinco normalizados que son función exacta de su bruto: 183, 184, 187, 189 y 222), y smart_197_normalized entra solo en los árboles («arréglalo y haz lo que tengas que hacer», una nota del caso).
 - **P-02:** las 2.539 fotos sin lectura SMART van, en la logística, al tramo de referencia de cada variable.
 - **P-03:** un modelo de disco que no estaba en entrenamiento va a «otras».
 
@@ -132,7 +132,7 @@ En validación hay 3 modelos de disco que no salen en entrenamiento, con 19.757 
 ## Parámetros usados
 
 - **Semilla:** 42. Origen: parametros.md; sortea la muestra de partida.
-- **Muestra de partida:** todos los fallos y el 2 % de las sanas de cada mes. Origen: reglas §7 (R68-109).
+- **Muestra de partida:** todos los fallos y el 2 % de las sanas de cada mes. Origen: reglas, apartado 7.
 - **Mínimo por tramo y por categoría:** 30 fotos, 20 fallos y 20 sanas. Origen: parametros.md; ficha de la logística §4.2 y §4.3.
 - **Tramos:** el 0 y cada valor con al menos el 10 % aparte; hasta 3 trozos por debajo de 0 y 10 por encima. Origen: matriz aprobada, criterio «tramos».
 - **Relleno categórico:** sin dato. Origen: parametros.md y matriz (datacenter).
@@ -150,7 +150,7 @@ Los apartados del manual aplicados:
 
 ## Datos personales
 
-Ninguno: los datos son de discos y serial_number identifica un disco, no a una persona (reglas §9); el preprocesador no lo usa. No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.
+Ninguno: los datos son de discos y serial_number identifica un disco, no a una persona (reglas, apartado 9); el preprocesador no lo usa. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.
 
 ## Límites
 

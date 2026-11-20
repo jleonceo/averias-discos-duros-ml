@@ -4,7 +4,7 @@ Parte 1: monta en tests/tmp_transformacion/ un caso pequeño con las cuatro tabl
 aquí (siete fotos mensuales, de enero a julio de 2024, cada una en su propio bloque del Parquet; las ventanas de 14
 fallos; el recuento diario sacado de las fotos y una celda sin ninguna foto), con el JSON de la corrección, el del
 diseño con su plan de cruces y una copia corta del registro de transformaciones. Ejecuta el script con -W error y
-comprueba los casos que el encargo pide, cada uno con su caso que tiene que salir mal:
+comprueba los casos que la petición pide, cada uno con su caso que tiene que salir mal:
   - un fallo el día del borde del horizonte entra, y uno al día siguiente no;
   - el horizonte de la foto del 01/06/2024 acaba el 30/06/2024;
   - un fallo que cae en el horizonte de dos fotos da objetivo 1 en las dos;
@@ -233,7 +233,7 @@ def montar(variante=None):
     proc = TMP / "data" / "processed"
     proc.mkdir(parents=True)
     (TMP / "informes").mkdir()
-    (TMP / "contexto-proyecto" / "modelo").mkdir(parents=True)
+    (TMP / "config" / "modelo").mkdir(parents=True)
     fotos = filas_fotos(variante)
     escribir_fotos(fotos, proc / "fotos_mensuales_corregido.parquet")
     pq.write_table(tabla_ventanas(filas_ventanas(variante)), proc / "ventanas_fallo_corregido.parquet")
@@ -254,7 +254,7 @@ def montar(variante=None):
     (TMP / "informes" / "modelado-datos.json").write_text(json.dumps(
         {"resultado": {"estado": "OK"}, "aprobado": {"aprobado": True}, "plan_cruces": plan}, ensure_ascii=False),
         encoding="utf-8")
-    (TMP / "contexto-proyecto" / "modelo" / "registro-transformaciones.md").write_text(
+    (TMP / "config" / "modelo" / "registro-transformaciones.md").write_text(
         "---\ntitulo: registro de prueba\n---\n\n# Registro de transformaciones\n\n## R-009 · prueba · nada\n\n"
         "Ficha de prueba.\n", encoding="utf-8")
     return fotos
@@ -297,7 +297,7 @@ def fila(df, **clave):
 
 
 def parte_1():
-    """Ejecución normal: los nueve casos del encargo y las salidas."""
+    """Ejecución normal: los nueve casos de la petición y las salidas."""
     if not SCRIPT.exists():
         comprobar("existe scripts/05_transformacion_datos.py", False, "no existe")
         return
@@ -457,7 +457,7 @@ def parte_1():
                   for c in ("falla_30d", "horizonte_hasta", "precio_usd", "fecha_compra")))
     comprobar("validaciones: ninguna falla", all(v["resultado"] == "pasa" for v in js.get("validaciones", [])),
               [v for v in js.get("validaciones", []) if v["resultado"] != "pasa"])
-    reg = (TMP / "contexto-proyecto" / "modelo" / "registro-transformaciones.md").read_text(encoding="utf-8")
+    reg = (TMP / "config" / "modelo" / "registro-transformaciones.md").read_text(encoding="utf-8")
     numeros = re.findall(r"^## (R-\d+) ", reg, re.M)
     comprobar("registro: fichas nuevas desde R-010", numeros[:2] == ["R-009", "R-010"] and len(numeros) > 2, numeros)
     comprobar("registro: nueve campos por ficha", reg.count("9. **Cómo deshacer:**") == len(numeros) - 1)
@@ -465,7 +465,7 @@ def parte_1():
 
     # Una segunda ejecución no añade fichas
     p2 = ejecutar()
-    reg2 = (TMP / "contexto-proyecto" / "modelo" / "registro-transformaciones.md").read_text(encoding="utf-8")
+    reg2 = (TMP / "config" / "modelo" / "registro-transformaciones.md").read_text(encoding="utf-8")
     comprobar("segunda ejecución: termina con 0", p2.returncode == 0, p2.stderr[-1500:])
     comprobar("segunda ejecución: no añade fichas", re.findall(r"^## (R-\d+) ", reg2, re.M) == numeros)
 
@@ -487,7 +487,7 @@ def parte_1_casos_que_paran():
         nuevas = [x.name for x in (TMP / "data" / "processed").iterdir()
                   if not x.name.endswith("_corregido.parquet") and x.name != "calendario.parquet"]
         comprobar(f"{variante}: no deja ninguna tabla", not nuevas, nuevas)
-        reg = (TMP / "contexto-proyecto" / "modelo" / "registro-transformaciones.md").read_text(encoding="utf-8")
+        reg = (TMP / "config" / "modelo" / "registro-transformaciones.md").read_text(encoding="utf-8")
         comprobar(f"{variante}: no escribe fichas", re.findall(r"^## (R-\d+) ", reg, re.M) == ["R-009"])
     js = leer_json()
     cruce1 = [c for c in (js or {}).get("cruces", []) if c.get("orden") == 1]
@@ -533,7 +533,7 @@ def parte_2():
 if __name__ == "__main__":
     print("sys.executable:", sys.executable)
     try:
-        # Juan, 17/11: la palabra vetada para el conjunto de discos no sale en ningún texto del repositorio (R68-93).
+        # el responsable del caso, 17/11: la palabra vetada para el conjunto de discos no sale en ningún texto del repositorio.
         # Se escribe partida para que esta prueba tampoco la lleve.
         comprobar("el script no lleva la palabra vetada", ("flo" + "ta") not in SCRIPT.read_text(encoding="utf-8").lower())
         parte_1()

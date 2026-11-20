@@ -2528,14 +2528,14 @@
   "filas": 353401,
   "puntuadas": 349495,
   "sin_puntuar": {
-   "disco de arranque: fuera del modelo (reglas §3 y §7)": 3893,
+   "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)": 3893,
    "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)": 13
   },
   "filas_con_foto": true,
   "sin_horas": 6,
   "sin_horas_ni_primera_foto": 2,
   "edad_igual_con_toda_la_historia": true,
-  "historia_de_la_foto": "fotos de data/raw/podado/ (hasta junio de 2025) y ventanas de data/raw/podado/ y de la reserva; las fotos de la reserva de julio de 2025 a mayo de 2026 no se leen por el alcance del encargo. Solo cambian la edad de los discos sin horas que no salen en ninguna foto hasta junio de 2025: los dos casos tienen 0 años cumplidos",
+  "historia_de_la_foto": "fotos de data/raw/podado/ (hasta junio de 2025) y ventanas de data/raw/podado/ y de la reserva; las fotos de la reserva de julio de 2025 a mayo de 2026 no se leen por el alcance de la petición. Solo cambian la edad de los discos sin horas que no salen en ninguna foto hasta junio de 2025: los dos casos tienen 0 años cumplidos",
   "listas_iguales_a_los_primeros": true,
   "en_la_lista_1000": 1000
  },

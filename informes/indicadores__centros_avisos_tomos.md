@@ -6,13 +6,13 @@ Cinco preguntas calculadas con 47 cifras, todas con su segunda vía, y las nueve
 
 ## Las preguntas y su planteamiento
 
-Las cinco preguntas salen del plan de la analítica, aprobado por Juan el 16/11/2026, y del planteamiento 1.A. Entran los discos de datos, sin los de arranque. Lo que va por centro y por tomo cubre del 01/07/2023 al 30/06/2025, porque antes el sitio no consta; lo demás, del 01/01/2020 al 30/06/2025. La tasa anual de fallo es 100 × 365 × fallos / días de disco. Cuando el corte no está en el recuento, los días de cada modelo, centro y mes se reparten entre sus fotos.
+Las cinco preguntas salen del plan de la analítica, aprobado por el responsable del caso el 16/11/2026, y del planteamiento 1.A. Entran los discos de datos, sin los de arranque. Lo que va por centro y por tomo cubre del 01/07/2023 al 30/06/2025, porque antes el sitio no consta; lo demás, del 01/01/2020 al 30/06/2025. La tasa anual de fallo es 100 × 365 × fallos / días de disco. Cuando el corte no está en el recuento, los días de cada modelo, centro y mes se reparten entre sus fotos.
 
-- **B5.** Si algún centro de datos tiene más fallos que los demás con los mismos discos. Mínimo: 50.000 días de disco al año y 20 fallos (reglas §7; encargo, comprobación 1).
-- **B6.** Cuántos discos avisan, qué aviso anticipa más fallos y cuánto siguen funcionando. Mínimo: 30 fotos por grupo (skill, parametros.md).
+- **B5.** Si algún centro de datos tiene más fallos que los demás con los mismos discos. Mínimo: 50.000 días de disco al año y 20 fallos (reglas, apartado 7; petición, comprobación 1).
+- **B6.** Cuántos discos avisan, qué aviso anticipa más fallos y cuánto siguen funcionando. Mínimo: 30 fotos por grupo (método, parametros.md).
 - **B7.** Cuántas veces caen varios discos del mismo tomo cerca en el tiempo, y si pasa más que por azar. Mínimo: no aplica: se cuentan todos los tomos y se comparan con el azar.
-- **B8.** Si la temperatura, la carga de trabajo o los arranques acompañan a más fallos. Mínimo: 20 fallos en cada uno de los tres tramos de un grupo (encargo, criterio 8).
-- **MC.** Qué perfiles de disco tienen más riesgo, por fabricante, capacidad, edad, centro y aviso. Mínimo: 50.000 días de disco y 20 fallos por valor o celda (encargo, criterio 9).
+- **B8.** Si la temperatura, la carga de trabajo o los arranques acompañan a más fallos. Mínimo: 20 fallos en cada uno de los tres tramos de un grupo (petición, criterio 8).
+- **MC.** Qué perfiles de disco tienen más riesgo, por fabricante, capacidad, edad, centro y aviso. Mínimo: 50.000 días de disco y 20 fallos por valor o celda (petición, criterio 9).
 
 ## B5 · Si un centro falla más por sí mismo
 
@@ -50,8 +50,8 @@ Las comprobaciones de B5:
 - Hacia adelante: no aplica, porque los bloques 5 a 8 describen y no predicen.
 - La cobertura: sí.
 - Los periodos: sí.
-- Del encargo, cada φ usado es el medido y, si sale menor que 1, vale 1: sí.
-- Del encargo, la lectura de cada centro sale de su intervalo con φ: sí.
+- Del petición, cada φ usado es el medido y, si sale menor que 1, vale 1: sí.
+- Del petición, la lectura de cada centro sale de su intervalo con φ: sí.
 
 ## B6 · Qué hace Backblaze con los avisos
 
@@ -115,15 +115,15 @@ Las comprobaciones de B6:
 - Hacia adelante: no aplica, porque los bloques 5 a 8 describen y no predicen.
 - La cobertura: sí.
 - Los periodos: sí.
-- Del encargo, ninguna cifra cruzada con el fallo a 30 días usa una foto de validación: sí.
-- Del encargo, cada φ usado es el medido y, si sale menor que 1, vale 1: sí.
+- Del petición, ninguna cifra cruzada con el fallo a 30 días usa una foto de validación: sí.
+- Del petición, cada φ usado es el medido y, si sale menor que 1, vale 1: sí.
 
 ## B7 · Dónde está el riesgo de perder datos
 
 El azar baraja los días de los fallos dentro de cada centro y trimestre del fallo, 200 veces. Hay 489 tomos con dos fallos o más en 30 días, frente a 436,9 de media (percentil 95, 456,0): por encima del percentil 95.
 Con tres fallos o más en 7 días hay 8 tomos, frente a 2,91 de media (percentil 95, 6,0): por encima del percentil 95.
 
-Barajando solo dentro de cada centro, como antes del encargo 19: 2 fallos o más en 30 días, media 352,87 y percentil 95 377,0, por encima; 3 fallos o más en 7 días, media 1,11 y percentil 95 3,0, por encima.
+Barajando solo dentro de cada centro, como antes de la petición 19: 2 fallos o más en 30 días, media 352,87 y percentil 95 377,0, por encima; 3 fallos o más en 7 días, media 1,11 y percentil 95 3,0, por encima.
 
 Desde el 01/07/2023 hay 8.634 fallos; 8.493 tienen tomo, en 5.404 tomos, y 262 llegan antes de que acabe de rehacerse el anterior de su tomo. La paridad supuesta se alcanza 2 veces.
 
@@ -155,7 +155,7 @@ Las comprobaciones de B7:
 - Hacia adelante: no aplica, porque los bloques 5 a 8 describen y no predicen.
 - La cobertura: sí.
 - Los periodos: sí.
-- Del encargo, la marca «por encima del percentil 95» de cada medida del azar sale de comparar sus tomos observados con su percentil 95: sí.
+- Del petición, la marca «por encima del percentil 95» de cada medida del azar sale de comparar sus tomos observados con su percentil 95: sí.
 
 ## B8 · Otros factores del disco
 
@@ -179,7 +179,7 @@ Las comprobaciones de B8:
 - Hacia adelante: no aplica, porque los bloques 5 a 8 describen y no predicen.
 - La cobertura: sí.
 - Los periodos: sí.
-- Del encargo, en cada factor, los fallos de los tramos, de los grupos aparte y sin tramo suman los fallos con foto: sí.
+- Del petición, en cada factor, los fallos de los tramos, de los grupos aparte y sin tramo suman los fallos con foto: sí.
 
 ## MC · Perfiles de riesgo y lo que falta en los datos
 
@@ -224,7 +224,7 @@ Las comprobaciones de MC:
 - Hacia adelante: no aplica, porque los bloques 5 a 8 describen y no predicen.
 - La cobertura: sí.
 - Los periodos: sí.
-- Del encargo, cada φ usado es el medido y, si sale menor que 1, vale 1: sí.
+- Del petición, cada φ usado es el medido y, si sale menor que 1, vale 1: sí.
 
 ## Lo que no saca conclusión
 
@@ -275,24 +275,24 @@ Las segundas vías:
 ## Parámetros usados
 
 - mínimo de días de disco al año de un centro, un valor o una celda: 50.000 (reglas-negocio §7; en un centro, sobre los dos años del sitio (100.000 días)).
-- mínimo de fallos de un centro, un tramo, un valor o una celda: 20 (encargo, criterios 8 y 9 y comprobación 1 (yyz1 sin conclusión); reglas §7, CP-009).
-- mínimo de fotos de un grupo de aviso: 30 (parametros.md de la skill).
-- tasa ajustada por centro: estandarización indirecta con la tasa de cada modelo, año de edad y trimestre de todos los centros, «sin dato» incluido (criterio técnico 1 de Claude, en el encargo 15; el trimestre, encargo 19).
-- φ de B5: chi2 de Pearson / grados de libertad en las celdas centro × trimestre de los centros que constan, con los esperados reescalados para que cada centro sume sus fallos; si sale menor que 1, vale 1 (criterio técnico de Claude (reglas §7), encargo 19).
-- φ de B6: binomial por grupo de aviso, en las celdas del trimestre de la foto: suma de (fallan − n·p)² / (n·p·(1 − p)) entre celdas − 1; si sale menor que 1, vale 1 (criterio técnico de Claude (reglas §7), encargo 19).
-- φ del minicubo: el de B3 del 09, calculado igual: celdas modelo × año de edad × trimestre de dias_por_tramo con la tasa de su modelo y año de edad (criterio técnico de Claude (reglas §7), encargo 19).
-- intervalo con φ: exacto de Poisson con observados y esperados (o fallos y días) entre φ; Clopper-Pearson con fallan/φ y fotos/φ en el desenlace (encargo 19).
+- mínimo de fallos de un centro, un tramo, un valor o una celda: 20 (petición, criterios 8 y 9 y comprobación 1 (yyz1 sin conclusión); reglas, apartado 7, cuestión 009).
+- mínimo de fotos de un grupo de aviso: 30 (parametros.md de el método).
+- tasa ajustada por centro: estandarización indirecta con la tasa de cada modelo, año de edad y trimestre de todos los centros, «sin dato» incluido (criterio técnico 1, en la petición 15; el trimestre, petición 19).
+- φ de B5: chi2 de Pearson / grados de libertad en las celdas centro × trimestre de los centros que constan, con los esperados reescalados para que cada centro sume sus fallos; si sale menor que 1, vale 1 (criterio técnico (reglas, apartado 7), petición 19).
+- φ de B6: binomial por grupo de aviso, en las celdas del trimestre de la foto: suma de (fallan − n·p)² / (n·p·(1 − p)) entre celdas − 1; si sale menor que 1, vale 1 (criterio técnico (reglas, apartado 7), petición 19).
+- φ del minicubo: el de B3 del 09, calculado igual: celdas modelo × año de edad × trimestre de dias_por_tramo con la tasa de su modelo y año de edad (criterio técnico (reglas, apartado 7), petición 19).
+- intervalo con φ: exacto de Poisson con observados y esperados (o fallos y días) entre φ; Clopper-Pearson con fallan/φ y fotos/φ en el desenlace (petición 19).
 - desenlace a 90 días: falla, desaparece o sigue, por foto (criterio técnico 2).
 - tomos con k fallos en d días: k = 2, 3 y 4; d = 7 y 30 (criterio técnico 3).
-- azar de los tomos: 200 repeticiones, semilla 68, días barajados dentro de cada centro y trimestre del fallo, y al lado dentro de cada centro; media y percentil 95 (interpolación lineal de numpy) (criterio técnico 4; el trimestre, encargo 19).
-- discos a la vez: fallos anteriores del tomo con día + plazo posterior al día del fallo, más uno; paridad supuesta 3, 4 y 5 (criterio técnico 5; reglas §4).
+- azar de los tomos: 200 repeticiones, semilla 68, días barajados dentro de cada centro y trimestre del fallo, y al lado dentro de cada centro; media y percentil 95 (interpolación lineal de numpy) (criterio técnico 4; el trimestre, petición 19).
+- discos a la vez: fallos anteriores del tomo con día + plazo posterior al día del fallo, más uno; paridad supuesta 3, 4 y 5 (criterio técnico 5; reglas, apartado 4).
 - riesgo vivo: binomial de 2 o más y de 3 o más con los discos del tomo y la proporción del mes (criterio técnico 6).
 - reparto de los días: días de la celda de modelo, mes y centro entre sus fotos (criterio técnico 7).
-- tramos del bloque 8: temperatura ±3 °C de la mediana del modelo; arranques 1 y 2 veces la mediana de modelo y edad; escritos y leídos por tercios (criterio técnico 8, aprobado por Juan el 18/11/2026 (R68-97)).
+- tramos del bloque 8: temperatura ±3 °C de la mediana del modelo; arranques 1 y 2 veces la mediana de modelo y edad; escritos y leídos por tercios (criterio técnico 8, aprobado por el responsable del caso el 18/11/2026).
 - minicubo: cinco dimensiones, tasa por el reparto, diez celdas por par en el nivel 2 (criterio técnico 9; assets/23_metodo_minicubo.md).
-- confianza de los intervalos: 0,95 (parametros.md de la skill y 42.6 del manual).
-- tolerancia de las segundas vías en días repartidos: 1e-06 (encargo, «SEGUNDA VÍA»).
-- semilla: 68 (encargo, criterio 4).
+- confianza de los intervalos: 0,95 (parametros.md de el método y 42.6 del manual).
+- tolerancia de las segundas vías en días repartidos: 1e-06 (petición, «SEGUNDA VÍA»).
+- semilla: 68 (petición, criterio 4).
 
 Apartados del manual aplicados:
 
@@ -304,11 +304,11 @@ Apartados del manual aplicados:
 - 5.5: cada tasa es suma de fallos entre suma de días, con su base, nunca la media de las tasas.
 - 5.6: la tasa bruta de un centro mezcla modelos y edades; la ajustada compara con la misma mezcla.
 - 4.5 y 4.7: intervalo al 95 %; el mínimo de casos lo fijan las reglas del caso.
-- 4.11 y 4.12: las tasas no se contrastan como dos proporciones: van con el intervalo exacto de Poisson; el desenlace por aviso, con el exacto de Clopper-Pearson; los dos, ensanchados por φ (encargo 19).
+- 4.11 y 4.12: las tasas no se contrastan como dos proporciones: van con el intervalo exacto de Poisson; el desenlace por aviso, con el exacto de Clopper-Pearson; los dos, ensanchados por φ (petición 19).
 
 ## Datos personales
 
-- No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección, porque no traen datos de personas.
+- No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección, porque no traen datos de personas.
 - No hay datos de personas (reglas-negocio §9): el número de serie identifica un disco, no a una persona.
 - Este cálculo usa el número de serie solo para unir fotos, fallos y ventanas, y no deja ninguno en el JSON ni en el informe.
 
@@ -320,13 +320,13 @@ Apartados del manual aplicados:
 - El aviso es acumulado y casi nunca vuelve a cero, así que el desenlace a 90 días cuenta fotos, no discos, y el riesgo vivo se compara con el azar.
 - La ventana da 16.093 fallos con día anterior y 4.046 sin aviso; fallos_detalle da 16.093 y 4.046. Se dan las de fallos_detalle, que son las de las reglas.
 - Los contadores 187 y 188 solo los traen los Seagate, y los datos escritos y leídos solo se miden en Seagate: el porcentaje que avisa no se compara entre fabricantes.
-- La paridad de cada vault no está en los datos: se usa la supuesta de las reglas §4. El tiempo de reconstrucción es la regla de Backblaze, un día por TB más uno.
+- La paridad de cada vault no está en los datos: se usa la supuesta de las reglas, apartado 4. El tiempo de reconstrucción es la regla de Backblaze, un día por TB más uno.
 - La tasa del minicubo usa los días repartidos por las fotos, que dejan fuera los días de las celdas sin foto: la del recuento por fabricante y capacidad va al lado, con su diferencia.
-- Las reglas §5 dicen de 20 a 36 fallos sin ranura por trimestre, medido en el reconocimiento con otros datos; las cifras de fallos_detalle no coinciden con ese rango.
-- Según lo medido al preparar el encargo 15, la temperatura de un disco casi no cambia de un mes a otro: el tramo dice cómo de caliente trabaja ese disco respecto a su modelo, no un mes caluroso.
+- Las reglas, apartado 5 dicen de 20 a 36 fallos sin ranura por trimestre, medido en el reconocimiento con otros datos; las cifras de fallos_detalle no coinciden con ese rango.
+- Según lo medido al preparar la petición 15, la temperatura de un disco casi no cambia de un mes a otro: el tramo dice cómo de caliente trabaja ese disco respecto a su modelo, no un mes caluroso.
 - La tasa ajustada compara modelos presentes en varios centros: 21 modelos pasan el mínimo de días en dos centros o más.
 - Los intervalos de B5, B6 y el minicubo llevan φ: 1,0196 en B5 y 5,0189 en el minicubo; en B6, uno por grupo. φ mide la variación entre trimestres y no la que pueda haber dentro de un trimestre.
 - El último año de los datos, 2025, llega hasta el 30/06: su «sin aviso» por año va marcado como incompleto.
-- Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas §5).
-- Pendiente: el auditor sin memoria del cierre del paso (skill §8) necesita el sí de Juan, porque es un agente.
+- Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas, apartado 5).
+- Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente.
 

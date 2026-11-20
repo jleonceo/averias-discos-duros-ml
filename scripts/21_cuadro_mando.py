@@ -15,7 +15,7 @@ Lee, sin cambiarlos:
 - la última carpeta de data/predicciones/ con predicciones_2026-06.parquet y resumen_2026-06.json, la foto
   data/raw/reserva/fotos_mensuales/2026-06.parquet, data/raw/reserva/fallos.parquet y data/raw/reserva/ventanas_fallo/;
 - para preparar la foto como produccion/ejecutar.py: data/raw/podado/ (fotos y ventanas) y las ventanas de la reserva;
-  las fotos de la reserva anteriores a junio de 2026 no se leen (alcance del encargo, ver «historia_de_la_foto»).
+  las fotos de la reserva anteriores a junio de 2026 no se leen (alcance de la petición, ver «historia_de_la_foto»).
 
 Deja informes/cuadro_mando.html, informes/cuadro_mando.json e informes/cuadro_mando_lista.csv (la lista de 1.000 sin
 filtros).
@@ -86,7 +86,7 @@ SALIDA_HTML = INFORMES / "cuadro_mando.html"
 SALIDA_JSON = INFORMES / "cuadro_mando.json"
 SALIDA_CSV = INFORMES / "cuadro_mando_lista.csv"
 
-# Fechas de los datos: las pestañas de análisis y la lista (encargo)
+# Fechas de los datos: las pestañas de análisis y la lista (petición)
 FECHA_DATOS = "2025-06-30"
 FECHA_LISTA = "2026-06-01"
 FECHA_RESERVA = "2026-06-30"
@@ -105,24 +105,24 @@ FALLOS_RESERVA = "data/raw/reserva/fallos.parquet"
 VENTANAS_RESERVA = "data/raw/reserva/ventanas_fallo"
 FOTOS_PODADO = "data/raw/podado/fotos_mensuales"
 VENTANAS_PODADO = "data/raw/podado/ventanas_fallo"
-DECISIONES = "contexto-proyecto/modelo/decisiones-correccion.json"
+DECISIONES = "config/modelo/decisiones-correccion.json"
 CONFIGURACION = "produccion/configuracion.json"
 EJECUTAR = "produccion/ejecutar.py"
 PREDICCIONES = "data/predicciones"
 MES_LISTA = "2026-06"
 
-# Periodos: el último año y el anterior (reglas §5) y el primer día con centro de datos (reglas §4)
+# Periodos: el último año y el anterior (reglas, apartado 5) y el primer día con centro de datos (reglas, apartado 4)
 INICIO_ULTIMO = pd.Timestamp("2024-07-01")
 FIN_ULTIMO = pd.Timestamp("2025-06-01")
 INICIO_ANTERIOR = pd.Timestamp("2023-07-01")
 FIN_ANTERIOR = pd.Timestamp("2024-06-01")
 INICIO_SITIO = pd.Timestamp("2023-07-01")
 INICIO_DATOS = pd.Timestamp("2020-01-01")
-# Mínimo para concluir: 50.000 días de disco en el año y 20 fallos (reglas §7 y CP-012)
+# Mínimo para concluir: 50.000 días de disco en el año y 20 fallos (reglas, apartado 7 y cuestión 012)
 MINIMO_DIAS_ANO = 50_000
 MINIMO_FALLOS = 20
 MINIMO_FALLOS_EDAD = 20
-# Confianza de los intervalos, días por año de la tasa y años de edad (reglas §6 y §7; script 09)
+# Confianza de los intervalos, días por año de la tasa y años de edad (reglas, apartado 6 y §7; script 09)
 CONFIANZA = 0.95
 FACTOR_TASA = 100 * 365
 EDADES = list(range(11))
@@ -137,7 +137,7 @@ CIUDADES = {"ams5": "Ámsterdam", "iad1": "Virginia", "phx1": "Phoenix", "sac0":
 SITIO = ["datacenter", "vault_id", "pod_id", "pod_slot_num"]
 # Tolerancia al comparar con los JSON, que guardan las cifras con diez decimales
 TOLERANCIA = 1e-8
-# Nombre de la regla, siempre entero (Juan, 19/11/2026)
+# Nombre de la regla, siempre entero (El responsable del caso, 19/11/2026)
 REGLA = "regla de los cinco avisos SMART"
 # Palabras vetadas en todo el cuadro (las del informe final, scripts/17)
 PROHIBIDAS = [r"\bflota\b", r"\bparque\b", r"\bunidades\b", r"regla actual", r"gastar menos", r"\bbajar el coste",
@@ -259,8 +259,8 @@ def sin_prohibidas(texto):
 def intervalo_poisson(fallos, dias, confianza=CONFIANZA, phi=1.0):
     """Tasa anual en % y su intervalo exacto de Poisson (con chi2), pasados a tasa con los mismos días de disco.
 
-    Inferior chi2.ppf(α/2; 2f)/2, 0 si f = 0; superior chi2.ppf(1 − α/2; 2f + 2)/2 (criterio técnico de Claude, encargo).
-    Con φ (encargo 19, reglas §7), los fallos y los días se dividen entre φ: la tasa no cambia y el intervalo se ensancha.
+    Inferior chi2.ppf(α/2; 2f)/2, 0 si f = 0; superior chi2.ppf(1 − α/2; 2f + 2)/2 (criterio técnico, petición).
+    Con φ (petición 19, reglas, apartado 7), los fallos y los días se dividen entre φ: la tasa no cambia y el intervalo se ensancha.
     """
     a = 1 - confianza
     f = int(fallos)
@@ -276,8 +276,8 @@ def intervalo_poisson(fallos, dias, confianza=CONFIANZA, phi=1.0):
 def frente_al_anterior(filas, minimo, phi=1.0):
     """Tasa, intervalo y si sube o baja frente al año anterior; sin conclusión si alguno tiene menos de `minimo` fallos.
 
-    «Sube» si el intervalo del año no se solapa con el del anterior por arriba (reglas §7); «baja», lo mismo por abajo.
-    El intervalo lleva el φ de B3 (encargo 19).
+    «Sube» si el intervalo del año no se solapa con el del anterior por arriba (reglas, apartado 7); «baja», lo mismo por abajo.
+    El intervalo lleva el φ de B3 (petición 19).
     """
     out, prev = [], None
     for f in filas:
@@ -308,7 +308,7 @@ def tasa_por_edad(dpt_grupo, columna_fallos="fallos", phi=1.0):
 
 # Copiada letra a letra de scripts/09_indicadores_discos_modelos_edad.py, phi_poisson (igual en scripts/11)
 def phi_poisson(grupos, celdas, observados, esperados):
-    """φ, lo que varían los fallos entre celdas más de lo que supone Poisson (encargo 19; reglas §7).
+    """φ, lo que varían los fallos entre celdas más de lo que supone Poisson (petición 19; reglas, apartado 7).
 
     Suma observados y esperados por grupo y celda; deja fuera las celdas sin esperados; reescala los esperados de cada
     grupo para que sumen sus observados; chi2 de Pearson = suma de (o − e)² / e; grados de libertad = celdas − grupos.
@@ -333,7 +333,7 @@ def phi_poisson(grupos, celdas, observados, esperados):
 
 # Copiada letra a letra de scripts/09_indicadores_discos_modelos_edad.py, phi_edad (el φ de B3)
 def phi_edad(dpt):
-    """φ de B3 y del minicubo (encargo 19): celdas de modelo × año de edad × trimestre de dias_por_tramo, con el
+    """φ de B3 y del minicubo (petición 19): celdas de modelo × año de edad × trimestre de dias_por_tramo, con el
     esperado de cada una = sus días × la tasa de su modelo y año de edad en todo el periodo; grupo, modelo y año de
     edad. Una fila sin días cuenta 0 días y sus fallos."""
     d = dpt.assign(dias=dpt["dias_disco"].fillna(0.0), q=dpt["mes"].dt.year * 10 + dpt["mes"].dt.quarter)
@@ -347,7 +347,7 @@ def phi_edad(dpt):
 def razon_poisson(observados, esperados, confianza=CONFIANZA, phi=1.0):
     """Razón observados / esperados y el intervalo exacto de Poisson de los observados dividido por los esperados.
 
-    Con φ (encargo 19), observados y esperados entre φ: la razón no cambia.
+    Con φ (petición 19), observados y esperados entre φ: la razón no cambia.
     """
     a = 1 - confianza
     o = int(observados)
@@ -359,7 +359,7 @@ def razon_poisson(observados, esperados, confianza=CONFIANZA, phi=1.0):
 
 # Copiada letra a letra de scripts/11_indicadores_centros_avisos_tomos.py, ajustada
 def ajustada(dpt):
-    """Estandarización indirecta por centro (encargo 15, criterio 1; manual 5.6), con la mezcla del encargo 19.
+    """Estandarización indirecta por centro (petición 15, criterio 1; manual 5.6), con la mezcla de la petición 19.
 
     Tasa de cada modelo, año de edad y trimestre con todos los centros juntos, «sin dato» incluido; esperados de un
     centro = suma de sus días × esa tasa; razón = observados / esperados; tasa ajustada = razón × tasa de todos. φ se
@@ -394,7 +394,7 @@ def ajustada(dpt):
 
 # Copiada letra a letra de scripts/11_indicadores_centros_avisos_tomos.py, veredicto
 def veredicto(centro, dias_ano, fallos, desde, hasta):
-    """Lo que dice la razón de un centro: solo con el mínimo de días al año y de fallos (reglas §7; encargo)."""
+    """Lo que dice la razón de un centro: solo con el mínimo de días al año y de fallos (reglas, apartado 7; petición)."""
     if centro == SIN_DATO:
         return "aparte"
     if dias_ano < MINIMO_DIAS_ANO or fallos < MINIMO_FALLOS:
@@ -483,7 +483,7 @@ def leer_cifras(entradas):
 
 
 # =====================================================================================================================
-# LOS TOMOS EN PELIGRO EL 01/06/2026 (reglas §7, CP-004)
+# LOS TOMOS EN PELIGRO EL 01/06/2026 (reglas, apartado 7, cuestión 004)
 # =====================================================================================================================
 
 def clave_tomo(centro, vault, ranura):
@@ -532,7 +532,7 @@ def sitios_de_fallos(fallos, ventanas, mapeo, minimo, fecha, pares_extra=None):
     El tomo, copiado de scripts/05 §7.3: la última fila de su ventana hasta el día del fallo con los cuatro datos de
     SITIO no vacíos (datacenter, vault_id, pod_id y pod_slot_num); su clave es centro|vault|ranura. El modelo, el de la última fila de su
     ventana hasta el día del fallo (en el 05, la del día del fallo, que es esa misma cuando existe). La capacidad, la
-    única válida de su modelo (reglas §3; pipeline_riesgo.capacidades_del_modelo) con las ventanas y la foto. El plazo,
+    única válida de su modelo (reglas, apartado 3; pipeline_riesgo.capacidades_del_modelo) con las ventanas y la foto. El plazo,
     copiado de scripts/05 §7.7: capacidad_tb + 1.
     """
     fecha = pd.Timestamp(fecha)
@@ -568,7 +568,7 @@ def sitios_de_fallos(fallos, ventanas, mapeo, minimo, fecha, pares_extra=None):
 
 def tomos_en_peligro(sitios, fecha):
     """Los tomos en peligro el día `fecha`: un disco de datos suyo falló antes y los días desde su fallo son menos que
-    su plazo; el último día del plazo ya no cuenta (reglas §7, «Fallos que coinciden en un tomo»; CP-004)."""
+    su plazo; el último día del plazo ya no cuenta (reglas, apartado 7, «Fallos que coinciden en un tomo»; cuestión 004)."""
     dias = (pd.Timestamp(fecha) - sitios["dia_fallo"]) / pd.Timedelta(days=1)
     en = sitios["datos"] & sitios["tomo"].notna() & (dias > 0) & (dias < sitios["plazo_dias"])
     return set(sitios.loc[en.to_numpy(), "tomo"])
@@ -708,7 +708,7 @@ def leer_lista(raiz, mapeo, minimo):
     info["edad_igual_con_toda_la_historia"] = bool((unida.loc[dudosas, "edad"] == 0).all())
     info["historia_de_la_foto"] = ("fotos de data/raw/podado/ (hasta junio de 2025) y ventanas de data/raw/podado/ y de "
                                    "la reserva; las fotos de la reserva de julio de 2025 a mayo de 2026 no se leen por el "
-                                   "alcance del encargo. Solo cambian la edad de los discos sin horas que no salen en "
+                                   "alcance de la petición. Solo cambian la edad de los discos sin horas que no salen en "
                                    "ninguna foto hasta junio de 2025: los dos casos tienen 0 años cumplidos")
     unida["tomo"] = [clave_tomo(c, v, r) for c, v, r in zip(unida["datacenter"], unida["vault_id"], unida["pod_slot_num"])]
     # El puesto en la foto entera: probabilidad de mayor a menor y empate por serial_number (como ejecutar.marcas)
@@ -1810,7 +1810,7 @@ def comparar_con_json(dp, cifras, datos):
 
 
 def control_anos(datos):
-    """Días de disco, fallos y tasa del último año y del anterior, sin filtros, para compararlos con el encargo."""
+    """Días de disco, fallos y tasa del último año y del anterior, sin filtros, para compararlos con la petición."""
     a = _arrays(datos)
     salida = {}
     for nombre, (i0, i1) in (("ultimo_ano", datos["i_ultimo"]), ("ano_anterior", datos["i_anterior"])):

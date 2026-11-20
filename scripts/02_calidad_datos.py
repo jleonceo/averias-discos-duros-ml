@@ -4,18 +4,18 @@ Diagnostica, sin corregir, juntar ni transformar nada, los cuatro datasets del c
 mensuales, ventanas de fallo, recuento diario y lista de fallos. El esquema de Backblaze no es un dataset: solo entra
 en la revisión de nombres.
 
-Parte del diccionario del origen, contexto-proyecto/fuentes/diccionario-datos-origen.json, que escribe
+Parte del diccionario del origen, config/fuentes/diccionario-datos-origen.json, que escribe
 scripts/01_diccionario_datos.py: tiene que existir, no estar PARADO ni en ERROR y ser más nuevo que ese script. De él
 toma filas, tipos, roles, vacíos, valores distintos, variantes, categorías raras y la clase de cada campo.
 
-Sigue el plan aprobado por Juan el 17/11/2026 (informes/plan_calidad_datos.md, «Lo aprobado»). En validación (del
+Sigue el plan aprobado por el responsable del caso el 17/11/2026 (informes/plan_calidad_datos.md, «Lo aprobado»). En validación (del
 01/07/2024 al 30/06/2025) solo cuenta filas, vacíos y formatos: las colas, los atípicos y el objetivo se miran con la
 construcción, y nada se compara contra el fallo.
 
 Escribe informes/calidad-datos.json y, a partir de él, informes/calidad-datos.md.
 
 Uso: python -W error scripts/02_calidad_datos.py
-Skill: calidad-datos (versión 11/11/2026, WF-87), con programacion-del-caso.
+Método: calidad-datos (versión 11/11/2026, una nota del método), con programacion-del-caso.
 """
 
 # =================================================================================================================
@@ -43,8 +43,8 @@ import pyarrow.parquet as pq
 # -----------------------------------------------------------------------------------------------------------------
 CASO = Path(__file__).resolve().parents[1]
 SCRIPT_DICCIONARIO = Path(__file__).resolve().parent / "01_diccionario_datos.py"
-SKILL = "calidad-datos"
-VERSION_SKILL = "11/11/2026 (WF-87)"
+METODO = "calidad-datos"
+VERSION_METODO = "11/11/2026"
 SCRIPT = "scripts/02_calidad_datos.py"
 
 # -----------------------------------------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ FIN_DATOS = dt.date(2025, 6, 30)
 EPOCA = dt.date(1970, 1, 1)
 
 # -----------------------------------------------------------------------------------------------------------------
-# 1.3 Parámetros de la skill (parametros.md), con los valores del plan aprobado
+# 1.3 Parámetros de el método (parametros.md), con los valores del plan aprobado
 # -----------------------------------------------------------------------------------------------------------------
 LIMITE_IQR = 1.5
 LIMITE_Z = 3.5
@@ -96,18 +96,18 @@ PARAMETROS = [
 # -----------------------------------------------------------------------------------------------------------------
 # 1.4 Reglas de negocio llevadas a código (reglas-negocio.md) y lo que fija el plan aprobado
 # -----------------------------------------------------------------------------------------------------------------
-# Reglas §3: los discos de arranque son los de 0,2 a 2 TB; los de datos, de 4 TB o más; -1 y 0,1 TB son lecturas malas.
+# Reglas, apartado 3: los discos de arranque son los de 0,2 a 2 TB; los de datos, de 4 TB o más; -1 y 0,1 TB son lecturas malas.
 # El grupo de una fila sale de la capacidad de su modelo. Los cortes caen en huecos donde no hay ninguna capacidad.
 CAPACIDAD_MIN_VALIDA = 2e11
 CAPACIDAD_MAX_ARRANQUE = 3e12
 GRUPOS = ["datos", "arranque", "sin capacidad única"]
 
-# Reglas §3: el fabricante sale del nombre del modelo, con dos excepciones
+# Reglas, apartado 3: el fabricante sale del nombre del modelo, con dos excepciones
 PREFIJOS_FABRICANTE = (("TOSHIBA ", "Toshiba"), ("WDC ", "WDC"), ("HGST ", "HGST"), ("ST", "Seagate"))
 EXCEPCIONES_FABRICANTE = {"Hitachi HDS5C4040ALE630": "HGST", "WUH721816ALE6L4": "WDC"}
 FABRICANTES = ["Seagate", "Toshiba", "WDC", "HGST", "sin patrón"]
 
-# Reglas §3: los cinco contadores de avería; reglas §5 y plan: los de formato propio de cada fabricante
+# Reglas, apartado 3: los cinco contadores de avería; reglas, apartado 5 y plan: los de formato propio de cada fabricante
 CONTADORES_AVERIA = ["smart_5_raw", "smart_187_raw", "smart_188_raw", "smart_197_raw", "smart_198_raw"]
 FORMATO_PROPIO = ["smart_1_raw", "smart_7_raw", "smart_188_raw", "smart_195_raw"]
 HORAS = "smart_9_raw"
@@ -121,32 +121,32 @@ TOPE_16_BITS = 65535
 TEMPERATURA_MIN, TEMPERATURA_MAX = 10, 70
 HORAS_DIA, HORAS_ANO = 24, 8760
 
-# Objetivo del modelo a 30 días (CP-004); a 90 días, el que usó el reconocimiento, para comparar
+# Objetivo del modelo a 30 días (cuestión 004); a 90 días, el que usó el reconocimiento, para comparar
 HORIZONTES_OBJETIVO = (30, 90)
 
 # Días hundidos del recuento que dejó el reconocimiento para este paso (plan aprobado)
 DIAS_HUNDIDOS = ["2022-06-06", "2023-03-19", "2023-04-13", "2023-04-16", "2023-07-05", "2023-12-18", "2025-05-12"]
 
-# Textos que se buscan como códigos de ausencia (SKILL §3.4 y comprobaciones §4), en minúsculas y sin espacios de los lados
+# Textos que se buscan como códigos de ausencia (método, apartado 3.4 y comprobaciones §4), en minúsculas y sin espacios de los lados
 TEXTOS_AUSENCIA = {"", "none", "null", "nan", "n/a", "na", "-", "pendiente", "unknown", "desconocido", "sin dato", "sin datos",
                    "0000-00-00", "1900-01-01"}
-# Reglas §4 y §5: «sin dato» del centro en el recuento quiere decir que no consta
+# Reglas, apartado 4 y §5: «sin dato» del centro en el recuento quiere decir que no consta
 TEXTOS_DOCUMENTADOS = {("recuento_diario", "datacenter", "sin dato"): "reglas de negocio §4 y §5"}
 PATRON_INSTRUCCION = re.compile(r"ignor|recalcul|instrucci|olvida|prompt", re.I)
 PATRON_ISO = r"\d{4}-\d{2}-\d{2}"
 
-# Lo que el plan aprobado cerró el 17/11/2026 como criterio técnico (Juan: «Sí, apruebo»)
+# Lo que el plan aprobado cerró el 17/11/2026 como criterio técnico (El responsable del caso: «Sí, apruebo»)
 LO_CERRADO = {
     "D1": {"fecha": "2026-11-17", "pendientes_del_diccionario": ["P-01", "P-05", "P-09"],
            "texto": "los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo; los junta la corrección"},
     "D2": {"fecha": "2026-11-17", "pendientes_del_diccionario": ["P-04", "P-08"],
-           "texto": "el 188 cuenta como aviso cuando pasa de cero (reglas §3) y no entra en la suma de la regla de los contadores (reglas §7, CP-010)"},
+           "texto": "el 188 cuenta como aviso cuando pasa de cero (reglas, apartado 3) y no entra en la suma de la regla de los contadores (reglas, apartado 7, cuestión 010)"},
     "D3": {"fecha": "2026-11-17", "pendientes_del_diccionario": ["P-02", "P-03", "P-06", "P-07"],
            "texto": "el 5 y el 187 pegados a 65.535 son el tope del contador; el disco avisa igual"},
     "D4": {"fecha": "2026-11-17", "pendientes_del_diccionario": [],
            "texto": "el 0 de cluster_id no se decide, porque ninguna pregunta usa esa columna: se cuenta y se dice"},
 }
-PLAN_APROBADO = {"por": "Juan", "fecha": "2026-11-17"}
+PLAN_APROBADO = {"por": "El responsable del caso", "fecha": "2026-11-17"}
 # Las ocho reglas candidatas entraron como comprobaciones con el plan aprobado («Lo aprobado»)
 RC_APROBADAS_CON_EL_PLAN = True
 # Qué lado de cada relación cuenta como problema si se queda sin pareja; el otro lado sin pareja es lo normal
@@ -154,7 +154,7 @@ LADOS_QUE_CUENTAN = {("fallos", "ventanas_fallo"): ("izquierda", "derecha"), ("f
                      ("ventanas_fallo", "fotos_mensuales"): ("izquierda", "derecha"), ("recuento_diario", "fotos_mensuales"): ("izquierda", "derecha"),
                      ("recuento_diario", "ventanas_fallo"): ("derecha",), ("recuento_diario", "fallos"): ("izquierda", "derecha")}
 
-# Las ocho reglas candidatas del plan, aprobadas por Juan como comprobaciones el 17/11/2026
+# Las ocho reglas candidatas del plan, aprobadas por el responsable del caso como comprobaciones el 17/11/2026
 REGLAS_CANDIDATAS = [
     ("RC-01", "fotos_mensuales", ["smart_9_raw"], "Las horas encendido de un disco no bajan entre dos fotos."),
     ("RC-02", "fotos_mensuales", ["model", "capacity_bytes"], "El modelo y la capacidad de un disco no cambian entre fotos."),
@@ -227,12 +227,12 @@ def pct(parte, total):
 
 
 def grupo_de_capacidad(capacidad):
-    """Grupo de una capacidad válida: datos o arranque (reglas §3)."""
+    """Grupo de una capacidad válida: datos o arranque (reglas, apartado 3)."""
     return "arranque" if capacidad < CAPACIDAD_MAX_ARRANQUE else "datos"
 
 
 def fabricante_de(modelo):
-    """Fabricante de un modelo por su nombre, con las dos excepciones de las reglas §3; «sin patrón» si no sigue ninguno."""
+    """Fabricante de un modelo por su nombre, con las dos excepciones de las reglas, apartado 3; «sin patrón» si no sigue ninguno."""
     if modelo in EXCEPCIONES_FABRICANTE:
         return EXCEPCIONES_FABRICANTE[modelo]
     for prefijo, fabricante in PREFIJOS_FABRICANTE:
@@ -271,7 +271,7 @@ def leer_tabla(ruta, columnas):
 # =================================================================================================================
 def leer_diccionario(raiz, huella_raw):
     """Lee el diccionario del origen y comprueba que describe estos mismos ficheros (resultado.md, «Al empezar»)."""
-    ruta = raiz / "contexto-proyecto" / "fuentes" / "diccionario-datos-origen.json"
+    ruta = raiz / "config" / "fuentes" / "diccionario-datos-origen.json"
     if not ruta.exists():
         raise FileNotFoundError("no existe el diccionario del origen: hay que ejecutar antes scripts/01_diccionario_datos.py")
     if ruta.stat().st_mtime < SCRIPT_DICCIONARIO.stat().st_mtime:
@@ -370,7 +370,7 @@ def etiquetas_dimension(d, nombre, modelos):
 # 5. Cálculos de una columna: reparto de vacíos, escala, colas y atípicos
 # =================================================================================================================
 def veredicto_reparto(filas, nulos):
-    """Veredicto del reparto de vacíos en una dimensión (SKILL §3.4): sin nulos, repartidos, concentrados o no se puede saber."""
+    """Veredicto del reparto de vacíos en una dimensión (método, apartado 3.4): sin nulos, repartidos, concentrados o no se puede saber."""
     total, vacios = int(filas.sum()), int(nulos.sum())
     if vacios == 0:
         return "sin_nulos", 0.0
@@ -414,7 +414,7 @@ def colas(ordenados):
 
 
 def atipicos(ordenados):
-    """Atípicos por rango intercuartílico y por z robusto sobre valores ya ordenados (SKILL §3.8); solo detectan."""
+    """Atípicos por rango intercuartílico y por z robusto sobre valores ya ordenados (método, apartado 3.8); solo detectan."""
     n = len(ordenados)
     vacio = {"iqr": None, "z_robusto": None, "los_dos": None, "limite_iqr": LIMITE_IQR, "limite_z": LIMITE_Z, "motivo": None}
     if n == 0:
@@ -486,7 +486,7 @@ def nulos_texto(d, columna):
 
 
 def reparto_de_nulos(tabla, columna, nul, presente, d, dimensiones, modelos, cache):
-    """Porcentaje de vacíos por segmento en cada dimensión y su veredicto (SKILL §3.4)."""
+    """Porcentaje de vacíos por segmento en cada dimensión y su veredicto (método, apartado 3.4)."""
     total, vacios = int(presente.sum()), int(nul.sum())
     if vacios == 0:
         return None
@@ -521,7 +521,7 @@ def reparto_de_nulos(tabla, columna, nul, presente, d, dimensiones, modelos, cac
 # 6. Fotos y ventanas, columna a columna
 # =================================================================================================================
 def vacios_por_tramo(columna, nul, presente, d, centros):
-    """Vacíos por periodo de las columnas que miran las reglas y, en las de sitio, antes y desde el 01/07/2023 (reglas §4)."""
+    """Vacíos por periodo de las columnas que miran las reglas y, en las de sitio, antes y desde el 01/07/2023 (reglas, apartado 4)."""
     e = {}
     if columna in COLUMNAS_SITIO or columna in CONTADORES_AVERIA or columna in (HORAS, TEMPERATURA, "capacity_bytes", "failure"):
         e["vacios_por_periodo"] = [int((nul & (d["periodo"] == p)).sum()) for p in (0, 1)]
@@ -572,7 +572,7 @@ def perfilar_columnas(tabla, d, campos, modelos, centros, salida):
         r = reparto_de_nulos(tabla, columna, nul, presente, d, dimensiones, modelos, cache)
         if r:
             salida["nulos_por_segmento"].append(r)
-        # Regla §5: un contador vacío quiere decir que ese modelo no lo apunta; se mira modelo a modelo
+        # Regla, apartado 5: un contador vacío quiere decir que ese modelo no lo apunta; se mira modelo a modelo
         if es_smart and columna.endswith("_raw"):
             k = len(modelos.valores)
             for etiqueta, mascara in (("todas", presente), ("sin_capacidad_no_valida", presente & ~d["invalida"])):
@@ -598,7 +598,7 @@ def perfilar_columnas(tabla, d, campos, modelos, centros, salida):
             salida["colas"].append({"tabla": tabla, "columna": columna, "filas": "construcción", **(c or {"bajos": [], "altos": [], "mayor_salto": None})})
             salida["outliers"].append({"tabla": tabla, "columna": columna, "filas": "construcción", "valores": len(cons), **atipicos(cons)})
             del cons
-        # Códigos numéricos en un extremo del rango (comprobaciones §4); en los contadores el cero es un valor (reglas §5)
+        # Códigos numéricos en un extremo del rango (comprobaciones §4); en los contadores el cero es un valor (reglas, apartado 5)
         if rol == "magnitud" or columna in COLUMNAS_SITIO:
             for extremo, valor in (("mínimo", np.min(v) if len(v) else None), ("máximo", np.max(v) if len(v) else None)):
                 if valor is None or (es_smart and valor == 0):
@@ -751,7 +751,7 @@ def seguir_discos(d, modelos, fallos):
     periodo_trans = d["periodo"][orden][1:]
     r = {"discos": int(n_discos), "discos_datos": int(datos_disco.sum())}
 
-    # 8.1 Huecos: un disco que falta en una foto y vuelve (reglas §3)
+    # 8.1 Huecos: un disco que falta en una foto y vuelve (reglas, apartado 3)
     m = d["mes"][orden]
     dm = m[1:] - m[:-1]
     hueco = mismo & (dm > 1)
@@ -764,7 +764,7 @@ def seguir_discos(d, modelos, fallos):
                    "nota_meses": "13 quiere decir 13 meses o más"}
     del dm, m
 
-    # 8.2 Horas encendido: bajan entre dos fotos (RC-01) y discos sin horas (reglas §3, la edad)
+    # 8.2 Horas encendido: bajan entre dos fotos (RC-01) y discos sin horas (reglas, apartado 3, la edad)
     h = leer_columna(d, HORAS)[0][orden]
     valido = mismo & ~np.isnan(h[1:]) & ~np.isnan(h[:-1])
     dif = h[1:] - h[:-1]
@@ -898,10 +898,10 @@ def mirar_ventanas(ficheros, grupo_de_modelo):
     sin_antes = sin_antes.merge(del_dia[["serial_number", "dia_fallo", "grupo"]], how="left")
     r["sin_dia_anterior"] = int(len(sin_antes))
     r["sin_dia_anterior_datos"] = int(sin_antes["grupo"].eq("datos").sum())
-    # El sitio de un fallo: el del día del fallo o el del último día anterior de su ventana que lo trae (reglas §5)
+    # El sitio de un fallo: el del día del fallo o el del último día anterior de su ventana que lo trae (reglas, apartado 5)
     sitio = {}
     desde = del_dia["dia_fallo"].dt.date >= INICIO_SITIO
-    # El tomo es centro, vault y ranura juntos (reglas §4): falta si falta cualquiera de los tres
+    # El tomo es centro, vault y ranura juntos (reglas, apartado 4): falta si falta cualquiera de los tres
     v["tomo"] = v["datacenter"].where(v["datacenter"].notna() & v["vault_id"].notna() & v["pod_slot_num"].notna())
     del_dia["tomo"] = del_dia["datacenter"].where(del_dia["datacenter"].notna() & del_dia["vault_id"].notna() & del_dia["pod_slot_num"].notna())
     for col in ("pod_slot_num", "datacenter", "tomo"):
@@ -1055,7 +1055,7 @@ def cruzar(acc_fotos, v, del_dia, rec, fallos, seriales_fotos):
 
 
 # =================================================================================================================
-# 11. Validación en código (SKILL §6, comprobaciones 6, 7, 9 y 10): si falla, para con ERROR
+# 11. Validación en código (método, apartado 6, comprobaciones 6, 7, 9 y 10): si falla, para con ERROR
 # =================================================================================================================
 def validar(cal, huella_antes, huella_despues):
     """Devuelve la lista de fallos de las cuatro comprobaciones que van en el script; vacía si todo está bien."""
@@ -1327,7 +1327,7 @@ def escribir_markdown(cal, ruta):
         "o una de las dos excepciones de las reglas.")
     raras_codigo = sum(1 for r in cal["categorias_raras"] if r["es_codigo_de_ausencia"])
     add(f"- Categorías raras del diccionario: {fmt(cat['raras_fotos'])} modelos de las fotos y {fmt(cat['raras_centro'])} centro. Las que son un código de ausencia: {fmt(raras_codigo)}.")
-    add(f"- El centro «sin dato» del recuento es un código documentado (reglas §4 y §5), no una categoría.")
+    add(f"- El centro «sin dato» del recuento es un código documentado (reglas, apartado 4 y §5), no una categoría.")
     add("")
 
     # 10. Numéricas y outliers
@@ -1409,7 +1409,7 @@ def escribir_markdown(cal, ruta):
     # 14. Reglas candidatas para aprobar
     add("## 14. Reglas candidatas para aprobar")
     add("")
-    add("Juan aprobó las ocho como comprobaciones el 17/11/2026. Aquí se cuentan las filas que las incumplen y no se cambia ni se quita ninguna. "
+    add("El responsable del caso aprobó las ocho como comprobaciones el 17/11/2026. Aquí se cuentan las filas que las incumplen y no se cambia ni se quita ninguna. "
         "Pasarlas a las reglas de negocio va por la cascada.")
     add("")
     for x in cal["reglas_candidatas"]:
@@ -1485,7 +1485,7 @@ def main(raiz=CASO):
     raw = raiz / "data" / "raw"
     pod = raw / "podado"
     ruta_json, ruta_md = raiz / "informes" / "calidad-datos.json", raiz / "informes" / "calidad-datos.md"
-    cal = {"skill": SKILL, "version_skill": VERSION_SKILL, "script": SCRIPT, "fecha_datos": FECHA_DATOS,
+    cal = {"metodo": METODO, "version_metodo": VERSION_METODO, "script": SCRIPT, "fecha_datos": FECHA_DATOS,
            "fecha_ejecucion": dt.datetime.now().isoformat(timespec="seconds"), "entradas": [], "resultado": None, "pendientes": []}
     try:
         t0 = time.time()
@@ -1494,7 +1494,7 @@ def main(raiz=CASO):
         dic, tablas_dic, campos_dic, coincide = leer_diccionario(raiz, huella_antes)
         if not coincide:
             raise RuntimeError("el diccionario del origen describe otros ficheros: su huella no es la de data/raw/; hay que repetir la cadena desde diccionario-datos")
-        ruta_prot = raiz / "contexto-proyecto" / "fuentes" / "proteccion-datos.json"
+        ruta_prot = raiz / "config" / "fuentes" / "proteccion-datos.json"
         proteccion = json.loads(ruta_prot.read_text(encoding="utf-8")) if ruta_prot.exists() else None
         t0 = marca("huellas y diccionario", t0)
 
@@ -1506,7 +1506,7 @@ def main(raiz=CASO):
         ficheros_f = sorted((pod / "fotos_mensuales").glob("*.parquet"))
         ficheros_v = sorted((pod / "ventanas_fallo").glob("*.parquet"))
 
-        # 14.3 Dimensiones de cada fila y la capacidad válida de cada modelo (reglas §3)
+        # 14.3 Dimensiones de cada fila y la capacidad válida de cada modelo (reglas, apartado 3)
         modelos, centros = Catalogo(), Catalogo(primero=None)
         df_ = leer_dimensiones(ficheros_f, "fecha", modelos, centros)
         dv = leer_dimensiones(ficheros_v, "dia_fallo", modelos, centros)
@@ -1641,16 +1641,16 @@ def main(raiz=CASO):
             {"tabla": "fotos_mensuales", "columna": "capacity_bytes", "codigo": "-1 o 0,1 TB", "tipo": "numérico", "filas": cap_f.get("no_valida", 0),
              "pct_filas": pct(cap_f.get("no_valida", 0), tablas_f["fotos_mensuales"]["filas"]), "documentado": True,
              "coincide_con": "filas sin horas encendido ni ningún contador", "mismas_filas_que": [HORAS, "todos los contadores en bruto"],
-             "nota": f"{fmt(acc['no_valida_sin_contadores'])} de ellas no traen ningún contador: es una ausencia de la fila. Reglas §3: la capacidad es la de su modelo."},
+             "nota": f"{fmt(acc['no_valida_sin_contadores'])} de ellas no traen ningún contador: es una ausencia de la fila. Reglas, apartado 3: la capacidad es la de su modelo."},
             {"tabla": "ventanas_fallo", "columna": "capacity_bytes", "codigo": "-1 o 0,1 TB", "tipo": "numérico", "filas": cap_v.get("no_valida", 0),
              "pct_filas": pct(cap_v.get("no_valida", 0), tablas_f["ventanas_fallo"]["filas"]), "documentado": True, "coincide_con": "", "mismas_filas_que": [],
-             "nota": "Reglas §3: la capacidad es la de su modelo."},
+             "nota": "Reglas, apartado 3: la capacidad es la de su modelo."},
             {"tabla": "recuento_diario", "columna": "capacity_bytes", "codigo": "-1 o 0,1 TB", "tipo": "numérico", "filas": rr["capacidad_no_valida"],
              "pct_filas": pct(rr["capacidad_no_valida"], len(rec)), "documentado": True, "coincide_con": "", "mismas_filas_que": [],
              "nota": f"Llevan {fmt(rr['capacidad_no_valida_dias_de_disco'])} días de disco y {fmt(rr['capacidad_no_valida_fallos'])} fallos."},
             {"tabla": "recuento_diario", "columna": "datacenter", "codigo": "sin dato", "tipo": "texto", "filas": rr["sin_dato"],
              "pct_filas": pct(rr["sin_dato"], len(rec)), "documentado": True, "coincide_con": "fechas anteriores al 01/07/2023 en casi todas", "mismas_filas_que": [],
-             "nota": f"{fmt(rr['sin_dato_desde_sitio'])} son desde el 01/07/2023. Reglas §4 y §5: el centro no consta y se cuenta."},
+             "nota": f"{fmt(rr['sin_dato_desde_sitio'])} son desde el 01/07/2023. Reglas, apartado 4 y §5: el centro no consta y se cuenta."},
         ]
         for cc in salida["codigos_candidatos"]:
             ya = any(x["tabla"] == cc["tabla"] and x["columna"] == cc["columna"] for x in codigos)
@@ -1850,41 +1850,41 @@ def main(raiz=CASO):
             return pct(x.get("vacios", 0) + x.get("sin_columna", 0), x.get("filas", 0))
 
         comprobaciones = [
-            {"id": "R-01", "regla": "la capacidad de un disco es la de su modelo", "seccion": "reglas §3",
+            {"id": "R-01", "regla": "la capacidad de un disco es la de su modelo", "seccion": "reglas, apartado 3",
              "medidas": {"modelos_con_varias_capacidades_validas": modelos_varias, "fotos_no_validas_por_modelo": cap_f.get("no_valida_por_modelo", {}),
                          "fotos_no_validas_por_grupo": cap_f.get("no_valida_por_grupo_del_modelo", {}), "fallos_con_capacidad_no_valida_el_dia_del_fallo": int(del_dia["capacity_bytes"].lt(CAPACIDAD_MIN_VALIDA).sum())},
              "resultado": f"ningún modelo trae dos capacidades válidas ({fmt(caps_v)} con más de una). Filas con -1 o 0,1 TB: {fmt(cap_f.get('no_valida', 0))} en fotos, {fmt(cap_v.get('no_valida', 0))} en ventanas y {fmt(rr['capacidad_no_valida'])} en el recuento; {fmt(int(del_dia['capacity_bytes'].lt(CAPACIDAD_MIN_VALIDA).sum()))} fallos la traen el día del fallo."},
-            {"id": "R-02", "regla": "el fabricante sale del nombre del modelo, con dos excepciones", "seccion": "reglas §3",
+            {"id": "R-02", "regla": "el fabricante sale del nombre del modelo, con dos excepciones", "seccion": "reglas, apartado 3",
              "medidas": {"sin_patron": sin_patron, "sin_explicar": sin_patron_sin_explicar},
              "resultado": f"{fmt(len(sin_patron))} modelos no siguen el patrón; {fmt(len(sin_patron_sin_explicar))} no son ni de arranque ni una de las dos excepciones."},
-            {"id": "R-03", "regla": "la edad son las horas encendido y, sin ellas, cuenta desde la primera aparición", "seccion": "reglas §3",
+            {"id": "R-03", "regla": "la edad son las horas encendido y, sin ellas, cuenta desde la primera aparición", "seccion": "reglas, apartado 3",
              "medidas": {**seg["horas_discos"], "fallos_con_edad_negativa": fp["fallos_con_edad_negativa"]},
              "resultado": f"discos de datos sin horas en ninguna foto, {fmt(seg['horas_discos']['sin_horas_en_ninguna_foto_datos'])}; con horas en unas fotos y no en otras, {fmt(seg['horas_discos']['con_horas_en_unas_fotos_y_no_en_otras_datos'])}. Fallos con edad negativa por la primera aparición en las fotos: {fmt(fp['fallos_con_edad_negativa'])}."},
-            {"id": "R-04", "regla": "un disco puede fallar dos veces y seguir en servicio tras un fallo", "seccion": "reglas §3",
+            {"id": "R-04", "regla": "un disco puede fallar dos veces y seguir en servicio tras un fallo", "seccion": "reglas, apartado 3",
              "medidas": {"discos_con_mas_de_un_fallo": int((fallos.groupby('serial_number').size() > 1).sum()), **{k: fp[k] for k in ("discos_que_siguen_tras_su_fallo", "de_ellos_con_dos_fallos_en_la_lista")}},
              "resultado": f"{fmt(int((fallos.groupby('serial_number').size() > 1).sum()))} discos fallan dos veces. {fmt(fp['discos_que_siguen_tras_su_fallo'])} discos salen en alguna foto después de su fallo, y {fmt(fp['de_ellos_con_dos_fallos_en_la_lista'])} de ellos tienen dos fallos en la lista."},
-            {"id": "R-05", "regla": "un disco que falta en una foto y vuelve no ha desaparecido", "seccion": "reglas §3", "medidas": seg["huecos"],
+            {"id": "R-05", "regla": "un disco que falta en una foto y vuelve no ha desaparecido", "seccion": "reglas, apartado 3", "medidas": seg["huecos"],
              "resultado": f"{fmt(seg['huecos']['discos_datos'])} discos de datos ({fmt(seg['huecos']['pct_discos_datos'])} %) faltan en alguna foto y vuelven; huecos de un mes: {fmt(seg['huecos']['meses_que_faltan'].get('1', 0))} de {fmt(seg['huecos']['huecos'])}."},
-            {"id": "R-06", "regla": "el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás", "seccion": "reglas §4",
+            {"id": "R-06", "regla": "el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás", "seccion": "reglas, apartado 4",
              "medidas": {"fotos": {c: {"antes": e.get("antes_sitio"), "desde": e.get("desde_sitio")} for c, e in sitio_f.items() if e},
                          "ventanas": {c: {"antes": e.get("antes_sitio"), "desde": e.get("desde_sitio")} for c, e in sitio_v.items() if e}},
              "resultado": "en las fotos, sin dato antes y desde el 01/07/2023: " + "; ".join(f"{c} {fmt(pct_sitio(e, 'antes_sitio'))} % y {fmt(pct_sitio(e, 'desde_sitio'))} %" for c, e in sitio_f.items() if e) + "."},
-            {"id": "R-07", "regla": "un disco con dos registros el mismo día cuenta una vez", "seccion": "reglas §5",
+            {"id": "R-07", "regla": "un disco con dos registros el mismo día cuenta una vez", "seccion": "reglas, apartado 5",
              "medidas": {"fotos": acc["serie_repetida"], "ventanas": rv["clave_repetida"]},
              "resultado": f"repeticiones de disco y día: {fmt(acc['serie_repetida'])} en las fotos y {fmt(rv['clave_repetida'])} en las ventanas."},
-            {"id": "R-08", "regla": "un contador vacío quiere decir que ese modelo no lo apunta", "seccion": "reglas §5",
+            {"id": "R-08", "regla": "un contador vacío quiere decir que ese modelo no lo apunta", "seccion": "reglas, apartado 5",
              "medidas": {"contadores_con_modelos_parciales": len(contadores_parciales), "pares_modelo_contador_parciales": pares_parciales,
                          "filas_vacias_en_esos_pares": filas_parciales, "contadores_con_modelos_parciales_contando_capacidad_no_valida": len(contadores_parciales_todas)},
              "resultado": f"sin las filas de capacidad no válida, {fmt(pares_parciales)} pares de modelo y contador tienen vacíos solo en parte de sus filas, en {fmt(len(contadores_parciales))} contadores; suman {fmt(filas_parciales)} filas vacías. Son los que contradicen la regla."},
-            {"id": "R-09", "regla": "un sitio vacío quiere decir que no consta", "seccion": "reglas §5",
+            {"id": "R-09", "regla": "un sitio vacío quiere decir que no consta", "seccion": "reglas, apartado 5",
              "medidas": {"fotos": {c: e.get("vacios_desde_sitio_por_centro") for c, e in sitio_f.items() if e},
                          "ventanas": {c: e.get("vacios_desde_sitio_por_centro") for c, e in sitio_v.items() if e},
                          "fotos_por_grupo": {c: e.get("vacios_desde_sitio_por_grupo") for c, e in sitio_f.items() if e}},
              "resultado": "filas de fotos sin dato de sitio desde el 01/07/2023: " + "; ".join(f"{c} {fmt(e.get('desde_sitio', {}).get('vacios', 0))}" for c, e in sitio_f.items() if e) + ". El reparto por centro y por grupo está en el JSON."},
-            {"id": "R-10", "regla": "el sitio de un fallo es el del último día anterior que lo trae, dentro de su ventana", "seccion": "reglas §5",
+            {"id": "R-10", "regla": "el sitio de un fallo es el del último día anterior que lo trae, dentro de su ventana", "seccion": "reglas, apartado 5",
              "medidas": rv["sitio_del_fallo"],
              "resultado": f"de {fmt(slot['fallos_datos_desde_sitio'])} fallos de discos de datos desde el 01/07/2023, {fmt(slot['sin_dato_el_dia'])} no traen ranura el día del fallo; {fmt(slot['lo_recuperan_un_dia_anterior'])} la recuperan un día anterior y {fmt(slot['sin_dato_ningun_dia'])} no la tienen ningún día."},
-            {"id": "R-11", "regla": "los valores en bruto de algunos contadores tienen formato de cada fabricante", "seccion": "reglas §5",
+            {"id": "R-11", "regla": "los valores en bruto de algunos contadores tienen formato de cada fabricante", "seccion": "reglas, apartado 5",
              "medidas": {c: esp_f.get(c, {}).get("por_fabricante_construccion") for c in FORMATO_PROPIO},
              "resultado": "rango y cifras por fabricante, con la construcción: " + "; ".join(
                  f"{c} de {fmt(min(x['minimo'] for x in esp_f[c]['por_fabricante_construccion'].values()))} a {fmt(max(x['maximo'] for x in esp_f[c]['por_fabricante_construccion'].values()))}"
@@ -1950,7 +1950,7 @@ def main(raiz=CASO):
             {"tabla": "fotos_mensuales", "columna": "smart_N_normalized, capacity_bytes", "riesgo": f"Columnas calculadas a partir de otras: las {fmt(sum(1 for c in campos_dic['fotos_mensuales'] if c.endswith('_normalized')))} notas normalizadas salen del valor en bruto de su contador, y la capacidad sale del modelo."},
         ]
 
-        # Cifras de control: las del encargo y las de la prueba, leídas de lo medido
+        # Cifras de control: las de la petición y las de la prueba, leídas de lo medido
         tv = tablas_f["ventanas_fallo"]
         control = {
             "fotos.ficheros": tablas_f["fotos_mensuales"]["ficheros"], "fotos.filas": int(df_["offsets"][-1]),
@@ -1991,25 +1991,25 @@ def main(raiz=CASO):
         problema(P, "3.2", "esquema_backblaze", ", ".join(erratas), f"{fmt(len(erratas))} nombres con errata en el esquema", len(erratas), None,
                  "el esquema no es un dataset: solo afecta a la documentación", "nada en los datos; avisar al documentar las columnas", unidad="nombres")
         problema(P, "3.3", "fotos_mensuales", "datacenter", f"el centro llega sin tipo en {fmt(len(acc['centro_sin_tipo']))} ficheros de fotos", len(acc["centro_sin_tipo"]), None,
-                 "es la forma de un centro vacío entero antes del 01/07/2023 (reglas §4)", "leer el centro como texto al juntar los ficheros", unidad="ficheros")
+                 "es la forma de un centro vacío entero antes del 01/07/2023 (reglas, apartado 4)", "leer el centro como texto al juntar los ficheros", unidad="ficheros")
         ranura = campos_dic["fotos_mensuales"].get("pod_slot_num", {})
         problema(P, "3.3", "fotos_mensuales", "pod_slot_num", "la ranura llega como decimal",
                  (ranura.get("filas_con_columna", 0) - ranura.get("nulos", 0)) if ranura.get("tipo_leido") == "double" else 0, nf,
                  f"el {fmt(next((t['pct_no_convierte'] for t in salida['tipos'] if t['tabla'] == 'fotos_mensuales' and t['columna'] == 'pod_slot_num'), 0))} % de sus valores no es entero; el decimal sale de los vacíos", "leerla como entero con vacíos")
         problema(P, "3.4", "fotos_mensuales", "capacity_bytes", f"{fmt(cap_f.get('no_valida', 0))} filas con capacidad -1 o 0,1 TB; {fmt(acc['no_valida_sin_contadores'])} de ellas sin ningún contador",
-                 cap_f.get("no_valida", 0), nf, "ausencia de la fila: no traen horas ni contadores", "tomar la capacidad del modelo (reglas §3); " + quitar + " por no traer contadores", principal=True)
-        problema(P, "3.4", "ventanas_fallo", "capacity_bytes", f"{fmt(cap_v.get('no_valida', 0))} filas con capacidad -1 o 0,1 TB", cap_v.get("no_valida", 0), nv, "", "tomar la capacidad del modelo (reglas §3)")
+                 cap_f.get("no_valida", 0), nf, "ausencia de la fila: no traen horas ni contadores", "tomar la capacidad del modelo (reglas, apartado 3); " + quitar + " por no traer contadores", principal=True)
+        problema(P, "3.4", "ventanas_fallo", "capacity_bytes", f"{fmt(cap_v.get('no_valida', 0))} filas con capacidad -1 o 0,1 TB", cap_v.get("no_valida", 0), nv, "", "tomar la capacidad del modelo (reglas, apartado 3)")
         problema(P, "3.4", "recuento_diario", "capacity_bytes", f"{fmt(rr['capacidad_no_valida'])} filas con capacidad -1 o 0,1 TB, con {fmt(rr['capacidad_no_valida_fallos'])} fallos",
                  rr["capacidad_no_valida"], nr, f"parten una clave en dos: {fmt(duplicados[2]['casi_duplicados'])} filas repiten clave si se quita la capacidad",
-                 "tomar la capacidad del modelo y sumar las filas que quedan con la misma clave (reglas §3)", principal=True)
+                 "tomar la capacidad del modelo y sumar las filas que quedan con la misma clave (reglas, apartado 3)", principal=True)
         problema(P, "3.4", "recuento_diario", "datacenter", f"{fmt(rr['sin_dato'])} filas con centro «sin dato», {fmt(rr['sin_dato_desde_sitio'])} desde el 01/07/2023",
-                 rr["sin_dato"], nr, "código documentado (reglas §4 y §5)", "contarlas y decirlas en las tasas por centro; no se apartan en silencio", principal=True)
+                 rr["sin_dato"], nr, "código documentado (reglas, apartado 4 y §5)", "contarlas y decirlas en las tasas por centro; no se apartan en silencio", principal=True)
         for c in ("datacenter", "pod_slot_num"):
             e = esp_f.get(c, {})
             desde = e.get("desde_sitio", {}).get("vacios", 0)
             problema(P, "3.4", "fotos_mensuales", c, f"{fmt(desde)} filas sin dato desde el 01/07/2023; de discos de datos, {fmt(e.get('vacios_desde_sitio_por_grupo', {}).get('datos', 0))}",
-                     desde, e.get("desde_sitio", {}).get("filas"), "el sitio vacío quiere decir que no consta (reglas §5); en la ranura, casi todas son discos de arranque, que no tienen ranura",
-                     "contarlas y decirlas en las cifras por centro y por tomo (reglas §7, población del análisis)")
+                     desde, e.get("desde_sitio", {}).get("filas"), "el sitio vacío quiere decir que no consta (reglas, apartado 5); en la ranura, casi todas son discos de arranque, que no tienen ranura",
+                     "contarlas y decirlas en las cifras por centro y por tomo (reglas, apartado 7, población del análisis)")
         cl = esp_f.get("cluster_id", {})
         problema(P, "3.4", "fotos_mensuales", "cluster_id", f"vale 0 en {fmt(cl.get('ceros', 0))} de {fmt(cl.get('filas_con_columna', 0))} filas que traen la columna",
                  cl.get("ceros", 0), cl.get("filas_con_columna"), "código de ausencia candidato: un extremo del rango con más del 5 %", "ninguna: ninguna pregunta usa la columna", cerrado="D4")
@@ -2046,28 +2046,28 @@ def main(raiz=CASO):
             problema(P, "3.10", rc["tabla"], ", ".join(rc["columnas"]), f"{rc['id']} incumplida: {rc['detalle']}", rc["filas_que_incumplen"], None,
                      "regla candidata aprobada como comprobación", quitar, principal=True, unidad=rc["unidad"])
         problema(P, "3.10", "fotos_mensuales", HORAS, f"{fmt(esp_f.get(HORAS, {}).get('vacias_datos', 0))} filas de discos de datos sin horas encendido", esp_f.get(HORAS, {}).get("vacias_datos", 0), nf,
-                 f"{fmt(esp_f.get(HORAS, {}).get('vacias_datos_capacidad_no_valida', 0))} son de capacidad no válida", "la edad sale de la primera aparición en esos discos (reglas §3)")
+                 f"{fmt(esp_f.get(HORAS, {}).get('vacias_datos_capacidad_no_valida', 0))} son de capacidad no válida", "la edad sale de la primera aparición en esos discos (reglas, apartado 3)")
         problema(P, "3.10", "fallos", "dia_fallo", f"{fmt(fp['fallos_con_edad_negativa'])} fallos antes de la primera foto de su disco", fp["fallos_con_edad_negativa"], len(fallos),
                  "con la primera aparición, la edad sale negativa", "tomar la primera aparición también de las ventanas")
         problema(P, "3.10", "fallos", "serial_number", f"{fmt(fp['fallos_sin_foto'])} fallos de {fmt(fp['discos_sin_foto'])} discos que no salen en ninguna foto", fp["fallos_sin_foto"], len(fallos),
                  "sin foto no hay edad por horas en la foto del mes ni fila en el tablón de la pregunta 4", quitar, principal=True)
         problema(P, "3.10", "fotos_mensuales", "serial_number", f"{fmt(fp['discos_que_siguen_tras_su_fallo'])} discos salen en alguna foto después de su fallo", fp["discos_que_siguen_tras_su_fallo"], None,
-                 "las reglas §3 lo admiten: sus días siguen contando", "ninguna en los días de disco; en la supervivencia la vida acaba en el primer fallo",
+                 "las reglas, apartado 3 lo admiten: sus días siguen contando", "ninguna en los días de disco; en la supervivencia la vida acaba en el primer fallo",
                  unidad="discos")
         problema(P, "3.10", "fotos_mensuales", "serial_number", f"{fmt(seg['huecos']['discos_datos'])} discos de datos faltan en alguna foto y vuelven", seg["huecos"]["discos_datos"], None,
-                 "las reglas §3 dicen que no han desaparecido", "no contarlos como desaparecidos; los meses que faltan no son días de disco", unidad="discos")
+                 "las reglas, apartado 3 dicen que no han desaparecido", "no contarlos como desaparecidos; los meses que faltan no son días de disco", unidad="discos")
         problema(P, "3.10", "fotos_mensuales", "contadores en bruto", f"{fmt(pares_parciales)} pares de modelo y contador con vacíos solo en parte de sus filas; suman {fmt(filas_parciales)} filas vacías",
-                 pares_parciales, None, "contradicen la regla de que un contador vacío es que el modelo no lo apunta (reglas §5)",
+                 pares_parciales, None, "contradicen la regla de que un contador vacío es que el modelo no lo apunta (reglas, apartado 5)",
                  "la corrección mide si cambian alguna respuesta; si cambian, preguntar cómo se lee un vacío en un modelo que sí apunta el contador",
                  unidad="pares de modelo y contador")
         problema(P, "3.10", "ventanas_fallo", "pod_slot_num", f"{fmt(slot['sin_dato_ningun_dia'])} fallos de discos de datos desde el 01/07/2023 sin ranura ningún día de su ventana",
-                 slot["sin_dato_ningun_dia"], slot["fallos_datos_desde_sitio"], f"{fmt(slot['lo_recuperan_un_dia_anterior'])} más la recuperan un día anterior (reglas §5)",
-                 "contarlos y decirlos en los fallos del mismo tomo (reglas §7)", unidad="fallos")
+                 slot["sin_dato_ningun_dia"], slot["fallos_datos_desde_sitio"], f"{fmt(slot['lo_recuperan_un_dia_anterior'])} más la recuperan un día anterior (reglas, apartado 5)",
+                 "contarlos y decirlos en los fallos del mismo tomo (reglas, apartado 7)", unidad="fallos")
         problema(P, "3.10", "ventanas_fallo", "datacenter, vault_id, pod_slot_num", f"{fmt(tomo['sin_dato_ningun_dia'])} fallos de discos de datos desde el 01/07/2023 sin tomo completo ningún día de su ventana",
                  tomo["sin_dato_ningun_dia"], tomo["fallos_datos_desde_sitio"], f"les falta el centro, el vault o la ranura; {fmt(tomo['sin_dato_el_dia'])} no lo traen el día del fallo",
-                 "contarlos y decirlos en los fallos del mismo tomo (reglas §7, población del análisis)", unidad="fallos")
+                 "contarlos y decirlos en los fallos del mismo tomo (reglas, apartado 7, población del análisis)", unidad="fallos")
         problema(P, "3.10", "ventanas_fallo", "fecha", f"{fmt(rv['sin_dia_anterior_datos'])} fallos de discos de datos sin el día anterior en su ventana", rv["sin_dia_anterior_datos"], len(fallos),
-                 "el fallo sin aviso se mira el día anterior (reglas §6)", "decir cuántos fallos no tienen día anterior al contar los fallos sin aviso", unidad="fallos")
+                 "el fallo sin aviso se mira el día anterior (reglas, apartado 6)", "decir cuántos fallos no tienen día anterior al contar los fallos sin aviso", unidad="fallos")
         hundidos_con_falta = [x for x in hundidos if x["faltan"] and x["faltan"] > 0]
         problema(P, "3.10", "recuento_diario", "discos", f"{fmt(len(hundidos_con_falta))} días hundidos del reconocimiento con discos de menos frente a sus vecinos",
                  len(hundidos_con_falta), None, "; ".join(f"{x['dia']} faltan {fmt(x['faltan'])}" for x in hundidos),
@@ -2084,7 +2084,7 @@ def main(raiz=CASO):
                      "revisarlas al cruzar con integracion-datos; una clave sin pareja no es un error por sí sola", unidad="claves")
 
         # Pendientes: D1 a D4 están cerradas. Solo entra lo que no estaba en el plan y tiene más de una lectura legítima
-        # que las reglas no fijan; la corrección mide si cambia alguna respuesta (CLAUDE.md, «Datos que no sirven o están mal»)
+        # que las reglas no fijan; la corrección mide si cambia alguna respuesta (las instrucciones del caso, «Datos que no sirven o están mal»)
         pendientes = []
         if rv["date_distinta"]:
             pendientes.append({
@@ -2100,23 +2100,23 @@ def main(raiz=CASO):
         no_aplicado = [
             {"control": "forma de la tabla (comprobaciones §1)", "motivo": "no hay periodos repartidos en columnas ni dos datos en una celda (plan aprobado)."},
             {"control": "fecha de Excel", "motivo": "ninguna fecha llega como número: vienen como fecha o como texto ISO."},
-            {"control": "atípicos en códigos, notas normalizadas e identificadores", "motivo": "no son magnitudes (SKILL §3.8); la ranura, el centro, el vault, el servidor y el cluster son códigos."},
+            {"control": "atípicos en códigos, notas normalizadas e identificadores", "motivo": "no son magnitudes (método, apartado 3.8); la ranura, el centro, el vault, el servidor y el cluster son códigos."},
             {"control": "códigos de ausencia en las notas normalizadas", "motivo": "son notas ordinales de cada fabricante: un valor alto en el extremo es la nota sana, no una ausencia."},
-            {"control": "cero como código de ausencia en los contadores en bruto", "motivo": "el cero es un valor del contador y el vacío es que el modelo no lo apunta (reglas §5)."},
-            {"control": "colas, atípicos y objetivo en validación", "motivo": "en validación solo se cuentan filas, vacíos y formatos; nada se mira contra el fallo (reglas §7 y encargo)."},
+            {"control": "cero como código de ausencia en los contadores en bruto", "motivo": "el cero es un valor del contador y el vacío es que el modelo no lo apunta (reglas, apartado 5)."},
+            {"control": "colas, atípicos y objetivo en validación", "motivo": "en validación solo se cuentan filas, vacíos y formatos; nada se mira contra el fallo (reglas, apartado 7 y petición)."},
             {"control": "rangos de negocio de la tabla «Lo esperable»", "motivo": "las reglas del caso no traen esa tabla."},
             {"control": "texto libre", "motivo": "no hay columnas de texto libre; el modelo y el centro se miraron por si traían algo con forma de instrucción."},
-            {"control": "correlación entre variables", "motivo": "no es un bloque de la skill; las columnas calculadas a partir de otras se señalan en los riesgos para un modelo."},
+            {"control": "correlación entre variables", "motivo": "no es un bloque de el método; las columnas calculadas a partir de otras se señalan en los riesgos para un modelo."},
             {"control": "las 66 columnas del esquema que no traen los datasets", "motivo": "se quitaron al preparar los cuatro datasets; desde aquí no se puede saber si estaban vacías o eran constantes."},
             {"control": "seguimiento de un disco día a día", "motivo": "de los discos que no fallan solo hay una foto al mes: huecos, horas y contadores que bajan tienen un mes de margen."},
         ]
 
         datos_personales_texto = [
-            "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección." if proteccion is None
+            "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección." if proteccion is None
             else "Los datos pasaron por la protección de proteccion-datos.json.",
-            "No hay datos de personas (reglas §9): el paso de protección se saltó el 17/11/2026 con el sí de Juan.",
+            "No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí de el responsable del caso.",
             "El número de serie identifica un disco, no a una persona. Ninguna columna es un dato personal.",
-            "Esta skill no usa ni deja columnas de datos personales.",
+            "Este método no usa ni deja columnas de datos personales.",
         ]
 
         problemas_v = [p for p in P]
@@ -2182,7 +2182,7 @@ def main(raiz=CASO):
                    f"Las cuatro lecturas del plan (D1 a D4) están cerradas; de las ocho reglas candidatas, {fmt(sum(1 for r in reglas_candidatas if r['filas_que_incumplen']))} tienen filas que las incumplen.")
         cal["resultado"] = {"estado": estado, "riesgo": riesgo, "resumen": resumen,
                             "artefactos": [ruta_json.relative_to(raiz).as_posix(), ruta_md.relative_to(raiz).as_posix()],
-                            "siguiente": "correccion-datos: medir si cada problema cambia la respuesta a alguna pregunta del caso, con su encargo"}
+                            "siguiente": "correccion-datos: medir si cada problema cambia la respuesta a alguna pregunta del caso, con su petición"}
         cal["pendientes"] = pendientes
         t0 = marca("montar el resultado", t0)
 
@@ -2202,7 +2202,7 @@ def main(raiz=CASO):
         return cal
     except Exception as error:
         # 14.12 Si algo falla, el JSON se escribe igual con su estado (resultado.md, regla 5)
-        base = {k: cal[k] for k in ("skill", "version_skill", "script", "fecha_datos", "fecha_ejecucion", "entradas")}
+        base = {k: cal[k] for k in ("metodo", "version_metodo", "script", "fecha_datos", "fecha_ejecucion", "entradas")}
         base["resultado"] = {"estado": "ERROR", "riesgo": "alto", "resumen": f"{type(error).__name__}: {error}",
                              "artefactos": [ruta_json.relative_to(raiz).as_posix()], "siguiente": "arreglar el fallo y volver a lanzar el script"}
         base["pendientes"] = []

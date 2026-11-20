@@ -1,14 +1,14 @@
 {
- "descripcion": "Configuración de producción del caso 68. Las listas son el corte (reglas §7, CP-010; contrato_produccion.md, «El corte»): una marca por lista en cada foto mensual, con la de 100 como principal. El modelo en uso lo aprueba Juan; mientras no lo apruebe, es null y ejecutar.py no puntúa sin --modelo.",
+ "descripcion": "Configuración de producción del caso 68. Las listas son el corte (reglas, apartado 7, cuestión 010; contrato_produccion.md, «El corte»): una marca por lista en cada foto mensual, con la de 100 como principal. El modelo en uso lo aprueba el responsable del caso; mientras no lo apruebe, es null y ejecutar.py no puntúa sin --modelo.",
  "listas": [20, 100, 500, 1000],
  "lista_principal": 100,
  "modelo_en_uso": "modelos/en_uso/modelo_riesgo.joblib",
- "modelo_en_uso_aprobado_por": "Juan, 19/11/2026: «Vale, adelante» (puerta 4). Reentreno con todo lo anterior al 01/07/2025 (construcción y validación); en el año guardado, 23,73 fallos al mes en la lista de 100 y AUC 0,896, frente a 22,64 y 0,873 del primer reentreno. Copiado de modelos/reentrenos/2026-11-19/ con su ficha, misma huella. El anterior, aprobado el mismo día («Sí, lo apruebo»), queda en modelos/en_uso/_archivo/2026-11-19_primer_reentreno/.",
+ "modelo_en_uso_aprobado_por": "El responsable del caso, 19/11/2026: «Vale, adelante» (puerta 4). Reentreno con todo lo anterior al 01/07/2025 (construcción y validación); en el año guardado, 23,73 fallos al mes en la lista de 100 y AUC 0,896, frente a 22,64 y 0,873 del primer reentreno. Copiado de modelos/reentrenos/2026-11-19/ con su ficha, misma huella. El anterior, aprobado el mismo día («Sí, lo apruebo»), queda en modelos/en_uso/_archivo/2026-11-19_primer_reentreno/.",
  "tabla_de_la_particion": "data/processed/fotos_riesgo_entrenamiento.parquet",
  "validacion": "data/processed/fotos_riesgo_validacion.parquet",
  "historia_fotos": ["data/raw/podado/fotos_mensuales", "data/raw/reserva/fotos_mensuales"],
  "historia_ventanas": ["data/raw/podado/ventanas_fallo", "data/raw/reserva/ventanas_fallo"],
- "decisiones_correccion": "contexto-proyecto/modelo/decisiones-correccion.json",
+ "decisiones_correccion": "config/modelo/decisiones-correccion.json",
  "carpeta_reentrenos": "modelos/reentrenos",
  "carpeta_predicciones": "data/predicciones",
  "tolerancia_otro_camino": 1e-12

@@ -2,7 +2,7 @@
  "script": "scripts/16_variables_nuevas.py",
  "fecha_datos": "2025-06-30",
  "fecha_ejecucion": "2026-11-19",
- "decidido_por": "Juan, 19/11/2026: probar las cuatro variables solo en el ganador, calculadas en este script",
+ "decidido_por": "El responsable del caso, 19/11/2026: probar las cuatro variables solo en el ganador, calculadas en este script",
  "segundos_tablas": 2.1,
  "brazos": {
   "sin_variables": {

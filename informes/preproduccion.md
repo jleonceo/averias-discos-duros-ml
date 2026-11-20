@@ -1,6 +1,6 @@
 # Preproducción del caso 68
 
-**Estado: OK.** Contrato aprobado (Juan, 19/11/2026: «Sí, con el arreglo»). Las 11 validaciones, en verde.
+**Estado: OK.** Contrato aprobado (El responsable del caso, 19/11/2026: «Sí, con el arreglo»). Las 11 validaciones, en verde.
 
 ## Las finalistas y su cadena
 
@@ -8,7 +8,7 @@ El modelo usa 63 columnas y lee 64 variables, porque también lee datacenter y l
 
 ## El contrato
 
-Aprobación: Juan, 19/11/2026: «Sí, con el arreglo». Está en `contexto-proyecto/modelo/contrato_produccion.md`: 25 pasos, cada uno con su clase, la receta del HistGradientBoostingClassifier y el corte, las listas de 20, 100, 500, 1000 discos de cada foto mensual, con la de 100 como principal.
+Aprobación: El responsable del caso, 19/11/2026: «Sí, con el arreglo». Está en `config/modelo/contrato_produccion.md`: 25 pasos, cada uno con su clase, la receta del HistGradientBoostingClassifier y el corte, las listas de 20, 100, 500, 1000 discos de cada foto mensual, con la de 100 como principal.
 
 ## Qué hace cada script
 
@@ -24,7 +24,7 @@ Modelo en uso: sí (modelos/en_uso/modelo_riesgo.joblib). Igual a lo que guardó
 
 ## El lote
 
-Entrada `data\raw\reserva\fotos_mensuales\2026-06.parquet`: 353.401 filas y 353.401 de salida. Sin puntuar: disco de arranque: fuera del modelo (reglas §3 y §7), 3.893; foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3), 13.
+Entrada `data\raw\reserva\fotos_mensuales\2026-06.parquet`: 353.401 filas y 353.401 de salida. Sin puntuar: disco de arranque: fuera del modelo (reglas, apartado 3 y §7), 3.893; foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3), 13.
 
 ## La prueba por otro camino
 
@@ -48,14 +48,14 @@ Coincide: True, con tolerancia 1e-12; con la salida estropeada da rojo: True.
 
 - tolerancia de la prueba por otro camino: 1e-12 (preproduccion/parametros.md, por defecto)
 - semilla: 42 (informes/modelado.json, ganador.semilla)
-- corte: listas de 20, 100, 500, 1000 por foto mensual; principal 100 (informes/modelado.json (validacion.por_mes y aprobado_antes); reglas §7, CP-010)
+- corte: listas de 20, 100, 500, 1000 por foto mensual; principal 100 (informes/modelado.json (validacion.por_mes y aprobado_antes); reglas, apartado 7, cuestión 010)
 - carpeta de reentrenos: modelos/reentrenos/AAAA-MM-DD/ (preproduccion/parametros.md)
 - carpeta de predicciones: data/predicciones/AAAA-MM-DD/ (preproduccion/parametros.md)
 - formato de guardado: joblib con el módulo .py (preproduccion/parametros.md)
 
 ## Datos personales
 
-Los datos son de discos: serial_number identifica un disco, no a una persona (reglas §9). El contrato no usa ni deja ninguna columna de datos personales. No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.
+Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9). El contrato no usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.
 
 ## Límites
 

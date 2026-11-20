@@ -135,7 +135,7 @@ def fallos():
 
 def diseno(aprobado):
     """Copia mínima del diseño con el estado que se prueba escrito aquí, no heredado del fichero real."""
-    linea = "Aprobado: sí · Juan · 2026-11-18" if aprobado else "Pendiente de aprobar."
+    linea = "Aprobado: sí · el responsable del caso · 2026-11-18" if aprobado else "Pendiente de aprobar."
     return ("# Modelo de datos\n\n## 8. Plan de cruces\n\nAprobado: sí · Otro · 2026-01-01 (fuera de su apartado)\n\n"
             f"## 9. Decisiones de modelado\n\n- una decisión\n\n{linea}\n\n## 10. Observaciones y pendientes\n\n- nada\n")
 
@@ -144,8 +144,8 @@ def cuestiones():
     """Copia mínima de las cuestiones pendientes: una cerrada y una abierta."""
     return ("| Número | Fecha | Petición | Motivo | Lo que haría falta para resolverla | Estado |\n"
             "|---|---|---|---|---|---|\n"
-            "| CP-001 | 16/11/2026 | Una cerrada | motivo | nada | cerrada el 17/11/2026 |\n"
-            "| CP-011 | 17/11/2026 | Una pregunta abierta | motivo | que la persona responsable elija | abierta |\n")
+            "| cuestión 001 | 16/11/2026 | Una cerrada | motivo | nada | cerrada el 17/11/2026 |\n"
+            "| cuestión 011 | 17/11/2026 | Una pregunta abierta | motivo | que la persona responsable elija | abierta |\n")
 
 
 def montar_caso(variante=None):
@@ -155,8 +155,8 @@ def montar_caso(variante=None):
     proc = TMP / "data" / "processed"
     proc.mkdir(parents=True)
     (TMP / "informes").mkdir()
-    (TMP / "contexto-proyecto" / "modelo").mkdir(parents=True)
-    (TMP / "contexto-proyecto" / "negocio").mkdir(parents=True)
+    (TMP / "config" / "modelo").mkdir(parents=True)
+    (TMP / "config" / "negocio").mkdir(parents=True)
     rutas = {"fotos_mensuales": proc / "fotos_mensuales_corregido.parquet",
              "ventanas_fallo": proc / "ventanas_fallo_corregido.parquet",
              "recuento_diario": proc / "recuento_diario_corregido.parquet",
@@ -170,16 +170,16 @@ def montar_caso(variante=None):
         # La tabla de fallos cambia después de la corrección: su huella ya no es la que dejó la corrección
         fallos().head(2).to_parquet(rutas["fallos"], index=False)
     estado = "PARADO" if variante == "correccion_parada" else "AVISO"
-    corr = {"skill": "correccion-datos", "fecha_datos": "2025-06-30", "resultado": {"estado": estado},
+    corr = {"metodo": "correccion-datos", "fecha_datos": "2025-06-30", "resultado": {"estado": estado},
             "salidas": salidas, "controles": {"ventanas.filas_quitadas": 228,
                                               "ventanas.fechas_quitadas": ["2022-12-10"]}}
     (TMP / "informes" / "correccion-datos.json").write_text(json.dumps(corr, ensure_ascii=False), encoding="utf-8")
     (TMP / "informes" / "calidad-datos.json").write_text(
-        json.dumps({"skill": "calidad-datos", "fecha_datos": "2025-06-30", "resultado": {"estado": "AVISO"}}),
+        json.dumps({"metodo": "calidad-datos", "fecha_datos": "2025-06-30", "resultado": {"estado": "AVISO"}}),
         encoding="utf-8")
-    (TMP / "contexto-proyecto" / "modelo" / "modelo-datos.md").write_text(diseno(variante == "aprobado"),
+    (TMP / "config" / "modelo" / "modelo-datos.md").write_text(diseno(variante == "aprobado"),
                                                                          encoding="utf-8")
-    (TMP / "contexto-proyecto" / "negocio" / "cuestiones-pendientes.md").write_text(cuestiones(), encoding="utf-8")
+    (TMP / "config" / "negocio" / "cuestiones-pendientes.md").write_text(cuestiones(), encoding="utf-8")
     return rutas
 
 
@@ -219,11 +219,11 @@ def parte_1():
     comprobar("estado PARADO sin aprobar", js["resultado"]["estado"] == "PARADO", js["resultado"]["estado"])
     comprobar("aprobado false", js["aprobado"]["aprobado"] is False, js["aprobado"])
     comprobar("fecha_datos", js.get("fecha_datos") == "2025-06-30")
-    comprobar("skill y script", js["skill"] == "modelado-datos" and js["script"] == "scripts/04_modelado_datos.py")
+    comprobar("método y script", js["metodo"] == "modelado-datos" and js["script"] == "scripts/04_modelado_datos.py")
     comprobar("cuatro entradas con huella", len(js["entradas"]) == 4 and all(len(e["sha256"]) == 64 for e in js["entradas"]))
     comprobar("sin Calendario sin aprobar", not (TMP / "data" / "processed" / "calendario.parquet").exists())
     comprobar("calendario sin fichero", js["calendario"]["fichero"] is None)
-    comprobar("pendiente abierta leída del fichero", [x["id"] for x in js["pendientes"]] == ["CP-011"], js["pendientes"])
+    comprobar("pendiente abierta leída del fichero", [x["id"] for x in js["pendientes"]] == ["cuestión 011"], js["pendientes"])
 
     # Grano: las cuatro claves únicas
     tablas = {t["tabla"]: t for t in js["tablas"]}
@@ -361,7 +361,7 @@ def parte_1_aprobado():
     js = leer_json()
     comprobar("aprobado: termina", p.returncode == 0, p.stderr[-800:])
     ap = js.get("aprobado", {})
-    comprobar("aprobado: lee quién y cuándo", ap == {"aprobado": True, "fecha": "2026-11-18", "quien": "Juan"}, ap)
+    comprobar("aprobado: lee quién y cuándo", ap == {"aprobado": True, "fecha": "2026-11-18", "quien": "El responsable del caso"}, ap)
     comprobar("aprobado: ya no está PARADO", js.get("resultado", {}).get("estado") in ("OK", "AVISO"),
               js.get("resultado"))
     ruta = TMP / "data" / "processed" / "calendario.parquet"
@@ -430,7 +430,7 @@ def parte_2():
     js_ok = {"aprobado": {"aprobado": True}, "resultado": {"estado": "OK"}, "calendario": {"dias": 3}}
     js_no = {"aprobado": {"aprobado": False}, "resultado": {"estado": "PARADO"}, "calendario": {"dias": 3}}
     tres = pd.Series(pd.date_range("2024-01-01", periods=3))
-    aprobado_md = "## 9. Decisiones de modelado\n\nAprobado: sí · Juan · 2026-11-17\n"
+    aprobado_md = "## 9. Decisiones de modelado\n\nAprobado: sí · el responsable del caso · 2026-11-17\n"
     comprobar("estado: aprobado y con Calendario, coherente", all(x[1] for x in estado_coherente(aprobado_md, js_ok, tres)))
     comprobar("estado: aprobado sin Calendario se detecta", not all(x[1] for x in estado_coherente(aprobado_md, js_ok, None)))
     comprobar("estado: sin aprobar con Calendario se detecta",
@@ -450,7 +450,7 @@ def parte_2():
     # El estado real tiene que decir lo mismo que el diseño: aprobado y con Calendario, o sin aprobar y sin él
     ruta_cal = CASO / "data" / "processed" / "calendario.parquet"
     fechas = pd.read_parquet(ruta_cal, columns=["fecha"])["fecha"] if ruta_cal.exists() else None
-    texto = (CASO / "contexto-proyecto" / "modelo" / "modelo-datos.md").read_text(encoding="utf-8")
+    texto = (CASO / "config" / "modelo" / "modelo-datos.md").read_text(encoding="utf-8")
     for nombre, ok, detalle in estado_coherente(texto, js, fechas):
         comprobar(f"real: {nombre}", ok, detalle)
 
@@ -482,7 +482,7 @@ def parte_2():
     faltan = len(pd.date_range(f.min(), f.max(), freq="D").difference(pd.DatetimeIndex(f)))
     comprobar("días del recuento sin hueco por otro camino", faltan == js["cifras_de_control"]["recuento.dias_que_faltan"])
     # Otra fuente: las 228 filas, frente al registro de transformaciones
-    reg = (CASO / "contexto-proyecto" / "modelo" / "registro-transformaciones.md").read_text(encoding="utf-8")
+    reg = (CASO / "config" / "modelo" / "registro-transformaciones.md").read_text(encoding="utf-8")
     quitadas = {e["clase"]: e for e in js["exclusiones"]}["filas_del_10_12_2022"]["recuentos"]["filas"]
     comprobar("las filas del 10/12/2022, como en el registro", f"de 536.825 a 536.597 filas" in reg
               and 536825 - 536597 == quitadas, quitadas)
@@ -494,7 +494,7 @@ def parte_2():
 if __name__ == "__main__":
     print("sys.executable:", sys.executable)
     try:
-        # Juan, 17/11: la palabra vetada para el conjunto de discos no sale en ningún texto del repositorio (R68-93).
+        # el responsable del caso, 17/11: la palabra vetada para el conjunto de discos no sale en ningún texto del repositorio.
         # Se escribe partida para que esta prueba tampoco la lleve.
         comprobar("el script no lleva la palabra vetada", ("flo" + "ta") not in SCRIPT.read_text(encoding="utf-8").lower())
         parte_1()

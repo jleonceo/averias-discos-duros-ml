@@ -1,4 +1,4 @@
-"""Reentreno del modelo de riesgo del caso 68 con la receta fija del contrato (skill preproduccion §2.2).
+"""Reentreno del modelo de riesgo del caso 68 con la receta fija del contrato (método preproduccion §2.2).
 
 No busca algoritmo ni hiperparámetros: rehace el HistGradientBoosting aprobado con la tabla que se le pasa.
   1. Lee la tabla de entrenamiento del argumento --tabla, sin valor por defecto. Con la tabla de la partición solo
@@ -11,7 +11,7 @@ No busca algoritmo ni hiperparámetros: rehace el HistGradientBoosting aprobado 
      sin modelo en uso y en modo de comprobación, puntúa la validación mes a mes y tiene que dar lo que guardó el
      modelado (los fallos en las listas de 20 y de 100 y el AUC). Con --medir, mide el reentrenado y el modelo en uso
      en las mismas filas.
-No sustituye el modelo en uso: lo aprueba Juan.
+No sustituye el modelo en uso: lo aprueba el responsable del caso.
 
 Uso: python -W error produccion/reentrenar.py --tabla RUTA (--fecha AAAA-MM-DD | --comprobacion) [--medir RUTA]
      [--validacion RUTA] [--raiz CARPETA_DEL_CASO] [--hoy AAAA-MM-DD]
@@ -247,7 +247,7 @@ def principal(args):
         tabla=str(tabla), huella_tabla=pr.huella(tabla), filas={"tabla": pq.ParquetFile(tabla).metadata.num_rows,
                                                                  "entrenan": cu["filas_entrena"], "muestra": int(len(df))},
         tasa_muestra=float(np.mean(y)), tasa_real=tasa_real, columnas_entrada=c["lee"], columnas_salida=salen,
-        columnas_vacias_del_ajuste=vacias, radiografia=a_json(pr.radiografia(pipe)), lleva_filas_de_entrenamiento=dentro,
+        columnas_vacias_del_ajuste=vacias, estructura=a_json(pr.estructura(pipe)), lleva_filas_de_entrenamiento=dentro,
         contrato=c["aprobado_por"])
     res = {"tabla": str(tabla), "fecha_entrenamiento": str(fecha), "filas_entrada": ficha["filas"]["tabla"],
            "filas_quitadas": [
@@ -263,7 +263,7 @@ def principal(args):
            "comparacion_con_el_modelado": None, "comparacion_con_el_en_uso": None}
     # 5.4 Frente al modelo en uso o, si no lo hay, frente a lo que guardó el modelado
     en_uso = conf.get("modelo_en_uso")
-    res["modelo_en_uso"] = {"existia": bool(en_uso), "de_donde": en_uso or "no hay: el modelo en uso sale de este reentreno cuando Juan lo apruebe"}
+    res["modelo_en_uso"] = {"existia": bool(en_uso), "de_donde": en_uso or "no hay: el modelo en uso sale de este reentreno cuando el responsable del caso lo apruebe"}
     errores = []
     if en_uso:
         viejo, ficha_vieja = pr.cargar_modelo(ruta_de(raiz, en_uso))
@@ -295,7 +295,7 @@ def principal(args):
     res["estado"] = "ERROR" if errores else "OK"
     res["resumen"] = "; ".join(errores) if errores else (
         f"Reentreno hecho con {cu['filas_entrena']} fotos que entrenan y una muestra de {len(df)}; guardado en {res['ruta']}, "
-        "aparte del modelo en uso, que aprueba Juan.")
+        "aparte del modelo en uso, que aprueba el responsable del caso.")
     return res, carpeta
 
 

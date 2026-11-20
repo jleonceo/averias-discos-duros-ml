@@ -1,5 +1,5 @@
-"""Prueba de scripts/10_indicadores_coste_prevision.py, con lo que añade el encargo 17 en B4: sin puesto con menos de
-20 fallos (CP-012), el coste a igual edad con la tasa del JSON del 09 y la sensibilidad al precio inferido.
+"""Prueba de scripts/10_indicadores_coste_prevision.py, con lo que añade la petición 17 en B4: sin puesto con menos de
+20 fallos (cuestión 012), el coste a igual edad con la tasa del JSON del 09 y la sensibilidad al precio inferido.
 
 Parte 1, las piezas sueltas. Carga el script como módulo (su trabajo está dentro de `if __name__ == "__main__":`, así
 que cargarlo no lo ejecuta) y prueba cada función con datos pequeños escritos aquí:
@@ -16,18 +16,18 @@ que cargarlo no lo ejecuta) y prueba cada función con datos pequeños escritos 
   - la búsqueda de resultados escritos a mano.
 Parte 2, el script entero sobre un caso pequeño. Monta en tests/tmp_indicadores_coste/ las tablas que lee el script,
 con el tipo de cada columna tomado del parquet real (pyarrow.parquet.read_schema, sin cargar datos), su
-informes/transformacion-datos.json con las huellas, los dos exploratorios, el JSON del encargo 13, el doc. 16 y un
+informes/transformacion-datos.json con las huellas, los dos exploratorios, el JSON de la petición 13, el doc. 16 y un
 data/raw/. Ejecuta el script con -W error y comprueba las cifras contra las calculadas aquí a mano. Después, cinco casos
 que tienen que parar:
   - modelo_trimestre con el coste de un fallo cambiado: la segunda vía del coste de los fallos no coincide, ERROR;
   - inicio_trimestre con un disco de más: la de los discos del primer día no coincide, ERROR;
   - fallos_detalle con un fallo de más: la de los fallos reales por trimestre y capacidad no coincide, ERROR;
   - la huella de una tabla distinta de la de transformacion-datos.json, ERROR;
-  - el JSON del encargo 13 en PARADO: el script no calcula, PARADO;
-  - el JSON del 09 sin la tasa a igual edad (anterior al encargo 17): PARADO;
+  - el JSON de la petición 13 en PARADO: el script no calcula, PARADO;
+  - el JSON del 09 sin la tasa a igual edad (anterior a la petición 17): PARADO;
   - el JSON del 09 con otros días de disco que el ranking de coste: ERROR.
-Parte 3, el JSON real, si existe: las cifras de control del encargo (prompts/14_…, «CONTROLES»), escritas como las da
-el encargo, y dos cifras rehechas por otro camino, con pyarrow y sin pandas:
+Parte 3, el JSON real, si existe: las cifras de control de la petición (prompts/14_…, «CONTROLES»), escritas como las da
+la petición, y dos cifras rehechas por otro camino, con pyarrow y sin pandas:
   - los fallos de los discos de datos de 2021 a junio de 2025 desde recuento_diario_corregido, frente a los reales de la
     previsión (que salen de fallos_detalle);
   - los discos de inicio_trimestre (3.117 filas, 22 trimestres).
@@ -60,7 +60,7 @@ TMP = CASO / "tests" / "tmp_indicadores_coste"
 SALIDA = "informes/indicadores__coste_prevision.json"
 SALIDA_MD = "informes/indicadores__coste_prevision.md"
 PROCESADOS = CASO / "data" / "processed"
-# La palabra vetada para el conjunto de discos (Juan, 17/11; R68-91), partida para que esta prueba no la lleve
+# La palabra vetada para el conjunto de discos (El responsable del caso, 17/11; una nota del caso), partida para que esta prueba no la lleve
 VETADA = "flo" + "ta"
 FALLOS = []
 
@@ -268,14 +268,14 @@ def probar_piezas(m):
     comprobar(m.buscar_resultados_escritos(SCRIPT.read_text(encoding="utf-8")) == [],
               "el script no lleva ningún resultado escrito")
 
-    # 2.9 Encargo 17: CP-012, coste a igual edad, salto de puesto y sensibilidad al precio inferido
-    probar_piezas_encargo17(m)
-    # 2.10 Encargo 19: el puesto dentro de cada capacidad y año de compra
-    probar_piezas_encargo19(m)
+    # 2.9 Petición 17: cuestión 012, coste a igual edad, salto de puesto y sensibilidad al precio inferido
+    probar_piezas_peticion17(m)
+    # 2.10 Petición 19: el puesto dentro de cada capacidad y año de compra
+    probar_piezas_peticion19(m)
 
 
 def puestos_a_mano(filas, minimo=20):
-    """El puesto dentro de cada capacidad y año de compra, rehecho aquí (segunda vía del encargo 19): por grupo, los de
+    """El puesto dentro de cada capacidad y año de compra, rehecho aquí (segunda vía de la petición 19): por grupo, los de
     `minimo` fallos o más ordenados por coste; empates en el coste, el mismo puesto («min»)."""
     grupos = {}
     for f in filas:
@@ -289,12 +289,12 @@ def puestos_a_mano(filas, minimo=20):
     return out
 
 
-def probar_piezas_encargo19(m):
-    """El puesto de B4 dentro de cada capacidad y año de compra (encargo 19), con su caso en rojo."""
+def probar_piezas_peticion19(m):
+    """El puesto de B4 dentro de cada capacidad y año de compra (petición 19), con su caso en rojo."""
     import pandas as pd
 
     f = getattr(m, "comp_puesto_grupo", None)
-    comprobar(f is not None, "encargo 19: el script tiene la comprobación del puesto dentro del grupo")
+    comprobar(f is not None, "petición 19: el script tiene la comprobación del puesto dentro del grupo")
     if f is None:
         return
     # Caso en rojo: dos modelos de 12 y 16 TB con puestos 1 y 2, como si fueran del mismo grupo
@@ -303,7 +303,7 @@ def probar_piezas_encargo19(m):
     bien = [dict(mal[0]), dict(mal[1], puesto=1)]
     otro_ano = [dict(mal[0]), dict(mal[0], model="C", ano_compra=2020, coste_tb_ano=1.0, puesto=2)]
     comprobar(f(mal) is False and f(bien) is True and f(otro_ano) is False,
-              "encargo 19, comprobación: 12 y 16 TB con puestos 1 y 2 del mismo grupo, rojo; dos años de compra, rojo")
+              "petición 19, comprobación: 12 y 16 TB con puestos 1 y 2 del mismo grupo, rojo; dos años de compra, rojo")
     # b4_ranking con el año de compra: Q40 y R30 de 1 TB de 2020, S25 de 2 TB de 2021, P19 con 19 fallos
     celdas = pd.DataFrame([
         {"model": "P19", "ano": 2021, "capacidad_tb": 1.0, "precio_usd": 6.0, "origen_precio": "curva",
@@ -325,25 +325,25 @@ def probar_piezas_encargo19(m):
     esp = puestos_a_mano(filas)
     comprobar(bool(filas) and {mo: rk[mo].get("puesto") for mo in esp} == esp == {"Q40": 1, "R30": 2, "S25": 1}
               and rk["P19"].get("puesto") is None,
-              f"encargo 19: puesto dentro de capacidad y año de compra, rehecho aquí (da "
+              f"petición 19: puesto dentro de capacidad y año de compra, rehecho aquí (da "
               f"{ {mo: x.get('puesto') for mo, x in rk.items()} })")
     # El orden de todos juntos se queda al lado: S25 cuesta 0,5 + 0,25 = 0,75, Q40 2,4 y R30 3,3
     comprobar({mo: x.get("puesto_global") for mo, x in rk.items()} == {"S25": 1, "Q40": 2, "R30": 3, "P19": None},
-              "encargo 19: el puesto de todos juntos, al lado")
+              "petición 19: el puesto de todos juntos, al lado")
     rg = resumen.get("grupos_compra", {})
     comprobar(rg.get("grupos_con_puesto") == 2 and rg.get("grupos_con_dos_o_mas") == 1 and f(filas) is True,
-              "encargo 19: dos grupos con puesto, uno con dos modelos o más; la comprobación en verde")
+              "petición 19: dos grupos con puesto, uno con dos modelos o más; la comprobación en verde")
 
 
-def probar_piezas_encargo17(m):
-    """Las piezas nuevas del encargo 17, cada una contra una cuenta a mano y con su caso en rojo."""
+def probar_piezas_peticion17(m):
+    """Las piezas nuevas de la petición 17, cada una contra una cuenta a mano y con su caso en rojo."""
     import pandas as pd
 
     # Ningún modelo con menos de 20 fallos lleva puesto (caso en rojo: uno con 19 y puesto)
     f = getattr(m, "comp_puesto_minimo", None)
     comprobar(f is not None and f([{"fallos": 20, "puesto": 1}, {"fallos": 19, "puesto": None}]) is True
               and f([{"fallos": 19, "puesto": 2}]) is False and f([{"fallos": 25, "puesto": None}]) is False,
-              "encargo 17, CP-012: un modelo con 19 fallos y puesto, rojo; uno con 20 sin puesto, rojo")
+              "petición 17, cuestión 012: un modelo con 19 fallos y puesto, rojo; uno con 20 sin puesto, rojo")
 
     # El ranking de coste deja sin puesto, al final, al modelo con 19 fallos aunque sea el más barato
     celdas = pd.DataFrame([
@@ -361,22 +361,22 @@ def probar_piezas_encargo17(m):
         print(f"       (b4_ranking: {type(e).__name__}: {e})")
     orden = [(x["model"], x.get("puesto")) for x in filas]
     comprobar(orden == [("Q40", 1), ("R30", 2), ("P19", None)],
-              f"encargo 17, CP-012: P19 (19 fallos) sin puesto y al final del ranking de coste (da {orden})")
+              f"petición 17, cuestión 012: P19 (19 fallos) sin puesto y al final del ranking de coste (da {orden})")
     # Resumen solo con los de puesto: Q40 cuesta 2 + 400/1000 = 2,4 y R30, 3 + 0,3 = 3,3
     comprobar(resumen.get("primeros_diez") == 2 and resumen.get("primeros_diez_inferidos") == 1
               and cerca(resumen.get("mediana_parte_fallos_pct"), (100 * 0.4 / 2.4 + 100 * 0.3 / 3.3) / 2),
-              "encargo 17, CP-012: el resumen de B4 solo con los dos modelos con puesto")
+              "petición 17, cuestión 012: el resumen de B4 solo con los dos modelos con puesto")
 
     # Coste a igual edad = amortización + tasa a igual edad / 100 × coste de un fallo × días / 365 / terabytes-año
     f = getattr(m, "coste_igual_edad", None)
     comprobar(f is not None and cerca(f(2.0, 5.0, 300.0, 730000, 4000.0), 2.0 + 5.0 / 100 * 300.0 * 730000 / 365 / 4000.0)
               and f(2.0, None, 300.0, 730000, 4000.0) is None,
-              "encargo 17: coste a igual edad con la fórmula del encargo; sin tasa, vacío")
+              "petición 17: coste a igual edad con la fórmula de la petición; sin tasa, vacío")
 
     # Mayor salto de puesto entre dos órdenes: 1, 2, 3 frente a 3, 2, 1 salta 2
     f = getattr(m, "salto_de_puesto", None)
     comprobar(f is not None and f([1.0, 2.0, 3.0], [3.0, 2.0, 1.0]) == 2 and f([1.0, 2.0], [5.0, 6.0]) == 0,
-              "encargo 17: mayor salto de puesto a mano")
+              "petición 17: mayor salto de puesto a mano")
 
     # Sensibilidad al precio inferido: B inferido. Base B 1,3, A 1,5, C 1,52; × 1,2: A, C, B; × 0,8: B, A, C
     f = getattr(m, "sensibilidad_precio", None)
@@ -389,7 +389,7 @@ def probar_piezas_encargo17(m):
     comprobar(s.get(1.2, {}).get("siguen") == 1 and s.get(1.2, {}).get("primero") == "A"
               and s.get(0.8, {}).get("siguen") == 2 and s.get(0.8, {}).get("primero") == "B"
               and s.get(1.2, {}).get("de") == 2,
-              "encargo 17: sensibilidad al precio inferido a mano (× 1,2 sigue 1 de 2 y el primero es A)")
+              "petición 17: sensibilidad al precio inferido a mano (× 1,2 sigue 1 de 2 y el primero es A)")
 
 
 def resultado_minimo():
@@ -423,7 +423,7 @@ COSTE_GB = {2020: 0.02, 2021: 0.018, 2022: 0.016, 2023: 0.0132, 2024: 0.0115, 20
 # Ingresos del doc. 16 del caso pequeño, en miles de dólares
 INGRESOS = {2023: 1000, 2024: 1200, 2025: 1500}
 TRIMESTRES = [(2020 + q // 4, q % 4 + 1) for q in range(22)]
-# Fecha de compra de cada modelo (encargo 19): M8A y M8B de 2019, M12 de 2021; los demás sin ella
+# Fecha de compra de cada modelo (petición 19): M8A y M8B de 2019, M12 de 2021; los demás sin ella
 COMPRA = {"M8A": dt.datetime(2019, 6, 1), "M8B": dt.datetime(2019, 6, 1), "M12": dt.datetime(2021, 3, 1)}
 
 
@@ -466,7 +466,7 @@ def escribir(raiz, tabla, filas, columnas):
 
 
 def coste_fallo(modelo, ano):
-    """Disco nuevo de la misma capacidad al coste por GB del año del fallo, más 37 dólares (reglas §6)."""
+    """Disco nuevo de la misma capacidad al coste por GB del año del fallo, más 37 dólares (reglas, apartado 6)."""
     return MODELOS[modelo][1] * 1000 * COSTE_GB[ano] + 37
 
 
@@ -474,7 +474,7 @@ def montar_caso(raiz, estropear=None):
     """Escribe el caso pequeño en `raiz`; `estropear` cambia una tabla para un caso que tiene que parar."""
     if raiz.exists():
         shutil.rmtree(raiz)
-    for c in ["data/processed", "data/raw", "informes", "contexto-proyecto/sector/documentos"]:
+    for c in ["data/processed", "data/raw", "informes", "config/sector/documentos"]:
         (raiz / c).mkdir(parents=True)
     (raiz / "data" / "raw" / "origen.csv").write_text("a\n1\n", encoding="utf-8")
     datos = [k for k, v in MODELOS.items() if v[0] == "datos"]
@@ -486,7 +486,7 @@ def montar_caso(raiz, estropear=None):
         dias.append({"fecha": d, "ano": d.year, "trimestre": (d.month - 1) // 3 + 1})
         d += dt.timedelta(days=1)
     escribir(raiz, "calendario", dias, ["fecha", "ano", "trimestre"])
-    # Encargo 19: la fecha de compra de cada modelo, de la que sale el año de compra del puesto de B4
+    # Petición 19: la fecha de compra de cada modelo, de la que sale el año de compra del puesto de B4
     dm = [{"model": k, "capacidad_tb": v[1], "tipo_disco": v[0], "precio_usd": v[2], "origen_precio": v[3],
            "fecha_compra": COMPRA.get(k)} for k, v in MODELOS.items()]
     escribir(raiz, "dim_modelo", dm, ["model", "capacidad_tb", "tipo_disco", "precio_usd", "origen_precio",
@@ -570,13 +570,13 @@ def montar_caso(raiz, estropear=None):
     escribir(raiz, "ventanas_fallo_corregido", ventanas, ["fecha", "serial_number", "model"])
 
     # El doc. 16 con su tabla de ingresos
-    (raiz / "contexto-proyecto/sector/documentos/16_backblaze_10k_2025_tablas_ingresos.txt").write_text(
+    (raiz / "config/sector/documentos/16_backblaze_10k_2025_tablas_ingresos.txt").write_text(
         "[Ingresos por producto, años cerrados a 31 de diciembre, miles de $]\n"
         "                         | 2025    | 2024    | 2023\n"
         f"Total revenue            | {INGRESOS[2025]:,} | {INGRESOS[2024]:,} | {INGRESOS[2023]:,}\n",
         encoding="utf-8")
 
-    # transformacion-datos.json con las huellas; los dos exploratorios y el JSON del encargo 13
+    # transformacion-datos.json con las huellas; los dos exploratorios y el JSON de la petición 13
     p = raiz / "data" / "processed"
     salidas = [{"ruta": f"data/processed/{t}.parquet", "sha256": sha256(p / f"{t}.parquet")}
                for t in ["dim_modelo", "dim_precio_gb", "modelo_trimestre", "inicio_trimestre", "dias_por_tramo",
@@ -590,18 +590,18 @@ def montar_caso(raiz, estropear=None):
         json.dumps({"salidas": salidas, "entradas": entradas}), encoding="utf-8")
     for n in ["analisis-exploratorio__modelo_trimestre", "analisis-exploratorio__dias_por_tramo",
               "indicadores__discos_modelos_edad"]:
-        estado = "PARADO" if (estropear == "encargo13" and n == "indicadores__discos_modelos_edad") else "AVISO"
+        estado = "PARADO" if (estropear == "peticion13" and n == "indicadores__discos_modelos_edad") else "AVISO"
         contenido = {"resultado": {"estado": estado}}
         if n == "indicadores__discos_modelos_edad":
             contenido["preguntas"] = [{"id": "B2", "tablas": {"ranking": ranking_09(estropear)}}]
-            # Encargo 19: el JSON nuevo del 09 trae φ en la comparación a igual edad; el de antes, no
+            # Petición 19: el JSON nuevo del 09 trae φ en la comparación a igual edad; el de antes, no
             if estropear != "sin_phi":
                 contenido["preguntas"][0]["tablas"]["a_igual_edad"] = {
                     "phi": {"phi": 1.5, "phi_bruto": 1.5, "celdas": 10, "gl": 8}}
         (raiz / "informes" / f"{n}.json").write_text(json.dumps(contenido), encoding="utf-8")
 
 
-# Tasa a igual edad del JSON del 09 en el caso pequeño: la tasa bruta por este factor (encargo 17)
+# Tasa a igual edad del JSON del 09 en el caso pequeño: la tasa bruta por este factor (petición 17)
 FACTOR_IGUAL_EDAD = {"M8A": 1.25, "M12": 0.8}
 
 
@@ -708,20 +708,20 @@ def probar_caso_pequeno():
     comprobar(cerca(ing[2023]["capacidad_media_tb"], tb23) and cerca(ing[2023]["ingreso_por_tb"], 1e6 / tb23)
               and 2025 not in ing, "caso pequeño: ingreso por TB de 2023; 2025 no se calcula")
 
-    # Encargo 17: los dos tienen 20 fallos o más y llevan puesto; coste a igual edad rehecho con la fórmula del encargo
+    # Petición 17: los dos tienen 20 fallos o más y llevan puesto; coste a igual edad rehecho con la fórmula de la petición
     comprobar(all(f.get("puesto") is not None for f in b4["ranking"])
               and b4["resumen_ranking"].get("con_puesto") == 2 and b4["resumen_ranking"].get("sin_puesto") == 0,
-              "encargo 17, caso pequeño: M8A (44 fallos) y M12 (22) con puesto; ninguno sin él")
+              "petición 17, caso pequeño: M8A (44 fallos) y M12 (22) con puesto; ninguno sin él")
     cie = {}
     for mo, x in esp.items():
         tb = x["dias"] * MODELOS[mo][1] / 365
         tasa_ie = 100 * 365 * x["fallos"] / x["dias"] * FACTOR_IGUAL_EDAD[mo]
         cie[mo] = x["amort"] + tasa_ie / 100 * (x["fallos_tb"] * tb / x["fallos"]) * x["dias"] / 365 / tb
     comprobar(all(cerca(rk[mo].get("coste_tb_ano_igual_edad"), cie[mo]) for mo in cie),
-              "encargo 17, caso pequeño: coste a igual edad de cada modelo, rehecho con la fórmula del encargo")
+              "petición 17, caso pequeño: coste a igual edad de cada modelo, rehecho con la fórmula de la petición")
     ce = b4.get("coste_igual_edad", {})
     comprobar(ce.get("modelos") == 2 and cerca(ce.get("spearman"), 1.0) and ce.get("mayor_salto") == 0,
-              "encargo 17, caso pequeño: los dos costes ordenan igual (Spearman 1, salto 0)")
+              "petición 17, caso pequeño: los dos costes ordenan igual (Spearman 1, salto 0)")
     # Sensibilidad: solo M12 tiene el precio inferido; el orden, rehecho aquí en bucle
     sp_ = {x["factor"]: x for x in b4.get("sensibilidad_precio", [])}
     ok_s = set(sp_) == {0.8, 1.2}
@@ -730,17 +730,17 @@ def probar_caso_pequeno():
                   + esp[mo]["fallos_tb"] for mo in esp}
         primero = min(costes, key=lambda mo: (costes[mo], mo))
         ok_s = ok_s and sp_.get(fac, {}).get("siguen") == 2 and sp_.get(fac, {}).get("primero") == primero
-    comprobar(ok_s, "encargo 17, caso pequeño: precio inferido × 0,8 y × 1,2, siguen 2 de 2 y el primero rehecho aquí")
-    # Encargo 19: M8A (8 TB, 2019) y M12 (12 TB, 2021) en grupos distintos, puesto 1 cada uno; el global, al lado
+    comprobar(ok_s, "petición 17, caso pequeño: precio inferido × 0,8 y × 1,2, siguen 2 de 2 y el primero rehecho aquí")
+    # Petición 19: M8A (8 TB, 2019) y M12 (12 TB, 2021) en grupos distintos, puesto 1 cada uno; el global, al lado
     esp19 = puestos_a_mano(b4["ranking"])
     comprobar(esp19 == {"M8A": 1, "M12": 1} and all(rk[mo].get("puesto") == esp19[mo] for mo in esp19)
               and rk["M8A"].get("ano_compra") == 2019 and rk["M12"].get("ano_compra") == 2021
               and sorted(rk[mo].get("puesto_global") for mo in rk) == [1, 2],
-              "encargo 19, caso pequeño: puesto dentro de capacidad y año de compra, rehecho aquí; el global al lado")
+              "petición 19, caso pequeño: puesto dentro de capacidad y año de compra, rehecho aquí; el global al lado")
     rg = b4.get("resumen_ranking", {}).get("grupos_compra", {})
     comprobar(rg.get("grupos_con_puesto") == 2 and rg.get("grupos_con_dos_o_mas") == 0
               and pregunta(j, "B4").get("comprobaciones_extra", {}).get("puesto_dentro_del_grupo") is True,
-              "encargo 19, caso pequeño: dos grupos con puesto, ninguno con dos; la comprobación en verde")
+              "petición 19, caso pequeño: dos grupos con puesto, ninguno con dos; la comprobación en verde")
 
     # B9: 18 trimestres y 3 capacidades; 2021T1 a mano
     pares = b9["pares"]
@@ -766,7 +766,7 @@ def probar_caso_pequeno():
             ("inicio_trimestre", "ERROR", "discos el primer día"),
             ("fallos_detalle", "ERROR", "fallos reales por trimestre y capacidad"),
             ("huella", "ERROR", "huella"),
-            ("encargo13", "PARADO", "indicadores__discos_modelos_edad"),
+            ("peticion13", "PARADO", "indicadores__discos_modelos_edad"),
             ("sin_igual_edad", "PARADO", "tasa a igual edad"),
             ("sin_phi", "PARADO", "φ"),
             ("igual_edad_dias", "ERROR", "igual edad")]:
@@ -778,10 +778,10 @@ def probar_caso_pequeno():
 
 
 # ---------------------------------------------------------------------------------------------------------------
-# 4. Parte 3 · el JSON real, contra los controles del encargo y por otro camino
+# 4. Parte 3 · el JSON real, contra los controles de la petición y por otro camino
 # ---------------------------------------------------------------------------------------------------------------
 def probar_json_real():
-    """Controles del encargo 14 y dos cifras rehechas con pyarrow."""
+    """Controles de la petición 14 y dos cifras rehechas con pyarrow."""
     ruta = CASO / SALIDA
     if not ruta.exists():
         print("aviso  no hay JSON real todavía: la parte 3 no se prueba")
@@ -795,7 +795,7 @@ def probar_json_real():
     b4, b9 = pregunta(j, "B4")["tablas"], pregunta(j, "B9")["tablas"]
 
     def rd(x, d):
-        """Redondeo como lo escribe el encargo."""
+        """Redondeo como lo escribe la petición."""
         return round(x + 1e-12, d)
 
     # Celdas y lo que queda fuera
@@ -817,7 +817,7 @@ def probar_json_real():
     comprobar([f["model"] for f in rk[1:3]] == ["WDC WUH722222ALE6L4", "ST24000NM002H"]
               and rd(rk[1]["coste_tb_ano"], 4) == 1.9854 and rd(rk[2]["coste_tb_ano"], 4) == 1.9865,
               "control: después WDC WUH722222ALE6L4, 1,9854, y ST24000NM002H, 1,9865")
-    # El más caro, entre los que tienen puesto: con CP-012 (encargo 17) los que no lo tienen van al final
+    # El más caro, entre los que tienen puesto: con cuestión 012 (petición 17) los que no lo tienen van al final
     rkp = [f for f in rk if f.get("puesto") is not None]
     comprobar(rkp[-1]["model"] == "ST8000DM002" and rd(rkp[-1]["coste_tb_ano"], 4) == 6.0234
               and rkp[-2]["model"] == "ST4000DM000" and rd(rkp[-2]["coste_tb_ano"], 4) == 5.8469
@@ -829,13 +829,13 @@ def probar_json_real():
               "control: ST14000NM0138, tasa 5,90 %, coste 3,5818, con garantía 2,7893")
     rr = b4["resumen_ranking"]
     if "coste_igual_edad" not in b4:
-        print("aviso  el JSON real es de antes del encargo 17: sus controles de B4 se prueban tras la ejecución real")
+        print("aviso  el JSON real es de antes de la petición 17: sus controles de B4 se prueban tras la ejecución real")
         comprobar(rd(rr["mediana_parte_fallos_pct"], 2) == 6.14 and rd(rr["spearman_coste_tasa"], 3) == 0.323
                   and rr["primeros_diez_inferidos"] == 8,
                   "control: mediana de la parte de los fallos 6,14 %; Spearman 0,323; 8 de los diez primeros inferidos")
     else:
-        controles_encargo17(b4, rd)
-    controles_encargo19(b4, rd)
+        controles_peticion17(b4, rd)
+    controles_peticion19(b4, rd)
     # Vida real
     vr = b4["vida_real"]
     comprobar(vr["bajan_de_05"] == 0 and vr["con_algun_ano_con_base"] == 19 and vr["modelos_datos"] == 61
@@ -903,8 +903,8 @@ def probar_json_real():
               "control: inicio_trimestre, 3.117 filas, 22 trimestres y 4.805.590 discos")
 
 
-def controles_encargo17(b4, rd):
-    """Los CONTROLES de B4 del encargo 17 (prompts/17_…), escritos como los da el encargo."""
+def controles_peticion17(b4, rd):
+    """Los CONTROLES de B4 de la petición 17 (prompts/17_…), escritos como los da la petición."""
     rk, rr = b4["ranking"], b4["resumen_ranking"]
     sin = sorted(f["model"] for f in rk if f.get("puesto") is None)
     comprobar(rr["con_puesto"] == 27 and sin == ["ST12000NM000J", "ST14000NM000J", "ST16000NM002J", "ST6000DX000",
@@ -921,9 +921,9 @@ def controles_encargo17(b4, rd):
               f"control 17: 5 inferidos entre los diez; Spearman 0,4951; mediana 6,44 % (da "
               f"{rr['primeros_diez_inferidos']}, {rr['spearman_coste_tasa']:.4f}, {rr['mediana_parte_fallos_pct']:.2f})")
     ce = b4["coste_igual_edad"]
-    # Desde el encargo 19 la tasa a igual edad del 09 es la de cada edad y trimestre: este control del 17 ya no aplica
+    # Desde la petición 19 la tasa a igual edad del 09 es la de cada edad y trimestre: este control del 17 ya no aplica
     if "grupos_compra" in rr:
-        print("aviso  control 17 del coste a igual edad (Spearman 0,9974, salto 2): no aplica con la tasa del encargo 19")
+        print("aviso  control 17 del coste a igual edad (Spearman 0,9974, salto 2): no aplica con la tasa de la petición 19")
     else:
         comprobar(ce["modelos"] == 32 and rd(ce["spearman"], 4) == 0.9974 and ce["mayor_salto"] == 2,
                   f"control 17: coste a igual edad con los 32, Spearman 0,9974 y mayor salto 2 (da {ce['modelos']}, "
@@ -935,11 +935,11 @@ def controles_encargo17(b4, rd):
               f"{sp[0.8]['siguen']}, {sp[1.2]['siguen']}, {sp[0.8]['primero']}, {sp[1.2]['primero']})")
 
 
-def controles_encargo19(b4, rd):
-    """Los CONTROLES de B4 del encargo 19 (prompts/19_…), escritos como los da el encargo; con un JSON de antes, aviso."""
+def controles_peticion19(b4, rd):
+    """Los CONTROLES de B4 de la petición 19 (prompts/19_…), escritos como los da la petición; con un JSON de antes, aviso."""
     rg = b4["resumen_ranking"].get("grupos_compra")
     if rg is None:
-        print("aviso  el JSON real es de antes del encargo 19: sus controles de B4 se prueban tras la ejecución real")
+        print("aviso  el JSON real es de antes de la petición 19: sus controles de B4 se prueban tras la ejecución real")
         return
     comprobar(rg["grupos_con_puesto"] == 19 and rg["grupos_con_dos_o_mas"] == 7,
               f"control 19: 19 grupos de capacidad y año de compra con puesto, 7 con dos o más (da "

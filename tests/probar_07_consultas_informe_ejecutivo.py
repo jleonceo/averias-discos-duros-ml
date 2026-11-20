@@ -13,8 +13,8 @@ informes/transformacion-datos.json con las huellas. Ejecuta el script con -W err
   - y en ninguno de los cuatro escribe el JSON.
 Parte 2: con el JSON real, rehace por otro camino (pyarrow y Python, sin pandas) los fallos y los dos costes por año
 desde fallos_detalle y los fallos por tipo; compara los discos de cada trimestre con cifras_para_siguiente de
-informes/analisis-exploratorio__modelo_trimestre.json; y compara las cifras con los controles del encargo, escritas como
-las da el encargo.
+informes/analisis-exploratorio__modelo_trimestre.json; y compara las cifras con los controles de la petición, escritas como
+las da la petición.
 
 Sale con 0 si todo pasa y con 1 si algo falla, e imprime qué caso falla. La carpeta temporal se borra siempre.
 """
@@ -256,9 +256,9 @@ def parte_1():
 
 
 # ---------------------------------------------------------------------------------------------------------------
-# 4. Parte 2: el JSON real, por otro camino y frente a los controles del encargo
+# 4. Parte 2: el JSON real, por otro camino y frente a los controles de la petición
 # ---------------------------------------------------------------------------------------------------------------
-# Controles del encargo, tal como los escribe: días de disco, fallos, tasa, coste y coste con garantía
+# Controles de la petición, tal como los escribe: días de disco, fallos, tasa, coste y coste con garantía
 CONTROLES_ANO = {
     2020: ("51.345.918", "1.307", "0,9", "250.485", "80.209"),
     2021: ("66.072.034", "1.823", "1,0", "352.674", "109.169"),
@@ -270,7 +270,7 @@ CONTROLES_ANO = {
 
 
 def parte_2():
-    """Compara el JSON real con un cálculo por otro camino y con los controles del encargo."""
+    """Compara el JSON real con un cálculo por otro camino y con los controles de la petición."""
     ruta = CASO / SALIDA
     comprobar(ruta.exists(), "real: existe informes/consultas-informe-ejecutivo.json")
     if not ruta.exists():
@@ -307,26 +307,26 @@ def parte_2():
         nombre = f"discos_inicio_{fila['ano']}_T{fila['trimestre']}"
         comprobar(nombre in c and c[nombre]["valor"] == fila["discos"], f"real, exploratorio: {nombre}")
 
-    # Controles del encargo, escritos como los escribe
+    # Controles de la petición, escritos como los escribe
     for ano, (dias, fallos, tasa, coste, coste_g) in CONTROLES_ANO.items():
         obtenido = (numero(c[f"dias_disco_{ano}"]["valor"]), numero(c[f"fallos_{ano}"]["valor"]),
                     numero(c[f"tasa_anual_pct_{ano}"]["valor"], 1), numero(c[f"coste_fallos_usd_{ano}"]["valor"]),
                     numero(c[f"coste_fallos_garantia_usd_{ano}"]["valor"]))
-        comprobar(obtenido == (dias, fallos, tasa, coste, coste_g), f"control del encargo {ano}: {obtenido}")
+        comprobar(obtenido == (dias, fallos, tasa, coste, coste_g), f"control de la petición {ano}: {obtenido}")
     comprobar(c["ano_completo_2025"]["valor"] is False and c["ano_completo_2024"]["valor"] is True,
-              "control del encargo: 2025 no está completo y 2024 sí")
-    comprobar(numero(c["fallos_en_garantia_2024"]["valor"]) == "3.258", "control del encargo: 3.258 en garantía")
-    comprobar(numero(c["parte_fallos_garantia_pct_2024"]["valor"], 1) == "71,8", "control del encargo: 71,8 %")
-    comprobar(numero(c["media_fallos_mes_2024"]["valor"]) == "378", "control del encargo: 378 al mes")
-    comprobar(numero(c["dias_disco_2024"]["valor"] / 1e6, 1) == "103,8", "control del encargo: 103,8 millones")
-    comprobar(numero(c["discos_inicio_2020_T1"]["valor"]) == "122.696", "control del encargo: 122.696")
-    comprobar(numero(c["discos_inicio_2025_T2"]["valor"]) == "308.836", "control del encargo: 308.836")
+              "control de la petición: 2025 no está completo y 2024 sí")
+    comprobar(numero(c["fallos_en_garantia_2024"]["valor"]) == "3.258", "control de la petición: 3.258 en garantía")
+    comprobar(numero(c["parte_fallos_garantia_pct_2024"]["valor"], 1) == "71,8", "control de la petición: 71,8 %")
+    comprobar(numero(c["media_fallos_mes_2024"]["valor"]) == "378", "control de la petición: 378 al mes")
+    comprobar(numero(c["dias_disco_2024"]["valor"] / 1e6, 1) == "103,8", "control de la petición: 103,8 millones")
+    comprobar(numero(c["discos_inicio_2020_T1"]["valor"]) == "122.696", "control de la petición: 122.696")
+    comprobar(numero(c["discos_inicio_2025_T2"]["valor"]) == "308.836", "control de la petición: 308.836")
     comprobar(c["subidas_trimestre"]["valor"] == 21 and c["pasos_trimestre"]["valor"] == 21,
-              "control del encargo: 21 subidas de 21")
-    comprobar(numero(c["razon_discos_ultimo_primero"]["valor"], 2) == "2,52", "control del encargo: razón 2,52")
-    comprobar(numero(c["razon_coste_2024_2020"]["valor"], 2) == "3,32", "control del encargo: razón 3,32")
-    comprobar(numero(c["fallos_tipo_datos"]["valor"]) == "16.996", "control del encargo: 16.996 de datos")
-    comprobar(numero(c["fallos_tipo_arranque"]["valor"]) == "964", "control del encargo: 964 de arranque")
+              "control de la petición: 21 subidas de 21")
+    comprobar(numero(c["razon_discos_ultimo_primero"]["valor"], 2) == "2,52", "control de la petición: razón 2,52")
+    comprobar(numero(c["razon_coste_2024_2020"]["valor"], 2) == "3,32", "control de la petición: razón 3,32")
+    comprobar(numero(c["fallos_tipo_datos"]["valor"]) == "16.996", "control de la petición: 16.996 de datos")
+    comprobar(numero(c["fallos_tipo_arranque"]["valor"]) == "964", "control de la petición: 964 de arranque")
 
 
 # ---------------------------------------------------------------------------------------------------------------

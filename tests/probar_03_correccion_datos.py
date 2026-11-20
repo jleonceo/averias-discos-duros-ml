@@ -33,7 +33,7 @@ SCRIPT = CASO / "scripts" / "03_correccion_datos.py"
 TMP = CASO / "tests" / "tmp_correccion"
 FALLOS = []
 
-APARTADOS = ["Fuente", "Correcciones aplicadas", "Decisiones del usuario", "Elementos mantenidos sin cambios",
+APARTADOS = ["Fuente", "Correcciones aplicadas", "Decisiones del responsable", "Elementos mantenidos sin cambios",
              "Decisiones pendientes", "Validación", "Datos personales", "Límites"]
 
 ST4, WD14, WD14B, SSD = "ST4000DM000", "WDC WUH721414ALE6L4", "WDC  WUH721414ALE6L4", "Seagate SSD"
@@ -164,7 +164,7 @@ def fallos():
 
 def decisiones():
     """Fichero de decisiones del caso pequeño: el mapeo de los nombres, la regla de la capacidad y lo que no se toca."""
-    real = json.loads((CASO / "contexto-proyecto" / "modelo" / "decisiones-correccion.json").read_text(encoding="utf-8"))
+    real = json.loads((CASO / "config" / "modelo" / "decisiones-correccion.json").read_text(encoding="utf-8"))
     real["modelos"]["mapeo"] = {WD14B: WD14}
     return real
 
@@ -172,7 +172,7 @@ def decisiones():
 def calidad(raw, estado="AVISO"):
     """JSON de calidad mínimo: los 30 problemas, la pendiente P-01 y la huella de la entrada del caso pequeño."""
     entradas = [{"ruta": f"data/raw/{k}", "sha256": v} for k, v in huella_carpeta(raw).items()]
-    return {"skill": "calidad-datos", "fecha_datos": "2025-06-30", "entradas": entradas,
+    return {"metodo": "calidad-datos", "fecha_datos": "2025-06-30", "entradas": entradas,
             "resultado": {"estado": estado}, "problemas": [{"id": f"C-{i:02d}"} for i in range(1, 31)],
             "pendientes": [{"id": "P-01", "problema": "C-17"}]}
 
@@ -186,7 +186,7 @@ def montar_caso(variante=None):
     (pod / "fotos_mensuales").mkdir(parents=True)
     (pod / "ventanas_fallo").mkdir(parents=True)
     (TMP / "informes").mkdir()
-    (TMP / "contexto-proyecto" / "modelo").mkdir(parents=True)
+    (TMP / "config" / "modelo").mkdir(parents=True)
     (raw / "Drive_Stats_Schema_Current.csv").write_text("date\r\nserial_number\r\n", encoding="utf-8")
     foto_a, foto_b = foto_sin_sitio(), foto_con_sitio()
     if variante == "dos_capacidades":
@@ -204,7 +204,7 @@ def montar_caso(variante=None):
         rec.loc[len(rec)] = [pd.Timestamp("2020-01-02"), "MODELO_SIN_CAPACIDAD", -1, "sin dato", 1, 0]
     rec.to_parquet(pod / "recuento_diario.parquet", index=False)
     fallos().to_parquet(pod / "fallos.parquet", index=False)
-    (TMP / "contexto-proyecto" / "modelo" / "decisiones-correccion.json").write_text(
+    (TMP / "config" / "modelo" / "decisiones-correccion.json").write_text(
         json.dumps(decisiones(), ensure_ascii=False, indent=2), encoding="utf-8")
     estado = "PARADO" if variante == "calidad_parada" else "AVISO"
     (TMP / "informes" / "calidad-datos.json").write_text(json.dumps(calidad(raw, estado), ensure_ascii=False), encoding="utf-8")
@@ -293,7 +293,7 @@ def parte_1():
               sorted(set(ids) | set(sin)))
     comprobar("ningún problema en los dos sitios", not (set(ids) & set(sin)), set(ids) & set(sin))
     comprobar("ninguna corrección 0 → 0", all(c["antes"] != c["despues"] for c in js["correcciones"]))
-    comprobar("P-01 resuelta en decisiones_usuario", any(d["pendiente"] == "P-01" for d in js["decisiones_usuario"]))
+    comprobar("P-01 resuelta en decisiones_responsable", any(d["pendiente"] == "P-01" for d in js["decisiones_responsable"]))
     comprobar("sin pendientes", js["pendientes"] == [])
     comprobar("sumas de control coinciden", all(s["coincide"] for s in js["sumas_control"]) and len(js["sumas_control"]) >= 4)
     comprobar("cuatro salidas con su diccionario", len(js["salidas"]) == 4 and all(s["campos_salida"] for s in js["salidas"]))
@@ -307,7 +307,7 @@ def parte_1():
     comprobar("informe con los apartados en orden", all(x >= 0 for x in pos) and pos == sorted(pos), pos)
 
     # Registro: una ficha por corrección y una por lo que no se toca; reejecutar no añade fichas
-    reg = TMP / "contexto-proyecto" / "modelo" / "registro-transformaciones.md"
+    reg = TMP / "config" / "modelo" / "registro-transformaciones.md"
     fichas = re.findall(r"^## R-\d{3}", reg.read_text(encoding="utf-8"), re.M)
     comprobar("registro con fichas", len(fichas) >= 8, len(fichas))
     p2 = ejecutar()

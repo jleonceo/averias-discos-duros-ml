@@ -16,6 +16,7 @@ Uso: python -W error tests/probar_21_cuadro_mando_navegador.py
 """
 
 # html deshace los escapes del resultado que deja Edge
+import os
 import html
 # importlib carga el script y la prueba de las pestañas por su ruta
 import importlib.util
@@ -39,7 +40,7 @@ SCRIPT = RAIZ / "scripts" / "21_cuadro_mando.py"
 PESTANAS_PY = RAIZ / "tests" / "probar_21_cuadro_mando_pestanas.py"
 HTML = RAIZ / "informes" / "cuadro_mando.html"
 TMP = RAIZ / "tests" / "tmp_cuadro"
-EDGE = Path("C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
+EDGE = Path(os.environ.get("ProgramFiles(x86)", "")) / "Microsoft" / "Edge" / "Application" / "msedge.exe"
 PESTANAS = ["vision", "centros", "modelos", "edad", "lista"]
 TOLERANCIA = 1e-9
 FALLOS = []

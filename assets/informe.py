@@ -32,7 +32,7 @@ sin decir cuántos, para (F2 y TB2). Al montar, una página más alta de lo que 
 cuenta, con las medidas de `estilo.css`, es la misma que `alto_por_pagina()` del banco, y la suite comprueba que dan
 lo mismo. Así las tres piezas funcionan solas, copiadas a `scripts/` de un caso sin el banco.
 
-Informe por resultados (Juan, 10/11/2026; modelo en `ejemplos/modelo_informe_final/`). En vez de páginas de pregunta
+Informe por resultados (El responsable del caso, 10/11/2026; modelo en `ejemplos/modelo_informe_final/`). En vez de páginas de pregunta
 lleva páginas de tipo `resultado`: sin línea de pregunta bajo el título, y el menú lista cada página con su número.
 Un informe va por preguntas o por resultados, no las dos cosas. Sus páginas se montan con apartados:
 
@@ -61,11 +61,11 @@ from graficos import numero, ANCHO_FILA
 
 # Orden de las páginas (S2) y cuántas puede haber de cada clase; preguntas, límites y decisiones se pueden partir (S3;
 # las decisiones desde el 07/10, caso 04). El anexo, al final, desde el 07/10 (D6). Las páginas de resultado van donde
-# las de pregunta, en los informes por resultados (Juan, 10/11, caso 64)
+# las de pregunta, en los informes por resultados (El responsable del caso, 10/11, caso 64)
 ORDEN = {"resumen": 1, "pregunta": None, "resultado": None, "limites": None, "decision": None, "anexo": None}
 # Un informe va por preguntas o por resultados: los dos tipos no se mezclan
 CONTRARIO = {"pregunta": "resultado", "resultado": "pregunta"}
-# Como mucho 15 páginas sin contar el anexo (D7; Juan, 07/10, caso 04)
+# Como mucho 15 páginas sin contar el anexo (D7; el responsable del caso, 07/10, caso 04)
 MAX_PAGINAS = 15
 # Como mucho cuatro cifras clave por página (C2)
 MAX_CIFRAS = 4
@@ -496,7 +496,7 @@ class Pagina:
             raise ValueError(f"F2: la cifra clave «{etiqueta}» es un número; di con cuántos decimales (decimales=)")
         # Un número se escribe a la española; un texto ya viene redondeado y con su unidad
         texto_valor = numero(valor, decimales, unidad) if _es_numero(valor) else str(valor)
-        # Etiqueta y contexto van debajo del número como líneas sueltas: empiezan por mayúscula (Juan, 04/10)
+        # Etiqueta y contexto van debajo del número como líneas sueltas: empiezan por mayúscula (El responsable del caso, 04/10)
         etiqueta, contexto = (t[:1].upper() + t[1:] for t in (str(etiqueta), str(contexto)))
         # Se guarda la cifra
         self.cifras.append((texto_valor, etiqueta, contexto))

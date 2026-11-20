@@ -1,33 +1,33 @@
 """Indicadores de los bloques 5 a 8 del plan de la analítica del caso 68, el minicubo y lo que falta en los datos.
 
-Skill indicadores-y-analisis (paso 5, parte sin modelo), con el encargo prompts/15_encargo_indicadores_centros_avisos_tomos.md.
+Método indicadores-y-analisis (paso 5, parte sin modelo), con la petición peticiones/15_indicadores_centros_avisos_tomos.md.
 Calcula, comprueba y deja en informes/indicadores__centros_avisos_tomos.json (y su informe .md, generado del mismo
 diccionario en la misma ejecución):
 
   - B5, si un centro de datos falla más por sí mismo: tasa bruta por centro y trimestre, tasa ajustada a la misma
-    mezcla de modelo, año de edad y trimestre (estandarización indirecta; el trimestre, desde el encargo 19), con el
+    mezcla de modelo, año de edad y trimestre (estandarización indirecta; el trimestre, desde la petición 19), con el
     intervalo ensanchado por φ, la prueba de quitar cada modelo en sac0 y sac2, el reparto de cada centro por modelo y
     la temperatura por centro y mes.
   - B6, qué hace Backblaze con los avisos: fotos que avisan por mes, modelo y fabricante; desenlace a 90 días por tipo de
     aviso, y repetido solo con las fotos de Seagate, el único fabricante con los cinco contadores, con el recuento de
-    fotos que marcan el 197 y el 198 (encargo 17, prompts/17_encargo_correcciones_del_auditor.md), cada grupo con su φ
-    binomial y el intervalo de Clopper-Pearson (encargo 19); fallos sin aviso, en total y por año, y lo que dice la
+    fotos que marcan el 197 y el 198 (petición 17, peticiones/17_correcciones_del_auditor.md), cada grupo con su φ
+    binomial y el intervalo de Clopper-Pearson (petición 19); fallos sin aviso, en total y por año, y lo que dice la
     ventana antes del fallo; los contadores que suben en la construcción; la serie de los 30 días antes del fallo.
   - B7, dónde está el riesgo de perder datos: tomos con k fallos en d días frente al azar, que baraja los días dentro de
-    cada centro y trimestre (encargo 19; el de solo centro, al lado), discos a la vez frente a la paridad supuesta, los
+    cada centro y trimestre (petición 19; el de solo centro, al lado), discos a la vez frente a la paridad supuesta, los
     peores tomos y el riesgo vivo de cada mes frente a la binomial.
   - B8, otros factores del disco: temperatura, arranques, datos escritos y datos leídos por tramos, dentro de su grupo.
   - MC, el minicubo de perfiles (nivel 1 y nivel 2), con el intervalo ensanchado por el φ de la edad, y lo que falta
     en los datos.
 
-φ (encargo 19, prompts/19_encargo_correcciones_del_segundo_auditor.md; reglas §7) es lo que varían los fallos entre
+φ (petición 19, peticiones/19_correcciones_del_segundo_auditor.md; reglas, apartado 7) es lo que varían los fallos entre
 trimestres más de lo que supone Poisson o la binomial: se calcula con los datos y nunca baja de 1.
 
-Los días de disco de un corte que no está en el recuento se reparten con las fotos (criterio 7 del encargo). Cada cifra
+Los días de disco de un corte que no está en el recuento se reparten con las fotos (criterio 7 de la petición). Cada cifra
 lleva su segunda vía, que parte de otra tabla o de otro cálculo; si una no coincide, para con ERROR. Las comprobaciones y
-las validaciones de la skill se calculan; ninguna lleva el resultado escrito.
+las validaciones de el método se calculan; ninguna lleva el resultado escrito.
 
-Lee data/processed/ y los JSON de informes/ de la transformación y de los encargos 13 y 14, que no modifica.
+Lee data/processed/ y los JSON de informes/ de la transformación y de las peticiones 13 y 14, que no modifica.
 fotos_riesgo se lee por bloques y solo con sus columnas necesarias. Depende de scripts/05_transformacion_datos.py, de
 09_indicadores_discos_modelos_edad.py y de 10_indicadores_coste_prevision.py: comprueba la huella de cada tabla contra
 informes/transformacion-datos.json y el estado de los JSON de los que parte. No importa ningún script.
@@ -69,60 +69,60 @@ from graficos import numero  # noqa: E402  (pieza común: números a la español
 # 2. Configuración
 # =================================================================================================================
 SCRIPT = "scripts/11_indicadores_centros_avisos_tomos.py"
-ENCARGO = ("prompts/15_encargo_indicadores_centros_avisos_tomos.md; B6 ampliado por "
-           "prompts/17_encargo_correcciones_del_auditor.md; B5, B6, B7 y el minicubo corregidos por "
-           "prompts/19_encargo_correcciones_del_segundo_auditor.md")
+PETICION = ("peticiones/15_indicadores_centros_avisos_tomos.md; B6 ampliado por "
+           "peticiones/17_correcciones_del_auditor.md; B5, B6, B7 y el minicubo corregidos por "
+           "peticiones/19_correcciones_del_segundo_auditor.md")
 SALIDA_JSON = "informes/indicadores__centros_avisos_tomos.json"
 SALIDA_MD = "informes/indicadores__centros_avisos_tomos.md"
 TRANSFORMACION = "informes/transformacion-datos.json"
-SKILL_MD = ".claude/skills/indicadores-y-analisis/SKILL.md"
-PROTECCION = "contexto-proyecto/fuentes/proteccion-datos.json"
-# JSON de los que parte el encargo; si uno falta o está en PARADO o ERROR, no se calcula nada
+METODO_MD = "metodos/indicadores-y-analisis/METODO.md"
+PROTECCION = "config/fuentes/proteccion-datos.json"
+# JSON de los que parte la petición; si uno falta o está en PARADO o ERROR, no se calcula nada
 PREVIOS = ["indicadores__discos_modelos_edad", "indicadores__coste_prevision"]
-# Tablas salidas de la transformación y tablas de entrada que lee el encargo
+# Tablas salidas de la transformación y tablas de entrada que lee la petición
 TABLAS_SALIDA = ["dim_modelo", "fotos_riesgo", "fallos_detalle", "vida_discos", "dias_por_tramo", "centro_mes"]
 TABLAS_ENTRADA = ["ventanas_fallo_corregido", "recuento_diario_corregido", "calendario"]
-# Columnas de fotos_riesgo que hacen falta (encargo, ALCANCE: por bloques y solo las necesarias)
+# Columnas de fotos_riesgo que hacen falta (petición, ALCANCE: por bloques y solo las necesarias)
 COL_FOTOS = ["serial_number", "fecha", "model", "edad_anos", "avisa", "smart_5_raw", "smart_187_raw", "smart_188_raw",
              "smart_197_raw", "smart_198_raw", "smart_194_raw", "smart_12_raw", "smart_241_raw", "smart_242_raw",
              "smart_9_raw", "smart_90_raw", "cambio_smart_5", "cambio_smart_187", "cambio_smart_197",
              "cambio_smart_198", "datacenter", "vault_id", "pod_slot_num", "periodo", "falla_30d"]
 
-# Fechas: primer día de los datos, primer día con sitio y fecha de referencia (reglas §4 y §5)
+# Fechas: primer día de los datos, primer día con sitio y fecha de referencia (reglas, apartado 4 y §5)
 FECHA_INICIO = dt.date(2020, 1, 1)
 INICIO_SITIO = dt.date(2023, 7, 1)
 FECHA_DATOS = dt.date(2025, 6, 30)
-# El sitio cubre dos años, del 01/07/2023 al 30/06/2025 (reglas §4)
+# El sitio cubre dos años, del 01/07/2023 al 30/06/2025 (reglas, apartado 4)
 ANOS_SITIO = 2
-# Mínimo para un ranking: días de disco en el año (reglas §7); fallos mínimos de un grupo o celda (encargo, criterio 8;
-# reglas §7, CP-009, para el año de edad); casos mínimos de un grupo de fotos (skill, parametros.md)
+# Mínimo para un ranking: días de disco en el año (reglas, apartado 7); fallos mínimos de un grupo o celda (petición, criterio 8;
+# reglas, apartado 7, cuestión 009, para el año de edad); casos mínimos de un grupo de fotos (método, parametros.md)
 MINIMO_DIAS_ANO = 50_000
 MINIMO_FALLOS = 20
 MINIMO_CASOS = 30
-# Confianza de los intervalos (skill, parametros.md; 42.6 del manual) y factor de la tasa anual en % (reglas §6)
+# Confianza de los intervalos (método, parametros.md; 42.6 del manual) y factor de la tasa anual en % (reglas, apartado 6)
 CONFIANZA = 0.95
 FACTOR_TASA = 100 * 365
-# Horas de un año de edad (reglas de transformación, criterio técnico 1) y horizonte del desenlace (encargo, criterio 2)
+# Horas de un año de edad (reglas de transformación, criterio técnico 1) y horizonte del desenlace (petición, criterio 2)
 H_ANO = 8766
 HORIZONTE = 90
-# Contadores de avería (reglas §3); los que tienen cambio en fotos_riesgo (sin el 188, reglas de transformación §3)
+# Contadores de avería (reglas, apartado 3); los que tienen cambio en fotos_riesgo (sin el 188, reglas de transformación §3)
 CONTADORES = (5, 187, 188, 197, 198)
 CONT_CAMBIO = (5, 187, 197, 198)
-# El único fabricante que trae los cinco contadores: el desenlace por contador se repite solo con sus fotos (reglas §3;
-# plan, bloque 6; encargo 17)
+# El único fabricante que trae los cinco contadores: el desenlace por contador se repite solo con sus fotos (reglas, apartado 3;
+# plan, bloque 6; petición 17)
 FABRICANTE_CINCO = "Seagate"
-# Tomos con k fallos en d días y los dos que van frente al azar (encargo, criterios 3 y 4)
+# Tomos con k fallos en d días y los dos que van frente al azar (petición, criterios 3 y 4)
 K_D = [(2, 7), (2, 30), (3, 7), (3, 30), (4, 7), (4, 30)]
 AZAR = [(2, 30), (3, 7)]
 ITERACIONES = 200
 SEMILLA = 68
-# Centros en los que se quita cada modelo uno a uno (encargo, criterio 1; directriz 37 del auditor)
+# Centros en los que se quita cada modelo uno a uno (petición, criterio 1; directriz 37 del auditor)
 CENTROS_QUITAR = ("sac0", "sac2")
-# Cuántos modelos del reparto de cada centro, cuántos peores tomos y cuántas celdas del nivel 2 (encargo)
+# Cuántos modelos del reparto de cada centro, cuántos peores tomos y cuántas celdas del nivel 2 (petición)
 N_MODELOS_REPARTO = 5
 N_TOMOS = 5
 N_NIVEL2 = 10
-# Tramos del bloque 8 (Juan, 18/11/2026, R68-97) y de la edad del minicubo (encargo, criterio 9)
+# Tramos del bloque 8 (El responsable del caso, 18/11/2026, una nota del caso) y de la edad del minicubo (petición, criterio 9)
 TRAMOS = {"temperatura": ["01_frio", "02_medio", "03_caliente"],
           "arranques": ["01_hasta_mediana", "02_hasta_doble", "03_mas_del_doble"],
           "escritos": ["01_bajo", "02_medio", "03_alto"], "leidos": ["01_bajo", "02_medio", "03_alto"]}
@@ -130,12 +130,12 @@ TOPE_EDAD = 8
 DIMENSIONES = ["fabricante", "capacidad_tb", "edad", "centro", "avisa"]
 ANTES = "antes_de_07_2023"
 SIN_DATO = "sin dato"
-# Diferencia que se admite entre dos vías en días repartidos (encargo, «SEGUNDA VÍA»)
+# Diferencia que se admite entre dos vías en días repartidos (petición, «SEGUNDA VÍA»)
 TOLERANCIA = 1e-6
 # Base de las claves numéricas: meses y días caben por debajo
 BASE_MES = 10 ** 3
 BASE_DIA = 10 ** 5
-# La palabra vetada para el conjunto de discos (Juan, 17/11; R68-91), partida para que el código no la lleve
+# La palabra vetada para el conjunto de discos (El responsable del caso, 17/11; una nota del caso), partida para que el código no la lleve
 VETADA = "flo" + "ta"
 
 COMPROBACIONES = ["unidad", "minimo", "empates", "referencia", "azar_en_grupos", "pesos", "hacia_adelante",
@@ -241,9 +241,9 @@ def etiqueta_valor(x):
 # 4. Estadística
 # =================================================================================================================
 def intervalo_poisson(fallos, dias, confianza=CONFIANZA, phi=1.0):
-    """Tasa anual en % y su intervalo exacto de Poisson (con chi2), con los mismos días de disco (encargos 13 y 14).
+    """Tasa anual en % y su intervalo exacto de Poisson (con chi2), con los mismos días de disco (peticiones 13 y 14).
 
-    Con φ (encargo 19, reglas §7), los fallos y los días se dividen entre φ: la tasa no cambia y el intervalo se ensancha.
+    Con φ (petición 19, reglas, apartado 7), los fallos y los días se dividen entre φ: la tasa no cambia y el intervalo se ensancha.
     """
     a = 1 - confianza
     f = int(fallos)
@@ -258,7 +258,7 @@ def intervalo_poisson(fallos, dias, confianza=CONFIANZA, phi=1.0):
 def razon_poisson(observados, esperados, confianza=CONFIANZA, phi=1.0):
     """Razón observados / esperados y el intervalo exacto de Poisson de los observados dividido por los esperados.
 
-    Con φ (encargo 19), observados y esperados entre φ: la razón no cambia.
+    Con φ (petición 19), observados y esperados entre φ: la razón no cambia.
     """
     a = 1 - confianza
     o = int(observados)
@@ -269,7 +269,7 @@ def razon_poisson(observados, esperados, confianza=CONFIANZA, phi=1.0):
 
 
 def phi_poisson(grupos, celdas, observados, esperados):
-    """φ, lo que varían los fallos entre celdas más de lo que supone Poisson (encargo 19; reglas §7).
+    """φ, lo que varían los fallos entre celdas más de lo que supone Poisson (petición 19; reglas, apartado 7).
 
     Suma observados y esperados por grupo y celda; deja fuera las celdas sin esperados; reescala los esperados de cada
     grupo para que sumen sus observados; chi2 de Pearson = suma de (o − e)² / e; grados de libertad = celdas − grupos.
@@ -292,7 +292,7 @@ def phi_poisson(grupos, celdas, observados, esperados):
 
 
 def phi_edad(dpt):
-    """φ del minicubo, el de B3 del 09 calculado igual (encargo 19; el 11 no lee el JSON del 09): celdas de modelo × año
+    """φ del minicubo, el de B3 del 09 calculado igual (petición 19; el 11 no lee el JSON del 09): celdas de modelo × año
     de edad × trimestre de dias_por_tramo, con el esperado de cada una = sus días × la tasa de su modelo y año de edad
     en todo el periodo; grupo, modelo y año de edad. Una fila sin días cuenta 0 días y sus fallos."""
     d = dpt.assign(dias=dpt["dias_disco"].fillna(0.0), q=dpt["mes"].dt.year * 10 + dpt["mes"].dt.quarter)
@@ -303,7 +303,7 @@ def phi_edad(dpt):
 
 
 def phi_binomial(celdas, exitos):
-    """φ binomial de un grupo de fotos (encargo 19, B6): por celda, fotos n y fotos que fallan x; p, la de todo el grupo;
+    """φ binomial de un grupo de fotos (petición 19, B6): por celda, fotos n y fotos que fallan x; p, la de todo el grupo;
     chi2 = suma de (x − n·p)² / (n·p·(1 − p)); gl = celdas − 1; φ = chi2 / gl, y si sale menor que 1, vale 1. Con menos
     de dos celdas, o sin ninguna foto que falle o con todas, φ = 1."""
     t = pd.DataFrame({"c": np.asarray(celdas), "x": np.asarray(exitos, dtype=float)}).groupby("c")["x"].agg(["size", "sum"])
@@ -319,7 +319,7 @@ def phi_binomial(celdas, exitos):
 
 
 def intervalo_cp(si, n, phi=1.0, confianza=CONFIANZA):
-    """Intervalo exacto de Clopper-Pearson de una proporción, con si/φ y n/φ (encargo 19): inferior beta(α/2; x, n − x
+    """Intervalo exacto de Clopper-Pearson de una proporción, con si/φ y n/φ (petición 19): inferior beta(α/2; x, n − x
     + 1), 0 si x = 0; superior beta(1 − α/2; x + 1, n − x), 1 si x = n."""
     a = 1 - confianza
     x, m = si / phi, n / phi
@@ -341,7 +341,7 @@ def frente_a(lo, hi, referencia):
 # 5. Tramos y reparto de los días
 # =================================================================================================================
 def paridad(capacidad):
-    """Paridad supuesta de un tomo: 3 hasta 8 TB, 4 de 10 a 14 TB y 5 desde 16 TB (reglas §4, supuesto)."""
+    """Paridad supuesta de un tomo: 3 hasta 8 TB, 4 de 10 a 14 TB y 5 desde 16 TB (reglas, apartado 4, supuesto)."""
     if capacidad <= 8:
         return 3
     if capacidad < 16:
@@ -350,13 +350,13 @@ def paridad(capacidad):
 
 
 def tramo_edad(edad):
-    """Tramo de edad por el entero por abajo de la edad, con el último tramo desde el tope (encargo, criterio 9)."""
+    """Tramo de edad por el entero por abajo de la edad, con el último tramo desde el tope (petición, criterio 9)."""
     e = np.clip(np.floor(np.asarray(edad, dtype=float)), 0, TOPE_EDAD).astype(int)
     return np.array([f"{x:02d}_{x}" if x < TOPE_EDAD else f"{TOPE_EDAD:02d}_{TOPE_EDAD}_o_mas" for x in e])
 
 
 def tramo_temperatura(diferencia):
-    """0 frío (< −3), 1 medio (de −3 a < 3), 2 caliente (≥ 3), −1 sin tramo (encargo, criterio 8)."""
+    """0 frío (< −3), 1 medio (de −3 a < 3), 2 caliente (≥ 3), −1 sin tramo (petición, criterio 8)."""
     x = np.asarray(diferencia, dtype=float)
     t = np.where(x < -3, 0, np.where(x < 3, 1, 2))
     return np.where(np.isnan(x), -1, t).astype(np.int8)
@@ -383,7 +383,7 @@ def rango_por_grupo(grupo, valor):
 
 
 def pesos_por_celda(foto_celda, dias_celda):
-    """Cada foto pesa los días de su celda divididos entre las fotos de la celda (encargo, criterio 7).
+    """Cada foto pesa los días de su celda divididos entre las fotos de la celda (petición, criterio 7).
 
     `foto_celda` es la celda de cada foto; `dias_celda`, una serie con los días del recuento de cada celda. Una celda
     del recuento sin foto deja sus días sin repartir; una foto en una celda sin días pesa 0 y se cuenta.
@@ -402,7 +402,7 @@ def pesos_por_celda(foto_celda, dias_celda):
 # 6. Piezas de los bloques
 # =================================================================================================================
 def ajustada(dpt):
-    """Estandarización indirecta por centro (encargo 15, criterio 1; manual 5.6), con la mezcla del encargo 19.
+    """Estandarización indirecta por centro (petición 15, criterio 1; manual 5.6), con la mezcla de la petición 19.
 
     Tasa de cada modelo, año de edad y trimestre con todos los centros juntos, «sin dato» incluido; esperados de un
     centro = suma de sus días × esa tasa; razón = observados / esperados; tasa ajustada = razón × tasa de todos. φ se
@@ -436,7 +436,7 @@ def ajustada(dpt):
 
 
 def veredicto(centro, dias_ano, fallos, desde, hasta):
-    """Lo que dice la razón de un centro: solo con el mínimo de días al año y de fallos (reglas §7; encargo)."""
+    """Lo que dice la razón de un centro: solo con el mínimo de días al año y de fallos (reglas, apartado 7; petición)."""
     if centro == SIN_DATO:
         return "aparte"
     if dias_ano < MINIMO_DIAS_ANO or fallos < MINIMO_FALLOS:
@@ -469,12 +469,12 @@ def falla_en_90_busqueda(sc, dia_foto, sc_fallo, dia_fallo, horizonte=HORIZONTE)
 
 
 def desenlace_por_grupo(grupos_m, falla, falla_otra, desaparece, discos, celdas):
-    """Desenlace a 90 días de cada grupo de fotos (encargo 15, criterio 2), con «sin aviso» como referencia.
+    """Desenlace a 90 días de cada grupo de fotos (petición 15, criterio 2), con «sin aviso» como referencia.
 
     `grupos_m` da la máscara de cada grupo sobre las fotos con 90 días por delante; `falla` y `falla_otra` son las dos
     cuentas de si la foto falla en 90 días, `desaparece` si desaparece, `discos` el disco de cada foto y `celdas` el
     trimestre de cada foto. Cada grupo lleva sus fotos, sus discos distintos, sigue, falla y desaparece, su φ binomial
-    por trimestre de la foto y el intervalo de Clopper-Pearson de la parte que falla con fallan/φ y fotos/φ (encargo 19)
+    por trimestre de la foto y el intervalo de Clopper-Pearson de la parte que falla con fallan/φ y fotos/φ (petición 19)
     y, con 30 fotos o más, si queda por encima, por debajo o no se distingue de las fotos sin aviso del mismo conjunto.
     """
     grupos, ref = [], None
@@ -514,7 +514,7 @@ def _k_codigos(codigos, dia, k, d):
 
 
 def k_en_d(tomo, dia, k, d):
-    """Tomos con dos fallos a distancia k − 1 entre sí con d días o menos (encargo, criterio 3).
+    """Tomos con dos fallos a distancia k − 1 entre sí con d días o menos (petición, criterio 3).
 
     Devuelve {tomo: índice del fallo i + k − 1 de su primer grupo}, que da el trimestre en que cuenta el tomo.
     """
@@ -525,7 +525,7 @@ def k_en_d(tomo, dia, k, d):
 def azar_tomos(estrato, tomo, dia, combinaciones, iteraciones, semilla):
     """Los días de los fallos se barajan entre los fallos del mismo estrato; cada fallo se queda en su tomo (criterio 4).
 
-    El estrato es el centro y el trimestre del fallo desde el encargo 19; con solo el centro, la comparación de antes.
+    El estrato es el centro y el trimestre del fallo desde la petición 19; con solo el centro, la comparación de antes.
     Devuelve {(k, d): [tomos con k fallos en d días en cada repetición]}.
     """
     rng = np.random.default_rng(semilla)
@@ -544,7 +544,7 @@ def azar_tomos(estrato, tomo, dia, combinaciones, iteraciones, semilla):
 
 
 def a_la_vez(tomo, dia, plazo):
-    """Al llegar cada fallo, los fallos anteriores de su tomo que siguen rehaciéndose, más uno (encargo, criterio 5).
+    """Al llegar cada fallo, los fallos anteriores de su tomo que siguen rehaciéndose, más uno (petición, criterio 5).
 
     Un fallo anterior sigue rehaciéndose si su día más su plazo es posterior al día del que llega. Los fallos se
     ordenan por tomo y día; a igual día, por su orden de entrada.
@@ -563,7 +563,7 @@ def a_la_vez(tomo, dia, plazo):
 
 def coincidencias_bucle(tomos, dias, plazos):
     """Recuento propio, en bucle: fallos con tomo, tomos y fallos que llegan antes de que acabe de rehacerse el
-    anterior de su tomo (reglas §7; segunda vía de las columnas de fallos_detalle)."""
+    anterior de su tomo (reglas, apartado 7; segunda vía de las columnas de fallos_detalle)."""
     filas = sorted((t, d, p) for t, d, p in zip(tomos, dias, plazos) if t is not None)
     vistos, coinciden, anterior = set(), 0, None
     for t, d, p in filas:
@@ -575,7 +575,7 @@ def coincidencias_bucle(tomos, dias, plazos):
 
 
 def riesgo_vivo(mes, tomo, avisa):
-    """Cada mes, tomos con 2 o más y con 3 o más discos que avisan, frente a la binomial (encargo, criterio 6).
+    """Cada mes, tomos con 2 o más y con 3 o más discos que avisan, frente a la binomial (petición, criterio 6).
 
     La probabilidad de avisar es la del mes entre las fotos con tomo; los esperados suman la de cada tomo con sus discos.
     """
@@ -592,7 +592,7 @@ def riesgo_vivo(mes, tomo, avisa):
 
 
 def grupos_factor(grupo_foto, tramo_foto, peso, grupo_fallo, tramo_fallo, minimo=MINIMO_FALLOS):
-    """Un factor del bloque 8 dentro de su grupo (encargo, criterio 8).
+    """Un factor del bloque 8 dentro de su grupo (petición, criterio 8).
 
     Un grupo entra si tiene `minimo` fallos o más en cada uno de sus tres tramos; si no, sale aparte entero. Por tramo,
     en los grupos que entran: días, fallos, tasa, y razón observados / esperados, con los esperados por la tasa de su
@@ -644,17 +644,17 @@ def suma_por_codigo(codigo, peso, k):
     """Suma de los pesos de cada código de 0 a k − 1, con la suma compensada de pandas.
 
     np.bincount suma uno detrás de otro y, con 14,6 millones de pesos, pierde milésimas de día; groupby().sum() de pandas
-    compensa el error y deja la suma por debajo del 1e-6 del encargo.
+    compensa el error y deja la suma por debajo del 1e-6 de la petición.
     """
     return pd.Series(peso).groupby(codigo).sum().reindex(range(k), fill_value=0.0).to_numpy()
 
 
 def minicubo(dims, peso, fallo_dims, minimo_dias=MINIMO_DIAS_ANO, minimo_fallos=MINIMO_FALLOS, phi=1.0):
-    """Minicubo de la tasa anual por el reparto de los días (assets/23_metodo_minicubo.md; encargo, criterio 9).
+    """Minicubo de la tasa anual por el reparto de los días (assets/23_metodo_minicubo.md; petición, criterio 9).
 
     Nivel 1: cada valor de cada dimensión, con sus fotos, días, fallos, tasa e intervalo. Nivel 2: cada par de
     dimensiones, todas sus celdas y las diez de tasa más alta con el mínimo de días y de fallos. La métrica es una
-    razón de sumas, no una mediana. Cada intervalo lleva el φ de la edad (encargo 19).
+    razón de sumas, no una mediana. Cada intervalo lleva el φ de la edad (petición 19).
     """
     peso = np.asarray(peso, dtype=float)
     nombres = list(dims)
@@ -707,7 +707,7 @@ def minicubo(dims, peso, fallo_dims, minimo_dias=MINIMO_DIAS_ANO, minimo_fallos=
 
 
 # =================================================================================================================
-# 7. Comprobaciones (skill §4 y encargo): cada una devuelve True o False calculado con lo ejecutado
+# 7. Comprobaciones (método §4 y petición): cada una devuelve True o False calculado con lo ejecutado
 # =================================================================================================================
 def comp_unidad(claves):
     """La unidad se cuenta una vez: ninguna clave repetida."""
@@ -750,7 +750,7 @@ def comp_periodos(filas, clave, parciales, campo="parcial"):
 
 
 def comp_sin_validacion(periodos):
-    """Ninguna foto que se cruza con falla_30d es de validación: todas de construcción (reglas §7)."""
+    """Ninguna foto que se cruza con falla_30d es de validación: todas de construcción (reglas, apartado 7)."""
     return len(periodos) > 0 and all(str(p).startswith("constru") for p in periodos)
 
 
@@ -760,7 +760,7 @@ def comp_partes(en_tramos, aparte, sin_tramo, total):
 
 
 def comp_phi(registros):
-    """Cada φ usado es el medido, y nunca menor que 1: si el medido sale por debajo de 1, se usa 1 (encargo 19)."""
+    """Cada φ usado es el medido, y nunca menor que 1: si el medido sale por debajo de 1, se usa 1 (petición 19)."""
     for x in registros:
         bruto = x.get("phi_bruto")
         debe = 1.0 if bruto is None else max(1.0, bruto)
@@ -770,7 +770,7 @@ def comp_phi(registros):
 
 
 def comp_veredicto_centros(centros, phi):
-    """El veredicto de cada centro sale de su intervalo con φ (encargo 19): se rehace con la gamma desde los observados,
+    """El veredicto de cada centro sale de su intervalo con φ (petición 19): se rehace con la gamma desde los observados,
     los esperados y φ, y con el mínimo de días al año y de fallos."""
     for x in centros:
         if x["esperados"] > 0:
@@ -784,7 +784,7 @@ def comp_veredicto_centros(centros, phi):
 
 def comp_lado_azar(resultados):
     """La marca «por encima del percentil 95» de cada medida del azar sale de comparar sus observados con su p95
-    (encargo 19: el lado es un resultado, no una condición para seguir)."""
+    (petición 19: el lado es un resultado, no una condición para seguir)."""
     return len(resultados) > 0 and all(bool(x["por_encima_del_p95"]) == (x["observados"] > x["p95"]) for x in resultados)
 
 
@@ -797,7 +797,7 @@ def comp_sin_vetada(textos):
 # 8. Entradas: estado de la fase anterior, huellas y lectura
 # =================================================================================================================
 def comprobar_previos(raiz):
-    """Para con PARADO si falta un JSON del que parte el encargo o su estado es PARADO o ERROR."""
+    """Para con PARADO si falta un JSON del que parte la petición o su estado es PARADO o ERROR."""
     estados = {}
     for n in PREVIOS:
         ruta = raiz / "informes" / f"{n}.json"
@@ -832,7 +832,7 @@ def comprobar_huellas(raiz):
 
 
 def bandera(serie):
-    """−1 si el valor está vacío, 1 si pasa de cero y 0 si no: un vacío no es un cero (reglas §5)."""
+    """−1 si el valor está vacío, 1 si pasa de cero y 0 si no: un vacío no es un cero (reglas, apartado 5)."""
     v = serie.to_numpy(dtype=float, na_value=np.nan)
     return np.where(np.isnan(v), -1, (v > 0).astype(np.int8)).astype(np.int8)
 
@@ -927,7 +927,7 @@ def leer(raiz):
 
 
 # =================================================================================================================
-# 9. Segundas vías: cada una parte de otra tabla o de otro cálculo (skill §5)
+# 9. Segundas vías: cada una parte de otra tabla o de otro cálculo (método §5)
 # =================================================================================================================
 def comparar(nombre, via1, via2, a, b, tolerancia=None):
     """Compara dos series indexadas por la misma clave; exacta o con tolerancia. Una clave en una sola vía no coincide."""
@@ -1035,7 +1035,7 @@ def calcular_b5(d, b):
                        por_c["dias"], r2["dias"]))
     sv.append(comparar("fallos por centro desde 07/2023", "centro_mes", "recuento_diario_corregido",
                        por_c["fallos"], r2["fallos"]))
-    # B5.2 · tasa ajustada con dias_por_tramo desde 07/2023, con la mezcla de modelo, edad y trimestre y su φ (encargo 19)
+    # B5.2 · tasa ajustada con dias_por_tramo desde 07/2023, con la mezcla de modelo, edad y trimestre y su φ (petición 19)
     dp = dpt.loc[dpt["mes"] >= ini]
     aj, ph5 = ajustada(dp)
     tasa_todos = float(aj["tasa_todos"].iloc[0])
@@ -1044,7 +1044,7 @@ def calcular_b5(d, b):
                        aj.set_index("centro")["dias"].add(b["sin_foto_centro"], fill_value=0.0), r2["dias"], TOLERANCIA))
     sv.append(comparar("fallos por centro: dias_por_tramo", "dias_por_tramo", "recuento_diario_corregido",
                        aj.set_index("centro")["observados"], r2["fallos"]))
-    # Los esperados suman los observados de las celdas con tasa; los fallos de las celdas sin días van aparte (encargo 19)
+    # Los esperados suman los observados de las celdas con tasa; los fallos de las celdas sin días van aparte (petición 19)
     sv.append(comparar("suma de los esperados de todos los centros", "esperados (tasa de cada modelo, edad y trimestre)",
                        "observados de las celdas con días", pd.Series({"todos": aj["esperados"].sum()}),
                        pd.Series({"todos": float(aj["observados"].sum() - aj["fallos_sin_tasa"].sum())}), TOLERANCIA))
@@ -1150,18 +1150,18 @@ def calcular_b5(d, b):
                         "suma de los observados de las celdas con días", ok["suma de los esperados de todos los centros"]))
     q = {"id": "B5", "pregunta": "Si algún centro de datos tiene más fallos que los demás con los mismos discos",
          "decision": "dónde mirar la operación de un centro: solo si falla más con la misma mezcla de modelos y edades",
-         "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 5; metodo/04_planteamientos.md §1.A",
+         "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 5; metodo/04_planteamientos.md §1.A",
          "funcion": "comparar_con_total",
          "funcion_adaptada": ("comparar_con_total del 42.6 compara proporciones con Wilson; aquí se compara una tasa por "
                               "días de disco, así que cada centro va con su razón de observados entre esperados por "
                               "estandarización indirecta (5.6) con la mezcla de modelo, año de edad y trimestre, y el "
-                              "intervalo exacto de Poisson ensanchado por φ (encargo 19); el mínimo es el de las reglas §7"),
+                              "intervalo exacto de Poisson ensanchado por φ (petición 19); el mínimo es el de las reglas, apartado 7"),
          "poblacion": {"regla": pob, "periodo": periodo, "filas": int(len(dp)), "unidad": "centro de datos",
                        "entidades": int(len(centros))},
          "medida": ("tasa anual = 100 × 365 × fallos / días de disco; razón = observados / esperados con la tasa de cada "
                     "modelo, año de edad y trimestre de todos los centros; tasa ajustada = razón × tasa de todos; "
                     "intervalo de la razón con observados y esperados entre φ, medido en centro × trimestre"),
-         "minimo_casos": "50.000 días de disco al año y 20 fallos (reglas §7; encargo, comprobación 1)",
+         "minimo_casos": "50.000 días de disco al año y 20 fallos (reglas, apartado 7; petición, comprobación 1)",
          "que_cambia_la_decision": "un centro cuyo intervalo de la razón queda entero por encima de 1 falla más por sí mismo",
          "cifras": cifras,
          "referencia": {"que_es": "la tasa de todos los centros juntos con las mismas filas de dias_por_tramo; razón 1",
@@ -1211,13 +1211,13 @@ def calcular_b6(d, b):
     for c in CONTADORES:
         grupos_m[f"contador {c}"] = F[f"f{c}"].to_numpy()[h] == 1
     n_h = int(h.sum())
-    # Celdas del φ binomial (encargo 19): el trimestre de la foto, como año × 10 + trimestre
+    # Celdas del φ binomial (petición 19): el trimestre de la foto, como año × 10 + trimestre
     q_h = (FECHA_INICIO.year + mi[h] // 12) * 10 + (mi[h] % 12) // 3 + 1
     grupos, ref = desenlace_por_grupo(grupos_m, f1, f2, desap, sc_h, q_h)
     sv.append(comparar("fotos que fallan en 90 días, por grupo de aviso", "unión de fotos y fallos",
                        "búsqueda en la lista ordenada de fallos", pd.Series({x["grupo"]: x["falla"] for x in grupos}),
                        pd.Series({x["grupo"]: x["falla_busqueda"] for x in grupos})))
-    # B6.2 en Seagate (encargo 17): el mismo desenlace con el filtro de fabricante, porque solo Seagate trae los cinco
+    # B6.2 en Seagate (petición 17): el mismo desenlace con el filtro de fabricante, porque solo Seagate trae los cinco
     # contadores; su referencia es «sin aviso» de Seagate
     seag_h = b["fab_mo"][mo[h]] == FABRICANTE_CINCO
     grupos_s, ref_s = desenlace_por_grupo({g: m & seag_h for g, m in grupos_m.items()}, f1, f2, desap, sc_h, q_h)
@@ -1238,7 +1238,7 @@ def calcular_b6(d, b):
     fallos = {"datos": int(len(fd)), "con_dia_anterior": int(hay.sum()),
               "sin_aviso": int(fd["sin_aviso"].fillna(False).astype(bool).sum()),
               "sin_dia_anterior": int((~hay).sum())}
-    # Por año del fallo (encargo 19): sin aviso el día anterior entre los que lo tienen, y sin día anterior entre todos
+    # Por año del fallo (petición 19): sin aviso el día anterior entre los que lo tienen, y sin día anterior entre todos
     sin_av = fd["sin_aviso"].fillna(False).astype(bool) & hay
     ano_f = fd["dia_fallo"].dt.year
     pa_ = (pd.DataFrame({"ano": ano_f.to_numpy(), "hay": hay.to_numpy(), "sa": sin_av.to_numpy()})
@@ -1357,18 +1357,18 @@ def calcular_b6(d, b):
               "comparacion_ventana": comparacion_ventana, "construccion": construccion, "serie_dias_antes": serie}
     q = {"id": "B6", "pregunta": "Cuántos discos avisan, qué aviso anticipa más fallos y cuánto siguen funcionando",
          "decision": "qué aviso merece atención antes y cuánto margen dejan los avisos a los técnicos",
-         "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 6; metodo/04_planteamientos.md §1.A",
+         "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 6; metodo/04_planteamientos.md §1.A",
          "funcion": "comparar_con_total",
          "funcion_adaptada": ("comparar_con_total del 42.6 frente a las fotos sin aviso y no frente al total, porque el "
                               "aviso es acumulado y la referencia sencilla es no avisar; el intervalo es el exacto de "
                               "Clopper-Pearson con fallan/φ y fotos/φ, con el φ binomial de cada grupo por trimestre de "
-                              "la foto (encargo 19), y no el de Wilson"),
+                              "la foto (petición 19), y no el de Wilson"),
          "poblacion": {"regla": pob, "periodo": periodo, "filas": int(len(F)), "unidad": "foto mensual de un disco",
                        "entidades": int(np.unique(sc).size)},
          "medida": ("porcentaje de fotos que avisan; desenlace a 90 días de cada foto (falla, desaparece o sigue); "
                     "porcentaje de fotos con el contador que sube entre las que fallan y las que no; fallos sin aviso "
                     "el día anterior por año, entre los que tienen día anterior"),
-         "minimo_casos": f"{MINIMO_CASOS} fotos por grupo (skill, parametros.md)",
+         "minimo_casos": f"{MINIMO_CASOS} fotos por grupo (método, parametros.md)",
          "que_cambia_la_decision": "un aviso cuyo intervalo de fallo a 90 días queda por encima del de las fotos sin aviso",
          "cifras": cifras,
          "referencia": {"que_es": "las fotos sin aviso, con las mismas fotos de 90 días por delante",
@@ -1413,7 +1413,7 @@ def calcular_b7(d, b):
         res = k_en_d(tomo, dia, k, dd)
         cuenta = pd.Series([t["q"].iloc[i] for i in res.values()], dtype=object).value_counts()
         kd.append({"k": k, "d": dd, "tomos": len(res), "por_trimestre": {q: int(cuenta.get(q, 0)) for q in trimestres}})
-    # Frente al azar: los días se barajan dentro de cada centro y trimestre del fallo (encargo 19); el azar de solo el
+    # Frente al azar: los días se barajan dentro de cada centro y trimestre del fallo (petición 19); el azar de solo el
     # centro, el de antes, va al lado con las mismas repeticiones y la misma semilla. El lado frente al p95 es un
     # resultado de cada medida, no una condición para seguir
     def frente_al_azar(az):
@@ -1513,11 +1513,11 @@ def calcular_b7(d, b):
               "riesgo_vivo": riesgo}
     q = {"id": "B7", "pregunta": "Cuántas veces caen varios discos del mismo tomo cerca en el tiempo, y si pasa más que por azar",
          "decision": "si el riesgo de perder datos pide vigilar los tomos donde acaba de fallar un disco",
-         "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 7; metodo/04_planteamientos.md §1.A",
+         "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 7; metodo/04_planteamientos.md §1.A",
          "funcion": "otra",
          "funcion_adaptada": ("ninguna función del capítulo 42 compara agrupaciones en el tiempo con el azar: se barajan "
                               "los días de los fallos dentro de cada centro y trimestre del fallo (criterio 4, con el "
-                              "trimestre del encargo 19; el de solo el centro, al lado) y el riesgo vivo se compara "
+                              "trimestre de la petición 19; el de solo el centro, al lado) y el riesgo vivo se compara "
                               "con la binomial (criterio 6)"),
          "poblacion": {"regla": pob, "periodo": periodo, "filas": int(len(f7)), "unidad": "tomo (centro, vault y ranura)",
                        "entidades": tabla["tomos"]},
@@ -1653,7 +1653,7 @@ def calcular_b8(d, b):
               "medianas": {"temperatura_modelos": int(med_t.notna().sum()), "arranques_grupos": int(med_a.notna().sum())}}
     q = {"id": "B8", "pregunta": "Si la temperatura, la carga de trabajo o los arranques acompañan a más fallos",
          "decision": "si alguno de esos factores merece vigilarse dentro de cada modelo",
-         "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 8; metodo/04_planteamientos.md §1.A",
+         "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 8; metodo/04_planteamientos.md §1.A",
          "funcion": "comparar_con_total",
          "funcion_adaptada": ("comparar_con_total del 42.6 pasado a tasas por días de disco: cada tramo se compara con "
                               "la tasa de su propio grupo (modelo, o modelo y año de edad) por la razón de observados "
@@ -1662,7 +1662,7 @@ def calcular_b8(d, b):
                        "entidades": int(np.unique(F["sc"].to_numpy()).size)},
          "medida": ("tasa anual por tramo y razón de observados entre esperados con la tasa de su grupo; los días salen "
                     "del recuento repartidos por las fotos (criterio 7)"),
-         "minimo_casos": "20 fallos en cada uno de los tres tramos de un grupo (encargo, criterio 8)",
+         "minimo_casos": "20 fallos en cada uno de los tres tramos de un grupo (petición, criterio 8)",
          "que_cambia_la_decision": "un tramo cuyo intervalo de la razón queda entero por encima o por debajo de 1",
          "cifras": cifras,
          "referencia": {"que_es": "la tasa de su grupo, razón 1; al lado, la tasa de todas las fotos con su reparto",
@@ -1779,17 +1779,17 @@ def calcular_mc(d, b):
               "lo_que_falta": falta}
     q = {"id": "MC", "pregunta": "Qué perfiles de disco tienen más riesgo, por fabricante, capacidad, edad, centro y aviso",
          "decision": "dónde mirar primero y qué tasa estimar para una combinación con pocos discos",
-         "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, «Cierre del análisis»; assets/23_metodo_minicubo.md",
+         "planteamiento": "config/metodo/plan_de_la_analitica.md, «Cierre del análisis»; assets/23_metodo_minicubo.md",
          "funcion": "minicubo",
          "funcion_adaptada": ("la métrica es la tasa anual con sus días y sus fallos, una razón de sumas y no una "
                               "mediana: una mediana por foto no da una tasa por días de disco (13.13 y 5.5); cada valor "
                               "lleva su recuento de fotos, días y fallos, y su intervalo exacto de Poisson con el φ de "
-                              "la edad (encargo 19)"),
+                              "la edad (petición 19)"),
          "poblacion": {"regla": pob, "periodo": periodo, "filas": int(len(F)), "unidad": "foto mensual de un disco",
                        "entidades": int(np.unique(F["sc"].to_numpy()).size)},
          "medida": ("tasa anual = 100 × 365 × fallos con su foto / días repartidos, por valor y por par de valores; el "
                     "intervalo, con fallos y días entre el φ de la edad"),
-         "minimo_casos": "50.000 días de disco y 20 fallos por valor o celda (encargo, criterio 9)",
+         "minimo_casos": "50.000 días de disco y 20 fallos por valor o celda (petición, criterio 9)",
          "que_cambia_la_decision": "un valor o una celda cuyo intervalo queda por encima de la tasa de todos",
          "cifras": cifras,
          "referencia": {"que_es": "la tasa de todas las fotos con el mismo reparto", "valor": tasa_todos,
@@ -1816,7 +1816,7 @@ def calcular(d):
 
 
 # =================================================================================================================
-# 11. Validaciones (skill §7) y búsqueda de resultados escritos
+# 11. Validaciones (método §7) y búsqueda de resultados escritos
 # =================================================================================================================
 def buscar_resultados_escritos(texto):
     """Líneas del código con una comprobación o validación puesta a True o con una cifra de cuatro cifras o más.
@@ -1839,7 +1839,7 @@ def buscar_resultados_escritos(texto):
 
 
 def validar(res, fuente, h_antes, h_despues, res2):
-    """Las nueve validaciones de la skill, cada una calculada sobre el resultado y el código."""
+    """Las nueve validaciones de el método, cada una calculada sobre el resultado y el código."""
     pregs = res.get("preguntas", [])
 
     def lleno(x):
@@ -1921,14 +1921,14 @@ NOMBRES_VALIDACION = {"planteamiento_completo": "cada pregunta tiene su planteam
 
 
 def seccion_comprobaciones(L, q):
-    """Las nueve comprobaciones de una pregunta y las del encargo, con su resultado o su motivo."""
+    """Las nueve comprobaciones de una pregunta y las de la petición, con su resultado o su motivo."""
     L.append(f"Las comprobaciones de {q['id']}:")
     L.append("")
     for k, v in q["comprobaciones"].items():
         texto = "sí" if v is True else "no" if v is False else "no aplica, porque " + q["motivos_null"][k]
         L.append(f"- {NOMBRES_COMPROBACION[k]}: {texto}.")
     for k, v in q.get("comprobaciones_extra", {}).items():
-        L.append(f"- Del encargo, {NOMBRES_EXTRA[k]}: {'sí' if v else 'no'}.")
+        L.append(f"- Del petición, {NOMBRES_EXTRA[k]}: {'sí' if v else 'no'}.")
     L.append("")
 
 
@@ -1961,7 +1961,7 @@ def informe(j):
     # Las preguntas y su planteamiento
     L.append("## Las preguntas y su planteamiento")
     L.append("")
-    L.append("Las cinco preguntas salen del plan de la analítica, aprobado por Juan el 16/11/2026, y del planteamiento "
+    L.append("Las cinco preguntas salen del plan de la analítica, aprobado por el responsable del caso el 16/11/2026, y del planteamiento "
              "1.A. Entran los discos de datos, sin los de arranque. Lo que va por centro y por tomo cubre del "
              "01/07/2023 al 30/06/2025, porque antes el sitio no consta; lo demás, del 01/01/2020 al 30/06/2025. La "
              "tasa anual de fallo es 100 × 365 × fallos / días de disco. Cuando el corte no está en el recuento, los "
@@ -2036,7 +2036,7 @@ def informe(j):
                  f"{num(x['phi']['phi'], 1)} | {pct(x['pct_desaparece'])} | "
                  f"{'referencia' if x['grupo'] == 'sin aviso' else x['frente_a_sin_aviso'] or 'sin conclusión'} |")
     L.append("")
-    # El mismo desenlace solo con Seagate (encargo 17): es el único fabricante que trae los cinco contadores, así que
+    # El mismo desenlace solo con Seagate (petición 17): es el único fabricante que trae los cinco contadores, así que
     # ahí cada contador se compara con el «sin aviso» de los mismos modelos
     ds = b6["desenlace_seagate"]
     L.append(f"Solo con las fotos de {ds['fabricante']}, el único fabricante que trae los cinco contadores, "
@@ -2106,7 +2106,7 @@ def informe(j):
         L.append("Que una medida no quede por encima del percentil 95 es un resultado del cálculo, no un fallo: con "
                  "ella, esos tomos no se distinguen de lo que da el azar.")
     L.append("")
-    L.append("Barajando solo dentro de cada centro, como antes del encargo 19: "
+    L.append("Barajando solo dentro de cada centro, como antes de la petición 19: "
              + "; ".join(f"{k} fallos o más en {d_} días, media {num(x['media'], 2)} y percentil 95 "
                          f"{num(x['p95'], 1)}, {lado(x)}" for (k, d_), x in azc.items()) + ".")
     L.append("")
@@ -2248,11 +2248,11 @@ def informe(j):
 # =================================================================================================================
 # 13. Ejecución
 # =================================================================================================================
-def version_skill(raiz):
-    """La fecha y el código de la última línea de versión del SKILL.md (bloque común)."""
-    ruta = raiz / SKILL_MD
+def version_metodo(raiz):
+    """La fecha y el código de la última línea de versión del METODO.md (bloque común)."""
+    ruta = raiz / METODO_MD
     if not ruta.exists():
-        ruta = CASO / SKILL_MD
+        ruta = CASO / METODO_MD
     lineas = [x for x in ruta.read_text(encoding="utf-8").splitlines() if x.startswith("Versión ")]
     m = re.match(r"Versión (\S+) \(([^)]+)\)", lineas[-1]) if lineas else None
     return f"{m.group(1)} ({m.group(2)})" if m else None
@@ -2264,47 +2264,47 @@ def parametros():
         {"nombre": "mínimo de días de disco al año de un centro, un valor o una celda", "valor": numero(MINIMO_DIAS_ANO),
          "origen": "reglas-negocio §7; en un centro, sobre los dos años del sitio (100.000 días)"},
         {"nombre": "mínimo de fallos de un centro, un tramo, un valor o una celda", "valor": str(MINIMO_FALLOS),
-         "origen": "encargo, criterios 8 y 9 y comprobación 1 (yyz1 sin conclusión); reglas §7, CP-009"},
+         "origen": "petición, criterios 8 y 9 y comprobación 1 (yyz1 sin conclusión); reglas, apartado 7, cuestión 009"},
         {"nombre": "mínimo de fotos de un grupo de aviso", "valor": str(MINIMO_CASOS),
-         "origen": "parametros.md de la skill"},
+         "origen": "parametros.md de el método"},
         {"nombre": "tasa ajustada por centro", "valor": "estandarización indirecta con la tasa de cada modelo, año de "
                                                         "edad y trimestre de todos los centros, «sin dato» incluido",
-         "origen": "criterio técnico 1 de Claude, en el encargo 15; el trimestre, encargo 19"},
+         "origen": "criterio técnico 1, en la petición 15; el trimestre, petición 19"},
         {"nombre": "φ de B5", "valor": "chi2 de Pearson / grados de libertad en las celdas centro × trimestre de los "
                                        "centros que constan, con los esperados reescalados para que cada centro sume "
                                        "sus fallos; si sale menor que 1, vale 1",
-         "origen": "criterio técnico de Claude (reglas §7), encargo 19"},
+         "origen": "criterio técnico (reglas, apartado 7), petición 19"},
         {"nombre": "φ de B6", "valor": "binomial por grupo de aviso, en las celdas del trimestre de la foto: suma de "
                                        "(fallan − n·p)² / (n·p·(1 − p)) entre celdas − 1; si sale menor que 1, vale 1",
-         "origen": "criterio técnico de Claude (reglas §7), encargo 19"},
+         "origen": "criterio técnico (reglas, apartado 7), petición 19"},
         {"nombre": "φ del minicubo", "valor": "el de B3 del 09, calculado igual: celdas modelo × año de edad × trimestre "
                                               "de dias_por_tramo con la tasa de su modelo y año de edad",
-         "origen": "criterio técnico de Claude (reglas §7), encargo 19"},
+         "origen": "criterio técnico (reglas, apartado 7), petición 19"},
         {"nombre": "intervalo con φ", "valor": "exacto de Poisson con observados y esperados (o fallos y días) entre φ; "
                                                "Clopper-Pearson con fallan/φ y fotos/φ en el desenlace",
-         "origen": "encargo 19"},
+         "origen": "petición 19"},
         {"nombre": "desenlace a 90 días", "valor": "falla, desaparece o sigue, por foto", "origen": "criterio técnico 2"},
         {"nombre": "tomos con k fallos en d días", "valor": "k = 2, 3 y 4; d = 7 y 30", "origen": "criterio técnico 3"},
         {"nombre": "azar de los tomos", "valor": f"{ITERACIONES} repeticiones, semilla {SEMILLA}, días barajados dentro "
                                                  "de cada centro y trimestre del fallo, y al lado dentro de cada centro; "
                                                  "media y percentil 95 (interpolación lineal de numpy)",
-         "origen": "criterio técnico 4; el trimestre, encargo 19"},
+         "origen": "criterio técnico 4; el trimestre, petición 19"},
         {"nombre": "discos a la vez", "valor": "fallos anteriores del tomo con día + plazo posterior al día del fallo, "
-                                               "más uno; paridad supuesta 3, 4 y 5", "origen": "criterio técnico 5; reglas §4"},
+                                               "más uno; paridad supuesta 3, 4 y 5", "origen": "criterio técnico 5; reglas, apartado 4"},
         {"nombre": "riesgo vivo", "valor": "binomial de 2 o más y de 3 o más con los discos del tomo y la proporción "
                                            "del mes", "origen": "criterio técnico 6"},
         {"nombre": "reparto de los días", "valor": "días de la celda de modelo, mes y centro entre sus fotos",
          "origen": "criterio técnico 7"},
         {"nombre": "tramos del bloque 8", "valor": "temperatura ±3 °C de la mediana del modelo; arranques 1 y 2 veces la "
                                                    "mediana de modelo y edad; escritos y leídos por tercios",
-         "origen": "criterio técnico 8, aprobado por Juan el 18/11/2026 (R68-97)"},
+         "origen": "criterio técnico 8, aprobado por el responsable del caso el 18/11/2026"},
         {"nombre": "minicubo", "valor": "cinco dimensiones, tasa por el reparto, diez celdas por par en el nivel 2",
          "origen": "criterio técnico 9; assets/23_metodo_minicubo.md"},
         {"nombre": "confianza de los intervalos", "valor": numero(CONFIANZA, 2),
-         "origen": "parametros.md de la skill y 42.6 del manual"},
+         "origen": "parametros.md de el método y 42.6 del manual"},
         {"nombre": "tolerancia de las segundas vías en días repartidos", "valor": f"{TOLERANCIA:g}",
-         "origen": "encargo, «SEGUNDA VÍA»"},
-        {"nombre": "semilla", "valor": str(SEMILLA), "origen": "encargo, criterio 4"},
+         "origen": "petición, «SEGUNDA VÍA»"},
+        {"nombre": "semilla", "valor": str(SEMILLA), "origen": "petición, criterio 4"},
     ]
 
 
@@ -2327,13 +2327,13 @@ def limites(res):
         f"y {numero(cv['sin_aviso_fallos_detalle'])}. Se dan las de fallos_detalle, que son las de las reglas.",
         "Los contadores 187 y 188 solo los traen los Seagate, y los datos escritos y leídos solo se miden en Seagate: el "
         "porcentaje que avisa no se compara entre fabricantes.",
-        "La paridad de cada vault no está en los datos: se usa la supuesta de las reglas §4. El tiempo de reconstrucción "
+        "La paridad de cada vault no está en los datos: se usa la supuesta de las reglas, apartado 4. El tiempo de reconstrucción "
         "es la regla de Backblaze, un día por TB más uno.",
         "La tasa del minicubo usa los días repartidos por las fotos, que dejan fuera los días de las celdas sin foto: "
         "la del recuento por fabricante y capacidad va al lado, con su diferencia.",
-        f"Las reglas §5 dicen {mc['lo_que_falta']['reglas_dicen']}; las cifras de fallos_detalle "
+        f"Las reglas, apartado 5 dicen {mc['lo_que_falta']['reglas_dicen']}; las cifras de fallos_detalle "
         f"{'coinciden' if mc['lo_que_falta']['coinciden_con_las_reglas'] else 'no coinciden'} con ese rango.",
-        "Según lo medido al preparar el encargo 15, la temperatura de un disco casi no cambia de un mes a otro: el "
+        "Según lo medido al preparar la petición 15, la temperatura de un disco casi no cambia de un mes a otro: el "
         "tramo dice cómo de caliente trabaja ese disco respecto a su modelo, no un mes caluroso.",
         f"La tasa ajustada compara modelos presentes en varios centros: {b5['modelos_minimo_dos_centros']} modelos pasan "
         "el mínimo de días en dos centros o más.",
@@ -2342,8 +2342,8 @@ def limites(res):
         "no la que pueda haber dentro de un trimestre.",
         f"El último año de los datos, {FECHA_DATOS.year}, llega hasta el {FECHA_DATOS:%d/%m}: su «sin aviso» por año va "
         "marcado como incompleto.",
-        "Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas §5).",
-        "Pendiente: el auditor sin memoria del cierre del paso (skill §8) necesita el sí de Juan, porque es un agente.",
+        "Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas, apartado 5).",
+        "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente.",
     ]
 
 
@@ -2362,7 +2362,7 @@ def textos(j):
 def principal(raiz):
     """Lee, calcula dos veces, comprueba, valida y escribe; devuelve el código de salida."""
     inicio = time.time()
-    j = {"skill": "indicadores-y-analisis", "version_skill": version_skill(raiz), "script": SCRIPT, "encargo": ENCARGO,
+    j = {"metodo": "indicadores-y-analisis", "version_metodo": version_metodo(raiz), "script": SCRIPT, "peticion": PETICION,
          "fecha_datos": FECHA_DATOS.isoformat(), "fecha_ejecucion": dt.datetime.now().isoformat(timespec="seconds"),
          "entradas": [], "resultado": {}, "pendientes": []}
     h_antes = huellas_raw(raiz)
@@ -2409,7 +2409,7 @@ def principal(raiz):
             {"apartado": "4.5 y 4.7", "por_que": "intervalo al 95 %; el mínimo de casos lo fijan las reglas del caso"},
             {"apartado": "4.11 y 4.12", "por_que": "las tasas no se contrastan como dos proporciones: van con el intervalo "
                                                    "exacto de Poisson; el desenlace por aviso, con el exacto de "
-                                                   "Clopper-Pearson; los dos, ensanchados por φ (encargo 19)"},
+                                                   "Clopper-Pearson; los dos, ensanchados por φ (petición 19)"},
         ]
         j["datos_personales_texto"] = [
             ("Existe " + PROTECCION + ": lo que dice va en el informe de la protección." if (raiz / PROTECCION).exists()
@@ -2429,7 +2429,7 @@ def principal(raiz):
                         "tomo solo constan desde el 01/07/2023."),
             "artefactos": [SALIDA_JSON, SALIDA_MD],
             "siguiente": ("el borrador de hallazgos (B5, B6, B7, B8 y MC) con este JSON; el informe final y el cuadro de "
-                          "mando leen sus series; antes, el auditor sin memoria del paso con el sí de Juan")}
+                          "mando leen sus series; antes, el auditor sin memoria del paso con el sí de el responsable del caso")}
         j["comprobaciones_salida"] = {"sin_palabra_vetada": None}
         tj, tm = textos(j)
         j["comprobaciones_salida"]["sin_palabra_vetada"] = comp_sin_vetada([tj, tm])

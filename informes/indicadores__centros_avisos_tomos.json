@@ -1,8 +1,8 @@
 {
- "skill": "indicadores-y-analisis",
- "version_skill": "13/11/2026 (WF-102)",
+ "metodo": "indicadores-y-analisis",
+ "version_metodo": "13/11/2026",
  "script": "scripts/11_indicadores_centros_avisos_tomos.py",
- "encargo": "prompts/15_encargo_indicadores_centros_avisos_tomos.md; B6 ampliado por prompts/17_encargo_correcciones_del_auditor.md; B5, B6, B7 y el minicubo corregidos por prompts/19_encargo_correcciones_del_segundo_auditor.md",
+ "peticion": "peticiones/15_indicadores_centros_avisos_tomos.md; B6 ampliado por peticiones/17_correcciones_del_auditor.md; B5, B6, B7 y el minicubo corregidos por peticiones/19_correcciones_del_segundo_auditor.md",
  "fecha_datos": "2025-06-30",
  "fecha_ejecucion": "2026-11-18T13:55:33",
  "entradas": [
@@ -78,7 +78,7 @@
    "informes/indicadores__centros_avisos_tomos.json",
    "informes/indicadores__centros_avisos_tomos.md"
   ],
-  "siguiente": "el borrador de hallazgos (B5, B6, B7, B8 y MC) con este JSON; el informe final y el cuadro de mando leen sus series; antes, el auditor sin memoria del paso con el sí de Juan"
+  "siguiente": "el borrador de hallazgos (B5, B6, B7, B8 y MC) con este JSON; el informe final y el cuadro de mando leen sus series; antes, el auditor sin memoria del paso con el sí de el responsable del caso"
  },
  "pendientes": [],
  "previos": {
@@ -457,9 +457,9 @@
    "id": "B5",
    "pregunta": "Si algún centro de datos tiene más fallos que los demás con los mismos discos",
    "decision": "dónde mirar la operación de un centro: solo si falla más con la misma mezcla de modelos y edades",
-   "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 5; metodo/04_planteamientos.md §1.A",
+   "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 5; metodo/04_planteamientos.md §1.A",
    "funcion": "comparar_con_total",
-   "funcion_adaptada": "comparar_con_total del 42.6 compara proporciones con Wilson; aquí se compara una tasa por días de disco, así que cada centro va con su razón de observados entre esperados por estandarización indirecta (5.6) con la mezcla de modelo, año de edad y trimestre, y el intervalo exacto de Poisson ensanchado por φ (encargo 19); el mínimo es el de las reglas §7",
+   "funcion_adaptada": "comparar_con_total del 42.6 compara proporciones con Wilson; aquí se compara una tasa por días de disco, así que cada centro va con su razón de observados entre esperados por estandarización indirecta (5.6) con la mezcla de modelo, año de edad y trimestre, y el intervalo exacto de Poisson ensanchado por φ (petición 19); el mínimo es el de las reglas, apartado 7",
    "poblacion": {
     "regla": "discos de datos (dim_modelo, tipo_disco «datos»); los de arranque no entran; días y fallos con su centro, del 01/07/2023 al 30/06/2025; «sin dato» aparte",
     "periodo": "del 2023-07-01 al 2025-06-30",
@@ -468,7 +468,7 @@
     "entidades": 7
    },
    "medida": "tasa anual = 100 × 365 × fallos / días de disco; razón = observados / esperados con la tasa de cada modelo, año de edad y trimestre de todos los centros; tasa ajustada = razón × tasa de todos; intervalo de la razón con observados y esperados entre φ, medido en centro × trimestre",
-   "minimo_casos": "50.000 días de disco al año y 20 fallos (reglas §7; encargo, comprobación 1)",
+   "minimo_casos": "50.000 días de disco al año y 20 fallos (reglas, apartado 7; petición, comprobación 1)",
    "que_cambia_la_decision": "un centro cuyo intervalo de la razón queda entero por encima de 1 falla más por sí mismo",
    "cifras": [
     {
@@ -3122,9 +3122,9 @@
    "id": "B6",
    "pregunta": "Cuántos discos avisan, qué aviso anticipa más fallos y cuánto siguen funcionando",
    "decision": "qué aviso merece atención antes y cuánto margen dejan los avisos a los técnicos",
-   "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 6; metodo/04_planteamientos.md §1.A",
+   "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 6; metodo/04_planteamientos.md §1.A",
    "funcion": "comparar_con_total",
-   "funcion_adaptada": "comparar_con_total del 42.6 frente a las fotos sin aviso y no frente al total, porque el aviso es acumulado y la referencia sencilla es no avisar; el intervalo es el exacto de Clopper-Pearson con fallan/φ y fotos/φ, con el φ binomial de cada grupo por trimestre de la foto (encargo 19), y no el de Wilson",
+   "funcion_adaptada": "comparar_con_total del 42.6 frente a las fotos sin aviso y no frente al total, porque el aviso es acumulado y la referencia sencilla es no avisar; el intervalo es el exacto de Clopper-Pearson con fallan/φ y fotos/φ, con el φ binomial de cada grupo por trimestre de la foto (petición 19), y no el de Wilson",
    "poblacion": {
     "regla": "discos de datos (dim_modelo, tipo_disco «datos»); los de arranque no entran; fotos mensuales de fotos_riesgo",
     "periodo": "del 2020-01-01 al 2025-06-30",
@@ -3133,7 +3133,7 @@
     "entidades": 402438
    },
    "medida": "porcentaje de fotos que avisan; desenlace a 90 días de cada foto (falla, desaparece o sigue); porcentaje de fotos con el contador que sube entre las que fallan y las que no; fallos sin aviso el día anterior por año, entre los que tienen día anterior",
-   "minimo_casos": "30 fotos por grupo (skill, parametros.md)",
+   "minimo_casos": "30 fotos por grupo (método, parametros.md)",
    "que_cambia_la_decision": "un aviso cuyo intervalo de fallo a 90 días queda por encima del de las fotos sin aviso",
    "cifras": [
     {
@@ -5546,9 +5546,9 @@
    "id": "B7",
    "pregunta": "Cuántas veces caen varios discos del mismo tomo cerca en el tiempo, y si pasa más que por azar",
    "decision": "si el riesgo de perder datos pide vigilar los tomos donde acaba de fallar un disco",
-   "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 7; metodo/04_planteamientos.md §1.A",
+   "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 7; metodo/04_planteamientos.md §1.A",
    "funcion": "otra",
-   "funcion_adaptada": "ninguna función del capítulo 42 compara agrupaciones en el tiempo con el azar: se barajan los días de los fallos dentro de cada centro y trimestre del fallo (criterio 4, con el trimestre del encargo 19; el de solo el centro, al lado) y el riesgo vivo se compara con la binomial (criterio 6)",
+   "funcion_adaptada": "ninguna función del capítulo 42 compara agrupaciones en el tiempo con el azar: se barajan los días de los fallos dentro de cada centro y trimestre del fallo (criterio 4, con el trimestre de la petición 19; el de solo el centro, al lado) y el riesgo vivo se compara con la binomial (criterio 6)",
    "poblacion": {
     "regla": "discos de datos (dim_modelo, tipo_disco «datos»); los de arranque no entran; fallos del 01/07/2023 al 30/06/2025 con su centro, vault y ranura",
     "periodo": "del 2023-07-01 al 2025-06-30",
@@ -6471,7 +6471,7 @@
    "id": "B8",
    "pregunta": "Si la temperatura, la carga de trabajo o los arranques acompañan a más fallos",
    "decision": "si alguno de esos factores merece vigilarse dentro de cada modelo",
-   "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 8; metodo/04_planteamientos.md §1.A",
+   "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 8; metodo/04_planteamientos.md §1.A",
    "funcion": "comparar_con_total",
    "funcion_adaptada": "comparar_con_total del 42.6 pasado a tasas por días de disco: cada tramo se compara con la tasa de su propio grupo (modelo, o modelo y año de edad) por la razón de observados entre esperados, con el intervalo de Poisson; el mínimo es de 20 fallos por tramo",
    "poblacion": {
@@ -6482,7 +6482,7 @@
     "entidades": 402438
    },
    "medida": "tasa anual por tramo y razón de observados entre esperados con la tasa de su grupo; los días salen del recuento repartidos por las fotos (criterio 7)",
-   "minimo_casos": "20 fallos en cada uno de los tres tramos de un grupo (encargo, criterio 8)",
+   "minimo_casos": "20 fallos en cada uno de los tres tramos de un grupo (petición, criterio 8)",
    "que_cambia_la_decision": "un tramo cuyo intervalo de la razón queda entero por encima o por debajo de 1",
    "cifras": [
     {
@@ -9883,9 +9883,9 @@
    "id": "MC",
    "pregunta": "Qué perfiles de disco tienen más riesgo, por fabricante, capacidad, edad, centro y aviso",
    "decision": "dónde mirar primero y qué tasa estimar para una combinación con pocos discos",
-   "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, «Cierre del análisis»; assets/23_metodo_minicubo.md",
+   "planteamiento": "config/metodo/plan_de_la_analitica.md, «Cierre del análisis»; assets/23_metodo_minicubo.md",
    "funcion": "minicubo",
-   "funcion_adaptada": "la métrica es la tasa anual con sus días y sus fallos, una razón de sumas y no una mediana: una mediana por foto no da una tasa por días de disco (13.13 y 5.5); cada valor lleva su recuento de fotos, días y fallos, y su intervalo exacto de Poisson con el φ de la edad (encargo 19)",
+   "funcion_adaptada": "la métrica es la tasa anual con sus días y sus fallos, una razón de sumas y no una mediana: una mediana por foto no da una tasa por días de disco (13.13 y 5.5); cada valor lleva su recuento de fotos, días y fallos, y su intervalo exacto de Poisson con el φ de la edad (petición 19)",
    "poblacion": {
     "regla": "discos de datos (dim_modelo, tipo_disco «datos»); los de arranque no entran; fotos de fotos_riesgo con los días repartidos y fallos con su foto anterior",
     "periodo": "del 2020-01-01 al 2025-06-30",
@@ -9894,7 +9894,7 @@
     "entidades": 402438
    },
    "medida": "tasa anual = 100 × 365 × fallos con su foto / días repartidos, por valor y por par de valores; el intervalo, con fallos y días entre el φ de la edad",
-   "minimo_casos": "50.000 días de disco y 20 fallos por valor o celda (encargo, criterio 9)",
+   "minimo_casos": "50.000 días de disco y 20 fallos por valor o celda (petición, criterio 9)",
    "que_cambia_la_decision": "un valor o una celda cuyo intervalo queda por encima de la tasa de todos",
    "cifras": [
     {
@@ -11920,37 +11920,37 @@
   {
    "nombre": "mínimo de fallos de un centro, un tramo, un valor o una celda",
    "valor": "20",
-   "origen": "encargo, criterios 8 y 9 y comprobación 1 (yyz1 sin conclusión); reglas §7, CP-009"
+   "origen": "petición, criterios 8 y 9 y comprobación 1 (yyz1 sin conclusión); reglas, apartado 7, cuestión 009"
   },
   {
    "nombre": "mínimo de fotos de un grupo de aviso",
    "valor": "30",
-   "origen": "parametros.md de la skill"
+   "origen": "parametros.md de el método"
   },
   {
    "nombre": "tasa ajustada por centro",
    "valor": "estandarización indirecta con la tasa de cada modelo, año de edad y trimestre de todos los centros, «sin dato» incluido",
-   "origen": "criterio técnico 1 de Claude, en el encargo 15; el trimestre, encargo 19"
+   "origen": "criterio técnico 1, en la petición 15; el trimestre, petición 19"
   },
   {
    "nombre": "φ de B5",
    "valor": "chi2 de Pearson / grados de libertad en las celdas centro × trimestre de los centros que constan, con los esperados reescalados para que cada centro sume sus fallos; si sale menor que 1, vale 1",
-   "origen": "criterio técnico de Claude (reglas §7), encargo 19"
+   "origen": "criterio técnico (reglas, apartado 7), petición 19"
   },
   {
    "nombre": "φ de B6",
    "valor": "binomial por grupo de aviso, en las celdas del trimestre de la foto: suma de (fallan − n·p)² / (n·p·(1 − p)) entre celdas − 1; si sale menor que 1, vale 1",
-   "origen": "criterio técnico de Claude (reglas §7), encargo 19"
+   "origen": "criterio técnico (reglas, apartado 7), petición 19"
   },
   {
    "nombre": "φ del minicubo",
    "valor": "el de B3 del 09, calculado igual: celdas modelo × año de edad × trimestre de dias_por_tramo con la tasa de su modelo y año de edad",
-   "origen": "criterio técnico de Claude (reglas §7), encargo 19"
+   "origen": "criterio técnico (reglas, apartado 7), petición 19"
   },
   {
    "nombre": "intervalo con φ",
    "valor": "exacto de Poisson con observados y esperados (o fallos y días) entre φ; Clopper-Pearson con fallan/φ y fotos/φ en el desenlace",
-   "origen": "encargo 19"
+   "origen": "petición 19"
   },
   {
    "nombre": "desenlace a 90 días",
@@ -11965,12 +11965,12 @@
   {
    "nombre": "azar de los tomos",
    "valor": "200 repeticiones, semilla 68, días barajados dentro de cada centro y trimestre del fallo, y al lado dentro de cada centro; media y percentil 95 (interpolación lineal de numpy)",
-   "origen": "criterio técnico 4; el trimestre, encargo 19"
+   "origen": "criterio técnico 4; el trimestre, petición 19"
   },
   {
    "nombre": "discos a la vez",
    "valor": "fallos anteriores del tomo con día + plazo posterior al día del fallo, más uno; paridad supuesta 3, 4 y 5",
-   "origen": "criterio técnico 5; reglas §4"
+   "origen": "criterio técnico 5; reglas, apartado 4"
   },
   {
    "nombre": "riesgo vivo",
@@ -11985,7 +11985,7 @@
   {
    "nombre": "tramos del bloque 8",
    "valor": "temperatura ±3 °C de la mediana del modelo; arranques 1 y 2 veces la mediana de modelo y edad; escritos y leídos por tercios",
-   "origen": "criterio técnico 8, aprobado por Juan el 18/11/2026 (R68-97)"
+   "origen": "criterio técnico 8, aprobado por el responsable del caso el 18/11/2026"
   },
   {
    "nombre": "minicubo",
@@ -11995,17 +11995,17 @@
   {
    "nombre": "confianza de los intervalos",
    "valor": "0,95",
-   "origen": "parametros.md de la skill y 42.6 del manual"
+   "origen": "parametros.md de el método y 42.6 del manual"
   },
   {
    "nombre": "tolerancia de las segundas vías en días repartidos",
    "valor": "1e-06",
-   "origen": "encargo, «SEGUNDA VÍA»"
+   "origen": "petición, «SEGUNDA VÍA»"
   },
   {
    "nombre": "semilla",
    "valor": "68",
-   "origen": "encargo, criterio 4"
+   "origen": "petición, criterio 4"
   }
  ],
  "teoria": [
@@ -12043,11 +12043,11 @@
   },
   {
    "apartado": "4.11 y 4.12",
-   "por_que": "las tasas no se contrastan como dos proporciones: van con el intervalo exacto de Poisson; el desenlace por aviso, con el exacto de Clopper-Pearson; los dos, ensanchados por φ (encargo 19)"
+   "por_que": "las tasas no se contrastan como dos proporciones: van con el intervalo exacto de Poisson; el desenlace por aviso, con el exacto de Clopper-Pearson; los dos, ensanchados por φ (petición 19)"
   }
  ],
  "datos_personales_texto": [
-  "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección, porque no traen datos de personas.",
+  "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección, porque no traen datos de personas.",
   "No hay datos de personas (reglas-negocio §9): el número de serie identifica un disco, no a una persona.",
   "Este cálculo usa el número de serie solo para unir fotos, fallos y ventanas, y no deja ninguno en el JSON ni en el informe."
  ],
@@ -12058,15 +12058,15 @@
   "El aviso es acumulado y casi nunca vuelve a cero, así que el desenlace a 90 días cuenta fotos, no discos, y el riesgo vivo se compara con el azar.",
   "La ventana da 16.093 fallos con día anterior y 4.046 sin aviso; fallos_detalle da 16.093 y 4.046. Se dan las de fallos_detalle, que son las de las reglas.",
   "Los contadores 187 y 188 solo los traen los Seagate, y los datos escritos y leídos solo se miden en Seagate: el porcentaje que avisa no se compara entre fabricantes.",
-  "La paridad de cada vault no está en los datos: se usa la supuesta de las reglas §4. El tiempo de reconstrucción es la regla de Backblaze, un día por TB más uno.",
+  "La paridad de cada vault no está en los datos: se usa la supuesta de las reglas, apartado 4. El tiempo de reconstrucción es la regla de Backblaze, un día por TB más uno.",
   "La tasa del minicubo usa los días repartidos por las fotos, que dejan fuera los días de las celdas sin foto: la del recuento por fabricante y capacidad va al lado, con su diferencia.",
-  "Las reglas §5 dicen de 20 a 36 fallos sin ranura por trimestre, medido en el reconocimiento con otros datos; las cifras de fallos_detalle no coinciden con ese rango.",
-  "Según lo medido al preparar el encargo 15, la temperatura de un disco casi no cambia de un mes a otro: el tramo dice cómo de caliente trabaja ese disco respecto a su modelo, no un mes caluroso.",
+  "Las reglas, apartado 5 dicen de 20 a 36 fallos sin ranura por trimestre, medido en el reconocimiento con otros datos; las cifras de fallos_detalle no coinciden con ese rango.",
+  "Según lo medido al preparar la petición 15, la temperatura de un disco casi no cambia de un mes a otro: el tramo dice cómo de caliente trabaja ese disco respecto a su modelo, no un mes caluroso.",
   "La tasa ajustada compara modelos presentes en varios centros: 21 modelos pasan el mínimo de días en dos centros o más.",
   "Los intervalos de B5, B6 y el minicubo llevan φ: 1,0196 en B5 y 5,0189 en el minicubo; en B6, uno por grupo. φ mide la variación entre trimestres y no la que pueda haber dentro de un trimestre.",
   "El último año de los datos, 2025, llega hasta el 30/06: su «sin aviso» por año va marcado como incompleto.",
-  "Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas §5).",
-  "Pendiente: el auditor sin memoria del cierre del paso (skill §8) necesita el sí de Juan, porque es un agente."
+  "Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas, apartado 5).",
+  "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente."
  ],
  "comprobaciones_salida": {
   "sin_palabra_vetada": true

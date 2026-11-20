@@ -1,4 +1,4 @@
-"""Punto ciego de la lista de riesgo: la parte de los fallos a 30 días cuya foto mensual no avisa (R68-153 y R68-155).
+"""Punto ciego de la lista de riesgo: la parte de los fallos a 30 días cuya foto mensual no avisa.
 
 Por qué existe. El informe final daba un 25 % de fallos «sin ningún aviso» medido con otra definición (sin aviso el
 día anterior al fallo). La lista de riesgo trabaja con la foto del día 1 de cada mes, así que su punto ciego se mide en
@@ -122,7 +122,7 @@ def main():
     }
     estado = "OK" if all(validaciones.values()) else "ERROR"
     salida = {
-        "script": "scripts/22_punto_ciego.py", "origen": "auditor sin memoria antes de entregar (R68-153)",
+        "script": "scripts/22_punto_ciego.py", "origen": "auditor sin memoria antes de entregar",
         "fecha_datos": FECHA_DATOS, "fecha_ejecucion": datetime.now().isoformat(timespec="seconds"),
         "estado": estado,
         "definicion": ("Parte de los fallos a 30 días cuya foto mensual, la del día 1 del mes, no tiene ningún aviso de "

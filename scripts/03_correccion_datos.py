@@ -2,24 +2,24 @@
 
 Corrige, sin cruzar ni transformar, los cuatro datasets de data/raw/podado/ (fotos mensuales, ventanas de fallo,
 recuento diario y lista de fallos) y deja un fichero corregido por dataset en data/processed/. Solo aplica las
-correcciones con criterio decidido en el encargo 07 (prompts/07_encargo_correccion.md):
+correcciones con criterio decidido en la petición 07 (peticiones/07_correccion.md):
 
 1. tipos: el centro como texto, la ranura como entero con vacíos y el texto de la fecha (date) como fecha;
 2. el nombre del modelo con dos espacios tras «WDC», con el mapeo cerrado de D1;
-3. la capacidad -1 o 0,1 TB, con la única capacidad válida del modelo (reglas §3), y en el recuento la suma de las
+3. la capacidad -1 o 0,1 TB, con la única capacidad válida del modelo (reglas, apartado 3), y en el recuento la suma de las
    filas que quedan con la misma clave;
 4. fuera de las ventanas las filas cuya fecha no es la de su texto (C-17, P-01);
 5. las 66 fotos y las 22 ventanas, cada una en un solo Parquet con todas las columnas.
 
 Lee informes/calidad-datos.json (tiene que existir, no estar PARADO ni en ERROR y describir estos mismos ficheros) y
-contexto-proyecto/modelo/decisiones-correccion.json, donde viven el mapeo, la regla de la capacidad y los motivos de lo
+config/modelo/decisiones-correccion.json, donde viven el mapeo, la regla de la capacidad y los motivos de lo
 que no se toca. No rellena ningún vacío: el caso entrena un modelo.
 
 Escribe data/processed/*_corregido.parquet, informes/correccion-datos.json y, a partir de él, informes/correccion-datos.md,
 y añade al registro de transformaciones las fichas de las reglas que todavía no tiene.
 
 Uso: python -W error scripts/03_correccion_datos.py [--raiz CARPETA_DEL_CASO]
-Skill: correccion-datos (versión 06/11/2026, WF-59), con programacion-del-caso.
+Método: correccion-datos (versión 06/11/2026, una nota del método), con programacion-del-caso.
 """
 
 # =================================================================================================================
@@ -45,19 +45,19 @@ import pyarrow.parquet as pq
 # 1.1 Rutas y versión
 # -----------------------------------------------------------------------------------------------------------------
 CASO = Path(__file__).resolve().parents[1]
-SKILL = "correccion-datos"
-VERSION_SKILL = "06/11/2026 (WF-59)"
+METODO = "correccion-datos"
+VERSION_METODO = "06/11/2026"
 SCRIPT = "scripts/03_correccion_datos.py"
-ENCARGO = "prompts/07_encargo_correccion.md"
+PETICION = "peticiones/07_correccion.md"
 
 # -----------------------------------------------------------------------------------------------------------------
 # 1.2 Fechas y cortes de las reglas de negocio
 # -----------------------------------------------------------------------------------------------------------------
-# Reglas §5: fecha de referencia de los datos de trabajo
+# Reglas, apartado 5: fecha de referencia de los datos de trabajo
 FECHA_DATOS = "2025-06-30"
-# Reglas §3: los discos de datos son los de 4 TB o más; los de arranque, de 0,2 a 2 TB. El corte cae en un hueco.
+# Reglas, apartado 3: los discos de datos son los de 4 TB o más; los de arranque, de 0,2 a 2 TB. El corte cae en un hueco.
 CAPACIDAD_MAX_ARRANQUE = 3e12
-# Reglas §7 y encargo 07: el caso entrena un modelo, así que aquí no se rellena ningún vacío
+# Reglas, apartado 7 y petición 07: el caso entrena un modelo, así que aquí no se rellena ningún vacío
 VA_A_MODELO = True
 
 # -----------------------------------------------------------------------------------------------------------------
@@ -74,15 +74,15 @@ PATRON_CONTADOR = re.compile(r"^smart_(\d+)_(normalized|raw)$")
 CONTADORES_AVERIA = ["smart_5_raw", "smart_187_raw", "smart_188_raw", "smart_197_raw", "smart_198_raw"]
 
 # -----------------------------------------------------------------------------------------------------------------
-# 1.4 Parámetros de la skill (parametros.md)
+# 1.4 Parámetros de el método (parametros.md)
 # -----------------------------------------------------------------------------------------------------------------
 PARAMETROS = [
     {"nombre": "forma de los nombres de columna", "valor": "minúsculas, sin tildes ni eñes, guion bajo",
      "origen": "por defecto; los nombres ya llegan así y no se cambia ninguno"},
     {"nombre": "etiqueta del vacío en una categórica", "valor": "sin dato",
-     "origen": "por defecto; coincide con la del centro que no consta en el recuento (reglas §4 y §5)"},
+     "origen": "por defecto; coincide con la del centro que no consta en el recuento (reglas, apartado 4 y §5)"},
     {"nombre": "marca de lo imputado", "valor": "<campo>_faltante, 0 y 1", "origen": "por defecto; no se usa: no se imputa nada"},
-    {"nombre": "si los datos van a un modelo", "valor": "no se imputa aquí", "origen": "por defecto; reglas §7, el caso entrena un modelo"},
+    {"nombre": "si los datos van a un modelo", "valor": "no se imputa aquí", "origen": "por defecto; reglas, apartado 7, el caso entrena un modelo"},
     {"nombre": "formato de la tabla corregida", "valor": "Parquet", "origen": "por defecto"},
 ]
 
@@ -183,9 +183,9 @@ def leer_calidad(raiz, huella_raw):
 
 def leer_decisiones(raiz):
     """Lee el fichero de decisiones del caso y comprueba que su mapeo de modelos es cerrado y tiene sentido."""
-    ruta = raiz / "contexto-proyecto" / "modelo" / "decisiones-correccion.json"
+    ruta = raiz / "config" / "modelo" / "decisiones-correccion.json"
     if not ruta.exists():
-        raise ParadaDeRegla("no existe contexto-proyecto/modelo/decisiones-correccion.json")
+        raise ParadaDeRegla("no existe config/modelo/decisiones-correccion.json")
     dec = json.loads(ruta.read_text(encoding="utf-8"))
     for antes, despues in dec["modelos"]["mapeo"].items():
         if "  " not in antes or "  " in despues or " ".join(antes.split()) != despues:
@@ -194,7 +194,7 @@ def leer_decisiones(raiz):
 
 
 def comprobar_decisiones_contra_calidad(dec, cal):
-    """Cada problema de calidad va una vez, corregido o sin cambios, y cada pendiente tiene su decisión (SKILL §2)."""
+    """Cada problema de calidad va una vez, corregido o sin cambios, y cada pendiente tiene su decisión (método, apartado 2)."""
     problemas = [p["id"] for p in cal["problemas"]]
     corregidos = set(dec["capacidad"]["problemas_calidad"]) | {dec["modelos"]["problema_calidad"], dec["fecha_y_texto"]["problema_calidad"]}
     corregidos |= {v["problema_calidad"] for v in dec["tipos"].values() if v.get("problema_calidad")}
@@ -221,12 +221,12 @@ def normalizar_modelo(df, mapeo):
 
 
 def capacidad_no_valida(serie, minimo):
-    """Máscara de las capacidades que no son válidas: -1 y 0,1 TB (reglas §3)."""
+    """Máscara de las capacidades que no son válidas: -1 y 0,1 TB (reglas, apartado 3)."""
     return serie < minimo
 
 
 def poner_capacidad_del_modelo(df, capacidad_modelo, minimo):
-    """Pone en cada fila con capacidad no válida la única capacidad válida de su modelo (reglas §3)."""
+    """Pone en cada fila con capacidad no válida la única capacidad válida de su modelo (reglas, apartado 3)."""
     mala = capacidad_no_valida(df["capacity_bytes"], minimo)
     sin_capacidad = sorted(set(df.loc[mala, "model"]) - set(capacidad_modelo))
     if sin_capacidad:
@@ -259,7 +259,7 @@ def capacidades_validas(modelos_y_capacidades, minimo):
 
 
 def fallos_sin_dia_anterior(df, capacidad_modelo):
-    """Fallos de discos de datos cuya ventana no trae el día anterior al fallo (el día que mira el aviso, reglas §6)."""
+    """Fallos de discos de datos cuya ventana no trae el día anterior al fallo (el día que mira el aviso, reglas, apartado 6)."""
     claves = df[["serial_number", "dia_fallo"]].drop_duplicates()
     con_antes = df.loc[(df["dia_fallo"] - df["fecha"]).dt.days.eq(1), ["serial_number", "dia_fallo"]].drop_duplicates()
     sin = claves.merge(con_antes, how="left", indicator=True).query("_merge == 'left_only'").drop(columns="_merge")
@@ -271,7 +271,7 @@ def fallos_sin_dia_anterior(df, capacidad_modelo):
 
 
 # =================================================================================================================
-# 5. Datos personales en claro (SKILL §1)
+# 5. Datos personales en claro (método, apartado 1)
 # =================================================================================================================
 PATRON_CORREO = re.compile(r"[^@\s]+@[^@\s]+\.[A-Za-z]{2,}")
 PATRON_DNI = re.compile(r"^([XYZ]?)(\d{7,8})([A-Z])$")
@@ -522,7 +522,7 @@ CABECERA_REGISTRO = """---
 titulo: Registro de transformaciones del caso 68 · cada regla que cambia los datos de trabajo, con su ficha
 estado: vivo; solo acumula. Lo escribe scripts/03_correccion_datos.py la primera vez que aplica cada regla
 fecha_documento: {fecha}
-dueno: Juan (decide) · Claude (mantiene)
+dueno: El responsable del caso (decide)
 ---
 
 # Registro de transformaciones
@@ -542,8 +542,8 @@ def ficha(numero, tabla_columna, como_estaba, problema, decision, codigo, compro
             f"3. **Problema:** {problema}\n"
             f"4. **Decisión:** {decision}\n"
             f"5. **Qué se hizo:**\n\n```python\n{codigo}\n```\n\n"
-            f"6. **Quién y con qué permiso:** Claude, agente analista-preparacion-datos, con el encargo {ENCARGO}, lanzado por "
-            f"Juan el 17/11/2026 («Sí, lánzalo»).\n"
+            f"6. **Quién y con qué permiso:** el analista, con la petición {PETICION}, lanzado por "
+            f"El responsable del caso el 17/11/2026 («Sí, lánzalo»).\n"
             f"7. **Comprobación:** {comprobacion}\n"
             f"8. **Cómo quedó:** {como_quedo}\n"
             f"9. **Cómo deshacer:** {deshacer} data/raw/ no se toca, así que basta con volver a ejecutar el script sin la regla.\n")
@@ -551,7 +551,7 @@ def ficha(numero, tabla_columna, como_estaba, problema, decision, codigo, compro
 
 def escribir_registro(raiz, fichas):
     """Añade al registro las fichas cuyo número todavía no está; si no cambia ninguna regla, no añade nada."""
-    ruta = raiz / "contexto-proyecto" / "modelo" / "registro-transformaciones.md"
+    ruta = raiz / "config" / "modelo" / "registro-transformaciones.md"
     ruta.parent.mkdir(parents=True, exist_ok=True)
     texto = ruta.read_text(encoding="utf-8") if ruta.exists() else CABECERA_REGISTRO.format(fecha=dt.date.today().isoformat())
     nuevas = [(n, f) for n, f in fichas if not re.search(rf"^## {n} ", texto, re.M)]
@@ -564,7 +564,7 @@ def escribir_registro(raiz, fichas):
 # 10. Informe para la persona, generado del JSON
 # =================================================================================================================
 def informe_md(r):
-    """Genera informes/correccion-datos.md a partir del diccionario del JSON, con la plantilla de la skill."""
+    """Genera informes/correccion-datos.md a partir del diccionario del JSON, con la plantilla de el método."""
     L = ["# Informe de corrección de datos", "",
          f"**Estado: {r['resultado']['estado']}.** {r['resultado']['resumen']}", ""]
     L += ["## Fuente", ""]
@@ -575,7 +575,7 @@ def informe_md(r):
               f"lista de fallos ({len(r['entradas'])} ficheros en `data/raw/` con el esquema).",
               f"- **Diagnóstico usado:** `informes/calidad-datos.json`, en estado {r['calidad_usada']['estado']}, ejecutado el "
               f"{r['calidad_usada']['fecha_ejecucion'] or 'sin fecha'}, con la misma huella de entrada que estos datos.",
-              f"- **Decisiones leídas:** `contexto-proyecto/modelo/decisiones-correccion.json`.",
+              f"- **Decisiones leídas:** `config/modelo/decisiones-correccion.json`.",
               "- **Datasets de salida:** " + "; ".join(f"`{s['ruta']}`" for s in r["salidas"]) + ".",
               f"- **Ejecución:** {r['fecha_ejecucion']}, con Python {e['python']}, pandas {e['pandas']}, pyarrow {e['pyarrow']} "
               f"y numpy {e['numpy']}.",
@@ -596,9 +596,9 @@ def informe_md(r):
         L.append("- No se aplicó ninguna corrección.")
     L.append("")
 
-    L += ["## Decisiones del usuario", ""]
-    if r["decisiones_usuario"]:
-        L += [f"- **{d['pendiente']}:** {d['decision']} ({d['quien']}, {d['fecha']}; {d['fuente']})." for d in r["decisiones_usuario"]]
+    L += ["## Decisiones del responsable", ""]
+    if r["decisiones_responsable"]:
+        L += [f"- **{d['pendiente']}:** {d['decision']} ({d['quien']}, {d['fecha']}; {d['fuente']})." for d in r["decisiones_responsable"]]
     else:
         L.append("- No hay instrucciones de tratamiento de la persona responsable en esta ejecución.")
     L.append("")
@@ -617,7 +617,7 @@ def informe_md(r):
     if r["pendientes"]:
         L += [f"- **{p['id']}** ({p['tabla']}, `{p['columna']}`): {p['pregunta']} Opciones: {'; '.join(p['opciones'])}." for p in r["pendientes"]]
     else:
-        L.append("- No queda ninguna. La única cuestión que dejó la calidad, P-01, la resuelve el encargo 07 y está en «Decisiones del usuario».")
+        L.append("- No queda ninguna. La única cuestión que dejó la calidad, P-01, la resuelve la petición 07 y está en «Decisiones del responsable».")
     L.append("")
 
     L += ["## Validación", ""]
@@ -671,13 +671,13 @@ def escribir_salidas_de_informe(raiz, r):
 
 def base_resultado(fecha_ejecucion):
     """El bloque común del JSON, vacío, para escribirlo también si el script para o falla."""
-    return {"skill": SKILL, "version_skill": VERSION_SKILL, "script": SCRIPT, "fecha_datos": FECHA_DATOS,
+    return {"metodo": METODO, "version_metodo": VERSION_METODO, "script": SCRIPT, "fecha_datos": FECHA_DATOS,
             "fecha_ejecucion": fecha_ejecucion, "entradas": [], "resultado": {}, "pendientes": [], "salidas": [],
-            "correcciones": [], "sin_cambios": [], "decisiones_usuario": [], "sumas_control": [], "comprobaciones": {},
+            "correcciones": [], "sin_cambios": [], "decisiones_responsable": [], "sumas_control": [], "comprobaciones": {},
             "nombres": [], "va_a_modelo": VA_A_MODELO, "parametros": PARAMETROS, "controles": {}, "validacion": [],
             "teoria": TEORIA,
-            "datos_personales_texto": ["No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
-                                       "No hay datos de personas (reglas §9): el paso de protección se saltó el 17/11/2026 con el sí de Juan."],
+            "datos_personales_texto": ["No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+                                       "No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí de el responsable del caso."],
             "limites": ["La corrección mira una tabla cada vez. Una clave huérfana o repetida al otro lado de un cruce no se ve ni se corrige aquí."]}
 
 
@@ -716,7 +716,7 @@ def corregir(raiz):
         antes, validas, textos, rec_raw, fal_raw, cambios_antes = primera_pasada(raiz, mapeo, minimo)
         varias = {m: sorted(c) for m, c in validas.items() if len(c) > 1}
         if varias:
-            raise ErrorDeRegla(f"modelos con más de una capacidad válida, la regla §3 no se puede aplicar: {varias}")
+            raise ErrorDeRegla(f"modelos con más de una capacidad válida, la regla, apartado 3 no se puede aplicar: {varias}")
         capacidad_modelo = {m: next(iter(c)) for m, c in validas.items()}
         personales = buscar_datos_personales(textos)
         if personales:
@@ -829,11 +829,11 @@ def corregir(raiz):
              "R-002", af["filas_ranura_decimal"], 0, "filas leídas como decimal")
         corr(tip["entero_con_vacio"]["problema_calidad"], "ventanas_fallo", "pod_slot_num", "La ranura pasa de decimal a entero, y sus vacíos se quedan vacíos.",
              "tecnicamente_inequivoca", "técnicamente inequívoca, como en las fotos", "R-002", av["filas_ranura_decimal"], 0, "filas leídas como decimal")
-        corr(None, "fotos_mensuales", "date", "El texto de la fecha pasa a fecha, leído con el patrón %Y-%m-%d.", "usuario",
-             "usuario: el encargo 07 pide las fechas como fecha, que es el rol de date en el diccionario", "R-003",
+        corr(None, "fotos_mensuales", "date", "El texto de la fecha pasa a fecha, leído con el patrón %Y-%m-%d.", "responsable",
+             "responsable: la petición 07 pide las fechas como fecha, que es el rol de date en el diccionario", "R-003",
              af["filas_date_texto"], 0, "filas con la fecha como texto", motivo=tip["fecha_desde_texto"]["motivo"])
-        corr(None, "ventanas_fallo", "date", "El texto de la fecha pasa a fecha, leído con el patrón %Y-%m-%d.", "usuario",
-             "usuario: el encargo 07 pide las fechas como fecha", "R-003", av["filas_date_texto"] - len(quitadas), 0,
+        corr(None, "ventanas_fallo", "date", "El texto de la fecha pasa a fecha, leído con el patrón %Y-%m-%d.", "responsable",
+             "responsable: la petición 07 pide las fechas como fecha", "R-003", av["filas_date_texto"] - len(quitadas), 0,
              "filas con la fecha como texto", motivo=tip["fecha_desde_texto"]["motivo"])
         for tabla, filas_mapeo, modelos_a, modelos_d in (
                 ("fotos_mensuales", tot_f["modelo"], af["modelos_dos_espacios"] & set(mapeo), set(sal_f["modelos_dos_espacios"]) & set(mapeo)),
@@ -841,7 +841,7 @@ def corregir(raiz):
                 ("recuento_diario", r_modelo, {m for m in rec_raw["model"].unique() if m in mapeo}, set(rec_modelos_d) & set(mapeo))):
             corr(dec["modelos"]["problema_calidad"], tabla, "model",
                  f"Los modelos escritos con dos espacios tras «WDC» pasan a su nombre con uno, con el mapeo cerrado de D1 "
-                 f"({fmt(filas_mapeo)} filas cambiadas).", "usuario", "usuario: D1, cerrada por Juan el 17/11/2026 en el plan de calidad",
+                 f"({fmt(filas_mapeo)} filas cambiadas).", "responsable", "responsable: D1, cerrada por el responsable del caso el 17/11/2026 en el plan de calidad",
                  "R-004", len(modelos_a), len(modelos_d), "nombres con dos espacios")
         for tabla, problema, n_antes, n_despues in (("fotos_mensuales", "C-05", af["capacidad_no_valida"], sal_f["capacidad_no_valida"]),
                                                     ("ventanas_fallo", "C-06", av["capacidad_no_valida"], sal_v["capacidad_no_valida"]),
@@ -849,41 +849,41 @@ def corregir(raiz):
             corr(problema, tabla, "capacity_bytes", "Las filas con capacidad -1 o 0,1 TB toman la única capacidad válida de su modelo.",
                  "regla_documentada", "regla documentada: reglas de negocio §3", "R-005", n_antes, n_despues, "filas con capacidad -1 o 0,1 TB")
         corr("C-07", "recuento_diario", "(fila)", "Las filas que quedan con la misma clave (fecha, modelo, capacidad y centro) se suman en una: discos y fallos.",
-             "regla_documentada", "regla documentada: reglas de negocio §3, con el orden del encargo 07 (nombre, capacidad y suma)",
+             "regla_documentada", "regla documentada: reglas de negocio §3, con el orden de la petición 07 (nombre, capacidad y suma)",
              "R-006", len(rec_raw), len(df), "filas")
         corr(dec["fecha_y_texto"]["problema_calidad"], "ventanas_fallo", "(fila)",
              "Salen las filas cuya fecha no es la de su texto: traen las horas encendido del día siguiente y no tienen datos propios.",
-             "usuario", "usuario: el encargo 07 resuelve P-01; quitarlas no cambia ninguna respuesta (CLAUDE.md, «Datos que no sirven o están mal»; criterios.md §2)",
+             "responsable", "responsable: la petición 07 resuelve P-01; quitarlas no cambia ninguna respuesta (las instrucciones del caso, «Datos que no sirven o están mal»; criterios.md §2)",
              "R-007", antes["ventanas_fallo"]["filas"], sal_v["filas"], "filas")
         corr(None, "fotos_mensuales", "(fichero)", f"Las {fmt(af['ficheros'])} fotos mensuales se juntan en un solo Parquet con las "
              f"{fmt(sal_f['columnas'])} columnas que trae alguna; donde una pieza no trae una columna, queda vacía.",
-             "usuario", "usuario: el encargo 07 y metodo/como_estan_organizados_los_datos.md (las filas son las mismas: solo cambia el fichero)",
+             "responsable", "responsable: la petición 07 y metodo/como_estan_organizados_los_datos.md (las filas son las mismas: solo cambia el fichero)",
              "R-008", af["ficheros"], 1, "ficheros")
         corr(None, "ventanas_fallo", "(fichero)", f"Las {fmt(av['ficheros'])} ventanas se juntan en un solo Parquet con las "
              f"{fmt(sal_v['columnas'])} columnas que trae alguna; donde una pieza no trae una columna, queda vacía.",
-             "usuario", "usuario: el encargo 07 y metodo/como_estan_organizados_los_datos.md", "R-008", av["ficheros"], 1, "ficheros")
+             "responsable", "responsable: la petición 07 y metodo/como_estan_organizados_los_datos.md", "R-008", av["ficheros"], 1, "ficheros")
         r["correcciones"] = C
 
-        # 11.8 Lo que se deja sin cambios, con su motivo, y lo que decidió el usuario
+        # 11.8 Lo que se deja sin cambios, con su motivo, y lo que decidió el responsable
         valores_motivo = {"cambios_modelo": fmt(cambios_despues["modelo"]), "cambios_capacidad": fmt(cambios_despues["capacidad"]),
                           "sin_dia_antes": fmt(sin_dia["antes"]), "sin_dia_despues": fmt(sin_dia["despues"])}
         resultado_calidad = {p["id"]: p.get("resultado", "") for p in cal["problemas"]}
         r["sin_cambios"] = [{"problema_calidad": s["problema_calidad"], "resultado_calidad": resultado_calidad.get(s["problema_calidad"], ""),
                              "motivo": s["motivo"].format(**valores_motivo)} for s in dec["sin_cambios"]]
         r["variantes_fuera_del_mapeo"] = fuera_mapeo
-        r["tipos_sin_cambiar"] = ("Los contadores (smart_N_raw y smart_N_normalized) siguen como decimales: el encargo 07 nombra como "
+        r["tipos_sin_cambiar"] = ("Los contadores (smart_N_raw y smart_N_normalized) siguen como decimales: la petición 07 nombra como "
                                   "correcciones de tipo solo el centro, la ranura y las fechas, y un decimal es un tipo válido para una "
                                   "magnitud. La calidad los marcó como «toca entero» sin abrir ningún problema; si se quieren enteros, "
                                   "es una decisión para el paso siguiente.")
         fy = dec["fecha_y_texto"]
-        r["decisiones_usuario"] = [
-            {"pendiente": fy["pendiente"], "decision": fy["decision"], "quien": "Juan, con el encargo 07", "fecha": fecha_ejecucion[:10], "fuente": fy["fuente"]},
-            {"pendiente": dec["modelos"]["decision"], "decision": dec["modelos"]["texto"], "quien": "Juan", "fecha": "2026-11-17",
+        r["decisiones_responsable"] = [
+            {"pendiente": fy["pendiente"], "decision": fy["decision"], "quien": "El responsable del caso, con la petición 07", "fecha": fecha_ejecucion[:10], "fuente": fy["fuente"]},
+            {"pendiente": dec["modelos"]["decision"], "decision": dec["modelos"]["texto"], "quien": "El responsable del caso", "fecha": "2026-11-17",
              "fuente": "informes/plan_calidad_datos.md, «Lo aprobado»"},
-            {"pendiente": "tipos de fecha", "decision": "las fechas como fecha: el texto date pasa a fecha", "quien": "Juan, con el encargo 07",
-             "fecha": "2026-11-17", "fuente": ENCARGO},
+            {"pendiente": "tipos de fecha", "decision": "las fechas como fecha: el texto date pasa a fecha", "quien": "El responsable del caso, con la petición 07",
+             "fecha": "2026-11-17", "fuente": PETICION},
             {"pendiente": "juntar las piezas", "decision": "las 66 fotos en un Parquet y las 22 ventanas en otro, con todas las columnas",
-             "quien": "Juan, con el encargo 07", "fecha": "2026-11-17", "fuente": f"{ENCARGO}; contexto-proyecto/metodo/como_estan_organizados_los_datos.md"},
+             "quien": "El responsable del caso, con la petición 07", "fecha": "2026-11-17", "fuente": f"{PETICION}; config/metodo/como_estan_organizados_los_datos.md"},
         ]
 
         # 11.9 Sumas de control, métricas y controles
@@ -937,7 +937,7 @@ def corregir(raiz):
             "filas_modelo_cambiadas": {"fotos": tot_f["modelo"], "ventanas": tot_v["modelo"], "recuento": r_modelo},
         }
 
-        # 11.10 Las cuatro comprobaciones del dataset procesado (SKILL §4.4)
+        # 11.10 Las cuatro comprobaciones del dataset procesado (método, apartado 4.4)
         ok = {v["comprobacion"]: v["ok"] for v in validacion}
         completitud = ok["fotos: las mismas filas a la entrada y a la salida"] and ok["ventanas: salen solo las filas cuya fecha no es la de su texto, ninguna con un fallo"] \
             and ok["lista de fallos: las mismas filas"] and ok["recuento: discos y fallos suman lo mismo por las dos vías"]
@@ -959,7 +959,7 @@ def corregir(raiz):
         for s in r["salidas"]:
             for c in s["campos_salida"]:
                 if s["tabla"] == "recuento_diario" and c["columna"] == "datacenter":
-                    c["nota"] = (f"«{dec['etiqueta_sin_dato']['valor']}» quiere decir que el centro no consta (reglas §4 y §5); "
+                    c["nota"] = (f"«{dec['etiqueta_sin_dato']['valor']}» quiere decir que el centro no consta (reglas, apartado 4 y §5); "
                                  "es la etiqueta del vacío en una categórica de correccion-datos")
         tiempos["diccionario de las salidas"] = round(time.time() - t6, 1)
         huella_fin = huellas(raw)
@@ -977,11 +977,11 @@ def corregir(raiz):
             "Ninguna columna de los datos tiene el papel de dato personal en el diccionario del origen. El número de serie identifica un disco, no a una persona.",
             f"Antes de corregir se buscaron correos, documentos de identidad, cuentas bancarias y teléfonos en los textos (número de serie, "
             f"modelo y centro): {len(personales)} columnas con alguno.",
-            "Esta skill no usa ni deja ninguna columna de datos personales."]
+            "Este método no usa ni deja ninguna columna de datos personales."]
         r["limites"] += [
             "No se repite aquí el diagnóstico completo sobre las tablas corregidas (manual 8.10, paso 1); se comprueban las cifras de "
             "cada corrección, los vacíos y las sumas.",
-            "Las cifras de los motivos de C-18 y C-26 son las del encargo 07 y no se vuelven a medir en esta ejecución.",
+            "Las cifras de los motivos de C-18 y C-26 son las de la petición 07 y no se vuelven a medir en esta ejecución.",
             "Los contadores siguen como decimales (ver «Elementos mantenidos sin cambios»).",
             "Las fechas fecha y dia_fallo ya llegan como fecha y no se cambian; date pasa a fecha con la misma precisión que fecha.",
         ]
@@ -990,11 +990,11 @@ def corregir(raiz):
         estado = "AVISO" if r["sin_cambios"] or r["pendientes"] else "OK"
         r["resultado"] = {"estado": estado, "riesgo": "medio" if estado == "AVISO" else "bajo",
                           "resumen": (f"Los cuatro datasets corregidos, uno por tabla en data/processed/: {len(C)} correcciones con cambio y "
-                                      f"{len(r['sin_cambios'])} problemas que se dejan como están, con su motivo, para que los lea la skill "
+                                      f"{len(r['sin_cambios'])} problemas que se dejan como están, con su motivo, para que los lea el método "
                                       f"siguiente. Ningún vacío rellenado y ninguna fila perdida sin explicar."),
                           "artefactos": [SALIDA[t] for t in TABLAS] + ["informes/correccion-datos.json", "informes/correccion-datos.md",
-                                                                       "contexto-proyecto/modelo/registro-transformaciones.md"],
-                          "siguiente": "modelado-datos: el diseño del modelo de datos, que aprueba Juan"}
+                                                                       "config/modelo/registro-transformaciones.md"],
+                          "siguiente": "modelado-datos: el diseño del modelo de datos, que aprueba el responsable del caso"}
 
         # 11.13 Registro de transformaciones: una ficha por regla que cambió algo y una por lo que no se toca
         r["fichas_nuevas"] = escribir_registro(raiz, fichas_del_registro(r, dec, fecha_ejecucion[:10]))
@@ -1028,13 +1028,13 @@ def fichas_del_registro(r, dec, fecha):
                   "datacenter es texto en las dos tablas; donde no consta, sigue vacío.", "volver a leer la columna con el tipo de cada pieza.", fecha)))
     if "R-002" in por_ficha:
         F.append(("R-002", ficha("R-002", "fotos mensuales y ventanas de fallo · pod_slot_num", "la ranura llega como decimal (38.0) porque trae vacíos.",
-                  "C-04: un código de ranura no es un decimal.", "entero que admite vacío (encargo 07): sus valores con dato son todos enteros.",
+                  "C-04: un código de ranura no es un decimal.", "entero que admite vacío (petición 07): sus valores con dato son todos enteros.",
                   'columnas["pod_slot_num"] = t["pod_slot_num"].cast(pa.int64(), safe=True)  # falla si un valor no es entero',
                   f"{resumen('R-002')}; los vacíos son los mismos antes y después.", "pod_slot_num es int64 con vacíos.",
                   "volver a leerla como decimal.", fecha)))
     if "R-003" in por_ficha:
         F.append(("R-003", ficha("R-003", "fotos mensuales y ventanas de fallo · date", "date llega como texto AAAA-MM-DD; la columna fecha ya es fecha.",
-                  "el rol de date en el diccionario es fecha.", "las fechas como fecha (encargo 07).",
+                  "el rol de date en el diccionario es fecha.", "las fechas como fecha (petición 07).",
                   'fecha = pd.to_datetime(df["date"], format="%Y-%m-%d", errors="coerce")  # para si algún texto no convierte\n'
                   'columnas["date"] = pa.array(fecha, type=pa.timestamp("ms"))',
                   f"{resumen('R-003')}; ningún texto quedó sin convertir.", "date es fecha, con la precisión de fecha.",
@@ -1053,7 +1053,7 @@ def fichas_del_registro(r, dec, fecha):
                   'mala = df["capacity_bytes"] < minimo  # 2e11 bytes, de decisiones-correccion.json\n'
                   'df.loc[mala, "capacity_bytes"] = df.loc[mala, "model"].map(capacidad_modelo)  # la única válida del modelo',
                   f"{resumen('R-005')}; {fmt(ctl['modelos_con_capacidad'])} modelos con capacidad y "
-                  f"{fmt(ctl['modelos_con_dos_capacidades_validas'])} con dos capacidades válidas. No es un relleno: es la regla §3 para un valor que no es válido.",
+                  f"{fmt(ctl['modelos_con_dos_capacidades_validas'])} con dos capacidades válidas. No es un relleno: es la regla, apartado 3 para un valor que no es válido.",
                   "ninguna fila con -1 o 0,1 TB.", "poner -1 o 0,1 TB en las filas que cambiaron, que se ven en data/raw/.", fecha)))
     if "R-006" in por_ficha:
         F.append(("R-006", ficha("R-006", "recuento diario · fila", "tras corregir el nombre y la capacidad, varias filas comparten fecha, modelo, capacidad y centro.",
@@ -1074,7 +1074,7 @@ def fichas_del_registro(r, dec, fecha):
                   "ninguna fila de las ventanas tiene la fecha distinta de su texto.", "volver a ejecutar sin la regla; las filas siguen en data/raw/.", fecha)))
     if "R-008" in por_ficha:
         F.append(("R-008", ficha("R-008", "fotos mensuales y ventanas de fallo · fichero", "cada tabla llega partida en piezas por tamaño, y las "
-                  "piezas no traen todas las columnas.", "el encargo 07 pide un fichero corregido por dataset.",
+                  "piezas no traen todas las columnas.", "la petición 07 pide un fichero corregido por dataset.",
                   "juntar las piezas sin cambiar las filas (metodo/como_estan_organizados_los_datos.md).",
                   "with pq.ParquetWriter(destino, esquema_comun) as escritor:\n    for f in piezas:\n        escritor.write_table(corregir_pieza(pq.read_table(f), ...))",
                   f"{resumen('R-008')}. Las columnas que una pieza no trae quedan vacías en sus filas; no se rellena ninguna.",

@@ -1,4 +1,4 @@
-"""Prueba de scripts/18_contrato_produccion.py (skill preproduccion, parte 1; encargo del caso 68, primera parte).
+"""Prueba de scripts/18_contrato_produccion.py (método preproduccion, parte 1; petición del caso 68, primera parte).
 
 Monta en tests/tmp_contrato/ un caso de juguete con lo único que lee el script: informes/modelado.json, el registro de
 transformaciones, las reglas de transformación y la matriz. El ganador de juguete es un HistGradientBoosting con ocho
@@ -6,7 +6,7 @@ columnas y su preprocesador lee nueve, con datacenter. Los documentos se escribe
 escrito en la copia (programacion-del-caso §2 y error 31), y no se heredan de los del caso.
 
 Casos:
-  1. verde: el contrato se escribe aprobado (Juan, 19/11/2026), el JSON queda en AVISO con la aprobación y el arreglo
+  1. verde: el contrato se escribe aprobado (El responsable del caso, 19/11/2026), el JSON queda en AVISO con la aprobación y el arreglo
      de la historia de ventanas (fallos anteriores a la foto, con dia_fallo); cada finalista tiene su
      cadena con fichas que existen y cada paso una de las cuatro clases;
   2. modelado sin aprobar (ganador.aprobado_por vacío): PARADO y sin contrato;
@@ -38,7 +38,7 @@ from pathlib import Path
 CASO = Path(__file__).resolve().parents[1]
 SCRIPT = CASO / "scripts" / "18_contrato_produccion.py"
 TMP = CASO / "tests" / "tmp_contrato"
-CONTRATO = "contexto-proyecto/modelo/contrato_produccion.md"
+CONTRATO = "config/modelo/contrato_produccion.md"
 SAL_JSON = "informes/preproduccion.json"
 CLASES = {"quita filas", "no aprende", "necesita otras filas", "aprende"}
 FALLOS = []
@@ -89,8 +89,8 @@ FICHAS = [
     ("R-023", "fotos_riesgo_entrenamiento · preselección de variables de la logística", "Solo la logística."),
     ("R-024", "producción · contrato de producción aprobado", "El contrato aprobado; no cambia ningún dato."),
 ]
-# La aprobación que el script lleva en su configuración (Juan, 19/11/2026)
-APROBADO_POR = "Juan, 19/11/2026: «Sí, con el arreglo»"
+# La aprobación que el script lleva en su configuración (El responsable del caso, 19/11/2026)
+APROBADO_POR = "El responsable del caso, 19/11/2026: «Sí, con el arreglo»"
 FECHA_APROBACION = "2026-11-19"
 
 
@@ -136,7 +136,7 @@ def matriz(variables):
 
 
 MODELADO = {
-    "skill": "aprendizaje-automatico", "fecha_datos": "2025-06-30",
+    "metodo": "aprendizaje-automatico", "fecha_datos": "2025-06-30",
     "entradas": [{"ruta": "data/processed/fotos_riesgo_entrenamiento.parquet", "sha256": "abc", "filas": 1000}],
     "resultado": {"estado": "OK", "riesgo": "bajo", "resumen": "prueba"},
     "aprobado_antes": {"medida_principal": "los fallos encontrados entre los 100 discos de más riesgo de cada mes"},
@@ -151,13 +151,13 @@ MODELADO = {
                 "muestra": "todas las fotos con fallo y el 2 % de las sanas de cada mes, semilla 42",
                 "recalibracion": {"metodo": "corrección del prior sobre el logit", "tasa_muestra": 0.05,
                                   "tasa_real": 0.001},
-                "aprobado_por": "Juan, prueba"},
+                "aprobado_por": "El responsable del caso, prueba"},
     "ajuste_final": {"filas_entrena": 1000, "fallos_entrena": 1, "muestra": {"filas": 2500, "fallos": 50, "sanas": 2450},
                      "hoja": 25, "horizonte_max": "2024-06-30"},
     "validacion": {"se_da_por_bueno": True, "medidas": {"auc": 0.9},
                    "por_mes": [{"mes": "2024-07-01", "modelo_lista_20": 1.0, "modelo_lista_100": 2.0,
                                 "modelo_lista_500": 3.0, "modelo_lista_1000": 4.0}]},
-    "corte": {"valor": None, "como": "capacidad", "por_que": "el tamaño de la lista lo elige Backblaze (CP-010)"},
+    "corte": {"valor": None, "como": "capacidad", "por_que": "el tamaño de la lista lo elige Backblaze (cuestión 010)"},
     "parametros": [{"nombre": "hoja", "valor": "max(20, 1 % de las filas que entrenan en el pliegue)", "origen": "x"},
                    {"nombre": "HistGradientBoosting", "valor": "early_stopping=False, categóricas nativas", "origen": "x"}],
 }
@@ -168,15 +168,15 @@ def montar(modelado=None, fichas=None, texto_reglas=None, variables=None):
     if TMP.exists():
         shutil.rmtree(TMP)
     (TMP / "informes").mkdir(parents=True)
-    (TMP / "contexto-proyecto" / "modelo").mkdir(parents=True)
-    (TMP / "contexto-proyecto" / "negocio").mkdir(parents=True)
+    (TMP / "config" / "modelo").mkdir(parents=True)
+    (TMP / "config" / "negocio").mkdir(parents=True)
     (TMP / "informes" / "modelado.json").write_text(json.dumps(modelado or MODELADO, ensure_ascii=False, indent=1),
                                                      encoding="utf-8")
-    (TMP / "contexto-proyecto" / "modelo" / "registro-transformaciones.md").write_text(registro(fichas or FICHAS),
+    (TMP / "config" / "modelo" / "registro-transformaciones.md").write_text(registro(fichas or FICHAS),
                                                                                        encoding="utf-8")
-    (TMP / "contexto-proyecto" / "negocio" / "reglas-transformacion.md").write_text(texto_reglas or reglas(),
+    (TMP / "config" / "negocio" / "reglas-transformacion.md").write_text(texto_reglas or reglas(),
                                                                                     encoding="utf-8")
-    (TMP / "contexto-proyecto" / "modelo" / "matriz_transformaciones.md").write_text(matriz(variables or LEE),
+    (TMP / "config" / "modelo" / "matriz_transformaciones.md").write_text(matriz(variables or LEE),
                                                                                      encoding="utf-8")
 
 
@@ -193,7 +193,7 @@ def ejecutar():
 # 3. Los casos
 # ---------------------------------------------------------------------------------------------------------------
 def caso_verde():
-    """El caso bueno: contrato escrito, PARADO a la espera de Juan, cadenas completas y cada paso con su clase."""
+    """El caso bueno: contrato escrito, PARADO a la espera de el responsable del caso, cadenas completas y cada paso con su clase."""
     nombre = "1 verde"
     montar()
     codigo, salida, js = ejecutar()

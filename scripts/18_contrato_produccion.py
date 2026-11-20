@@ -1,8 +1,8 @@
-"""Contrato de producción del caso 68, averías de discos duros en Backblaze (skill preproduccion, parte 1).
+"""Contrato de producción del caso 68, averías de discos duros en Backblaze (método preproduccion, parte 1).
 
 Lee el ganador aprobado en informes/modelado.json, saca de él y de la matriz las finalistas, y tira del hilo de cada una
 en el registro de transformaciones y en las reglas de transformación: desde las columnas de data/raw/podado/ hasta la
-columna que entra al modelo. Cada paso del hilo va a una de las cuatro clases de la skill (quita filas, no aprende,
+columna que entra al modelo. Cada paso del hilo va a una de las cuatro clases de el método (quita filas, no aprende,
 necesita otras filas, aprende) y dice qué se hace con él al reentrenar y al ejecutar.
 
 Comprobaciones que paran con ERROR, antes de escribir nada: cada finalista tiene su cadena con fichas y apartados que
@@ -10,11 +10,11 @@ existen y una definición; cada ficha del registro está clasificada (en la cade
 ningún paso que aprende se ajustó antes de la partición; el contrato no tiene campos vacíos. Si el modelado no está en
 OK, el ganador no está aprobado o la validación no lo dio por bueno, para con PARADO sin escribir el contrato.
 
-Escribe contexto-proyecto/modelo/contrato_produccion.md e informes/preproduccion.json, con la aprobación de Juan (19/11/2026,
+Escribe config/modelo/contrato_produccion.md e informes/preproduccion.json, con la aprobación de el responsable del caso (19/11/2026,
 «Sí, con el arreglo», en APROBADO_POR). Solo lee JSON y Markdown: no abre ningún dato.
 
 Uso: python -W error scripts/18_contrato_produccion.py [--raiz CARPETA_DEL_CASO]
-Skill: preproduccion (versión 11/11/2026, WF-85), con programacion-del-caso y transmision-conocimiento.
+Método: preproduccion (versión 11/11/2026, una nota del método), con programacion-del-caso y transmision-conocimiento.
 """
 
 # =================================================================================================================
@@ -30,29 +30,29 @@ import sys
 from pathlib import Path
 
 CASO = Path(__file__).resolve().parents[1]
-SKILL = "preproduccion"
-VERSION_SKILL = "11/11/2026 (WF-85)"
+METODO = "preproduccion"
+VERSION_METODO = "11/11/2026"
 SCRIPT = "scripts/18_contrato_produccion.py"
 MODELADO = "informes/modelado.json"
 PRESELECCION = "informes/preseleccion.json"
 ASIGNACION = "informes/modelado_asignacion.json"
-REGISTRO = "contexto-proyecto/modelo/registro-transformaciones.md"
-REGLAS = "contexto-proyecto/negocio/reglas-transformacion.md"
-MATRIZ = "contexto-proyecto/modelo/matriz_transformaciones.md"
-PROTECCION = "contexto-proyecto/fuentes/proteccion-datos.json"
-CONTRATO = "contexto-proyecto/modelo/contrato_produccion.md"
+REGISTRO = "config/modelo/registro-transformaciones.md"
+REGLAS = "config/negocio/reglas-transformacion.md"
+MATRIZ = "config/modelo/matriz_transformaciones.md"
+PROTECCION = "config/fuentes/proteccion-datos.json"
+CONTRATO = "config/modelo/contrato_produccion.md"
 SALIDA_JSON = "informes/preproduccion.json"
 
-# Las cuatro clases de la skill (§1.3) y la ficha de la partición, que separa lo que puede aprender de lo que no
+# Las cuatro clases de el método (§1.3) y la ficha de la partición, que separa lo que puede aprender de lo que no
 CLASES = ("quita filas", "no aprende", "necesita otras filas", "aprende")
 FICHA_PARTICION = "R-020"
-# El identificador, el objetivo y su horizonte (reglas §7; reglas de transformación §3)
+# El identificador, el objetivo y su horizonte (reglas, apartado 7; reglas de transformación §3)
 IDENTIFICADOR = ["serial_number", "fecha"]
 OBJETIVO = "falla_30d"
 HORIZONTE = "horizonte_hasta"
 GRUPO_DEL_CORTE = "fecha"
-# La aprobación del contrato (Juan, 19/11/2026), con el arreglo de la historia de ventanas en P06 y P12
-APROBADO_POR = "Juan, 19/11/2026: «Sí, con el arreglo»"
+# La aprobación del contrato (El responsable del caso, 19/11/2026), con el arreglo de la historia de ventanas en P06 y P12
+APROBADO_POR = "El responsable del caso, 19/11/2026: «Sí, con el arreglo»"
 FECHA_APROBACION = "2026-11-19"
 DESEMPATE = "serial_number"
 ALGORITMOS = {"hgb": "HistGradientBoostingClassifier"}
@@ -60,11 +60,11 @@ PATRON_SMART = re.compile(r"^smart_\d+_(raw|normalized)$")
 CONTADORES = ["smart_5_raw", "smart_187_raw", "smart_188_raw", "smart_197_raw", "smart_198_raw"]
 CONTADORES_CAMBIO = ["smart_5_raw", "smart_187_raw", "smart_197_raw", "smart_198_raw"]
 
-# Los parámetros de la skill (preproduccion/parametros.md), con el valor que se usará en la parte 2
+# Los parámetros de el método (preproduccion/parametros.md), con el valor que se usará en la parte 2
 PARAMETROS = [
     {"nombre": "tolerancia de la prueba por otro camino", "valor": 1e-12, "origen": "preproduccion/parametros.md, por defecto"},
     {"nombre": "semilla", "valor": None, "origen": "informes/modelado.json, ganador.semilla"},
-    {"nombre": "corte", "valor": None, "origen": "informes/modelado.json (validacion.por_mes y aprobado_antes); reglas §7, CP-010"},
+    {"nombre": "corte", "valor": None, "origen": "informes/modelado.json (validacion.por_mes y aprobado_antes); reglas, apartado 7, cuestión 010"},
     {"nombre": "carpeta de reentrenos", "valor": "modelos/reentrenos/AAAA-MM-DD/", "origen": "preproduccion/parametros.md"},
     {"nombre": "carpeta de predicciones", "valor": "data/predicciones/AAAA-MM-DD/", "origen": "preproduccion/parametros.md"},
     {"nombre": "formato de guardado", "valor": "joblib con el módulo .py", "origen": "preproduccion/parametros.md"},
@@ -108,13 +108,13 @@ PASOS = [
     {"id": "P03", "nombre": "el nombre del modelo", "fichas": ["R-004"], "apartado": None, "fuente": None,
      "clase": "no aprende", "lee": ["model"], "define": [], "historia": [],
      "que": "Los modelos escritos con dos espacios tras «WDC» pasan a su nombre con el mapeo cerrado de decisiones-correccion.json; lo que no está en el mapeo se queda como está.",
-     "por_que": "El mapeo es una lista fija aprobada por Juan, no algo aprendido de los datos.",
+     "por_que": "El mapeo es una lista fija aprobada por el responsable del caso, no algo aprendido de los datos.",
      "reentrenar": "Ya está aplicado en la tabla de entrenamiento.", "ejecutar": "Se aplica a la foto y a su historia."},
     {"id": "P04", "nombre": "la capacidad del modelo", "fichas": ["R-005"], "apartado": None, "fuente": None,
      "clase": "necesita otras filas", "lee": ["model", "capacity_bytes"], "define": [],
      "historia": [HISTORIA_FOTOS_HASTA, HISTORIA_VENTANAS],
      "que": "Una capacidad no válida (-1 o 0,1 TB, por debajo del mínimo de decisiones-correccion.json) pasa a la única capacidad válida de su modelo.",
-     "por_que": "No aprende nada de la tabla de entrenamiento: aplica la regla §3, la capacidad de un disco es la de su modelo, y para saberla mira otras filas del mismo modelo con capacidad válida. En el desarrollo se miró todo el periodo y cada modelo tenía una sola; al ejecutar se mira solo lo que hay hasta el día de la foto, la propia foto incluida. Si un modelo no tiene ninguna capacidad válida hasta ese día, su fila sale sin puntuar y con su motivo.",
+     "por_que": "No aprende nada de la tabla de entrenamiento: aplica la regla, apartado 3, la capacidad de un disco es la de su modelo, y para saberla mira otras filas del mismo modelo con capacidad válida. En el desarrollo se miró todo el periodo y cada modelo tenía una sola; al ejecutar se mira solo lo que hay hasta el día de la foto, la propia foto incluida. Si un modelo no tiene ninguna capacidad válida hasta ese día, su fila sale sin puntuar y con su motivo.",
      "reentrenar": "Ya está aplicado en la tabla de entrenamiento.",
      "ejecutar": "Se calcula con la foto y su historia, modelo a modelo."},
     {"id": "P05", "nombre": "los contadores vacíos se quedan vacíos", "fichas": ["R-009"], "apartado": None,
@@ -125,7 +125,7 @@ PASOS = [
     {"id": "P06", "nombre": "la historia de las ventanas sin los días copiados", "fichas": ["R-007"], "apartado": None,
      "fuente": None, "clase": "necesita otras filas", "lee": [], "define": [], "historia": [HISTORIA_VENTANAS],
      "que": "De la historia de ventanas salen las filas cuya fecha no es la de su texto (date), que son copia del día siguiente, y las ventanas de fallos que no han ocurrido antes del día de la foto (dia_fallo igual o posterior a su fecha).",
-     "por_que": "Quita filas de la tabla de historia, nunca de la foto que se puntúa; por eso no es de la clase que quita filas. Sirve para la primera aparición de la edad y para la capacidad del modelo. Una ventana son los 30 días anteriores a un fallo: que exista una fila de ventana el día de la foto anuncia un fallo que ese día no se conoce (arreglo aprobado por Juan el 19/11/2026).",
+     "por_que": "Quita filas de la tabla de historia, nunca de la foto que se puntúa; por eso no es de la clase que quita filas. Sirve para la primera aparición de la edad y para la capacidad del modelo. Una ventana son los 30 días anteriores a un fallo: que exista una fila de ventana el día de la foto anuncia un fallo que ese día no se conoce (arreglo aprobado por el responsable del caso el 19/11/2026).",
      "reentrenar": "Ya está aplicado en la tabla de entrenamiento.",
      "ejecutar": "Se aplica a la historia de ventanas antes de usarla."},
     {"id": "P07", "nombre": "capacidad en TB", "fichas": ["R-011"], "apartado": "`dim_modelo`", "fuente": None,
@@ -135,23 +135,23 @@ PASOS = [
      "reentrenar": "Llega hecha en la tabla de entrenamiento.", "ejecutar": "Se calcula en la foto."},
     {"id": "P08", "nombre": "disco de arranque o de datos", "fichas": ["R-011"], "apartado": "`dim_modelo`",
      "fuente": None, "clase": "no aprende", "lee": [], "define": ["tipo_disco"], "historia": [],
-     "que": "tipo_disco es «arranque» si la capacidad del modelo no pasa del límite de las reglas §3 y §7 y «datos» si lo pasa.",
+     "que": "tipo_disco es «arranque» si la capacidad del modelo no pasa del límite de las reglas, apartado 3 y §7 y «datos» si lo pasa.",
      "por_que": "Es un corte fijo de las reglas sobre la capacidad del modelo, ya puesta en P04.",
      "reentrenar": "Decide la población, ya aplicada en la tabla.", "ejecutar": "Se calcula en la foto para el motivo de P11."},
     {"id": "P09", "nombre": "el fabricante", "fichas": ["R-011"], "apartado": "`dim_modelo`", "fuente": None,
      "clase": "no aprende", "lee": ["model"], "define": ["fabricante"], "historia": [],
-     "que": "fabricante sale del nombre del modelo: «ST» es Seagate; TOSHIBA, WDC y HGST delante dan su nombre; dos excepciones escritas en las reglas §3.",
+     "que": "fabricante sale del nombre del modelo: «ST» es Seagate; TOSHIBA, WDC y HGST delante dan su nombre; dos excepciones escritas en las reglas, apartado 3.",
      "por_que": "Es una regla fija sobre el nombre. En el desarrollo se guardó en dim_modelo, una tabla por modelo, pero esa tabla solo repite la regla: un modelo nuevo la cumple igual. Un modelo que no sigue ningún patrón queda vacío.",
      "reentrenar": "Llega hecho en la tabla de entrenamiento.", "ejecutar": "Se calcula en la foto."},
     {"id": "P10", "nombre": "la garantía", "fichas": ["R-011"], "apartado": "`dim_modelo`", "fuente": None,
      "clase": "no aprende", "lee": ["model"], "define": ["garantia_anos"], "historia": [],
-     "que": "garantia_anos sale del nombre del modelo, solo en los discos de datos (reglas §6); un modelo sin garantía comprobada queda vacío.",
+     "que": "garantia_anos sale del nombre del modelo, solo en los discos de datos (reglas, apartado 6); un modelo sin garantía comprobada queda vacío.",
      "por_que": "Igual que el fabricante: una regla fija sobre el nombre, que la tabla dim_modelo solo guarda.",
      "reentrenar": "Llega hecha en la tabla de entrenamiento.", "ejecutar": "Se calcula en la foto."},
     {"id": "P11", "nombre": "la población", "fichas": ["R-013"], "apartado": "3. `fotos_riesgo`", "fuente": None,
      "clase": "quita filas", "lee": ["failure"], "define": [], "historia": [],
      "que": "Entran los discos de datos y sale la foto del día en que el disco falla (failure = 1).",
-     "por_que": "Son los discos del modelo (reglas §3 y §7); la foto del día del fallo ya está marcada como fallada.",
+     "por_que": "Son los discos del modelo (reglas, apartado 3 y §7); la foto del día del fallo ya está marcada como fallada.",
      "reentrenar": "La tabla ya llega sin esas filas: se comprueba que no queda ninguna y se cuenta.",
      "ejecutar": "No se quita ninguna: el disco de arranque y la foto del día del fallo salen con la puntuación vacía y su motivo."},
     {"id": "P12", "nombre": "la edad", "fichas": ["R-013"], "apartado": "3. `fotos_riesgo`",
@@ -159,7 +159,7 @@ PASOS = [
      "lee": ["serial_number", "fecha", "smart_9_raw"], "define": ["edad_anos"],
      "historia": [HISTORIA_FOTOS_HASTA, HISTORIA_VENTANAS],
      "que": "edad_anos son las horas encendido entre 8.766; sin horas, los días desde la primera aparición del disco entre 365,25. Al ejecutar, la primera aparición solo usa las ventanas de fallos con dia_fallo anterior a la fecha de la foto.",
-     "por_que": "Con horas es la propia fila. Sin horas cuenta desde la primera aparición, que es su primera foto o, si sale antes, el primer día de una ventana suya: eso pide la historia del disco hasta el día de la foto, nunca después. La ventana de un fallo que aún no ha ocurrido no cuenta, porque anuncia ese fallo (arreglo de Juan, 19/11/2026). En el desarrollo sí contó: de las 2.735 fotos de fotos_riesgo sin horas, en una sola la primera aparición sale de una ventana, y esa foto puede salir distinta.",
+     "por_que": "Con horas es la propia fila. Sin horas cuenta desde la primera aparición, que es su primera foto o, si sale antes, el primer día de una ventana suya: eso pide la historia del disco hasta el día de la foto, nunca después. La ventana de un fallo que aún no ha ocurrido no cuenta, porque anuncia ese fallo (arreglo de el responsable del caso, 19/11/2026). En el desarrollo sí contó: de las 2.735 fotos de fotos_riesgo sin horas, en una sola la primera aparición sale de una ventana, y esa foto puede salir distinta.",
      "reentrenar": "Llega hecha en la tabla de entrenamiento.", "ejecutar": "Se calcula con la foto y su historia."},
     {"id": "P13", "nombre": "los avisos", "fichas": ["R-013"], "apartado": "3. `fotos_riesgo`", "fuente": None,
      "clase": "no aprende", "lee": CONTADORES,
@@ -200,7 +200,7 @@ PASOS = [
      "fuente": "informes/modelado.json, ganador.muestra; reglas de negocio §7", "clase": "quita filas", "lee": [],
      "define": [], "historia": [],
      "que": "Entrenan todas las fotos con fallo y una parte de las sanas de cada mes, sorteada con la semilla, como en el modelado.",
-     "por_que": "Es el tratamiento del desequilibrio, que se hace solo al entrenar (reglas §7).",
+     "por_que": "Es el tratamiento del desequilibrio, que se hace solo al entrenar (reglas, apartado 7).",
      "reentrenar": "Antes del Pipeline, contado.", "ejecutar": "No aplica: se puntúan todas las filas."},
     {"id": "P20", "nombre": "las numéricas tal cual", "fichas": ["R-021", "R-022"], "apartado": None, "fuente": None,
      "clase": "no aprende", "lee": [], "define": [], "historia": [],
@@ -333,7 +333,7 @@ def leer_texto(raiz, ruta):
 def leer_modelado(raiz):
     """Lee informes/modelado.json y para si no deja empezar (resultado.md, «Al empezar»)."""
     if (raiz / ASIGNACION).exists():
-        raise Parada("hay un modelo por clase (informes/modelado_asignacion.json) y la skill todavía no lo admite", "PARADO")
+        raise Parada("hay un modelo por clase (informes/modelado_asignacion.json) y el método todavía no lo admite", "PARADO")
     m = json.loads(leer_texto(raiz, MODELADO))
     estado = m.get("resultado", {}).get("estado")
     if estado != "OK":
@@ -396,7 +396,7 @@ def leer_matriz(texto):
 
 
 # =================================================================================================================
-# 4. Las finalistas (skill §1.1)
+# 4. Las finalistas (método §1.1)
 # =================================================================================================================
 def finalistas_de(m, matriz, preseleccion):
     """Las variables de origen que lee el preprocesador del ganador, más el identificador, el objetivo y su horizonte.
@@ -423,7 +423,7 @@ def finalistas_de(m, matriz, preseleccion):
 
 
 # =================================================================================================================
-# 5. Tirar del hilo (skill §1.2) y separar (§1.3)
+# 5. Tirar del hilo (método §1.2) y separar (§1.3)
 # =================================================================================================================
 def cadena_de(variable):
     """Los pasos de la cadena de una variable, en el orden de PASOS; None si no tiene."""
@@ -587,7 +587,7 @@ def corte_de(m):
             "regla": "cada foto mensual se ordena por la probabilidad, de mayor a menor; a igual probabilidad, por serial_number; cada lista marca los N primeros",
             "por_que": m["corte"]["por_que"],
             "donde_se_lee": "produccion/configuracion.json, que escribe la parte 2",
-            "fuente": f"{MODELADO} (validacion.por_mes y aprobado_antes.medida_principal); reglas de negocio §7, CP-010"}
+            "fuente": f"{MODELADO} (validacion.por_mes y aprobado_antes.medida_principal); reglas de negocio §7, cuestión 010"}
 
 
 def historia_de(finalistas):
@@ -649,7 +649,7 @@ def construir_contrato(m, lee, fuente_finalistas, cadenas):
     receta = receta_de(m, finalistas)
     return {
         "identificador": {"columnas": IDENTIFICADOR, "que_es": "la foto: un disco (serial_number) el día de su foto mensual (fecha)"},
-        "objetivo": {"columna": OBJETIVO, "que_es": "1 si el disco tiene un fallo en los 30 días siguientes a la foto (reglas §7, CP-003 y CP-004)",
+        "objetivo": {"columna": OBJETIVO, "que_es": "1 si el disco tiene un fallo en los 30 días siguientes a la foto (reglas, apartado 7, cuestión 003 y cuestión 004)",
                      "horizonte": HORIZONTE},
         "finalistas_fuente": fuente_finalistas,
         "finalistas": finalistas,
@@ -669,7 +669,7 @@ def tabla(cabecera, filas):
 
 
 def contrato_md(c, m, fecha):
-    """El texto del contrato para Juan, generado del diccionario (transmision-conocimiento)."""
+    """El texto del contrato para el responsable del caso, generado del diccionario (transmision-conocimiento)."""
     r, corte, af = c["receta"], c["corte"], m["ajuste_final"]
     n_modelo = len(r["columnas"])
     n_lee = len(r["columnas_que_lee"])
@@ -678,7 +678,7 @@ def contrato_md(c, m, fecha):
          "titulo: Contrato de producción del caso 68 · qué pasos llevan cada foto de disco desde el dato en bruto hasta la probabilidad de fallo",
          f"estado: aprobado por {APROBADO_POR}",
          f"fecha_documento: {fecha}",
-         "dueno: Juan (aprueba) · Claude (redacta)",
+         "dueno: El responsable del caso (aprueba)",
          f"fuente: {MODELADO}; {REGISTRO}; {REGLAS}; {MATRIZ}; generado por {SCRIPT}",
          "---", "",
          "# Contrato de producción", "",
@@ -748,9 +748,9 @@ def contrato_md(c, m, fecha):
     L += [f"- **{h['tabla']}**, hasta {h['hasta']}: {', '.join('`' + x + '`' for x in h['columnas'])}. La usan "
           f"{', '.join(h['pasos'])}." for h in c["historia"]]
     L += ["", "## Datos personales", "",
-          "Los datos son de discos: serial_number identifica un disco y no a una persona (reglas §9), y el modelo no lo "
+          "Los datos son de discos: serial_number identifica un disco y no a una persona (reglas, apartado 9), y el modelo no lo "
           "lee. El contrato no usa ni deja ninguna columna de datos personales. No existe "
-          "contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.", "",
+          "config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.", "",
           "## Límites", ""]
     L += [f"- {x}" for x in LIMITES]
     L += ["", "## La aprobación", "",
@@ -779,7 +779,7 @@ LIMITES = [
 # =================================================================================================================
 def base(fecha_ejecucion):
     """El bloque común del JSON, para escribirlo también si el script para o falla."""
-    return {"skill": SKILL, "version_skill": VERSION_SKILL, "script": SCRIPT, "fecha_datos": None,
+    return {"metodo": METODO, "version_metodo": VERSION_METODO, "script": SCRIPT, "fecha_datos": None,
             "fecha_ejecucion": fecha_ejecucion, "entradas": [], "resultado": {}, "pendientes": [],
             "contrato": {"ruta": CONTRATO, "aprobado_por": "", "fecha": ""}, "identificador": "", "objetivo": "",
             "finalistas": [], "receta": None,
@@ -856,10 +856,10 @@ def principal(raiz):
         # 9.3 Lo que se escribe: el contrato y el JSON, solo con todas las comprobaciones en verde
         resultado_json(r, contrato, m)
         proteccion = (raiz / PROTECCION).exists()
-        r["datos_personales"] = ("Los datos son de discos: serial_number identifica un disco, no a una persona (reglas §9). "
+        r["datos_personales"] = ("Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9). "
                                  "El contrato no usa ni deja ninguna columna de datos personales. "
-                                 + ("Existe contexto-proyecto/fuentes/proteccion-datos.json." if proteccion else
-                                    "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección."))
+                                 + ("Existe config/fuentes/proteccion-datos.json." if proteccion else
+                                    "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección."))
         fecha = dt.date.today().isoformat()
         (raiz / CONTRATO).parent.mkdir(parents=True, exist_ok=True)
         (raiz / CONTRATO).write_text(contrato_md(contrato, m, fecha), encoding="utf-8")

@@ -4,7 +4,7 @@ La logística queda con 25 de sus 62 variables (169 columnas en el ajuste con la
 
 ## ¿Hacía falta?
 
-En la regresión logística sí. Es un modelo lineal: scikit-learn no da la significación de cada coeficiente y el tope de columnas obliga (skill §1), y Juan lo fijó en las reglas §7 el 18/11/2026. El bosque y el HistGradientBoosting no se preseleccionan por votación y reciben las 64 columnas de la matriz.
+En la regresión logística sí. Es un modelo lineal: scikit-learn no da la significación de cada coeficiente y el tope de columnas obliga (método §1), y el responsable del caso lo fijó en las reglas, apartado 7 el 18/11/2026. El bosque y el HistGradientBoosting no se preseleccionan por votación y reciben las 64 columnas de la matriz.
 
 La muestra de partida tiene 232.243 fotos: las 11.962 con fallo y 220.281 sanas, el 2 % de cada mes.
 La preselección usó 232.243 de ellas, de 2020-01-01 a 2024-06-01, la muestra entera.
@@ -21,7 +21,7 @@ Ninguna variable sola llega a |2·AUC − 1| de 0,90, el umbral de posible fuga 
 
 ## Cómo se votó
 
-Modo comparativo y escenario de consenso amplio, fijado por Juan antes de ver el resultado: entra una variable si la marcan dos o más de los tres métodos. La unidad de voto es la variable de origen: recibe el voto de un método si alguna de sus columnas pasa su corte, y entra o sale con todas.
+Modo comparativo y escenario de consenso amplio, fijado por el responsable del caso antes de ver el resultado: entra una variable si la marcan dos o más de los tres métodos. La unidad de voto es la variable de origen: recibe el voto de un método si alguna de sus columnas pasa su corte, y entra o sale con todas.
 
 Entran siempre, sin votar: smart_5_raw, smart_187_raw, smart_197_raw, smart_198_raw, para poder explicar la lista a los técnicos con lo que ya vigilan.
 
@@ -304,17 +304,17 @@ El modelado guarda la lista de variables, no la de columnas: los tramos se apren
 
 ## Parámetros usados
 
-- Semillas: 42 en la muestra y en los tres métodos; 43 en la segunda muestra. Origen: parametros.md y encargo 21.
-- Muestra: todas las fotos con fallo y el 2 % de las sanas de cada mes; de ella, los meses más recientes enteros hasta pasar de 100.000 filas; si la lista cambia con la segunda muestra se dobla, y si no cabe se usa entera. Origen: reglas §7; parametros.md, «filas para muestrear»; nota del encargo 21, punto 5.
-- Escenario de votación: consenso amplio, 2 votos o más. Origen: reglas §7, Juan, 18/11/2026.
-- Obligatorias: smart_5_raw, smart_187_raw, smart_197_raw, smart_198_raw. Origen: reglas §7, Juan, 18/11/2026.
-- Información mutua: mutual_info_classif con random_state=42 y la máscara de discretas. Origen: metodos.md; encargo 21.
-- RFECV: RandomForestClassifier(100 árboles, profundidad 5, semilla 42), TimeSeriesSplit(3) por fecha con el horizonte cerrado, step=0.05, min_features_to_select=1, average_precision. Origen: parametros.md; encargo 21; nota del encargo 21, punto 3.
-- Importancia por permutación: HistGradientBoostingClassifier por defecto con semilla 42 y early_stopping=False; el 80 % más antiguo entrena y el 20 % más reciente mide; 10 repeticiones; average_precision. Origen: parametros.md; encargo 21; early_stopping escrito por aprendizaje-automatico §5 y algoritmos.md.
-- Corte de información mutua y permutación: salto natural: el mayor cociente entre un valor y el siguiente. Origen: metodos.md, «El corte»; encargo 21.
+- Semillas: 42 en la muestra y en los tres métodos; 43 en la segunda muestra. Origen: parametros.md y petición 21.
+- Muestra: todas las fotos con fallo y el 2 % de las sanas de cada mes; de ella, los meses más recientes enteros hasta pasar de 100.000 filas; si la lista cambia con la segunda muestra se dobla, y si no cabe se usa entera. Origen: reglas, apartado 7; parametros.md, «filas para muestrear»; nota de la petición 21, punto 5.
+- Escenario de votación: consenso amplio, 2 votos o más. Origen: reglas, apartado 7, el responsable del caso, 18/11/2026.
+- Obligatorias: smart_5_raw, smart_187_raw, smart_197_raw, smart_198_raw. Origen: reglas, apartado 7, el responsable del caso, 18/11/2026.
+- Información mutua: mutual_info_classif con random_state=42 y la máscara de discretas. Origen: metodos.md; petición 21.
+- RFECV: RandomForestClassifier(100 árboles, profundidad 5, semilla 42), TimeSeriesSplit(3) por fecha con el horizonte cerrado, step=0.05, min_features_to_select=1, average_precision. Origen: parametros.md; petición 21; nota de la petición 21, punto 3.
+- Importancia por permutación: HistGradientBoostingClassifier por defecto con semilla 42 y early_stopping=False; el 80 % más antiguo entrena y el 20 % más reciente mide; 10 repeticiones; average_precision. Origen: parametros.md; petición 21; early_stopping escrito por aprendizaje-automatico §5 y algoritmos.md.
+- Corte de información mutua y permutación: salto natural: el mayor cociente entre un valor y el siguiente. Origen: metodos.md, «El corte»; petición 21.
 - Umbral de las que dicen lo mismo: Spearman o V de Cramér de 0,5 o más. Origen: parametros.md.
-- Alarma de fuga: |2·AUC − 1| de 0,90 o más, con el AUC de la variable sola. Origen: UMBRAL_FUGA de scripts/06_analisis_exploratorio.py, línea 88; nota del encargo 21, punto 4.
-- Tope: una columna por cada 10 fotos con fallo de entrenamiento. Origen: skill §7.
+- Alarma de fuga: |2·AUC − 1| de 0,90 o más, con el AUC de la variable sola. Origen: UMBRAL_FUGA de scripts/06_analisis_exploratorio.py, línea 88; nota de la petición 21, punto 4.
+- Tope: una columna por cada 10 fotos con fallo de entrenamiento. Origen: método §7.
 
 Los apartados del manual aplicados:
 
@@ -327,11 +327,11 @@ Los apartados del manual aplicados:
 
 ## Datos personales
 
-Los datos son de discos: serial_number identifica un disco, no a una persona (reglas §9), y esta preselección no lo lee. No usa ni deja ninguna columna de datos personales. No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.
+Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9), y esta preselección no lo lee. No usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.
 
 ## Límites
 
-- La preselección se hizo una vez, sobre una muestra de entrenamiento, y su lista entra fija en cada pliegue del modelado: la validación cruzada del modelado sale algo optimista (skill §9). Cuánto, NO SE PUEDE SABER sin medirlo.
+- La preselección se hizo una vez, sobre una muestra de entrenamiento, y su lista entra fija en cada pliegue del modelado: la validación cruzada del modelado sale algo optimista (método §9). Cuánto, NO SE PUEDE SABER sin medirlo.
 - Los modelos auxiliares van sin búsqueda y solo ordenan; sus cifras no son rendimiento.
 - El AUC de cada variable sola se mide en la misma muestra, con el valor en bruto y con cada tramo puntuado por su tasa de fallo: sirve para la alarma, no como medida del modelo.
 - El parecido entre dos variables se mide solo con las fotos que tienen dato en las dos, para que el vacío de los contadores que solo registra algún modelo no fabrique parecidos; cada par dice con cuántas filas se midió.

@@ -18,7 +18,7 @@ probabilidades fuera de 0 a 1.
 - desarrollo_frente_a_validacion: las medidas en las filas del ajuste y en las nuevas, para ver el sobreajuste;
 - calibracion: probabilidad media frente a tasa observada por tramos;
 - figura_roc, figura_precision_cobertura, figura_ganancia y figura_umbrales: gráficos técnicos en matplotlib, para
-  el cuaderno del modelado. Los gráficos de un informe para negocio van con `assets/graficos.py`.
+  el análisis del modelado. Los gráficos de un informe para negocio van con `assets/graficos.py`.
 """
 
 # matplotlib dibuja los gráficos técnicos

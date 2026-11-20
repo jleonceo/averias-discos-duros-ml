@@ -44,7 +44,7 @@ A snapshot is the state of a drive on the first day of a month: its SMART counte
 - `produccion/`: the monthly scoring process and the retraining.
 - `modelos/`: the model in use and its metadata.
 - `informes/`: the final report, the dashboard, the six problems and the report from each step.
-- `contexto-proyecto/`: the business and transformation rules, and the decisions the scripts read.
+- `config/`: the business and transformation rules, and the decisions the scripts read.
 
 ## The data
 
@@ -56,6 +56,8 @@ What was done with them:
 2. **Extract:** `podar_datos.py` keeps a snapshot of every drive on the first day of each month, the 30 days before each failure, the list of failures and a daily count of drives and failures by model, capacity and data center. It drops the 68 columns that are empty or constant. It takes about two and a half hours.
 3. **Final-test year:** `apartar_reserva.py` sets aside everything from 1 July 2025 to 30 June 2026, which was not looked at until the end. That leaves 17,960 failures for the analysis and 4,751 for the final test.
 
+Script `10` also reads the revenue tables from Backblaze's 2025 annual report, its [Form 10-K filed with the SEC](https://www.sec.gov/Archives/edgar/data/1462056/000162828026016395/blze-20251231.htm). It is a third-party document and is not included either: the script expects it at `config/sector/documentos/16_backblaze_10k_2025_tablas_ingresos.txt`.
+
 ## How to run it
 
 You need conda and the environment in `environment.yml`:
@@ -66,7 +68,7 @@ conda env create -f environment.yml && conda activate 68_averias_discos_duros
 python -W error tests/probar_17_informe_final.py
 ```
 
-The last command runs the final report's test, which does not need the data: it reads the reports included in the repository. Without the data, 13 of the 27 tests in `tests/` pass; the others read the Backblaze extract. To rerun the whole project, with the ZIP files downloaded into a `zips/` folder:
+The last command runs the final report's test, which does not need the data: it reads the reports included in the repository. Without the data, 14 of the 28 tests in `tests/` pass; the others read the Backblaze extract. To rerun the whole project, with the ZIP files downloaded into a `zips/` folder:
 
 ```bash
 python preparacion_datos/podar_datos.py data/poda_entera zips/data_Q*.zip

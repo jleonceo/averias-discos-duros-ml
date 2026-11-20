@@ -1,6 +1,6 @@
-"""Preselección de variables del modelo del caso 68 (skill preseleccion-variables; encargo 21, primera parte).
+"""Preselección de variables del modelo del caso 68 (método preseleccion-variables; petición 21, primera parte).
 
-Solo la regresión logística se preselecciona por votación (reglas §7, 18/11/2026): modo comparativo, con información
+Solo la regresión logística se preselecciona por votación (reglas, apartado 7, 18/11/2026): modo comparativo, con información
 mutua, eliminación recursiva con validación cruzada (RFECV) e importancia por permutación, y escenario de consenso
 amplio (entra una variable si la marcan dos o más métodos). smart_5_raw, smart_187_raw, smart_197_raw y smart_198_raw
 entran siempre, sin votar. El bosque y el HistGradientBoosting no se preseleccionan: reciben las 64 columnas de la
@@ -12,14 +12,14 @@ guarda, para la logística, las variables finales y, solo para orientar, los nom
 muestra: los tramos se aprenden en cada ajuste, así que los nombres cambian de un pliegue a otro. El preprocesador se
 monta siempre entero, con la matriz; la selección se aplica después, quedándose con las columnas de salida cuyo origen
 está entre las variables finales. Así fabricante sigue leyéndose como clave de los tramos de smart_1_raw y smart_7_raw
-aunque pierda la votación (nota del encargo 21, punto 2).
+aunque pierda la votación (nota de la petición 21, punto 2).
 
 Todo se calcula sobre una muestra de entrenamiento: todas las fotos con fallo y el 2 % de las sanas de cada mes, con
 semilla 42, como el script 13, y de ella los meses más recientes hasta pasar de 100.000 filas, enteros. Una segunda
 muestra igual con semilla 43 comprueba la lista final: si cambia, se dobla el tamaño y se repite; si al doblar ya no
 cabe, se usa la muestra de partida entera.
 
-Importa scripts/13_preparacion.py con importlib para montar el preprocesador de la logística (nota del encargo 21,
+Importa scripts/13_preparacion.py con importlib para montar el preprocesador de la logística (nota de la petición 21,
 punto 1): su trabajo está dentro de `if __name__ == "__main__":` y al importarlo solo define las piezas. No importa
 ningún otro script. No abre la validación.
 
@@ -79,15 +79,15 @@ P13 = cargar_13()
 # =================================================================================================================
 # 2. Configuración
 # =================================================================================================================
-SKILL = "preseleccion-variables"
-SKILL_MD = CASO / ".claude" / "skills" / "preseleccion-variables" / "SKILL.md"
+METODO = "preseleccion-variables"
+METODO_MD = CASO / "metodos" / "preseleccion-variables" / "METODO.md"
 SCRIPT = "scripts/14_preseleccion.py"
-ENCARGO = "prompts/21_encargo_preseleccion_competicion_y_ganador.md, primera parte, con la nota de respuestas"
-FECHA_DATOS = "2025-06-30"                                   # reglas §5, fecha de referencia
+PETICION = "peticiones/21_preseleccion_competicion_y_ganador.md, primera parte, con la nota de respuestas"
+FECHA_DATOS = "2025-06-30"                                   # reglas, apartado 5, fecha de referencia
 PREPARACION = "informes/preparacion.json"
-MATRIZ = "contexto-proyecto/modelo/matriz_transformaciones.md"
+MATRIZ = "config/modelo/matriz_transformaciones.md"
 ENTRENAMIENTO = "data/processed/fotos_riesgo_entrenamiento.parquet"
-PROTECCION = "contexto-proyecto/fuentes/proteccion-datos.json"
+PROTECCION = "config/fuentes/proteccion-datos.json"
 SALIDA_JSON = "informes/preseleccion.json"
 SALIDA_MD = "informes/preseleccion.md"
 OBJETIVO, FECHA, HORIZONTE = "falla_30d", "fecha", "horizonte_hasta"
@@ -95,21 +95,21 @@ LEER = P13.NOMINALES + P13.NUM_ARBOLES + [OBJETIVO, FECHA, HORIZONTE]
 ENTRADA_LOGISTICA = P13.NUM_LOGISTICA + P13.NOMINALES          # las 62 variables de origen de la logística
 ENTRADA_ARBOLES = P13.NUM_ARBOLES + P13.NOMINALES              # las 64 columnas de los árboles
 
-# La muestra (reglas §7; parametros.md, «filas para muestrear»)
+# La muestra (reglas, apartado 7; parametros.md, «filas para muestrear»)
 SEMILLA, SEMILLA_2 = 42, 43
 FRACCION_SANAS = P13.FRACCION_SANAS
 FILAS_MUESTRA = 100_000
-# La votación y lo que entra siempre (reglas §7, 18/11/2026)
+# La votación y lo que entra siempre (reglas, apartado 7, 18/11/2026)
 ESCENARIO, VOTOS_MINIMOS = "consenso amplio", 2
 OBLIGATORIAS = ["smart_5_raw", "smart_187_raw", "smart_197_raw", "smart_198_raw"]
-# Los métodos (parametros.md; encargo 21; nota de respuestas, punto 3)
+# Los métodos (parametros.md; petición 21; nota de respuestas, punto 3)
 METRICA = "average_precision"
 RFE_ARBOLES, RFE_PROFUNDIDAD, RFE_PLIEGUES, RFE_PASO, RFE_MINIMO = 100, 5, 3, 0.05, 1
 RESERVA, REPETICIONES = 0.20, 10
 # Las que dicen lo mismo, la fuga y el tope
 UMBRAL_PARECIDO = 0.5                                        # Spearman y V de Cramér (parametros.md)
 UMBRAL_FUGA = 0.90                                           # |2·AUC − 1|, el UMBRAL_FUGA del exploratorio del caso
-CASOS_POR_COLUMNA = 10                                       # tope de la logística (skill §7)
+CASOS_POR_COLUMNA = 10                                       # tope de la logística (método §7)
 TROZO = 50_000                                               # filas por trozo al transformar
 
 TEORIA = [
@@ -126,7 +126,7 @@ TEORIA = [
 
 
 class Parada(Exception):
-    """Condición que impide seguir; `estado` dice si la skill paró a propósito (PARADO) o si falló algo (ERROR)."""
+    """Condición que impide seguir; `estado` dice si el método paró a propósito (PARADO) o si falló algo (ERROR)."""
 
     def __init__(self, mensaje, estado="ERROR"):
         super().__init__(mensaje)
@@ -188,7 +188,7 @@ def patrones_logistica(mz):
         if fila["seccion"] != "entran" or fila["variable"] not in mz["logistica"]:
             continue
         for trozo in fila["salida"].split("<br>"):
-            m = re.match(r"\s*L:\s*(\S+)\s*$", trozo)
+            m = re.match(r"\s*L[:]\s*(\S+)\s*$", trozo)
             if m and m.group(1) != "—":
                 patrones[fila["variable"]] = m.group(1)
     return patrones
@@ -209,7 +209,7 @@ def origen_de(columnas, patrones):
 
 
 # =================================================================================================================
-# 5. Lo que no puede entrar: la fuga y las variables del momento (skill §2)
+# 5. Lo que no puede entrar: la fuga y las variables del momento (método §2)
 # =================================================================================================================
 def codigos(Z, columnas):
     """El tramo o la categoría de cada fila de una variable: 0 en la referencia y k en su columna k."""
@@ -264,7 +264,7 @@ def alarmas(auc, umbral):
 
 
 def del_momento(df, variables, col_fecha=FECHA):
-    """Las variables con el mismo valor para todas las fotos de una fecha y distinto entre fechas (WF-143)."""
+    """Las variables con el mismo valor para todas las fotos de una fecha y distinto entre fechas."""
     marcadas = []
     for v in variables:
         if df[v].nunique(dropna=False) > 1 and df.groupby(col_fecha)[v].nunique(dropna=False).max() <= 1:
@@ -273,7 +273,7 @@ def del_momento(df, variables, col_fecha=FECHA):
 
 
 # =================================================================================================================
-# 6. Los tres métodos, el corte y la votación (skill §3 y §4)
+# 6. Los tres métodos, el corte y la votación (método §3 y §4)
 # =================================================================================================================
 def pliegues_por_fecha(fechas, horizontes, y, n):
     """TimeSeriesSplit(n) sobre las filas ordenadas por fecha; cada entrenamiento, solo con las fotos cuyo horizonte
@@ -324,7 +324,7 @@ def puestos(serie):
 
 
 # =================================================================================================================
-# 7. Las que dicen lo mismo (skill §6) y el tope (skill §7)
+# 7. Las que dicen lo mismo (método §6) y el tope (método §7)
 # =================================================================================================================
 def cramer(a, b):
     """V de Cramér entre dos variables de tramos o categorías; None si una no varía."""
@@ -349,7 +349,7 @@ def pares_parecidos(df, cod, candidatas, umbral):
     """Los pares de variables de distinto origen que llegan al umbral en V de Cramér (sobre sus tramos o categorías) o
     en Spearman (entre dos numéricas, sobre el valor en bruto). Las dos medidas se calculan solo con las filas que
     tienen dato en las dos variables: muchos contadores SMART solo los registra algún modelo, y con el vacío dentro la
-    V de Cramér mide qué modelo registra cada contador, no la información (skill §6, último punto)."""
+    V de Cramér mide qué modelo registra cada contador, no la información (método §6, último punto)."""
     pares = []
     for i, a in enumerate(candidatas):
         for b in candidatas[i + 1:]:
@@ -400,7 +400,7 @@ def aplicar_tope(variables, cols, ranking, maximo, obligatorias):
 
 
 # =================================================================================================================
-# 8. Las seis validaciones (skill §8), calculadas con lo que se ejecutó
+# 8. Las seis validaciones (método §8), calculadas con lo que se ejecutó
 # =================================================================================================================
 def v_sin_validacion(leidos):
     """1. Nada se ajustó con la validación ni con el lote de producción: todo lo que el script leyó es entrenamiento,
@@ -471,7 +471,7 @@ def seleccion(df, fallos_entrenamiento, patrones):
     r["momento"] = del_momento(df, ENTRADA_LOGISTICA)
     if r["alarmas_de_fuga"]:
         r["parada"] = ("alarma de fuga en " + ", ".join(a["columna"] for a in r["alarmas_de_fuga"])
-                       + ": se investiga de dónde sale el dato antes de seguir (skill §2)")
+                       + ": se investiga de dónde sale el dato antes de seguir (método §2)")
         return r
     # 9.3 Información mutua, con la máscara de discretas calculada (todas son 0 y 1)
     discretas = np.array([set(np.unique(Z[c].to_numpy())) <= {0.0, 1.0} for c in Z.columns])
@@ -529,11 +529,11 @@ def seleccion(df, fallos_entrenamiento, patrones):
                                    "ranking_per": pv_per.get(v), "ranking_tot": ranking_tot.get(v), "votos": votos[v],
                                    "obligatoria": v in OBLIGATORIAS, "auc_sola": auc[v]["auc"], "del_momento": v in r["momento"]}
                                   for v in ENTRADA_LOGISTICA]
-    # Una variable del momento que encabeza un ranking para y se pregunta (skill §2)
+    # Una variable del momento que encabeza un ranking para y se pregunta (método §2)
     arriba = {min(pv_mi, key=pv_mi.get), min(pv_per, key=pv_per.get)} if con else set()
     if set(r["momento"]) & arriba:
         r["parada"] = (f"la variable del momento {sorted(set(r['momento']) & arriba)} encabeza un ranking: hay que decidir si "
-                       "el modelo tiene que funcionar fuera de esa coyuntura (skill §2)")
+                       "el modelo tiene que funcionar fuera de esa coyuntura (método §2)")
         return r
     votadas = entran_por_votacion(votos, VOTOS_MINIMOS, OBLIGATORIAS)
     r["votadas"] = votadas
@@ -563,11 +563,11 @@ def seleccion(df, fallos_entrenamiento, patrones):
 # =================================================================================================================
 # 10. El JSON y el informe
 # =================================================================================================================
-def version_skill():
-    """La fecha y el código de la última línea de versión del SKILL.md (bloque común de resultado.md)."""
-    if not SKILL_MD.exists():
+def version_metodo():
+    """La fecha y el código de la última línea de versión del METODO.md (bloque común de resultado.md)."""
+    if not METODO_MD.exists():
         return None
-    lineas = [x for x in SKILL_MD.read_text(encoding="utf-8").splitlines() if x.startswith("Versión ")]
+    lineas = [x for x in METODO_MD.read_text(encoding="utf-8").splitlines() if x.startswith("Versión ")]
     m = re.match(r"Versión (\S+) \(([^),]+)", lineas[-1]) if lineas else None
     return f"{m.group(1)} ({m.group(2)})" if m else None
 
@@ -588,7 +588,7 @@ def _p(x, d=4):
 
 
 def informe(res):
-    """El informe para Juan, con los apartados de resultado.md y solo las cifras del diccionario."""
+    """El informe para el responsable del caso, con los apartados de resultado.md y solo las cifras del diccionario."""
     L = []
     w = L.append
     lo = res["familias"]["logistica"]
@@ -648,7 +648,7 @@ def informe(res):
     w("")
     w("## Cómo se votó")
     w("")
-    w(f"Modo comparativo y escenario de {lo['escenario']}, fijado por Juan antes de ver el resultado: entra una variable "
+    w(f"Modo comparativo y escenario de {lo['escenario']}, fijado por el responsable del caso antes de ver el resultado: entra una variable "
       "si la marcan dos o más de los tres métodos. La unidad de voto es la variable de origen: recibe el voto de un "
       "método si alguna de sus columnas pasa su corte, y entra o sale con todas.")
     w("")
@@ -767,16 +767,16 @@ def base(raiz):
     """El bloque común y lo fijo, antes de saber el resultado."""
     proteccion = (raiz / PROTECCION).exists()
     return {
-        "skill": SKILL, "version_skill": version_skill(), "script": SCRIPT, "encargo": ENCARGO,
+        "metodo": METODO, "version_metodo": version_metodo(), "script": SCRIPT, "peticion": PETICION,
         "fecha_datos": FECHA_DATOS, "fecha_ejecucion": dt.datetime.now().replace(microsecond=0).isoformat(),
         "entradas": [], "resultado": {"estado": None, "riesgo": None, "resumen": None, "artefactos": [SALIDA_JSON, SALIDA_MD], "siguiente": None},
         "pendientes": [], "leidos": [],
         "familias": {
             "logistica": {"se_preselecciona": True,
                           "por_que": ("Es un modelo lineal: scikit-learn no da la significación de cada coeficiente y el "
-                                      "tope de columnas obliga (skill §1), y Juan lo fijó en las reglas §7 el 18/11/2026."),
+                                      "tope de columnas obliga (método §1), y el responsable del caso lo fijó en las reglas, apartado 7 el 18/11/2026."),
                           "algoritmo_previsto": "regresión logística regularizada", "modo": "comparativo",
-                          "escenario": ESCENARIO, "escenario_fijado_en": "contexto-proyecto/negocio/reglas-negocio.md §7",
+                          "escenario": ESCENARIO, "escenario_fijado_en": "config/negocio/reglas-negocio.md §7",
                           "obligatorias": OBLIGATORIAS, "muestra": None, "recuento": None, "fuera_de_entrada": None,
                           "alarmas_de_fuga": None, "del_momento": None, "sin_columnas": None, "rankings": None,
                           "rankings_por_variable": None, "cortes": None, "una_variante_por_variable": None,
@@ -784,7 +784,7 @@ def base(raiz):
                           "columnas_por_variable": None, "pliegues_rfe": None, "reserva_permutacion": None,
                           "validaciones": {k: None for k in NOMBRES_VALIDACION}, "intentos": []},
             **{f: {"se_preselecciona": False,
-                   "por_que": ("los árboles manejan bien muchas variables y Juan fijó en las reglas §7 (18/11/2026) que no "
+                   "por_que": ("los árboles manejan bien muchas variables y el responsable del caso fijó en las reglas, apartado 7 (18/11/2026) que no "
                                "se preseleccionan por votación: reciben las columnas de la matriz."),
                    "algoritmo_previsto": nombre, "fuera_de_entrada": None, "columnas_finales": ENTRADA_ARBOLES,
                    "muestra": None, "alarmas_de_fuga": None, "modo": None, "escenario": None, "rankings": None,
@@ -792,26 +792,26 @@ def base(raiz):
                    "validaciones": None}
                for f, nombre in (("bosque", "bosque aleatorio"), ("hgb", "HistGradientBoosting"))}},
         "parametros": [
-            {"nombre": "semillas", "valor": f"{SEMILLA} en la muestra y en los tres métodos; {SEMILLA_2} en la segunda muestra", "origen": "parametros.md y encargo 21"},
-            {"nombre": "muestra", "valor": f"todas las fotos con fallo y el {numero(100 * FRACCION_SANAS)} % de las sanas de cada mes; de ella, los meses más recientes enteros hasta pasar de {numero(FILAS_MUESTRA)} filas; si la lista cambia con la segunda muestra se dobla, y si no cabe se usa entera", "origen": "reglas §7; parametros.md, «filas para muestrear»; nota del encargo 21, punto 5"},
-            {"nombre": "escenario de votación", "valor": f"{ESCENARIO}, {VOTOS_MINIMOS} votos o más", "origen": "reglas §7, Juan, 18/11/2026"},
-            {"nombre": "obligatorias", "valor": ", ".join(OBLIGATORIAS), "origen": "reglas §7, Juan, 18/11/2026"},
-            {"nombre": "información mutua", "valor": f"mutual_info_classif con random_state={SEMILLA} y la máscara de discretas", "origen": "metodos.md; encargo 21"},
-            {"nombre": "RFECV", "valor": f"RandomForestClassifier({RFE_ARBOLES} árboles, profundidad {RFE_PROFUNDIDAD}, semilla {SEMILLA}), TimeSeriesSplit({RFE_PLIEGUES}) por fecha con el horizonte cerrado, step={RFE_PASO}, min_features_to_select={RFE_MINIMO}, {METRICA}", "origen": "parametros.md; encargo 21; nota del encargo 21, punto 3"},
-            {"nombre": "importancia por permutación", "valor": f"HistGradientBoostingClassifier por defecto con semilla {SEMILLA} y early_stopping=False; el {numero(100 * (1 - RESERVA))} % más antiguo entrena y el {numero(100 * RESERVA)} % más reciente mide; {REPETICIONES} repeticiones; {METRICA}", "origen": "parametros.md; encargo 21; early_stopping escrito por aprendizaje-automatico §5 y algoritmos.md"},
-            {"nombre": "corte de información mutua y permutación", "valor": "salto natural: el mayor cociente entre un valor y el siguiente", "origen": "metodos.md, «El corte»; encargo 21"},
+            {"nombre": "semillas", "valor": f"{SEMILLA} en la muestra y en los tres métodos; {SEMILLA_2} en la segunda muestra", "origen": "parametros.md y petición 21"},
+            {"nombre": "muestra", "valor": f"todas las fotos con fallo y el {numero(100 * FRACCION_SANAS)} % de las sanas de cada mes; de ella, los meses más recientes enteros hasta pasar de {numero(FILAS_MUESTRA)} filas; si la lista cambia con la segunda muestra se dobla, y si no cabe se usa entera", "origen": "reglas, apartado 7; parametros.md, «filas para muestrear»; nota de la petición 21, punto 5"},
+            {"nombre": "escenario de votación", "valor": f"{ESCENARIO}, {VOTOS_MINIMOS} votos o más", "origen": "reglas, apartado 7, el responsable del caso, 18/11/2026"},
+            {"nombre": "obligatorias", "valor": ", ".join(OBLIGATORIAS), "origen": "reglas, apartado 7, el responsable del caso, 18/11/2026"},
+            {"nombre": "información mutua", "valor": f"mutual_info_classif con random_state={SEMILLA} y la máscara de discretas", "origen": "metodos.md; petición 21"},
+            {"nombre": "RFECV", "valor": f"RandomForestClassifier({RFE_ARBOLES} árboles, profundidad {RFE_PROFUNDIDAD}, semilla {SEMILLA}), TimeSeriesSplit({RFE_PLIEGUES}) por fecha con el horizonte cerrado, step={RFE_PASO}, min_features_to_select={RFE_MINIMO}, {METRICA}", "origen": "parametros.md; petición 21; nota de la petición 21, punto 3"},
+            {"nombre": "importancia por permutación", "valor": f"HistGradientBoostingClassifier por defecto con semilla {SEMILLA} y early_stopping=False; el {numero(100 * (1 - RESERVA))} % más antiguo entrena y el {numero(100 * RESERVA)} % más reciente mide; {REPETICIONES} repeticiones; {METRICA}", "origen": "parametros.md; petición 21; early_stopping escrito por aprendizaje-automatico §5 y algoritmos.md"},
+            {"nombre": "corte de información mutua y permutación", "valor": "salto natural: el mayor cociente entre un valor y el siguiente", "origen": "metodos.md, «El corte»; petición 21"},
             {"nombre": "umbral de las que dicen lo mismo", "valor": f"Spearman o V de Cramér de {numero(UMBRAL_PARECIDO, 1)} o más", "origen": "parametros.md"},
-            {"nombre": "alarma de fuga", "valor": f"|2·AUC − 1| de {numero(UMBRAL_FUGA, 2)} o más, con el AUC de la variable sola", "origen": "UMBRAL_FUGA de scripts/06_analisis_exploratorio.py, línea 88; nota del encargo 21, punto 4"},
-            {"nombre": "tope", "valor": f"una columna por cada {CASOS_POR_COLUMNA} fotos con fallo de entrenamiento", "origen": "skill §7"},
+            {"nombre": "alarma de fuga", "valor": f"|2·AUC − 1| de {numero(UMBRAL_FUGA, 2)} o más, con el AUC de la variable sola", "origen": "UMBRAL_FUGA de scripts/06_analisis_exploratorio.py, línea 88; nota de la petición 21, punto 4"},
+            {"nombre": "tope", "valor": f"una columna por cada {CASOS_POR_COLUMNA} fotos con fallo de entrenamiento", "origen": "método §7"},
         ],
         "teoria": TEORIA,
         "datos_personales": (
-            ("Los datos son de discos: serial_number identifica un disco, no a una persona (reglas §9), y esta preselección no "
+            ("Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9), y esta preselección no "
              "lo lee. No usa ni deja ninguna columna de datos personales. ")
             + ("" if proteccion else f"No existe {PROTECCION}: los datos no pasaron por la protección porque no hacía falta.")),
         "limites": [
             "La preselección se hizo una vez, sobre una muestra de entrenamiento, y su lista entra fija en cada pliegue del "
-            "modelado: la validación cruzada del modelado sale algo optimista (skill §9). Cuánto, NO SE PUEDE SABER sin medirlo.",
+            "modelado: la validación cruzada del modelado sale algo optimista (método §9). Cuánto, NO SE PUEDE SABER sin medirlo.",
             "Los modelos auxiliares van sin búsqueda y solo ordenan; sus cifras no son rendimiento.",
             "El AUC de cada variable sola se mide en la misma muestra, con el valor en bruto y con cada tramo puntuado por su tasa de fallo: sirve para la alarma, no "
             "como medida del modelo.",
@@ -850,7 +850,7 @@ def principal(raiz):
                                 "columnas": len(pq.read_schema(ruta).names) if huella else None})
         if huella is None or huella != esperada:
             raise Parada(f"la huella de {ENTRENAMIENTO} no es la de {PREPARACION}", "PARADO")
-        # 11.3 Lo que no puede entrar: la lista de la logística frente a la matriz (skill §2)
+        # 11.3 Lo que no puede entrar: la lista de la logística frente a la matriz (método §2)
         patrones = patrones_logistica(mz)
         prohibidas = sorted(set(mz["fuera"]) | set(mz["no_entran"]) | {OBJETIVO, HORIZONTE})
         solo_arboles = [f["variable"] for f in mz["filas"] if f["seccion"] == "entran" and f["variable"] not in mz["logistica"]]
@@ -915,7 +915,7 @@ def principal(raiz):
         lo["una_variante_por_variable"] = [{"origen": v, "clase": "familia", "columnas": r42["columnas_por_variable"][v],
                                             "se_queda": r42["columnas_por_variable"][v] if v in r42["variables_finales"] else [],
                                             "decidio": "regla"} for v in ENTRADA_LOGISTICA]
-        # 11.7 Las seis validaciones de la skill §8
+        # 11.7 Las seis validaciones de el método §8
         cols = r42["columnas_por_variable"]
         lo["validaciones"] = {
             "sin_validacion": v_sin_validacion(res["leidos"]),
@@ -935,7 +935,7 @@ def principal(raiz):
                    f"{len(ENTRADA_ARBOLES)} columnas sin votar.")
         if estable:
             res["resultado"] = {"estado": "OK", "riesgo": "bajo", "resumen": resumen + " La segunda muestra da la misma lista.",
-                                "artefactos": [SALIDA_JSON, SALIDA_MD], "siguiente": "aprendizaje-automatico (encargo 21, segunda parte)"}
+                                "artefactos": [SALIDA_JSON, SALIDA_MD], "siguiente": "aprendizaje-automatico (petición 21, segunda parte)"}
         else:
             res["pendientes"] = [{"id": "P-01", "tabla": ENTRENAMIENTO, "columna": "",
                                   "pregunta": "La lista cambia con la segunda muestra aun con la muestra de partida entera: ¿se sigue con la de semilla 42?",

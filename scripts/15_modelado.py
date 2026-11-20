@@ -1,4 +1,4 @@
-"""Competición, ganador y validación del modelo del caso 68 (skill aprendizaje-automatico; encargo 21, partes 2 y 3).
+"""Competición, ganador y validación del modelo del caso 68 (método aprendizaje-automatico; petición 21, partes 2 y 3).
 
 Sin argumentos, solo con construcción (del 01/01/2020 al 30/06/2024):
   - cinco pliegues por fecha, bloques de tres meses de 2023-04 a 2024-06; cada uno entrena con los meses anteriores, solo
@@ -15,10 +15,10 @@ Sin argumentos, solo con construcción (del 01/01/2020 al 30/06/2024):
   - la medida de la búsqueda: la media, en los meses del bloque, de los fallos en la lista de 100; al lado, las listas
     de 20, 500 y 1.000, el AUC y el PR-AUC de cada mes, con la regla de los cinco contadores y el trivial en las mismas
     fotos;
-  - el ranking y el ganador pliegue a pliegue (skill §6), el sitio (guion §3), el reajuste con toda la construcción y
+  - el ranking y el ganador pliegue a pliegue (método §6), el sitio (guion §3), el reajuste con toda la construcción y
     su recalibración, la importancia por permutación en el último bloque con el modelo del pliegue 5, el canario y las
-    validaciones del skill §9.
-  Escribe informes/modelado.json en PARADO, con ganador.aprobado_por vacío: es la puerta de Juan antes de abrir la
+    validaciones del método §9.
+  Escribe informes/modelado.json en PARADO, con ganador.aprobado_por vacío: es la puerta de el responsable del caso antes de abrir la
   validación. Si el ganador no supera a la regla pliegue a pliegue, para también y lo dice en la primera frase.
 
 Con --abrir-validacion (tercera parte): comprueba que ganador.aprobado_por está escrito y que la validación no se abrió
@@ -31,7 +31,7 @@ Importa scripts/13_preparacion.py con importlib para montar los preprocesadores:
 
 Uso: python -W error scripts/15_modelado.py [--raiz CARPETA_DEL_CASO] [--abrir-validacion] [--candidatos N]
 (--candidatos limita los candidatos de cada búsqueda; solo lo usa la prueba con su caso pequeño.)
-Sale con 0 si termina o si para en una puerta de Juan, con 2 si para por otra causa y con 1 si falla; siempre escribe
+Sale con 0 si termina o si para en una puerta de el responsable del caso, con 2 si para por otra causa y con 1 si falla; siempre escribe
 el JSON (en la tercera parte, si para, deja la competición como estaba y solo cambia el resultado).
 """
 
@@ -85,17 +85,17 @@ P13 = cargar_13()
 # =================================================================================================================
 # 2. Configuración
 # =================================================================================================================
-SKILL = "aprendizaje-automatico"
-SKILL_MD = CASO / ".claude" / "skills" / "aprendizaje-automatico" / "SKILL.md"
+METODO = "aprendizaje-automatico"
+METODO_MD = CASO / "metodos" / "aprendizaje-automatico" / "METODO.md"
 SCRIPT = "scripts/15_modelado.py"
-ENCARGO = "prompts/21_encargo_preseleccion_competicion_y_ganador.md, segunda y tercera parte, con sus dos notas"
-FECHA_DATOS = "2025-06-30"                                   # reglas §5, fecha de referencia
+PETICION = "peticiones/21_preseleccion_competicion_y_ganador.md, segunda y tercera parte, con sus dos notas"
+FECHA_DATOS = "2025-06-30"                                   # reglas, apartado 5, fecha de referencia
 PRESELECCION = "informes/preseleccion.json"
-MATRIZ = "contexto-proyecto/modelo/matriz_transformaciones.md"
+MATRIZ = "config/modelo/matriz_transformaciones.md"
 ENTRENAMIENTO = "data/processed/fotos_riesgo_entrenamiento.parquet"
 VALIDACION = "data/processed/fotos_riesgo_validacion.parquet"
 PIEZA = "assets/evaluacion_binaria.py"
-PROTECCION = "contexto-proyecto/fuentes/proteccion-datos.json"
+PROTECCION = "config/fuentes/proteccion-datos.json"
 SALIDA_JSON = "informes/modelado.json"
 SALIDA_CSV = "informes/modelado_busqueda.csv"
 SALIDA_MD = "informes/modelado.md"
@@ -103,26 +103,26 @@ OBJETIVO, FECHA, HORIZONTE = "falla_30d", "fecha", "horizonte_hasta"
 CONTADORES, SUMA = "contadores_que_avisan", "suma_contadores_sin_188"
 LEER = P13.NOMINALES + P13.NUM_ARBOLES + [OBJETIVO, FECHA, HORIZONTE]
 FAMILIAS = ["logistica", "bosque", "hgb"]
-ORDEN_SENCILLEZ = ["logistica", "hgb", "bosque"]             # con empate, el más sencillo (skill §6)
+ORDEN_SENCILLEZ = ["logistica", "hgb", "bosque"]             # con empate, el más sencillo (método §6)
 FICHAS = {"logistica": "regresion_logistica", "bosque": "bosque_aleatorio", "hgb": "histgradientboosting"}
 NOMBRE = {"logistica": "regresión logística", "bosque": "bosque aleatorio", "hgb": "HistGradientBoosting"}
 CATEGORICAS_HGB = [f"{c}_oe" for c in P13.NOMINALES]
 
-# Lo que Juan ya decidió de los pendientes de la preselección (segunda nota del encargo 21)
-DECISIONES_DE_JUAN = {"P-01": "seguir con la lista de la semilla 42 (Juan, 18/11/2026, R-023)"}
+# Lo que el responsable del caso ya decidió de los pendientes de la preselección (segunda nota de la petición 21)
+DECISIONES_DE_JUAN = {"P-01": "seguir con la lista de la semilla 42 (El responsable del caso, 18/11/2026, R-023)"}
 
-# La partición y los pliegues (reglas §7; encargo 21)
+# La partición y los pliegues (reglas, apartado 7; petición 21)
 INICIO_VALIDACION = "2024-07-01"
 BLOQUES = [("2023-04-01", "2023-06-30"), ("2023-07-01", "2023-09-30"), ("2023-10-01", "2023-12-31"),
            ("2024-01-01", "2024-03-31"), ("2024-04-01", "2024-06-30")]
 SITIO_DESDE = "2023-07-01"                                   # el sitio consta desde esa fecha (guion §3)
 SEMILLA = 42
-FRACCION_SANAS = P13.FRACCION_SANAS                          # reglas §7: todas las fotos con fallo y el 2 % de las sanas
-LISTAS, LISTA = [20, 100, 500, 1000], 100                    # reglas §7, CP-010; la de 100 es la medida principal
+FRACCION_SANAS = P13.FRACCION_SANAS                          # reglas, apartado 7: todas las fotos con fallo y el 2 % de las sanas
+LISTAS, LISTA = [20, 100, 500, 1000], 100                    # reglas, apartado 7, cuestión 010; la de 100 es la medida principal
 TROZO = 50_000
-# La búsqueda (reglas §7; algoritmos.md para sí o no, con early_stopping=False por la fecha)
+# La búsqueda (reglas, apartado 7; algoritmos.md para sí o no, con early_stopping=False por la fecha)
 CANDIDATOS = 15
-MAX_RONDAS = 2                                               # rondas de ampliación por el borde (skill §5)
+MAX_RONDAS = 2                                               # rondas de extensión por el borde (método §5)
 ESPACIOS = {
     "logistica": {"C": [float(c) for c in np.logspace(-3, 2, 12)]},
     "bosque": {"max_depth": [5, 10, 15], "n_estimators": [100, 300, 500], "min_samples_leaf": ["hoja", "2xhoja"],
@@ -133,7 +133,7 @@ ESPACIOS = {
 PASO_C = 10 ** (5 / 11)                                      # el paso de logspace(-3, 2, 12)
 # Los controles
 METRICA_PERMUTACION, REPETICIONES, MUESTRA_PERMUTACION = "average_precision", 10, 0.25
-TOLERANCIA_PROBABILIDAD = 0.20                               # validación 12 (encargo 21)
+TOLERANCIA_PROBABILIDAD = 0.20                               # validación 12 (petición 21)
 CANARIO_FUGA = 0.90                                          # la fuga encuentra al menos el 90 % de lo que cabe
 REMUESTREOS = 1000
 VALIDACIONES = ["sin_filas_de_ajuste", "semillas", "validacion_una_vez", "con_probabilidad", "columnas_de_preseleccion",
@@ -155,7 +155,7 @@ TEORIA = [
 
 
 class Parada(Exception):
-    """Condición que impide seguir; `estado` dice si la skill paró a propósito (PARADO) o si falló algo (ERROR)."""
+    """Condición que impide seguir; `estado` dice si el método paró a propósito (PARADO) o si falló algo (ERROR)."""
 
     def __init__(self, mensaje, estado="ERROR", codigo=2):
         super().__init__(mensaje)
@@ -229,7 +229,7 @@ def recalibrar(p, tasa_muestra, tasa_real):
 
 
 # =================================================================================================================
-# 4. El empate, el ganador y el veredicto (skill §6 y §8)
+# 4. El empate, el ganador y el veredicto (método §6 y §8)
 # =================================================================================================================
 def empate(a, b):
     """Pliegue a pliegue: la media de a − b frente a su desviación típica; empatan si la media no la pasa."""
@@ -260,21 +260,21 @@ def veredicto(modelo, referencia):
 
 
 def preseleccion_lista(js):
-    """Paso 1: OK sigue; AVISO sigue si cada pendiente tiene la decisión de Juan escrita aquí; lo demás para."""
+    """Paso 1: OK sigue; AVISO sigue si cada pendiente tiene la decisión de el responsable del caso escrita aquí; lo demás para."""
     estado = (js.get("resultado") or {}).get("estado")
     if estado == "OK":
         return True, "en OK"
     if estado == "AVISO":
         sin = [p.get("id") for p in js.get("pendientes", []) if p.get("id") not in DECISIONES_DE_JUAN]
         if sin:
-            return False, f"en AVISO con pendientes sin decisión de Juan: {sin}"
-        return True, "en AVISO, con cada pendiente decidido por Juan: " + "; ".join(
+            return False, f"en AVISO con pendientes sin decisión de el responsable del caso: {sin}"
+        return True, "en AVISO, con cada pendiente decidido por el responsable del caso: " + "; ".join(
             f"{p['id']}, {DECISIONES_DE_JUAN[p['id']]}" for p in js.get("pendientes", []))
     return False, f"en estado {estado}"
 
 
 # =================================================================================================================
-# 5. Los candidatos y la ampliación por el borde (skill §5)
+# 5. Los candidatos y la extensión por el borde (método §5)
 # =================================================================================================================
 def _orden(valor):
     """Orden de un valor de la rejilla: None (sin límite) arriba; «sqrt» abajo; «k×hoja» por su factor."""
@@ -365,7 +365,7 @@ def patrones_logistica(mz):
         if fila["seccion"] != "entran" or fila["variable"] not in mz["logistica"]:
             continue
         for trozo in fila["salida"].split("<br>"):
-            m = re.match(r"\s*L:\s*(\S+)\s*$", trozo)
+            m = re.match(r"\s*L[:]\s*(\S+)\s*$", trozo)
             if m and m.group(1) != "—":
                 patrones[fila["variable"]] = m.group(1)
     return patrones
@@ -567,7 +567,7 @@ def cv(resultado, pliegues=range(5)):
 
 
 # =================================================================================================================
-# 9. La búsqueda de un algoritmo, con su ampliación por el borde
+# 9. La búsqueda de un algoritmo, con su extensión por el borde
 # =================================================================================================================
 def buscar(familia, ctx, n):
     """Primera búsqueda y, si el mejor cae en el borde de un hiperparámetro, hasta MAX_RONDAS rondas que lo amplían."""
@@ -610,7 +610,7 @@ def buscar(familia, ctx, n):
 
 
 # =================================================================================================================
-# 10. Las validaciones del skill §9 y sus piezas
+# 10. Las validaciones del método §9 y sus piezas
 # =================================================================================================================
 def escritos_en_codigo(texto):
     """Líneas que ponen una validación a True a mano (validación 10)."""
@@ -669,11 +669,11 @@ class ConElResto(ClassifierMixin, BaseEstimator):
 # =================================================================================================================
 # 11. El JSON, la tabla de lo probado y el informe
 # =================================================================================================================
-def version_skill():
-    """La fecha y el código de la última línea de versión del SKILL.md (bloque común de resultado.md)."""
-    if not SKILL_MD.exists():
+def version_metodo():
+    """La fecha y el código de la última línea de versión del METODO.md (bloque común de resultado.md)."""
+    if not METODO_MD.exists():
         return None
-    lineas = [x for x in SKILL_MD.read_text(encoding="utf-8").splitlines() if x.startswith("Versión ")]
+    lineas = [x for x in METODO_MD.read_text(encoding="utf-8").splitlines() if x.startswith("Versión ")]
     m = re.match(r"Versión (\S+) \(([^),]+)", lineas[-1]) if lineas else None
     return f"{m.group(1)} ({m.group(2)})" if m else None
 
@@ -781,7 +781,7 @@ def informe(res):
               f"{numero(fr['media'], 2)} fallos más por mes en la lista de 100, con una desviación entre pliegues de "
               f"{numero(fr['desviacion'], 2)}.")
         w("")
-        w(f"Falta que Juan apruebe el ganador: aprobado_por está {'vacío' if not g.get('aprobado_por') else 'escrito: ' + g['aprobado_por']}.")
+        w(f"Falta que el responsable del caso apruebe el ganador: aprobado_por está {'vacío' if not g.get('aprobado_por') else 'escrito: ' + g['aprobado_por']}.")
     else:
         w("No hay ganador: el script paró antes.")
     w("")
@@ -814,7 +814,7 @@ def informe(res):
     w("## El corte")
     w("")
     w("El modelo no lleva un corte fijo: da una lista de los discos de más riesgo de cada mes, y su tamaño lo elige "
-      "Backblaze según lo que puedan atender sus técnicos, que no consta (reglas §7, CP-010). Por eso se dan las listas "
+      "Backblaze según lo que puedan atender sus técnicos, que no consta (reglas, apartado 7, cuestión 010). Por eso se dan las listas "
       "de 20, 100, 500 y 1.000. El tamaño se puede cambiar sin reentrenar.")
     w("")
     w("## ¿Se da por bueno?")
@@ -876,21 +876,21 @@ def escribir(raiz, res):
 def base(raiz):
     """El bloque común y lo fijo, antes de saber el resultado."""
     return {
-        "skill": SKILL, "version_skill": version_skill(), "script": SCRIPT, "encargo": ENCARGO, "fecha_datos": FECHA_DATOS,
+        "metodo": METODO, "version_metodo": version_metodo(), "script": SCRIPT, "peticion": PETICION, "fecha_datos": FECHA_DATOS,
         "fecha_ejecucion": dt.datetime.now().replace(microsecond=0).isoformat(), "entradas": [],
         "resultado": {"estado": None, "riesgo": None, "resumen": None, "artefactos": [SALIDA_JSON, SALIDA_CSV, SALIDA_MD], "siguiente": None},
         "pendientes": [], "leidos": [], "rama": "si_no",
         "hace_falta_modelar": {"respuesta": True, "por_que": "la pregunta 4 pide ordenar cada disco por su riesgo (planteamientos, 2)"},
         "puerta_contestable": {"aplica": False, "por_que": "la decisión es sobre discos y no afecta a personas (planteamientos 1.C)"},
         "aprobado_antes": {"medida_principal": "los fallos encontrados entre los 100 discos de más riesgo de cada mes",
-                           "por_que": "Es lo que mide el negocio: de los N discos de más riesgo, cuántos fallan (reglas §7).",
-                           "referencias": ["la regla de los cinco contadores (CP-010)", "el trivial, DummyClassifier(strategy=\"prior\")"],
+                           "por_que": "Es lo que mide el negocio: de los N discos de más riesgo, cuántos fallan (reglas, apartado 7).",
+                           "referencias": ["la regla de los cinco contadores (cuestión 010)", "el trivial, DummyClassifier(strategy=\"prior\")"],
                            "se_da_por_bueno": "en la validación el modelo encuentra en esa lista más fallos que la regla, con el "
                                               "intervalo de la diferencia por encima de cero, y su AUC es 0,70 o más.",
-                           "minimo_de_casos": 20, "fuente": "contexto-proyecto/metodo/04_planteamientos.md, 1.C"},
+                           "minimo_de_casos": 20, "fuente": "config/metodo/04_planteamientos.md, 1.C"},
         "preseleccion_estado": None, "validacion_cruzada": None,
         "desequilibrio": {"regla": "equilibrado", "por_que": (
-            "La regla del caso (reglas §7) entrena con todas las fotos con fallo y el 2 % de las sanas de cada mes, solo al "
+            "La regla del caso (reglas, apartado 7) entrena con todas las fotos con fallo y el 2 % de las sanas de cada mes, solo al "
             "ajustar cada pliegue; lo medido conserva la proporción real. La probabilidad del ganador se recalibra con la "
             "corrección del prior sobre el logit."), "metodo": "submuestreo de las sanas, semilla 42",
             "recalibracion": None},
@@ -902,29 +902,29 @@ def base(raiz):
         "corte": {"valor": None, "como": "capacidad", "filas_para_elegir": "fuera de pliegue", "valor_en_validacion": None,
                   "tipo_de_decision": "estrategica", "preferencia": None, "minimo": None, "escenarios": [],
                   "por_que": "el tamaño de la lista lo elige Backblaze según lo que puedan atender sus técnicos, que no consta "
-                             "(reglas §7, CP-010): se dan las listas de 20, 100, 500 y 1.000", "se_puede_cambiar_sin_reentrenar": True},
+                             "(reglas, apartado 7, cuestión 010): se dan las listas de 20, 100, 500 y 1.000", "se_puede_cambiar_sin_reentrenar": True},
         "vias_de_mejora": None,
         "validaciones": {k: None for k in VALIDACIONES} | {"intervalo_por_entidad": None},
         "validaciones_no_aplican": {"14": "no es una previsión de una serie", "15": "los pliegues van por fecha, no por entidad; el intervalo remuestrea meses"},
         "parametros": [
-            {"nombre": "semilla", "valor": SEMILLA, "origen": "parametros.md de las dos skills"},
-            {"nombre": "pliegues", "valor": "cinco bloques de tres meses, de 2023-04 a 2024-06, por fecha y sin barajar", "origen": "skill §3; encargo 21"},
-            {"nombre": "muestra de cada entrenamiento", "valor": f"todas las fotos con fallo y el {numero(100 * FRACCION_SANAS)} % de las sanas de cada mes, solo con el horizonte cerrado", "origen": "reglas §7"},
-            {"nombre": "medida de la búsqueda", "valor": "media de los fallos en la lista de 100 de los meses del bloque", "origen": "planteamientos 1.C; encargo 21"},
-            {"nombre": "logística", "valor": "LogisticRegression(solver=\"lbfgs\", l1_ratio=0, max_iter=5000, random_state=42), C en logspace(-3, 2, 12)", "origen": "reglas §7, Juan, 18/11/2026"},
-            {"nombre": "bosque", "valor": "RandomForestClassifier(n_jobs=-1, random_state=42), 15 candidatos de ParameterSampler(random_state=42)", "origen": "algoritmos.md; reglas §7"},
-            {"nombre": "HistGradientBoosting", "valor": "early_stopping=False, max_iter en 100, 200 y 500, categóricas nativas, 15 candidatos", "origen": "algoritmos.md, con fecha; reglas §7"},
+            {"nombre": "semilla", "valor": SEMILLA, "origen": "parametros.md de las dos métodos"},
+            {"nombre": "pliegues", "valor": "cinco bloques de tres meses, de 2023-04 a 2024-06, por fecha y sin barajar", "origen": "método §3; petición 21"},
+            {"nombre": "muestra de cada entrenamiento", "valor": f"todas las fotos con fallo y el {numero(100 * FRACCION_SANAS)} % de las sanas de cada mes, solo con el horizonte cerrado", "origen": "reglas, apartado 7"},
+            {"nombre": "medida de la búsqueda", "valor": "media de los fallos en la lista de 100 de los meses del bloque", "origen": "planteamientos 1.C; petición 21"},
+            {"nombre": "logística", "valor": "LogisticRegression(solver=\"lbfgs\", l1_ratio=0, max_iter=5000, random_state=42), C en logspace(-3, 2, 12)", "origen": "reglas, apartado 7, el responsable del caso, 18/11/2026"},
+            {"nombre": "bosque", "valor": "RandomForestClassifier(n_jobs=-1, random_state=42), 15 candidatos de ParameterSampler(random_state=42)", "origen": "algoritmos.md; reglas, apartado 7"},
+            {"nombre": "HistGradientBoosting", "valor": "early_stopping=False, max_iter en 100, 200 y 500, categóricas nativas, 15 candidatos", "origen": "algoritmos.md, con fecha; reglas, apartado 7"},
             {"nombre": "hoja", "valor": "max(20, 1 % de las filas que entrenan en el pliegue)", "origen": "parametros.md"},
-            {"nombre": "ampliación por el borde", "valor": f"hasta {MAX_RONDAS} rondas; se queda el valor nuevo si mejora pliegue a pliegue", "origen": "skill §5"},
-            {"nombre": "empate", "valor": "la media de las diferencias en los cinco pliegues no pasa de su desviación típica (con n − 1)", "origen": "skill §6"},
-            {"nombre": "sitio", "valor": "datacenter entra solo si con él la lista de 100 encuentra más fallos en cada uno de los 12 meses de 2023-07 a 2024-06", "origen": "guion §3; encargo 21"},
-            {"nombre": "permutación", "valor": f"{METRICA_PERMUTACION}, {REPETICIONES} repeticiones sobre el {numero(100 * MUESTRA_PERMUTACION)} % de las fotos del bloque 5, sorteado una vez con la semilla 42", "origen": "skill §7; parametros.md; la fracción, criterio del script por el tiempo"},
-            {"nombre": "canario", "valor": f"barajado: como mucho el trivial más tres desviaciones de Poisson y un fallo; fuga: el {numero(100 * CANARIO_FUGA)} % de lo que cabe en la lista", "origen": "skill §9, validación 11; los márgenes, criterio del script"},
-            {"nombre": "tolerancia de la probabilidad media", "valor": f"{numero(100 * TOLERANCIA_PROBABILIDAD)} % relativo", "origen": "encargo 21, validación 12"},
-            {"nombre": "intervalo", "valor": f"{REMUESTREOS} remuestreos de los 12 meses, semilla 42, percentiles 2,5 y 97,5", "origen": "skill §8; encargo 21"},
+            {"nombre": "extensión por el borde", "valor": f"hasta {MAX_RONDAS} rondas; se queda el valor nuevo si mejora pliegue a pliegue", "origen": "método §5"},
+            {"nombre": "empate", "valor": "la media de las diferencias en los cinco pliegues no pasa de su desviación típica (con n − 1)", "origen": "método §6"},
+            {"nombre": "sitio", "valor": "datacenter entra solo si con él la lista de 100 encuentra más fallos en cada uno de los 12 meses de 2023-07 a 2024-06", "origen": "guion §3; petición 21"},
+            {"nombre": "permutación", "valor": f"{METRICA_PERMUTACION}, {REPETICIONES} repeticiones sobre el {numero(100 * MUESTRA_PERMUTACION)} % de las fotos del bloque 5, sorteado una vez con la semilla 42", "origen": "método §7; parametros.md; la fracción, criterio del script por el tiempo"},
+            {"nombre": "canario", "valor": f"barajado: como mucho el trivial más tres desviaciones de Poisson y un fallo; fuga: el {numero(100 * CANARIO_FUGA)} % de lo que cabe en la lista", "origen": "método §9, validación 11; los márgenes, criterio del script"},
+            {"nombre": "tolerancia de la probabilidad media", "valor": f"{numero(100 * TOLERANCIA_PROBABILIDAD)} % relativo", "origen": "petición 21, validación 12"},
+            {"nombre": "intervalo", "valor": f"{REMUESTREOS} remuestreos de los 12 meses, semilla 42, percentiles 2,5 y 97,5", "origen": "método §8; petición 21"},
         ],
         "teoria": TEORIA,
-        "datos_personales": ("Los datos son de discos: serial_number identifica un disco, no a una persona (reglas §9), y el "
+        "datos_personales": ("Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9), y el "
                              "modelo no lo lee. No usa ni deja ninguna columna de datos personales. "
                              + ("" if (raiz / PROTECCION).exists() else
                                 f"No existe {PROTECCION}: los datos no pasaron por la protección porque no hacía falta.")),
@@ -932,22 +932,22 @@ def base(raiz):
             "El modelo vale para los discos de datos de Backblaze, con una foto al mes, en los periodos de construcción y "
             "validación; si cambian los modelos de disco o los centros, su rendimiento puede caer (deriva).",
             "Detecta asociaciones, no causas: que un contador pese no dice que cause el fallo.",
-            "No ve los fallos que llegan sin aviso en la última foto mensual (reglas §7).",
+            "No ve los fallos que llegan sin aviso en la última foto mensual (reglas, apartado 7).",
             "La preselección de la logística se hizo una vez y entra fija en cada pliegue: su validación cruzada sale algo "
             "optimista; cuánto, NO SE PUEDE SABER sin medirlo.",
-            "Las cuatro variables nuevas candidatas de la matriz (P-04) no se crearon en este encargo.",
+            "Las cuatro variables nuevas candidatas de la matriz (P-04) no se crearon en esta petición.",
         ],
     }
 
 
 def vias(res, ctx_busquedas):
-    """Las tres vías de mejora, con lo que se probó y lo que queda (skill §8)."""
+    """Las tres vías de mejora, con lo que se probó y lo que queda (método §8)."""
     probado = "; ".join(f"{NOMBRE[a]}, {len(b['candidatos'])} candidatos" for a, b in ctx_busquedas.items())
     return {"mejor_modelo": f"se probaron tres algoritmos con su búsqueda ({probado}); quedan sin probar XGBoost y los "
-                            "castigos L1 y mezcla de la logística, que Juan dejó fuera (reglas §7).",
+                            "castigos L1 y mezcla de la logística, que el responsable del caso dejó fuera (reglas, apartado 7).",
             "variables_nuevas": [{"variable": "las cuatro variables nuevas candidatas de la matriz (P-04)", "probada": False,
-                                  "motivo": "no se crean en este encargo; se crean si el modelo no supera a la regla, con la "
-                                            "decisión de Juan y antes de abrir la validación (reglas §7)"}],
+                                  "motivo": "no se crean en esta petición; se crean si el modelo no supera a la regla, con la "
+                                            "decisión de el responsable del caso y antes de abrir la validación (reglas, apartado 7)"}],
             "informacion_nueva": [{"dato": "las lecturas SMART diarias, no solo la foto mensual",
                                    "para_que": "ver los fallos que avisan entre una foto y la siguiente", "quien_lo_tiene": "Backblaze"}]}
 
@@ -1148,7 +1148,7 @@ def competicion(raiz, res, n_candidatos):
                       "recalibracion": res["desequilibrio"]["recalibracion"], "aprobado_por": ""}
     res["ganador_detalle"] = por_que
     res["vias_de_mejora"] = vias(res, busquedas)
-    # 12.9 Las validaciones del skill §9, calculadas
+    # 12.9 Las validaciones del método §9, calculadas
     prob_bloques = []
     for f in range(len(BLOQUES)):
         _, _, c = ctx.entrenamiento(f)
@@ -1192,18 +1192,18 @@ def competicion(raiz, res, n_candidatos):
     if not res["validaciones"]["probabilidad_media_cerca_de_la_tasa"]:
         lejos = [b["bloque"] for b in prob_bloques if not b["cerca"]]
         raise Parada(f"la probabilidad media recalibrada se aparta más de un 20 % de la tasa real en los bloques {lejos}", "PARADO")
-    # 12.10 La puerta: el ganador frente a la regla y la aprobación de Juan
+    # 12.10 La puerta: el ganador frente a la regla y la aprobación de el responsable del caso
     vr = res["frente_a_la_regla_cv"]
     if vr["veredicto"] != "supera":
         resumen = (f"El ganador, {NOMBRE[ganador]}, {'no supera' if vr['veredicto'] == 'no supera' else 'no se puede afirmar que supere'} "
                    f"a la regla de los cinco contadores pliegue a pliegue ({numero(vr['media'], 2)} fallos de diferencia media en la "
-                   f"lista de 100, desviación {numero(vr['desviacion'], 2)}). Para en la puerta 4: Juan decide si se crean las cuatro "
+                   f"lista de 100, desviación {numero(vr['desviacion'], 2)}). Para en la puerta 4: El responsable del caso decide si se crean las cuatro "
                    "variables nuevas; las tres vías de mejora van en el informe.")
-        siguiente = "decisión de Juan sobre las variables nuevas (reglas §7), antes de abrir la validación"
+        siguiente = "decisión de el responsable del caso sobre las variables nuevas (reglas, apartado 7), antes de abrir la validación"
     else:
         resumen = (f"Gana {NOMBRE[ganador]}, que supera a la regla pliegue a pliegue: {numero(vr['media'], 2)} fallos más de media en "
-                   f"la lista de 100 de cada mes. Para antes de abrir la validación: falta que Juan apruebe el ganador.")
-        siguiente = "Juan aprueba el ganador; se escribe ganador.aprobado_por y se ejecuta con --abrir-validacion"
+                   f"la lista de 100 de cada mes. Para antes de abrir la validación: falta que el responsable del caso apruebe el ganador.")
+        siguiente = "El responsable del caso aprueba el ganador; se escribe ganador.aprobado_por y se ejecuta con --abrir-validacion"
     res["resultado"] = {"estado": "PARADO", "riesgo": "medio", "resumen": resumen,
                         "artefactos": [SALIDA_JSON, SALIDA_CSV, SALIDA_MD], "siguiente": siguiente}
     return 0
@@ -1217,7 +1217,7 @@ def abrir_validacion(raiz, res):
     import evaluacion_binaria as eb  # pieza común de assets/, solo hace falta aquí
     g = res.get("ganador") or {}
     if not g.get("aprobado_por"):
-        raise Parada("ganador.aprobado_por está vacío: la validación no se abre sin el sí de Juan", "PARADO")
+        raise Parada("ganador.aprobado_por está vacío: la validación no se abre sin el sí de el responsable del caso", "PARADO")
     if (res.get("validacion") or {}).get("abierta_una_vez"):
         raise Parada("la validación ya se abrió una vez: no se vuelve a abrir", "PARADO")
     pres = json.loads((raiz / PRESELECCION).read_text(encoding="utf-8"))
@@ -1275,7 +1275,7 @@ def abrir_validacion(raiz, res):
                                     f"encuentra de media {numero(i_regla['media'], 2)} fallos más que la regla por mes (intervalo "
                                     f"{numero(i_regla['bajo'], 2)} a {numero(i_regla['alto'], 2)}) y su AUC es {numero(medidas['auc'], 3)}."),
                         "artefactos": [SALIDA_JSON, SALIDA_CSV, SALIDA_MD],
-                        "siguiente": "preproduccion, con la receta del ganador" if bueno else "las tres vías de mejora, con Juan"}
+                        "siguiente": "preproduccion, con la receta del ganador" if bueno else "las tres vías de mejora, con el responsable del caso"}
     return 0
 
 

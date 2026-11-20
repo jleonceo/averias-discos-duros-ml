@@ -1,6 +1,6 @@
-"""Transformación de los datos del caso 68 (skill transformacion-datos).
+"""Transformación de los datos del caso 68 (método transformacion-datos).
 
-Construye, con las reglas de contexto-proyecto/negocio/reglas-transformacion.md (aprobadas por Juan el 17/11/2026), las
+Construye, con las reglas de config/negocio/reglas-transformacion.md (aprobadas por el responsable del caso el 17/11/2026), las
 dos dimensiones y las siete tablas del análisis, cada una en su Parquet de data/processed/:
 
 - dim_modelo y dim_precio_gb (§1);
@@ -48,11 +48,11 @@ CASO = Path(__file__).resolve().parents[1]
 # =================================================================================================================
 # 2. Configuración, copiada de las reglas (reglas-transformacion.md y reglas-negocio.md)
 # =================================================================================================================
-SKILL = "transformacion-datos"
-VERSION_SKILL = "06/10/2026 (SC-64)"
+METODO = "transformacion-datos"
+VERSION_METODO = "06/10/2026"
 SCRIPT = "scripts/05_transformacion_datos.py"
-ENCARGO = "prompts/09_encargo_transformacion.md"
-FECHA_DATOS = "2025-06-30"                       # reglas §5, fecha de referencia
+PETICION = "peticiones/09_transformacion.md"
+FECHA_DATOS = "2025-06-30"                       # reglas, apartado 5, fecha de referencia
 
 FOTOS = "data/processed/fotos_mensuales_corregido.parquet"
 VENTANAS = "data/processed/ventanas_fallo_corregido.parquet"
@@ -63,19 +63,19 @@ CORREGIDAS = {"fotos_mensuales": FOTOS, "ventanas_fallo": VENTANAS, "recuento_di
 
 HORAS_ANO = 8766.0                               # convención técnica 1: el año de edad son 8.766 horas
 DIAS_ANO = 365.25                                # la edad sin horas: días desde la primera aparición entre 365,25
-LIMITE_ARRANQUE_BYTES = 2_048_408_248_320        # reglas §3 y §7: arranque hasta aquí, datos por encima
-INICIO_SITIO = pd.Timestamp("2023-07-01")        # reglas §4: el sitio solo consta desde ese día
-HORIZONTE_DIAS = 30                              # reglas §7, CP-004
-MINIMO_DIAS_ANO = 50_000                         # reglas §7, mínimo para entrar en un ranking
-COSTE_CAMBIO_USD = 37.0                          # reglas §6, mano de obra de un cambio
+LIMITE_ARRANQUE_BYTES = 2_048_408_248_320        # reglas, apartado 3 y §7: arranque hasta aquí, datos por encima
+INICIO_SITIO = pd.Timestamp("2023-07-01")        # reglas, apartado 4: el sitio solo consta desde ese día
+HORIZONTE_DIAS = 30                              # reglas, apartado 7, cuestión 004
+MINIMO_DIAS_ANO = 50_000                         # reglas, apartado 7, mínimo para entrar en un ranking
+COSTE_CAMBIO_USD = 37.0                          # reglas, apartado 6, mano de obra de un cambio
 SIN_DATO = "sin dato"                            # etiqueta del centro que no consta, la del recuento (R-009)
-CONTADORES = ["smart_5_raw", "smart_187_raw", "smart_188_raw", "smart_197_raw", "smart_198_raw"]   # reglas §3
-CONTADORES_SIN_188 = ["smart_5_raw", "smart_187_raw", "smart_197_raw", "smart_198_raw"]          # CP-010
+CONTADORES = ["smart_5_raw", "smart_187_raw", "smart_188_raw", "smart_197_raw", "smart_198_raw"]   # reglas, apartado 3
+CONTADORES_SIN_188 = ["smart_5_raw", "smart_187_raw", "smart_197_raw", "smart_198_raw"]          # cuestión 010
 CANDIDATAS = ["smart_194_raw", "smart_199_raw", "smart_12_raw", "smart_192_raw", "smart_1_raw", "smart_7_raw"]
-FUERA_DE_FOTOS_RIESGO = ["failure", "date", "cluster_id"]                                       # reglas §3
+FUERA_DE_FOTOS_RIESGO = ["failure", "date", "cluster_id"]                                       # reglas, apartado 3
 SITIO = ["datacenter", "vault_id", "pod_id", "pod_slot_num"]
 
-# Fabricante: el nombre del modelo y las dos excepciones de las reglas §3
+# Fabricante: el nombre del modelo y las dos excepciones de las reglas, apartado 3
 FABRICANTE_EXCEPCIONES = {"Hitachi HDS5C4040ALE630": "HGST", "WUH721816ALE6L4": "WDC"}
 FABRICANTE_PREFIJOS = [("TOSHIBA", "Toshiba"), ("WDC", "WDC"), ("HGST", "HGST")]
 
@@ -89,7 +89,7 @@ CURVAS = {4: [(2012, 0.073, 0.050), (2013, 0.054, 0.042), (2014, 0.040, 0.036), 
 INFERIDO = [("2022-11-15", 0.0145), ("2023-07-01", 0.0132), ("2024-07-01", 0.0115), ("2025-07-01", 0.0100)]
 INICIO_INFERIDO = pd.Timestamp(INFERIDO[0][0])
 DIA_PRECIO_ANO = (7, 1)                          # dim_precio_gb: el coste el 1 de julio de cada año (§1)
-SIN_PRECIO = ["WDC WD60EFRX", "ST6000DM001", "TOSHIBA HDWE160", "ST6000DM004"]   # reglas §6: los 6 TB sin precio
+SIN_PRECIO = ["WDC WD60EFRX", "ST6000DM001", "TOSHIBA HDWE160", "ST6000DM004"]   # reglas, apartado 6: los 6 TB sin precio
 
 # Grupos de columnas de fotos_riesgo (reglas de transformación §3); «no previstas» son las demás smart_*
 GRUPOS_FIJOS = {
@@ -118,7 +118,7 @@ TEORIA = [
     "unidades totales (horas entre 8.766, días entre 365,25), no con las partes de la fecha.",
     "12.6 y 11.14, cambiar el nivel: los días de disco y los fallos son flujos y se suman; cada agregación cuadra sus "
     "sumas antes y después, y las variables que usan información posterior quedan marcadas.",
-    "Skill, «Agregar por tiempo»: en un flujo, una celda sin registros vale cero solo si se sabe que no hubo nada; "
+    "Método, «Agregar por tiempo»: en un flujo, una celda sin registros vale cero solo si se sabe que no hubo nada; "
     "las filas de dias_por_tramo que solo tienen fallos dejan sus días de disco vacíos.",
 ]
 
@@ -333,7 +333,7 @@ def tiene_curva(capacidad, fecha):
 
 
 def coste_gb(capacidad, fecha):
-    """Dólares por GB de una capacidad en una fecha, con su origen y las capacidades usadas (reglas §1 y §6).
+    """Dólares por GB de una capacidad en una fecha, con su origen y las capacidades usadas (reglas, apartado 1 y §6).
 
     Desde el 15/11/2022, lo inferido; antes, la curva de su capacidad o, si no la tiene ese día, la media de las dos
     capacidades más cercanas que la tengan (convención técnica 2); con una sola, esa. Devuelve (valor, origen, usadas,
@@ -360,7 +360,7 @@ def capacidad_en_tb(capacity_bytes):
 
 
 def fabricante(modelo):
-    """Fabricante por el nombre del modelo, con las dos excepciones de las reglas §3; None si no sigue ningún patrón."""
+    """Fabricante por el nombre del modelo, con las dos excepciones de las reglas, apartado 3; None si no sigue ningún patrón."""
     if modelo in FABRICANTE_EXCEPCIONES:
         return FABRICANTE_EXCEPCIONES[modelo]
     if modelo.startswith("ST"):
@@ -526,7 +526,7 @@ def construir_fallos(ctx, fl, ve, dm, dpg, cal, primera):
     fd["hay_dia_anterior"] = hay
     fd["avisa_dia_anterior"] = pd.array(np.where(hay, avisa, None), dtype="boolean")
     fd["sin_aviso"] = pd.array(np.where(hay, ~avisa, None), dtype="boolean")
-    # 7.7 El tomo: días desde el fallo anterior del mismo tomo y si coincide con él (convención del plazo, reglas §7)
+    # 7.7 El tomo: días desde el fallo anterior del mismo tomo y si coincide con él (convención del plazo, reglas, apartado 7)
     fd["plazo_reconstruccion_dias"] = fd["capacidad_tb"] + 1
     fd = fd.sort_values(["tomo", "dia_fallo", "serial_number"], na_position="last")
     g = fd.groupby("tomo", sort=False)
@@ -621,7 +621,7 @@ def segunda_pasada(ctx, raiz, dm, cal, primera, fl, parcial):
                 raise Parada(f"edad negativa o vacía en {negativas} fotos del {dia(F)}")
             df["edad_anos"] = edad
             df["edad_de_horas"] = con_horas
-            # 8.3 Los avisos: un contador vacío no cuenta como aviso (reglas §3 y §5)
+            # 8.3 Los avisos: un contador vacío no cuenta como aviso (reglas, apartado 3 y §5)
             positivos = df[CONTADORES] > 0
             df["avisa"] = positivos.any(axis=1)
             df["contadores_que_avisan"] = positivos.sum(axis=1).astype("int64")
@@ -982,8 +982,8 @@ def exclusiones(fd, rec, rd, dm, acu, info_tramo, x):
 VARIABLES = [
     ("dim_modelo", "capacidad_tb", "capacity_bytes / 10^12, a un decimal", ["capacity_bytes"], "TB", False, False, False),
     ("dim_modelo", "tipo_disco", "arranque hasta 2.048.408.248.320 bytes; datos por encima", ["capacity_bytes"], None, False, False, False),
-    ("dim_modelo", "fabricante", "prefijo del modelo y dos excepciones (reglas §3)", ["model"], None, False, False, False),
-    ("dim_modelo", "garantia_anos", "familia del modelo (reglas §6)", ["model"], "años", False, False, False),
+    ("dim_modelo", "fabricante", "prefijo del modelo y dos excepciones (reglas, apartado 3)", ["model"], None, False, False, False),
+    ("dim_modelo", "garantia_anos", "familia del modelo (reglas, apartado 6)", ["model"], "años", False, False, False),
     ("dim_modelo", "fecha_compra", "media de (primera foto - horas encendido) de los discos del modelo; ficha de hoy", ["fecha", "smart_9_raw"], None, True, False, False),
     ("dim_modelo", "coste_gb_compra", "coste por GB de su capacidad en su fecha de compra (curva, inferido o vecinas)", ["capacidad_tb", "fecha_compra"], "USD/GB", True, False, False),
     ("dim_modelo", "precio_usd", "coste_gb_compra × capacidad_tb × 1.000; ficha de hoy", ["coste_gb_compra", "capacidad_tb"], "USD", True, False, False),
@@ -1079,8 +1079,8 @@ def ficha(numero, titulo, como_estaba, problema, decision, codigo, comprobacion,
             f"3. **Problema o finalidad:** {problema}\n"
             f"4. **Decisión:** {decision}\n"
             f"5. **Qué se hizo:**\n\n```python\n{codigo}\n```\n\n"
-            f"6. **Quién y con qué permiso:** Claude, agente analista-preparacion-datos, con el encargo {ENCARGO} y las "
-            f"reglas de transformación aprobadas por Juan el 17/11/2026 («Sí, las apruebo»).\n"
+            f"6. **Quién y con qué permiso:** el analista, con la petición {PETICION} y las "
+            f"reglas de transformación aprobadas por el responsable del caso el 17/11/2026 («Sí, las apruebo»).\n"
             f"7. **Comprobación:** {comprobacion}\n"
             f"8. **Cómo quedó:** {como_quedo}\n"
             f"9. **Cómo deshacer:** {deshacer} Las tablas corregidas no se tocan, así que basta con borrar la tabla "
@@ -1128,7 +1128,7 @@ def fichas_del_registro(r):
          f"los modelos sin precio suman {fmt(c['dim_modelo.dias_sin_precio'])} días de disco.",
          "data/processed/dim_modelo.parquet, una fila por modelo.", "borrar data/processed/dim_modelo.parquet."),
         ("dim_precio_gb", "dim_precio_gb · tabla nueva", "no existía.",
-         "el disco nuevo que sustituye a uno que falla se paga al coste por GB del año del fallo (reglas §6).",
+         "el disco nuevo que sustituye a uno que falla se paga al coste por GB del año del fallo (reglas, apartado 6).",
          "reglas de transformación §1: el coste el 1 de julio de cada año, con la misma regla que dim_modelo.",
          "coste_gb(cap, pd.Timestamp(year=ano, month=7, day=1))",
          f"{fmt(c['dim_precio_gb.filas'])} filas; los fallos de discos de datos de 2024 cuestan "
@@ -1194,7 +1194,7 @@ def fichas_del_registro(r):
 
 def escribir_registro(raiz, r):
     """Añade al registro las fichas nuevas y devuelve el número de cada transformación y las fichas añadidas."""
-    ruta = raiz / "contexto-proyecto" / "modelo" / "registro-transformaciones.md"
+    ruta = raiz / "config" / "modelo" / "registro-transformaciones.md"
     texto = ruta.read_text(encoding="utf-8")
     fichas = fichas_del_registro(r)
     numeros, nuevas = numerar_fichas(texto, [f[1] for f in fichas])
@@ -1214,7 +1214,7 @@ NOMBRE_TABLA = {"dim_modelo": "dim_modelo", "dim_precio_gb": "dim_precio_gb", "f
 
 
 def informe_md(r):
-    """Genera informes/transformacion-datos.md a partir del diccionario del JSON, con la estructura de la skill."""
+    """Genera informes/transformacion-datos.md a partir del diccionario del JSON, con la estructura de el método."""
     res = r["resultado"]
     L = ["# Informe de transformación de datos", "", f"**Estado: {res['estado']}.** {res['resumen']}", ""]
     L += ["## Fuente", ""]
@@ -1222,7 +1222,7 @@ def informe_md(r):
           f"`{e['sha256'][:12]}…`." for e in r["entradas"]]
     L += [f"- **Salida:** las nueve tablas de `data/processed/` que lista «Dataset generado»." if r["salidas"]
           else "- **Salida:** ninguna; la ejecución paró antes de guardar.",
-          "- **Contexto:** `contexto-proyecto/negocio/reglas-transformacion.md` (aprobado el 17/11/2026), "
+          "- **Contexto:** `config/negocio/reglas-transformacion.md` (aprobado el 17/11/2026), "
           "`reglas-negocio.md`, `modelo/modelo-datos.md`, el plan de cruces de `informes/modelado-datos.json` y "
           "`sector/precios_de_coste_discos.md`.",
           f"- **Ejecución:** {r['fecha_ejecucion']}, con Python {r['ejecucion']['python']}, pandas "
@@ -1319,7 +1319,7 @@ def informe_md(r):
 # =================================================================================================================
 def base_resultado(fecha_ejecucion):
     """El JSON vacío, con el bloque común, para escribirlo también si el script para o falla."""
-    return {"skill": SKILL, "version_skill": VERSION_SKILL, "script": SCRIPT, "fecha_datos": FECHA_DATOS,
+    return {"metodo": METODO, "version_metodo": VERSION_METODO, "script": SCRIPT, "fecha_datos": FECHA_DATOS,
             "fecha_ejecucion": fecha_ejecucion, "entradas": [], "resultado": {}, "pendientes": [], "salidas": [],
             "transformaciones": [], "variables_generadas": [], "cambios_granularidad": [], "cruces": [],
             "validaciones": [], "comprobaciones": [], "pendiente_modelo": [], "particion": None,
@@ -1335,13 +1335,13 @@ def base_resultado(fecha_ejecucion):
 
 
 def datos_personales(raiz):
-    """El apartado «Datos personales», con lo que diga contexto-proyecto/fuentes/proteccion-datos.json si existe."""
-    ruta = raiz / "contexto-proyecto" / "fuentes" / "proteccion-datos.json"
+    """El apartado «Datos personales», con lo que diga config/fuentes/proteccion-datos.json si existe."""
+    ruta = raiz / "config" / "fuentes" / "proteccion-datos.json"
     if ruta.exists():
-        return ["Existe contexto-proyecto/fuentes/proteccion-datos.json: la protección se describe allí.",
+        return ["Existe config/fuentes/proteccion-datos.json: la protección se describe allí.",
                 "Esta transformación no usa ni deja ninguna columna de datos personales."]
-    return ["No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
-            "No hay datos de personas (reglas §9): el número de serie identifica un disco, no a una persona.",
+    return ["No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+            "No hay datos de personas (reglas, apartado 9): el número de serie identifica un disco, no a una persona.",
             "Esta transformación no usa ni deja ninguna columna de datos personales."]
 
 
@@ -1623,7 +1623,7 @@ def transformar(raiz):
             "En las tablas agregadas, «mes» es el primer día del mes y la clave de trimestre lleva el año al lado "
             "(«ano» y «trimestre» del Calendario), porque el trimestre del Calendario va de 1 a 4.",
             "suma_contadores_sin_188 queda vacía cuando los cuatro contadores lo están: un contador vacío no es un cero "
-            "(reglas §5).",
+            "(reglas, apartado 5).",
             "coincide_con_anterior queda vacía cuando no hay días desde el anterior del tomo (el primero de su tomo o "
             "sin tomo), como dias_desde_anterior_del_tomo.",
             "En dias_por_tramo, las filas que solo tienen fallos dejan sus días de disco vacíos: hubo discos, pero "
@@ -1688,7 +1688,7 @@ def transformar(raiz):
                                                       f"{len(r['pendientes'])} celdas quedan pendientes." if estado == "AVISO"
                                                       else "Ninguna celda queda pendiente.")),
             "artefactos": r["artefactos"] + ["informes/transformacion-datos.json", "informes/transformacion-datos.md",
-                                             "contexto-proyecto/modelo/registro-transformaciones.md"],
+                                             "config/modelo/registro-transformaciones.md"],
             "siguiente": "analisis-exploratorio, con las tablas de data/processed/; el objetivo de fotos_riesgo solo con "
                          "el periodo de construcción"}
     except Parada as e:

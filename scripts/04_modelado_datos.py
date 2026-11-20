@@ -1,10 +1,10 @@
-"""Comprueba lo que el diseño del modelo de datos del caso 68 afirma sobre los datos (skill modelado-datos).
+"""Comprueba lo que el diseño del modelo de datos del caso 68 afirma sobre los datos (método modelado-datos).
 
 Lee las cuatro tablas corregidas de data/processed/ (solo las columnas que necesita cada comprobación), comprueba el
 grano de cada tabla, las fechas que entran en el Calendario, los modelos y sus capacidades, la relación entre fallos y
 ventanas, y saca los recuentos del registro de exclusiones y de la población de la pregunta 4. No cruza tablas, no
 corrige nada y no construye ninguna dimensión. Solo si el diseño está aprobado (la línea «Aprobado: sí · <nombre> ·
-AAAA-MM-DD» en «Decisiones de modelado» de contexto-proyecto/modelo/modelo-datos.md) construye el Calendario en
+AAAA-MM-DD» en «Decisiones de modelado» de config/modelo/modelo-datos.md) construye el Calendario en
 data/processed/calendario.parquet.
 
 Depende de scripts/03_correccion_datos.py: lee informes/correccion-datos.json y para si falta, si está parado o si la
@@ -37,22 +37,22 @@ import pyarrow.parquet as pq
 CASO = Path(__file__).resolve().parents[1]
 
 # ---------------------------------------------------------------------------------------------------------------
-# 2. Configuración, copiada del diseño (contexto-proyecto/modelo/modelo-datos.md)
+# 2. Configuración, copiada del diseño (config/modelo/modelo-datos.md)
 # ---------------------------------------------------------------------------------------------------------------
 # Parámetros que fijan las reglas de negocio; las fechas que dependen de los datos se calculan, no se escriben.
-FECHA_DATOS = "2025-06-30"                       # reglas §5, fecha de referencia
-FIN_CONSTRUCCION = pd.Timestamp("2024-06-30")    # reglas §7, partición por fecha
-FIN_VALIDACION = pd.Timestamp("2025-06-30")      # reglas §7
-FIN_RESERVA = pd.Timestamp("2026-06-30")         # reglas §5, la reserva
-INICIO_SITIO = pd.Timestamp("2023-07-01")        # reglas §4, el sitio solo consta desde ese día
-HORIZONTE_DIAS = 30                              # reglas §7, CP-004
-MINIMO_DIAS_ANO = 50_000                         # reglas §7, mínimo para entrar en un ranking
-MINIMO_FALLOS_EDAD = 20                          # reglas §7, CP-009
+FECHA_DATOS = "2025-06-30"                       # reglas, apartado 5, fecha de referencia
+FIN_CONSTRUCCION = pd.Timestamp("2024-06-30")    # reglas, apartado 7, partición por fecha
+FIN_VALIDACION = pd.Timestamp("2025-06-30")      # reglas, apartado 7
+FIN_RESERVA = pd.Timestamp("2026-06-30")         # reglas, apartado 5, la reserva
+INICIO_SITIO = pd.Timestamp("2023-07-01")        # reglas, apartado 4, el sitio solo consta desde ese día
+HORIZONTE_DIAS = 30                              # reglas, apartado 7, cuestión 004
+MINIMO_DIAS_ANO = 50_000                         # reglas, apartado 7, mínimo para entrar en un ranking
+MINIMO_FALLOS_EDAD = 20                          # reglas, apartado 7, cuestión 009
 HORAS_ANO = 24 * 365.25                          # horas encendido pasadas a años, como el reconocimiento
-LIMITE_ARRANQUE_BYTES = 2_048_408_248_320        # reglas §3: los de arranque van de 0,2 a 2 TB
-INICIO_DATOS_BYTES = 4_000_000_000_000           # reglas §7: los de datos son todos de 4 TB o más
+LIMITE_ARRANQUE_BYTES = 2_048_408_248_320        # reglas, apartado 3: los de arranque van de 0,2 a 2 TB
+INICIO_DATOS_BYTES = 4_000_000_000_000           # reglas, apartado 7: los de datos son todos de 4 TB o más
 SIN_DATO = "sin dato"                            # etiqueta del centro que no consta en el recuento (R-009)
-CONTADORES_AVISO = ["smart_5_raw", "smart_187_raw", "smart_188_raw", "smart_197_raw", "smart_198_raw"]  # reglas §3
+CONTADORES_AVISO = ["smart_5_raw", "smart_187_raw", "smart_188_raw", "smart_197_raw", "smart_198_raw"]  # reglas, apartado 3
 
 TABLAS = {
     "hechos_fotos": {
@@ -91,7 +91,7 @@ TABLAS = {
         "fichero": None, "tipo": "dimension",
         "grano": "una capacidad un año: lo que costaba el GB", "clave_grano": ["capacidad_tb", "ano"],
         "columnas": ["capacidad_tb", "ano", "dolares_gb", "origen"],
-        "nota": "la construye la transformación desde contexto-proyecto/sector/precios_de_coste_discos.md"},
+        "nota": "la construye la transformación desde config/sector/precios_de_coste_discos.md"},
     "Calendario": {
         "fichero": None, "tipo": "dimension",
         "grano": "un día, del primer al último día del recuento", "clave_grano": ["fecha"],
@@ -102,9 +102,9 @@ TABLAS = {
 # Tipo de la clave de cada dimensión que todavía no existe, tal como la declara el diseño
 TIPO_CLAVE_DIMENSION = {("dim_modelo", "model"): "string", ("Calendario", "fecha"): "timestamp[ms]"}
 
-PROC_MODELO = ("reglas §3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); "
+PROC_MODELO = ("reglas, apartado 3 (el modelo es la unidad de compra y la capacidad de un disco es la de su modelo); "
                "como_estan_organizados_los_datos.md (dimensión modelo)")
-PROC_FECHA = "reglas §5 (cada registro es el estado de un disco un día; un día de disco es un disco un día)"
+PROC_FECHA = "reglas, apartado 5 (cada registro es el estado de un disco un día; un día de disco es un disco un día)"
 RELACIONES = [
     {"desde": "hechos_fotos", "hacia": "dim_modelo", "clave_desde": ["model"], "clave_hacia": ["model"],
      "maestro": "dim_modelo", "cardinalidad": "N:1", "procedencia": PROC_MODELO},
@@ -120,22 +120,22 @@ RELACIONES = [
      "maestro": "Calendario", "cardinalidad": "N:1", "procedencia": PROC_FECHA},
     {"desde": "hechos_fallos", "hacia": "Calendario", "clave_desde": ["dia_fallo"], "clave_hacia": ["fecha"],
      "maestro": "Calendario", "cardinalidad": "N:1",
-     "procedencia": "reglas §3 (un fallo es el día en que Backblaze da un disco por fallado)"},
+     "procedencia": "reglas, apartado 3 (un fallo es el día en que Backblaze da un disco por fallado)"},
     {"desde": "hechos_ventanas", "hacia": "hechos_fallos", "clave_desde": ["serial_number", "dia_fallo"],
      "clave_hacia": ["serial_number", "dia_fallo"], "maestro": "hechos_fallos", "cardinalidad": "N:1",
      "procedencia": "como_estan_organizados_los_datos.md (una ventana son los 30 días antes de un fallo y el del "
-                    "fallo); reglas §5 («salvo los 30 días antes de un fallo, que van día a día»)"},
+                    "fallo); reglas, apartado 5 («salvo los 30 días antes de un fallo, que van día a día»)"},
     {"desde": "hechos_fallos", "hacia": "hechos_ventanas", "clave_desde": ["serial_number", "dia_fallo"],
      "clave_hacia": ["serial_number", "fecha"], "maestro": "hechos_ventanas (su fila del día del fallo)",
      "cardinalidad": "1:1",
-     "procedencia": "reglas §5 (un registro por disco y día, el del fallo incluido); como_estan_organizados_los_datos.md"},
+     "procedencia": "reglas, apartado 5 (un registro por disco y día, el del fallo incluido); como_estan_organizados_los_datos.md"},
     {"desde": "hechos_fallos", "hacia": "dim_modelo", "clave_desde": ["model"], "clave_hacia": ["model"],
      "maestro": "dim_modelo", "cardinalidad": "N:1",
      "procedencia": PROC_MODELO + "; el modelo es el de la fila del día del fallo",
      "columna_origen": ("hechos_ventanas", "model")},
     {"desde": "hechos_fallos", "hacia": "dim_precio_gb", "clave_desde": ["capacidad_tb", "ano_fallo"],
      "clave_hacia": ["capacidad_tb", "ano"], "maestro": "dim_precio_gb", "cardinalidad": "N:1",
-     "procedencia": "reglas §6 (el disco nuevo que sustituye a uno que falla, al coste por GB del año del fallo)",
+     "procedencia": "reglas, apartado 6 (el disco nuevo que sustituye a uno que falla, al coste por GB del año del fallo)",
      "columna_origen": None},
 ]
 
@@ -150,21 +150,21 @@ PLAN_CRUCES = [
      "clave_une": ["serial_number", "fecha"], "cardinalidad": "1:1", "tipo_cruce": "left",
      "magnitudes_control": ["filas de hechos_fallos"],
      "agregar_antes": "ventanas filtradas a la fila con fecha = dia_fallo - 1 día: una por fallo, o ninguna",
-     "aporta": "los cinco contadores de avería del día anterior (fallo sin aviso, reglas §6)",
+     "aporta": "los cinco contadores de avería del día anterior (fallo sin aviso, reglas, apartado 6)",
      "fecha_del_cruce": "el día anterior al fallo"},
     {"orden": 3, "partida": "hechos_fallos", "se_une": "hechos_ventanas", "clave_partida": ["serial_number", "dia_fallo"],
      "clave_une": ["serial_number", "dia_fallo"], "cardinalidad": "1:1", "tipo_cruce": "left",
      "magnitudes_control": ["filas de hechos_fallos"],
      "agregar_antes": "por fallo, la última fila de su ventana hasta el día del fallo que trae centro (para las tasas por "
                       "centro) y la última que trae centro, vault, servidor y ranura (para el tomo): una por fallo",
-     "aporta": "el sitio del fallo (reglas §5)", "fecha_del_cruce": "el último día con sitio, hasta el del fallo"},
+     "aporta": "el sitio del fallo (reglas, apartado 5)", "fecha_del_cruce": "el último día con sitio, hasta el del fallo"},
     {"orden": 4, "partida": "hechos_fallos", "se_une": "dim_modelo", "clave_partida": ["model"], "clave_une": ["model"],
      "cardinalidad": "N:1", "tipo_cruce": "left", "magnitudes_control": ["filas de hechos_fallos"],
      "agregar_antes": None, "aporta": "capacidad, fabricante, tipo de disco y garantía", "fecha_del_cruce": None},
     {"orden": 5, "partida": "hechos_fallos", "se_une": "dim_precio_gb", "clave_partida": ["capacidad_tb", "ano_fallo"],
      "clave_une": ["capacidad_tb", "ano"], "cardinalidad": "N:1", "tipo_cruce": "left",
      "magnitudes_control": ["filas de hechos_fallos"], "agregar_antes": None,
-     "aporta": "precio del disco nuevo (reglas §6)", "fecha_del_cruce": "el año del fallo"},
+     "aporta": "precio del disco nuevo (reglas, apartado 6)", "fecha_del_cruce": "el año del fallo"},
     {"orden": 6, "partida": "hechos_fallos", "se_une": "Calendario", "clave_partida": ["dia_fallo"],
      "clave_une": ["fecha"], "cardinalidad": "N:1", "tipo_cruce": "left", "magnitudes_control": ["filas de hechos_fallos"],
      "agregar_antes": None, "aporta": "año, trimestre, mes y periodo del fallo", "fecha_del_cruce": "el día del fallo"},
@@ -186,13 +186,13 @@ PLAN_CRUCES = [
      "agregar_antes": "fotos: discos por modelo, centro (el vacío como «sin dato»), mes y tramo (edad, aviso), y su parte "
                       "dentro de modelo, centro y mes; recuento: días de disco (discos sumados por día) y fallos por "
                       "modelo, centro y mes. Los días de cada tramo son la parte de la foto por los días del recuento",
-     "aporta": "los días de disco de cada tramo (reglas §5, «Con qué se cuentan»)", "fecha_del_cruce": "el mes de la foto"},
+     "aporta": "los días de disco de cada tramo (reglas, apartado 5, «Con qué se cuentan»)", "fecha_del_cruce": "el mes de la foto"},
     {"orden": 12, "partida": "hechos_fotos", "se_une": "hechos_fallos", "clave_partida": ["serial_number", "fecha"],
      "clave_une": ["serial_number", "fecha_foto"], "cardinalidad": "N:1", "tipo_cruce": "left",
      "magnitudes_control": ["filas del tablón de la pregunta 4", "objetivo: pares foto-fallo distintos"],
      "agregar_antes": "por fallo, las fechas de las fotos de su disco con fecha < dia_fallo <= fecha + 30 días, con el "
                       "horizonte recortado al último día del periodo de la foto; una fila por (serial_number, fecha_foto)",
-     "aporta": "el objetivo de la pregunta 4 (reglas §7, CP-003 y CP-004)",
+     "aporta": "el objetivo de la pregunta 4 (reglas, apartado 7, cuestión 003 y cuestión 004)",
      "fecha_del_cruce": "los 30 días siguientes a la foto"},
     {"orden": 13, "partida": "hechos_fallos", "se_une": "hechos_fotos", "clave_partida": ["serial_number", "fecha_foto"],
      "clave_une": ["serial_number", "fecha"], "cardinalidad": "N:1", "tipo_cruce": "left",
@@ -206,7 +206,7 @@ PLAN_CRUCES = [
      "agregar_antes": "fotos del primer día de cada trimestre (discos de datos), contadas por modelo y año de edad; "
                       "tasas por modelo y año de edad con los días (cruce 11) y los fallos (cruces 1 y 4) hasta el día "
                       "anterior al trimestre",
-     "aporta": "los fallos esperados del bloque 9 (reglas §7, previsión)",
+     "aporta": "los fallos esperados del bloque 9 (reglas, apartado 7, previsión)",
      "fecha_del_cruce": "el primer día del trimestre"},
     {"orden": 15, "partida": "hechos_recuento", "se_une": "hechos_fallos",
      "clave_partida": ["model", "datacenter", "mes", "tramo"], "clave_une": ["model", "datacenter", "mes", "tramo"],
@@ -222,57 +222,57 @@ EXCLUSIONES_META = {
         "que_sale": "los discos de 0,2 a 2 TB, con sus fotos, días de disco y fallos",
         "sale_de": "todas las tasas, rankings, coste por terabyte, previsión y la pregunta 4",
         "como_se_trata": "fuera de todo cálculo; se pueden contar aparte",
-        "por_que": "reglas §3: no guardan datos de clientes y Backblaze los quita de sus tasas",
+        "por_que": "reglas, apartado 3: no guardan datos de clientes y Backblaze los quita de sus tasas",
         "recuperable": "sí: siguen en las tablas y se cuentan aparte si una petición lo pide"},
     "sitio_no_consta_antes": {
         "que_sale": "los días de disco y fallos de discos de datos antes del 01/07/2023, sin centro",
         "sale_de": "tasas por centro y fallos del mismo tomo (pregunta 3)",
         "como_se_trata": "fuera de las cifras por sitio; siguen en las demás",
-        "por_que": "reglas §4: el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás",
+        "por_que": "reglas, apartado 4: el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás",
         "recuperable": "no: el sitio no está en los datos"},
     "sitio_no_consta_desde": {
         "que_sale": "los días de disco y fallos de discos de datos desde el 01/07/2023 con el centro «sin dato»",
         "sale_de": "tasas por centro (pregunta 3)",
-        "como_se_trata": "se cuentan y se dicen (reglas §5)",
-        "por_que": "reglas §5 y §7: un dato de sitio vacío no consta",
+        "como_se_trata": "se cuentan y se dicen (reglas, apartado 5)",
+        "por_que": "reglas, apartado 5 y §7: un dato de sitio vacío no consta",
         "recuperable": "no, con estos datos"},
     "fallos_sin_ranura": {
         "que_sale": "los fallos de discos de datos desde el 01/07/2023 sin ningún día de su ventana, hasta el del fallo, "
                     "con centro (sin centro) o con centro, vault y ranura (sin tomo)",
         "sale_de": "tasas por centro (sin centro) y fallos del mismo tomo (sin tomo), pregunta 3 y aviso de tomos en "
                    "peligro de la pregunta 4",
-        "como_se_trata": "se cuentan y se dicen (reglas §5)",
-        "por_que": "reglas §5: el sitio de un fallo es el del último día anterior que lo trae, dentro de su ventana",
+        "como_se_trata": "se cuentan y se dicen (reglas, apartado 5)",
+        "por_que": "reglas, apartado 5: el sitio de un fallo es el del último día anterior que lo trae, dentro de su ventana",
         "recuperable": "no, con estos datos"},
     "fallos_sin_dia_anterior": {
         "que_sale": "los fallos de discos de datos cuya ventana no trae el día anterior al fallo",
         "sale_de": "el indicador de fallos sin aviso",
         "como_se_trata": "fuera del indicador; se cuentan y se dicen",
-        "por_que": "reglas §6: el fallo sin aviso se mira el día anterior; sin ese día no se sabe",
+        "por_que": "reglas, apartado 6: el fallo sin aviso se mira el día anterior; sin ese día no se sabe",
         "recuperable": "no: el día no está en los datos"},
     "modelos_bajo_minimo": {
         "que_sale": "los modelos de datos con menos de 50.000 días de disco en el año",
         "sale_de": "los rankings de modelos (preguntas 1 y 2, bloque 2)",
-        "como_se_trata": "se enseñan aparte con su recuento (reglas §7)",
-        "por_que": "reglas §7: mínimo fijo para entrar en un ranking, el umbral anual de Backblaze",
+        "como_se_trata": "se enseñan aparte con su recuento (reglas, apartado 7)",
+        "por_que": "reglas, apartado 7: mínimo fijo para entrar en un ranking, el umbral anual de Backblaze",
         "recuperable": "sí: se enseñan aparte; no entran en el ranking"},
     "anos_de_edad_con_menos_de_20_fallos": {
         "que_sale": "los años de edad, de todos los discos o de un modelo, con menos de 20 fallos",
         "sale_de": "la conclusión de la pregunta 2 (a qué edad sube la tasa)",
-        "como_se_trata": "se enseñan sin conclusión (reglas §7, CP-009)",
-        "por_que": "CP-009: con menos de 20 fallos el intervalo no permite concluir",
+        "como_se_trata": "se enseñan sin conclusión (reglas, apartado 7, cuestión 009)",
+        "por_que": "cuestión 009: con menos de 20 fallos el intervalo no permite concluir",
         "recuperable": "sí: se enseñan, sin conclusión"},
     "p4_fotos_del_dia_del_fallo": {
         "que_sale": "las fotos de discos de datos con failure = 1, del mismo día del fallo",
         "sale_de": "el tablón de la pregunta 4",
         "como_se_trata": "fuera del tablón; su fallo sigue siendo objetivo de la foto anterior si cae en su horizonte",
-        "por_que": "ese día el disco ya está marcado como fallado (decisión de modelado, Claude)",
+        "por_que": "ese día el disco ya está marcado como fallado (decisión de modelado, el analista)",
         "recuperable": "no: no hay nada que predecir en ellas"},
     "p4_horizonte_recortado": {
         "que_sale": "los fallos que caen después del último día del periodo de la foto",
         "sale_de": "el objetivo de la pregunta 4",
-        "como_se_trata": "el horizonte se recorta al borde del periodo (reglas §7: «se recorta o se queda fuera»)",
-        "por_que": "un objetivo no puede mirar al periodo siguiente (decisión de modelado, Claude)",
+        "como_se_trata": "el horizonte se recorta al borde del periodo (reglas, apartado 7: «se recorta o se queda fuera»)",
+        "por_que": "un objetivo no puede mirar al periodo siguiente (decisión de modelado, el analista)",
         "recuperable": "el de construcción, no sin mezclar periodos; el de validación, solo con la reserva"},
     "filas_del_10_12_2022": {
         "que_sale": "las 228 filas de las ventanas fechadas el 10/12/2022 que eran copia del 11/12/2022",
@@ -354,10 +354,10 @@ def construir_calendario(primero, ultimo):
     cal["ano"] = cal["fecha"].dt.year.astype("int64")
     cal["trimestre"] = cal["fecha"].dt.quarter.astype("int64")
     cal["mes"] = cal["fecha"].dt.month.astype("int64")
-    # El periodo de la partición (reglas §7) y la reserva (reglas §5); fuera de ellos no hay periodo definido
+    # El periodo de la partición (reglas, apartado 7) y la reserva (reglas, apartado 5); fuera de ellos no hay periodo definido
     cal["periodo"] = np.select([cal["fecha"] <= FIN_CONSTRUCCION, cal["fecha"] <= FIN_VALIDACION,
                                 cal["fecha"] <= FIN_RESERVA], ["construcción", "validación", "reserva"], default=None)
-    # Un trimestre o un año es parcial si le falta algún día dentro del rango (reglas §5)
+    # Un trimestre o un año es parcial si le falta algún día dentro del rango (reglas, apartado 5)
     dias_trim = cal.groupby(["ano", "trimestre"])["fecha"].transform("size")
     trim = cal["fecha"].dt.to_period("Q")
     cal["trimestre_completo"] = dias_trim.to_numpy() == (trim.dt.end_time.dt.normalize() - trim.dt.start_time).dt.days + 1
@@ -498,7 +498,7 @@ def comprobar_todo(raiz, corr, tiempos):
     fal = fal.join(dia0[["model", "capacity_bytes", "smart_9_raw"]], on="llave")
     fal["de_datos"] = fal["model"].isin(datos)
     fd = fal.loc[fal["de_datos"]].copy()
-    # Horas del día del fallo o, sin ellas, del día anterior; sin ninguna, la edad desde la primera aparición (reglas §3)
+    # Horas del día del fallo o, sin ellas, del día anterior; sin ninguna, la edad desde la primera aparición (reglas, apartado 3)
     dia1 = ven.loc[ven["fecha"] == ven["dia_fallo"] - pd.Timedelta(days=1)].set_index("llave")
     fd["horas_1"] = fd["llave"].map(dia1["smart_9_raw"])
     fd["horas"] = fd["smart_9_raw"].fillna(fd["horas_1"])
@@ -514,7 +514,7 @@ def comprobar_todo(raiz, corr, tiempos):
     fd["edad"] = np.floor(fd["horas"].fillna(dias_vida * 24) / HORAS_ANO)
     todos_edad = fd.groupby("edad").size()
     celdas = fd.groupby(["model", "edad"]).size()
-    # Sitio del fallo: hay algún día de su ventana, hasta el del fallo, con centro o con el tomo entero (reglas §5)
+    # Sitio del fallo: hay algún día de su ventana, hasta el del fallo, con centro o con el tomo entero (reglas, apartado 5)
     hasta = ven.loc[ven["fecha"] <= ven["dia_fallo"]]
     con_centro = set(hasta.loc[hasta["datacenter"].notna(), "llave"])
     con_tomo = set(hasta.loc[hasta[["datacenter", "vault_id", "pod_id", "pod_slot_num"]].notna().all(axis=1), "llave"])
@@ -727,11 +727,11 @@ def escribir_informe(res, ruta):
 def resultado_base(raiz):
     """El diccionario del JSON con el bloque común y lo que no depende de los datos."""
     return {
-        "skill": "modelado-datos", "version_skill": "31/10/2026 (WF-32)", "script": "scripts/04_modelado_datos.py",
+        "metodo": "modelado-datos", "version_metodo": "31/10/2026", "script": "scripts/04_modelado_datos.py",
         "fecha_datos": FECHA_DATOS, "fecha_ejecucion": datetime.now().isoformat(timespec="seconds"),
         "entradas": [], "resultado": {}, "pendientes": [],
-        "diseno": "contexto-proyecto/modelo/modelo-datos.md",
-        "aprobado": leer_aprobacion(raiz / "contexto-proyecto" / "modelo" / "modelo-datos.md"),
+        "diseno": "config/modelo/modelo-datos.md",
+        "aprobado": leer_aprobacion(raiz / "config" / "modelo" / "modelo-datos.md"),
         "parametros": {"limite_arranque_bytes": LIMITE_ARRANQUE_BYTES, "inicio_datos_bytes": INICIO_DATOS_BYTES,
                        "fin_construccion": iso(FIN_CONSTRUCCION), "fin_validacion": iso(FIN_VALIDACION),
                        "fin_reserva": iso(FIN_RESERVA), "inicio_sitio": iso(INICIO_SITIO),
@@ -746,11 +746,11 @@ def resultado_base(raiz):
                               "dimensión o el Calendario, que construye la transformación, o filtrar o agregar antes "
                               "por una regla (el día del fallo, el día anterior, el último día con sitio, el horizonte, "
                               "el reparto de días). Los hace la transformación con los controles de integracion-datos "
-                              "(transformacion-datos, SC-30)",
+                              "(transformacion-datos)",
         "datos_personales_texto": [
-            "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
-            "No hay datos de personas (reglas §9): el número de serie identifica un disco, no a una persona.",
-            "Esta skill no usa ni deja ninguna columna de datos personales."],
+            "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+            "No hay datos de personas (reglas, apartado 9): el número de serie identifica un disco, no a una persona.",
+            "Este método no usa ni deja ninguna columna de datos personales."],
         "teoria": [
             "9.5, granularidad y cardinalidad: el grano de cada tabla y la cardinalidad de cada relación salen de las "
             "reglas y de la organización de los datos, no de los datos que se validan.",
@@ -789,7 +789,7 @@ def main():
         # La entrada: sin la corrección lista y con sus huellas, no se comprueba nada
         entradas, motivo, *resto = comprobar_entrada(raiz)
         res["entradas"] = entradas
-        res["pendientes"] = leer_cuestiones_abiertas(raiz / "contexto-proyecto" / "negocio" / "cuestiones-pendientes.md")
+        res["pendientes"] = leer_cuestiones_abiertas(raiz / "config" / "negocio" / "cuestiones-pendientes.md")
         if motivo:
             res["resultado"] = {"estado": "PARADO", "riesgo": "alto", "resumen": f"No se comprueba el diseño: {motivo}.",
                                 "artefactos": ["informes/modelado-datos.json", "informes/modelado-datos.md"],
@@ -841,7 +841,7 @@ def main():
                     res["calendario"]["fichero"] = "data/processed/calendario.parquet"
             grano_mal = [t["tabla"] for t in res["tablas"] if t["clave_unica"] is False]
             if not res["aprobado"]["aprobado"]:
-                estado, siguiente = "PARADO", "falta la aprobación de Juan del diseño (contexto-proyecto/modelo/modelo-datos.md)"
+                estado, siguiente = "PARADO", "falta la aprobación de el responsable del caso del diseño (config/modelo/modelo-datos.md)"
             else:
                 estado = "AVISO" if res["pendientes"] else "OK"
                 siguiente = "transformacion-datos, con el plan de cruces aprobado y los controles de integracion-datos"
@@ -849,7 +849,7 @@ def main():
                        f"{len(res['exclusiones'])} clases en el registro de exclusiones. "
                        + (f"Claves de grano repetidas en {', '.join(grano_mal)}. " if grano_mal else
                           "Las cuatro claves de grano son únicas. ")
-                       + (f"Decisiones pendientes para Juan: {len(res['pendientes'])}." if res["pendientes"] else ""))
+                       + (f"Decisiones pendientes para el responsable del caso: {len(res['pendientes'])}." if res["pendientes"] else ""))
             res["resultado"] = {"estado": estado, "riesgo": "medio", "resumen": resumen.strip(),
                                 "artefactos": ["informes/modelado-datos.json", "informes/modelado-datos.md"]
                                 + (["data/processed/calendario.parquet"] if res["calendario"]["fichero"] else []),

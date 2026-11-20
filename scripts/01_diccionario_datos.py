@@ -6,10 +6,10 @@ Describe, tal como llegan y sin tocarlas, las fuentes que el caso usa ahora:
 
 El día a día de los discos que no fallan no está en los cuatro datasets: solo hay una foto al mes de cada disco.
 
-Escribe contexto-proyecto/fuentes/diccionario-datos-origen.json y, a partir de él, diccionario-datos-origen.md.
+Escribe config/fuentes/diccionario-datos-origen.json y, a partir de él, diccionario-datos-origen.md.
 
 Uso: python scripts/01_diccionario_datos.py
-Skill: diccionario-datos (versión 05/11/2026, WF-54), con programacion-del-caso.
+Método: diccionario-datos (versión 05/11/2026, una nota del método), con programacion-del-caso.
 """
 
 # =================================================================================================================
@@ -34,8 +34,8 @@ import pyarrow.parquet as pq
 # 1.1 Rutas, fechas y parámetros
 # -----------------------------------------------------------------------------------------------------------------
 CASO = Path(__file__).resolve().parents[1]
-SKILL = "diccionario-datos"
-VERSION_SKILL = "05/11/2026 (WF-54)"
+METODO = "diccionario-datos"
+VERSION_METODO = "05/11/2026"
 SCRIPT = "scripts/01_diccionario_datos.py"
 
 # Fechas de las reglas de negocio: §5 (fecha de referencia), §7 (partición) y §4 (desde cuándo consta el sitio)
@@ -44,7 +44,7 @@ INICIO_VALIDACION = dt.date(2024, 7, 1)
 FIN_DATOS = dt.date(2025, 6, 30)
 INICIO_SITIO = dt.date(2023, 7, 1)
 
-# Parámetros de la skill (parametros.md de diccionario-datos)
+# Parámetros de el método (parametros.md de diccionario-datos)
 CODIFICACIONES = ["utf-8", "utf-8-sig", "cp1252", "latin-1"]
 LIMITE_LISTA = 15
 RARA_PCT = 2.5
@@ -55,14 +55,14 @@ RARA_MIN = 5
 LIMITE_FRECUENCIAS = 1_000
 LIMITE_DISTINTOS = 200_000
 
-# Grupos por capacidad de la fila. Reglas §3: los discos de arranque son los de 0,2 a 2 TB y los de datos tienen 4 TB
+# Grupos por capacidad de la fila. Reglas, apartado 3: los discos de arranque son los de 0,2 a 2 TB y los de datos tienen 4 TB
 # o más; -1 y 0,1 TB son lecturas malas. Los cortes caen en huecos donde no hay ninguna capacidad.
 CAPACIDAD_MIN_VALIDA = 2e11
 CAPACIDAD_MAX_ARRANQUE = 3e12
 
 TIPO_DE_CLASE = {"num": pa.float64(), "txt": pa.string(), "fecha": pa.string(), "bool": pa.bool_(), "otro": pa.string()}
 
-# Columnas que no vienen de Backblaze: las añadió quien preparó los cuatro datasets (usuario, 17/11/2026)
+# Columnas que no vienen de Backblaze: las añadió quien preparó los cuatro datasets (responsable, 17/11/2026)
 COLUMNAS_DEL_DATASET = ("fecha", "dia_fallo", "discos", "fallos")
 # Forma de los nombres del esquema: las columnas base y los contadores smart_N_raw y smart_N_normalized
 FORMA_NOMBRE = re.compile(r"smart_\d+_(raw|normalized)|date|serial_number|model|capacity_bytes|failure|datacenter|"
@@ -71,12 +71,12 @@ FORMA_NOMBRE = re.compile(r"smart_\d+_(raw|normalized)|date|serial_number|model|
 # -----------------------------------------------------------------------------------------------------------------
 # 1.2 Descripciones y procedencias (bloque de configuración separado del cálculo, diccionario-datos §4)
 # -----------------------------------------------------------------------------------------------------------------
-# Columna: (rol, significado, procedencia). Las que se añadieron al preparar los cuatro datasets las describió el usuario el 17/11/2026.
+# Columna: (rol, significado, procedencia). Las que se añadieron al preparar los cuatro datasets las describió el responsable el 17/11/2026.
 COLUMNAS = {
     "date": ("fecha", "día del registro, como texto AAAA-MM-DD; es la única fecha de los datos", "reglas de negocio §5"),
-    "fecha": ("fecha", "día del registro, añadido como fecha al preparar los cuatro datasets", "usuario 17/11/2026"),
+    "fecha": ("fecha", "día del registro, añadido como fecha al preparar los cuatro datasets", "responsable 17/11/2026"),
     "dia_fallo": ("fecha", "día del fallo: en las ventanas, el fallo al que pertenece la fila; en la lista, el día del fallo",
-                  "usuario 17/11/2026"),
+                  "responsable 17/11/2026"),
     "serial_number": ("identificador", "número de serie: identifica un disco, no a una persona", "reglas de negocio §3 y §9"),
     "model": ("categorica", "número de modelo del disco; del nombre sale el fabricante", "reglas de negocio §3"),
     "capacity_bytes": ("magnitud", "capacidad del disco en bytes; la de un disco es la de su modelo", "reglas de negocio §3"),
@@ -91,8 +91,8 @@ COLUMNAS = {
     "pod_slot_num": ("codigo", "ranura del disco dentro del servidor", "reglas de negocio §4"),
     "is_legacy_format": ("booleana", "si la fila viene en el formato antiguo, según la ficha de los datos", "sin_confirmar"),
     "discos": ("magnitud", "discos en servicio ese día con ese modelo, capacidad y centro: días de disco",
-               "usuario 17/11/2026"),
-    "fallos": ("magnitud", "fallos de ese día, modelo, capacidad y centro", "usuario 17/11/2026"),
+               "responsable 17/11/2026"),
+    "fallos": ("magnitud", "fallos de ese día, modelo, capacidad y centro", "responsable 17/11/2026"),
     "nombre_en_el_esquema": ("identificador", "cada línea del esquema: el nombre de una columna del registro diario",
                              "declarado"),
 }
@@ -110,10 +110,10 @@ SMART_NOMBRES = {
     224: "Load Friction", 226: "Load 'In'-time", 240: "Head Flying Hours", 241: "Total LBAs Written",
     242: "Total LBAs Read",
 }
-# Los cinco de avería, con el nombre de las reglas §3; su número sale de la ficha, por eso van sin confirmar
+# Los cinco de avería, con el nombre de las reglas, apartado 3; su número sale de la ficha, por eso van sin confirmar
 SMART_AVERIA = {5: "sectores sustituidos", 187: "errores sin corregir", 188: "órdenes abortadas por tiempo",
                 197: "sectores pendientes", 198: "sectores ilegibles"}
-# Formato propio de cada fabricante (ficha de los datos; reglas §5: no se comparan entre fabricantes)
+# Formato propio de cada fabricante (ficha de los datos; reglas, apartado 5: no se comparan entre fabricantes)
 SMART_FORMATO_PROPIO = {1, 7, 195}
 
 # Columnas con más de una lectura legítima que las reglas no fijan (diccionario-datos §5)
@@ -137,7 +137,7 @@ CLASE_FIJA = {
     "is_legacy_format": "qué es el formato antiguo no lo define ninguna regla ni documento de Backblaze del caso",
 }
 
-# Qué significa el cero de una magnitud y la fila que falta (diccionario-datos §3, WF-54)
+# Qué significa el cero de una magnitud y la fila que falta (diccionario-datos §3, una nota del método)
 CERO = {
     "smart": ("el disco apunta cero en ese contador; no es un vacío, que quiere decir que el modelo no lo apunta",
               "reglas de negocio §5"),
@@ -163,7 +163,7 @@ TABLAS = {
     "esquema_backblaze": ("una línea del esquema de Backblaze", ["nombre_en_el_esquema"]),
 }
 
-# Lo que ningún dato ni documento del caso deja saber (reglas §3 y §6; ficha del caso, «Lo que falta»)
+# Lo que ningún dato ni documento del caso deja saber (reglas, apartado 3 y §6; ficha del caso, «Lo que falta»)
 NO_SE_PUEDE_SABER = [
     ("si un fallo es una avería o una retirada por avisos que decide Backblaze", "reglas de negocio §3"),
     ("por qué desaparece un disco sin fallo: migración, retirada sana o disco temporal", "reglas de negocio §3"),
@@ -186,12 +186,12 @@ def tramo_de(fecha):
 
 
 def periodo_de(tramo):
-    """Pasa un tramo a su periodo de las reglas §7."""
+    """Pasa un tramo a su periodo de las reglas, apartado 7."""
     return "construccion" if tramo.startswith("construccion") else tramo
 
 
 def grupo_de_capacidad(capacidad):
-    """Grupo de una capacidad leída: datos, arranque o capacidad no válida (reglas §3)."""
+    """Grupo de una capacidad leída: datos, arranque o capacidad no válida (reglas, apartado 3)."""
     if capacidad is None:
         return "sin_capacidad"
     if capacidad < CAPACIDAD_MIN_VALIDA:
@@ -253,7 +253,7 @@ class Perfil:
             for g, s in subtablas.items():
                 self.filas_por_grupo_tramo[(g, tramo)] += s.num_rows
             self.filas_por_grupo_tramo[("datos", tramo)] += resto
-            # Pares modelo y capacidad, para saber después la capacidad de cada modelo (reglas §3)
+            # Pares modelo y capacidad, para saber después la capacidad de cada modelo (reglas, apartado 3)
             if "model" in tabla.column_names:
                 agregados = [([], "count_all")] + ([("discos", "sum")] if "discos" in tabla.column_names else [])
                 for fila in tabla.select([c for c in ("model", "capacity_bytes", "discos") if c in tabla.column_names]) \
@@ -522,7 +522,7 @@ def describir_parquets(ficheros, columna_periodo, perfil=None):
 # 5. Cifras de cada tabla a partir del perfil
 # =================================================================================================================
 def capacidad_de_cada_modelo(pares):
-    """Capacidades válidas que trae cada modelo en la tabla; la regla §3 dice que la de un disco es la de su modelo."""
+    """Capacidades válidas que trae cada modelo en la tabla; la regla, apartado 3 dice que la de un disco es la de su modelo."""
     validas = {}
     for (_, modelo, cap), n in pares.items():
         if cap is not None and grupo_de_capacidad(cap) in ("datos", "arranque"):
@@ -604,7 +604,7 @@ def ficha_de_columna(tabla_nombre, nombre, acc, filas_tabla):
             significado = f"nota normalizada que pone el fabricante al contador SMART {num}" + (f" ({nombre_smart})" if nombre_smart else "")
         procedencia = "sin_confirmar"
         if num in SMART_AVERIA:
-            observaciones.append("uno de los cinco contadores de avería de las reglas §3")
+            observaciones.append("uno de los cinco contadores de avería de las reglas, apartado 3")
         if not nombre_smart:
             motivos_nsps.append("el contador no tiene nombre en ninguna fuente del caso")
         if num in SMART_FORMATO_PROPIO and forma == "raw":
@@ -833,7 +833,7 @@ def escribir_markdown(dic, ruta):
     """Genera el diccionario para la persona a partir del JSON, sin añadir cifras que no estén en él."""
     L = []
     L.append("# Diccionario de datos del origen · caso 68, averías de discos duros\n")
-    L.append(f"Generado por `{dic['script']}` el {dic['fecha_ejecucion']} a partir de `contexto-proyecto/fuentes/diccionario-datos-origen.json`. "
+    L.append(f"Generado por `{dic['script']}` el {dic['fecha_ejecucion']} a partir de `config/fuentes/diccionario-datos-origen.json`. "
              "No se edita a mano: se cambia el script y se vuelve a lanzar.\n")
     L.append(f"**Estado:** {dic['resultado']['estado']}. {dic['resultado']['resumen']}\n")
     # 1. Cabecera
@@ -890,7 +890,7 @@ def escribir_markdown(dic, ruta):
             L.append("- Filas con capacidad no válida, por la capacidad que su modelo trae en el resto de la tabla: " +
                      ", ".join(f"{k} {fmt(v)}" for k, v in t["capacidad_no_valida_por_modelo"].items()) + ".")
         if t.get("filas_datos_con_capacidad_del_modelo") is not None:
-            L.append(f"- Filas de discos de datos con la capacidad del modelo (reglas §3): {fmt(t['filas_datos_con_capacidad_del_modelo'])}" +
+            L.append(f"- Filas de discos de datos con la capacidad del modelo (reglas, apartado 3): {fmt(t['filas_datos_con_capacidad_del_modelo'])}" +
                      " (" + ", ".join(f"{k} {fmt(v)}" for k, v in t.get("filas_datos_con_capacidad_del_modelo_por_periodo", {}).items()) + ").")
         for clave, texto in t.get("medidas", {}).items():
             L.append(f"- {clave}: {fmt(texto)}.")
@@ -982,7 +982,7 @@ def escribir_json(dic, ruta):
 
 def base_comun(raiz):
     """Bloque común de la cadena, sin el resultado todavía."""
-    return {"skill": SKILL, "version_skill": VERSION_SKILL, "script": SCRIPT, "fecha_datos": FECHA_DATOS,
+    return {"metodo": METODO, "version_metodo": VERSION_METODO, "script": SCRIPT, "fecha_datos": FECHA_DATOS,
             "fecha_ejecucion": dt.datetime.now().isoformat(timespec="seconds"), "entradas": [],
             "resultado": None, "pendientes": []}
 
@@ -992,7 +992,7 @@ def main(raiz=CASO):
     inicio = time.time()
     raw = raiz / "data" / "raw"
     pod = raw / "podado"
-    fuentes = raiz / "contexto-proyecto" / "fuentes"
+    fuentes = raiz / "config" / "fuentes"
     ruta_json, ruta_md = fuentes / "diccionario-datos-origen.json", fuentes / "diccionario-datos-origen.md"
     dic = base_comun(raiz)
     try:
@@ -1038,7 +1038,7 @@ def main(raiz=CASO):
             if nombre == "fotos_mensuales":
                 t["filas_clave_repetida"] = sum(i["seriales_repetidos"] for i in por_fichero)
                 t["medidas"] = {"ficheros con más de una fecha": sum(1 for i in por_fichero if i["fechas_distintas"] != 1),
-                                "filas anteriores al 01/07/2023, sin sitio por las reglas §4": perfil.filas_por_tramo.get("construccion_antes_sitio", 0)}
+                                "filas anteriores al 01/07/2023, sin sitio por las reglas, apartado 4": perfil.filas_por_tramo.get("construccion_antes_sitio", 0)}
             else:
                 clave_v = pd.concat([pd.read_parquet(f, columns=["serial_number", "fecha", "dia_fallo", "model", "capacity_bytes"]) for f in ficheros],
                                     ignore_index=True)
@@ -1149,26 +1149,26 @@ def main(raiz=CASO):
         tablas = tablas_pod + [t_rec, t_fal, t_esq]
         listadas = {x["columna"] for x in contradicciones}
         no_llegan = [{"tabla": "fotos_mensuales y ventanas_fallo", "columna": n,
-                      "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"}
+                      "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"}
                      for n in orden_esquema if n not in columnas_dataset and n not in listadas]
         for t in tablas_pod + [t_rec]:
             for c in t["columnas_fuente"]:
                 if c in COLUMNAS_DEL_DATASET:
-                    no_llegan.append({"tabla": t["tabla"], "columna": c, "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (usuario, 17/11/2026)"})
+                    no_llegan.append({"tabla": t["tabla"], "columna": c, "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (responsable, 17/11/2026)"})
         no_llegan.append({"tabla": "recuento_diario", "columna": "(todas las del esquema salvo model, capacity_bytes y datacenter)",
-                          "motivo": "el recuento agrega por día, modelo, capacidad y centro (usuario, 17/11/2026)"})
+                          "motivo": "el recuento agrega por día, modelo, capacidad y centro (responsable, 17/11/2026)"})
         filtros = []
         for t in tablas[:-1]:
             arr = t.get("capacidad_no_valida_por_modelo", {}).get("arranque", 0) + t.get("filas_por_grupo", {}).get("arranque", 0)
-            filtros.append({"regla": f"discos de arranque fuera de tasas, coste y modelo (reglas §3), en {t['tabla']}, contando las capacidades no válidas por su modelo",
+            filtros.append({"regla": f"discos de arranque fuera de tasas, coste y modelo (reglas, apartado 3), en {t['tabla']}, contando las capacidades no válidas por su modelo",
                             "filas_afectadas": arr})
         for t in tablas[:-1]:
-            filtros.append({"regla": f"validación del 01/07/2024 al 30/06/2025, que no se mira contra el fallo hasta medir el modelo (reglas §7), en {t['tabla']}",
+            filtros.append({"regla": f"validación del 01/07/2024 al 30/06/2025, que no se mira contra el fallo hasta medir el modelo (reglas, apartado 7), en {t['tabla']}",
                             "filas_afectadas": t["filas_por_periodo"].get("validacion", 0)})
         for t in tablas[:-1]:
-            filtros.append({"regla": f"reserva, después del 30/06/2025, fuera del caso (reglas §5), en {t['tabla']}",
+            filtros.append({"regla": f"reserva, después del 30/06/2025, fuera del caso (reglas, apartado 5), en {t['tabla']}",
                             "filas_afectadas": t["filas_por_periodo"].get("fuera_de_los_datos", 0)})
-        filtros.append({"regla": "el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás (reglas §4): filas de fotos anteriores",
+        filtros.append({"regla": "el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás (reglas, apartado 4): filas de fotos anteriores",
                         "filas_afectadas": perfiles_pod["fotos_mensuales"].filas_por_tramo.get("construccion_antes_sitio", 0)})
         pendientes = []
         for t in tablas:
@@ -1184,7 +1184,7 @@ def main(raiz=CASO):
         resumen = (f"Los cuatro datasets (fotos mensuales, ventanas de fallo, recuento diario y lista de fallos) y el esquema descritos enteros, sin muestra: {fmt(sum(t['filas'] for t in tablas_pod))} filas de fotos y ventanas, "
                    f"{fmt(t_rec['filas'])} del recuento y {fmt(t_fal['filas'])} fallos. {len(pendientes)} columnas quedan como decisión de negocio "
                    f"y hay {len(contradicciones)} contradicciones con el esquema. "
-                   + ("No existe proteccion-datos.json: no hubo paso de protección (paso 2a saltado el 17/11/2026 con el sí de Juan, porque no hay datos personales)."
+                   + ("No existe proteccion-datos.json: no hubo paso de protección (paso 2a saltado el 17/11/2026 con el sí de el responsable del caso, porque no hay datos personales)."
                       if proteccion is None else "Los datos pasaron por la protección de proteccion-datos.json."))
         dic.update({
             "entradas": list(entradas.values()),
@@ -1194,9 +1194,9 @@ def main(raiz=CASO):
             "pendientes": pendientes,
             "cabecera": {"python": platform.python_version(), "pandas": pd.__version__, "pyarrow": pa.__version__,
                          "bytes_data_raw": bytes_raw,
-                         "contexto": ["CLAUDE.md del caso", "negocio/reglas-negocio.md", "negocio/01_ficha_del_caso.md",
+                         "contexto": ["las instrucciones del caso", "negocio/reglas-negocio.md", "negocio/01_ficha_del_caso.md",
                                       "negocio/cuestiones-pendientes.md", "fuentes/ficha_de_los_datos.md (nombres de los contadores, sin confirmar)",
-                                      "fuentes/proteccion-datos.md", "encargo del usuario del 17/11/2026"],
+                                      "fuentes/proteccion-datos.md", "petición del responsable del 17/11/2026"],
                          "teoria": ("manual 6.5 y 6.6 para la lectura (se mira la fuente en bruto y se declara cada decisión); "
                                     "3.3 para el rol (un código numérico no es una magnitud: las notas normalizadas y los identificadores de sitio van como código); "
                                     "7.3 para los códigos de ausencia (-1 de capacidad y «sin dato» del centro se cuentan, no se convierten).")},
@@ -1225,11 +1225,11 @@ def main(raiz=CASO):
                                  [{"que": f"{t['tabla']}.{f['columna']}: " + "; ".join(f["motivos_clase"]), "procedencia": "medido"}
                                   for t in tablas for f in t["campos"] if f["clase"] == "no_se_puede_saber"],
             "datos_personales": [
-                "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección." if proteccion is None
+                "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección." if proteccion is None
                 else "Los datos pasaron por la protección de proteccion-datos.json.",
-                "El paso 2a se saltó el 17/11/2026 con el sí de Juan porque no hay datos de personas (reglas §9; proteccion-datos.md).",
+                "El paso 2a se saltó el 17/11/2026 con el sí de el responsable del caso porque no hay datos de personas (reglas, apartado 9; proteccion-datos.md).",
                 "Ninguna columna lleva rol dato_personal. El número de serie identifica un disco, no a una persona: su rol es identificador.",
-                "Esta skill no usa ni deja columnas de datos personales.",
+                "Este método no usa ni deja columnas de datos personales.",
             ],
             "limites": [
                 "El diccionario describe una tabla cada vez; las claves huérfanas o repetidas entre tablas se ven primero en el apartado «Cruces entre tablas» de calidad-datos y se controlan al cruzarlas con integracion-datos. La única excepción es el grupo de cada fallo, que la lista no trae y se toma de la fila del día del fallo en su ventana, sin guardar el cruce.",
@@ -1239,7 +1239,7 @@ def main(raiz=CASO):
                 "El día a día de los discos que no fallan no está en los cuatro datasets: de cada disco hay una foto al mes, y día a día solo los 30 días anteriores a cada fallo.",
                 f"Los valores distintos se cuentan exactos hasta {fmt(LIMITE_DISTINTOS)}; por encima, el diccionario dice «más de {fmt(LIMITE_DISTINTOS)}». El número de serie se cuenta exacto aparte. Ninguna cifra sale de una muestra: se leen todas las filas.",
                 "Los números se comparan como decimales de 64 bits para contar distintos; un entero por encima de 2^53 podría juntarse con su vecino al contarlo.",
-                "Los grupos de discos de datos y de arranque se dan por la capacidad de cada fila y, aparte, las filas con capacidad no válida repartidas por la capacidad que su modelo trae en el resto de la tabla (reglas §3). No se corrige ninguna fila.",
+                "Los grupos de discos de datos y de arranque se dan por la capacidad de cada fila y, aparte, las filas con capacidad no válida repartidas por la capacidad que su modelo trae en el resto de la tabla (reglas, apartado 3). No se corrige ninguna fila.",
             ],
         })
         errores = validar(dic)

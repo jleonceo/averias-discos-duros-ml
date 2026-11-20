@@ -3,7 +3,7 @@
 Parte 1: monta en tests/tmp_exploratorio/ un caso pequeño con las nueve tablas de la transformación escritas aquí
 (fotos_riesgo con un bloque por mes, de enero de 2023 a septiembre de 2024: dieciocho meses de construcción y tres de
 validación), con su informes/transformacion-datos.json (huellas, grupos de columnas y partición) y unas reglas de
-negocio cortas. Ejecuta el script con -W error y comprueba los casos que pide el encargo, cada uno con un caso que tiene
+negocio cortas. Ejecuta el script con -W error y comprueba los casos que pide la petición, cada uno con un caso que tiene
 que salir mal (una copia del JSON estropeada a propósito, o un trozo de código que lee la tabla entera):
   - una foto de validación que entra en un cálculo con falla_30d, salvo los totales, hace fallar la prueba
     (el modelo ZZ_VAL solo sale en la validación, siempre con objetivo 1);
@@ -17,8 +17,8 @@ Además: la variable que separa el objetivo del todo sale como posible fuga y la
 modelo_trimestre y los discos del primer día de cada trimestre; los quince apartados del informe en su orden; las
 dieciocho comprobaciones con estado; fecha_datos; JSON sin NaN; las huellas de la entrada iguales al acabar; y una
 huella que no coincide con la de la transformación deja el JSON en PARADO.
-Parte 2: si ya existen los JSON reales del exploratorio, compara sus cifras con los controles del encargo
-(prompts/10_encargo_exploratorio.md, «Controles»).
+Parte 2: si ya existen los JSON reales del exploratorio, compara sus cifras con los controles de la petición
+(peticiones/10_exploratorio.md, «Controles»).
 
 Sale con 0 si todo pasa y con 1 si algo falla, e imprime qué caso falla. La carpeta temporal se borra siempre.
 """
@@ -346,7 +346,7 @@ def montar(huella_mala=False):
     proc = TMP / "data" / "processed"
     proc.mkdir(parents=True)
     (TMP / "informes").mkdir()
-    (TMP / "contexto-proyecto" / "negocio").mkdir(parents=True)
+    (TMP / "config" / "negocio").mkdir(parents=True)
     fotos = filas_fotos()
     escribir_fotos(fotos, proc / "fotos_riesgo.parquet")
     pequenas = {"dim_modelo": tabla_dim_modelo(), "dim_precio_gb": tabla_dim_precio(), "fallos_detalle": tabla_fallos(),
@@ -363,13 +363,13 @@ def montar(huella_mala=False):
                         "filas": md.num_rows, "columnas": md.num_columns, "que_es_una_fila": f"una fila de {t}"})
     if huella_mala:
         salidas[3]["sha256"] = "0" * 64
-    tj = {"skill": "transformacion-datos", "fecha_datos": "2025-06-30",
+    tj = {"metodo": "transformacion-datos", "fecha_datos": "2025-06-30",
           "resultado": {"estado": "OK", "riesgo": "bajo"}, "salidas": salidas, "grupos_fotos_riesgo": GRUPOS,
           "particion": {"columna_fecha": "fecha", "desarrollo": {"desde": "2023-01-01", "hasta": "2024-06-30"},
                         "validacion": {"desde": "2024-07-01", "hasta": "2025-06-30"}, "fuente": "reglas-negocio §7"},
           "parametros": {"inicio_sitio": "2023-07-01", "minimo_dias_ano": 50000}}
     (TMP / "informes" / "transformacion-datos.json").write_text(json.dumps(tj, ensure_ascii=False), encoding="utf-8")
-    (TMP / "contexto-proyecto" / "negocio" / "reglas-negocio.md").write_text(
+    (TMP / "config" / "negocio" / "reglas-negocio.md").write_text(
         "# Reglas de prueba\n\n## 7. Criterios\n\nSin tabla de rangos.\n", encoding="utf-8")
     return fotos
 
@@ -671,7 +671,7 @@ def parte_1_codigo():
 
 
 # ---------------------------------------------------------------------------------------------------------------
-# 5. Parte 2: las cifras reales frente a los controles del encargo
+# 5. Parte 2: las cifras reales frente a los controles de la petición
 # ---------------------------------------------------------------------------------------------------------------
 CONTROL_POR_ANO = {2020: (51345918, 1307, 0.93, 250485.20, 80209.00), 2021: (66072034, 1823, 1.01, 352673.77, 109169.07),
                    2022: (78890669, 2999, 1.39, 565844.09, 200888.03), 2023: (90077756, 4201, 1.70, 755878.60, 284506.60),
@@ -683,7 +683,7 @@ CONTROL_VALIDACION = {"HGST": (387260, 992), "Seagate": (1279885, 1744), "Toshib
 
 
 def parte_2():
-    """Si existen los JSON reales, compara sus cifras con los controles del encargo."""
+    """Si existen los JSON reales, compara sus cifras con los controles de la petición."""
     ruta_f = CASO / "informes" / "analisis-exploratorio__fotos_riesgo.json"
     ruta_m = CASO / "informes" / "analisis-exploratorio__modelo_trimestre.json"
     if not ruta_f.exists() or not ruta_m.exists():

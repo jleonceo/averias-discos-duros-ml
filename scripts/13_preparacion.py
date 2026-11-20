@@ -1,6 +1,6 @@
-"""Preprocesador del modelo del caso 68 (skill preparacion-modelo §4 y §5; encargo 20, tercera parte).
+"""Preprocesador del modelo del caso 68 (método preparacion-modelo §4 y §5; petición 20, tercera parte).
 
-Construye, con la matriz de transformaciones aprobada por Juan (contexto-proyecto/modelo/matriz_transformaciones.md),
+Construye, con la matriz de transformaciones aprobada por el responsable del caso (config/modelo/matriz_transformaciones.md),
 un preprocesador por familia de algoritmos, cada uno un ColumnTransformer dentro de un Pipeline y sin ajustar:
 
   - logística: las numéricas por tramos (columnas 0/1, el vacío como tramo propio o en la referencia) y las nominales
@@ -12,8 +12,8 @@ Las listas de columnas están escritas a mano, copiadas de la matriz; la décima
 matriz aprobada y que cada una de las columnas de la tabla está en ella o en la lista de fuera.
 
 Después, solo para comprobar, ajusta cada preprocesador una vez con la muestra de partida de entrenamiento (todas las
-fotos con fallo y el 2 % de las sanas de cada mes, reglas §7, semilla 42), aplica transform a la validación sin leer
-su falla_30d y calcula las nueve validaciones de la skill (§5). No guarda ninguna tabla transformada ni el preprocesador
+fotos con fallo y el 2 % de las sanas de cada mes, reglas, apartado 7, semilla 42), aplica transform a la validación sin leer
+su falla_30d y calcula las nueve validaciones de el método (§5). No guarda ninguna tabla transformada ni el preprocesador
 ajustado: lo ajusta aprendizaje-automatico, con el modelo. Lee las dos partes grupo a grupo, sin cargar la tabla entera.
 
 Depende de scripts/12_particion.py: lee informes/particion.json y para (PARADO) si no está en OK o si la huella de una
@@ -58,20 +58,20 @@ from graficos import numero  # noqa: E402  (pieza común: números a la español
 # =================================================================================================================
 # 2. Configuración
 # =================================================================================================================
-SKILL = "preparacion-modelo"
-SKILL_MD = CASO / ".claude" / "skills" / "preparacion-modelo" / "SKILL.md"
+METODO = "preparacion-modelo"
+METODO_MD = CASO / "metodos" / "preparacion-modelo" / "METODO.md"
 SCRIPT = "scripts/13_preparacion.py"
-ENCARGO = "prompts/20_encargo_particion_y_preparacion.md, tercera parte"
-FECHA_DATOS = "2025-06-30"                                   # reglas §5, fecha de referencia
+PETICION = "peticiones/20_particion_y_preparacion.md, tercera parte"
+FECHA_DATOS = "2025-06-30"                                   # reglas, apartado 5, fecha de referencia
 PARTICION = "informes/particion.json"
-MATRIZ = "contexto-proyecto/modelo/matriz_transformaciones.md"
+MATRIZ = "config/modelo/matriz_transformaciones.md"
 SALIDA_JSON = "informes/preparacion.json"
 SALIDA_MD = "informes/preparacion.md"
 OBJETIVO = "falla_30d"
 OBJETIVO_Y_HORIZONTE = ["falla_30d", "horizonte_hasta"]
 COLUMNA_FECHA = "fecha"
 
-# La muestra de partida (reglas §7, R68-109) y la semilla (preparacion-modelo/parametros.md)
+# La muestra de partida (reglas, apartado 7, una nota del caso) y la semilla (preparacion-modelo/parametros.md)
 FRACCION_SANAS = 0.02
 SEMILLA = 42
 # Mínimos de un tramo y de una categoría que no va a «otras» (parametros.md; ficha de la logística §4.2 y §4.3)
@@ -103,7 +103,7 @@ NUM_LOGISTICA = [
 # Los árboles llevan además avisa, que en la logística es la suma de los tramos de contadores_que_avisan, y
 # smart_197_normalized, que en la logística no deja ningún tramo con la muestra de partida (matriz, P-05)
 NUM_ARBOLES = NUM_LOGISTICA[:13] + ["avisa"] + NUM_LOGISTICA[13:] + ["smart_197_normalized"]
-# Las seis copias que quitó la corrección de la matriz (P-05, R68-114) van al final de las que no entran
+# Las seis copias que quitó la corrección de la matriz (P-05, una nota del caso) van al final de las que no entran
 NO_ENTRAN = [
     "smart_188_raw", "edad_de_horas", "smart_4_normalized", "smart_9_raw", "smart_10_normalized", "smart_10_raw",
     "smart_11_normalized", "smart_11_raw", "smart_12_normalized", "smart_13_normalized", "smart_13_raw",
@@ -128,7 +128,7 @@ VACIO_COMPARTIDO = {
     "smart_191_raw": "smart_191_normalized", "smart_195_raw": "smart_195_normalized",
     "smart_196_raw": "smart_196_normalized", "smart_222_raw": "smart_220_raw",
     "smart_226_raw": "smart_220_raw", "smart_242_raw": "smart_241_raw"}
-# Formato propio de cada fabricante (reglas §5): en la logística, tramos aprendidos solo con Seagate
+# Formato propio de cada fabricante (reglas, apartado 5): en la logística, tramos aprendidos solo con Seagate
 SOLO_SEAGATE = ["smart_1_raw", "smart_7_raw"]
 FAMILIAS = ["logistica", "bosque", "hgb"]
 ESCALADORES = (StandardScaler, MinMaxScaler, RobustScaler, MaxAbsScaler, PowerTransformer, QuantileTransformer)
@@ -146,7 +146,7 @@ TEORIA = [
 
 
 class Parada(Exception):
-    """Condición que impide seguir; `estado` dice si la skill paró a propósito (PARADO) o si falló algo (ERROR)."""
+    """Condición que impide seguir; `estado` dice si el método paró a propósito (PARADO) o si falló algo (ERROR)."""
 
     def __init__(self, mensaje, estado="ERROR"):
         super().__init__(mensaje)
@@ -448,7 +448,7 @@ def leer_matriz(texto):
 
 
 # =================================================================================================================
-# 6. Las validaciones (skill §5, más la décima del encargo), calculadas con lo que se ejecutó
+# 6. Las validaciones (método §5, más la décima de la petición), calculadas con lo que se ejecutó
 # =================================================================================================================
 def v_filas(entrada, salida):
     """1. Las filas de entrada y de salida coinciden."""
@@ -612,7 +612,7 @@ def leer_entrenamiento(ruta):
     """Lee entrenamiento grupo a grupo: el desequilibrio, los valores de las nominales y la muestra de partida.
 
     La muestra son todas las fotos con fallo y, de cada mes, el 2 % de las sanas, sorteadas con la semilla 42 en el
-    orden de los grupos (reglas §7). Devuelve la muestra (sin objetivo ni fecha), su objetivo y los recuentos.
+    orden de los grupos (reglas, apartado 7). Devuelve la muestra (sin objetivo ni fecha), su objetivo y los recuentos.
     """
     pf = pq.ParquetFile(ruta)
     columnas = NOMINALES + NUM_ARBOLES + [OBJETIVO, COLUMNA_FECHA]
@@ -651,17 +651,17 @@ def leer_entrenamiento(ruta):
 # =================================================================================================================
 # 8. El JSON y el informe
 # =================================================================================================================
-def version_skill():
-    """La fecha y el código de la última línea de versión del SKILL.md (bloque común de resultado.md)."""
-    if not SKILL_MD.exists():
+def version_metodo():
+    """La fecha y el código de la última línea de versión del METODO.md (bloque común de resultado.md)."""
+    if not METODO_MD.exists():
         return None
-    lineas = [x for x in SKILL_MD.read_text(encoding="utf-8").splitlines() if x.startswith("Versión ")]
+    lineas = [x for x in METODO_MD.read_text(encoding="utf-8").splitlines() if x.startswith("Versión ")]
     m = re.match(r"Versión (\S+) \(([^),]+)", lineas[-1]) if lineas else None
     return f"{m.group(1)} ({m.group(2)})" if m else None
 
 
 def desequilibrio(r):
-    """El desequilibrio de clases de entrenamiento, solo descrito (skill §2)."""
+    """El desequilibrio de clases de entrenamiento, solo descrito (método §2)."""
     meses = [m for m in r["por_mes"] if m["mes"]]
     fallos_mes = [m["fallos"] for m in meses]
     minimo = min(meses, key=lambda m: m["fallos"]) if meses else None
@@ -693,7 +693,7 @@ NOMBRE_FAMILIA = {"logistica": "regresión logística", "bosque": "bosque aleato
 
 
 def informe(res):
-    """El informe para Juan, con los apartados de resultado.md y solo las cifras del diccionario."""
+    """El informe para el responsable del caso, con los apartados de resultado.md y solo las cifras del diccionario."""
     L = []
     w = L.append
     estado = res["resultado"]["estado"]
@@ -747,7 +747,7 @@ def informe(res):
             w(f"En las {pm['meses']} fotos mensuales, el mes con menos fallos fue el {pm['mes_min']}, con {pm['fallos_min']}. "
               f"El que más, el {pm['mes_max']}, con {pm['fallos_max']}; la mediana es {numero(pm['fallos_mediana'], 1)}.")
             w("")
-        w("Se trata solo al entrenar, con la muestra de partida, y la probabilidad se recalibra después (reglas §7).")
+        w("Se trata solo al entrenar, con la muestra de partida, y la probabilidad se recalibra después (reglas, apartado 7).")
     else:
         w("No se calculó: el script paró antes de leer entrenamiento.")
     w("")
@@ -839,7 +839,7 @@ def escribir(raiz, res):
 def base(raiz):
     """El bloque común y lo fijo, antes de saber el resultado."""
     return {
-        "skill": SKILL, "version_skill": version_skill(), "script": SCRIPT, "encargo": ENCARGO,
+        "metodo": METODO, "version_metodo": version_metodo(), "script": SCRIPT, "peticion": PETICION,
         "fecha_datos": FECHA_DATOS, "fecha_ejecucion": dt.datetime.now().replace(microsecond=0).isoformat(),
         "entradas": [], "resultado": {"estado": None, "riesgo": None, "resumen": None, "artefactos": [SALIDA_JSON, SALIDA_MD], "siguiente": None},
         "pendientes": [],
@@ -849,7 +849,7 @@ def base(raiz):
         "preprocesador": None, "validaciones": None,
         "parametros": [
             {"nombre": "semilla", "valor": SEMILLA, "origen": "parametros.md; sortea la muestra de partida"},
-            {"nombre": "muestra de partida", "valor": f"todos los fallos y el {numero(100 * FRACCION_SANAS)} % de las sanas de cada mes", "origen": "reglas §7 (R68-109)"},
+            {"nombre": "muestra de partida", "valor": f"todos los fallos y el {numero(100 * FRACCION_SANAS)} % de las sanas de cada mes", "origen": "reglas, apartado 7"},
             {"nombre": "mínimo por tramo y por categoría", "valor": f"{MINIMO_FOTOS} fotos, {MINIMO_FALLOS} fallos y {MINIMO_SANAS} sanas", "origen": "parametros.md; ficha de la logística §4.2 y §4.3"},
             {"nombre": "tramos", "valor": f"el 0 y cada valor con al menos el {numero(100 * CUOTA_APARTE)} % aparte; hasta {K_NEGATIVOS} trozos por debajo de 0 y {K_POSITIVOS} por encima", "origen": "matriz aprobada, criterio «tramos»"},
             {"nombre": "relleno categórico", "valor": SIN_DATO, "origen": "parametros.md y matriz (datacenter)"},
@@ -858,7 +858,7 @@ def base(raiz):
             {"nombre": "sobrante del ColumnTransformer", "valor": "drop", "origen": "parametros.md"}],
         "teoria": TEORIA,
         "datos_personales": ("Ninguno: los datos son de discos y serial_number identifica un disco, no a una persona "
-                             "(reglas §9); el preprocesador no lo usa. No existe contexto-proyecto/fuentes/"
+                             "(reglas, apartado 9); el preprocesador no lo usa. No existe config/fuentes/"
                              "proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta."),
         "limites": [
             "El ajuste de este script es solo para comprobar: no se guarda. Lo ajusta aprendizaje-automatico con el modelo, "
@@ -904,7 +904,7 @@ def principal(raiz):
                          "decisiones": mz["decisiones"], "variables": [f for f in mz["filas"] if f["seccion"] != "fuera"]}
         res["fuera"] = [f for f in mz["filas"] if f["seccion"] == "fuera"]
         if not mz["aprobada_por"]:
-            raise Parada("la matriz no está aprobada: la skill no monta el preprocesador sin aprobación", "PARADO")
+            raise Parada("la matriz no está aprobada: el método no monta el preprocesador sin aprobación", "PARADO")
         # 9.3 La décima: cada columna de la tabla en la matriz o fuera, y las listas del script son las de la matriz
         ent_ruta, val_ruta = raiz / partes["entrenamiento"]["ruta"], raiz / partes["validacion"]["ruta"]
         cols_tabla = list(pq.read_schema(ent_ruta).names)
@@ -957,7 +957,7 @@ def principal(raiz):
                 salida = ajustados[f].transform(df)
                 tiempos[f]["tiempo_transformar_validacion_s"] += time.time() - t0
                 revisiones[f]["validacion"].anadir(salida)
-        # 9.7 Las nueve validaciones de la skill, por familia
+        # 9.7 Las nueve validaciones de el método, por familia
         val = res["validaciones"]
         por = {k: {} for k in ("filas", "sin_objetivo", "sin_intermedias", "sin_vacios", "nombres_unicos", "sin_redundancia",
                                "columnas_esperadas", "escalado_segun_matriz")}

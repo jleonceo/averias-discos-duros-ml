@@ -1,13 +1,13 @@
 """Indicadores de los bloques 4 y 9 del plan de la analítica del caso 68: el coste por TB y año y la previsión de fallos.
 
-Skill indicadores-y-analisis (paso 5, parte sin modelo), con el encargo prompts/14_encargo_indicadores_coste_prevision.md.
+Método indicadores-y-analisis (paso 5, parte sin modelo), con la petición peticiones/14_indicadores_coste_prevision.md.
 Calcula, comprueba y deja en informes/indicadores__coste_prevision.json (y su informe .md, generado del mismo
 diccionario en la misma ejecución):
 
   - B4, cuánto cuesta cada modelo: el coste por TB y año de los 32 modelos del ranking, con garantía y con el intervalo
-    que sale del de la tasa; sin puesto los de menos de 20 fallos (CP-012); el coste a igual edad, con la tasa a igual
-    edad del JSON del 09, y la sensibilidad al precio inferido (encargo 17,
-    prompts/17_encargo_correcciones_del_auditor.md); la parte de los fallos, la correlación de orden con la tasa y el
+    que sale del de la tasa; sin puesto los de menos de 20 fallos (cuestión 012); el coste a igual edad, con la tasa a igual
+    edad del JSON del 09, y la sensibilidad al precio inferido (petición 17,
+    peticiones/17_correcciones_del_auditor.md); la parte de los fallos, la correlación de orden con la tasa y el
     precio inferido; la vida
     real por tabla de vida; el mejor modelo de cada año y capacidad, con la diferencia partida en precio y fallos; el
     ingreso por TB de 2023 y 2024 al lado del coste por TB y año.
@@ -16,9 +16,9 @@ diccionario en la misma ejecución):
 
 La previsión de un trimestre está en `prever_trimestre`, que recibe el trimestre: la usará la prueba final en la
 reserva. Cada cifra lleva su segunda vía, que parte de otra tabla o de otro cálculo. Si una no coincide, para con ERROR.
-Las comprobaciones y las validaciones de la skill se calculan; ninguna lleva el resultado escrito.
+Las comprobaciones y las validaciones de el método se calculan; ninguna lleva el resultado escrito.
 
-Lee data/processed/ y los JSON de informes/ de la transformación, de dos exploratorios y del encargo 13, que no
+Lee data/processed/ y los JSON de informes/ de la transformación, de dos exploratorios y de la petición 13, que no
 modifica, y el doc. 16 del sector. Depende de scripts/05_transformacion_datos.py, de 06_analisis_exploratorio.py y de
 09_indicadores_discos_modelos_edad.py: comprueba la huella de cada tabla contra informes/transformacion-datos.json y el
 estado de los JSON de los que parte. No importa ningún script.
@@ -59,16 +59,16 @@ from graficos import numero  # noqa: E402  (pieza común: números a la español
 # 2. Configuración
 # =================================================================================================================
 SCRIPT = "scripts/10_indicadores_coste_prevision.py"
-ENCARGO = ("prompts/14_encargo_indicadores_coste_prevision.md; B4 cambiado por "
-           "prompts/17_encargo_correcciones_del_auditor.md y por "
-           "prompts/19_encargo_correcciones_del_segundo_auditor.md")
+PETICION = ("peticiones/14_indicadores_coste_prevision.md; B4 cambiado por "
+           "peticiones/17_correcciones_del_auditor.md y por "
+           "peticiones/19_correcciones_del_segundo_auditor.md")
 SALIDA_JSON = "informes/indicadores__coste_prevision.json"
 SALIDA_MD = "informes/indicadores__coste_prevision.md"
 TRANSFORMACION = "informes/transformacion-datos.json"
-SKILL_MD = ".claude/skills/indicadores-y-analisis/SKILL.md"
-PROTECCION = "contexto-proyecto/fuentes/proteccion-datos.json"
-DOC16 = "contexto-proyecto/sector/documentos/16_backblaze_10k_2025_tablas_ingresos.txt"
-# JSON de los que parte el encargo; si uno falta o está en PARADO o ERROR, no se calcula nada
+METODO_MD = "metodos/indicadores-y-analisis/METODO.md"
+PROTECCION = "config/fuentes/proteccion-datos.json"
+DOC16 = "config/sector/documentos/16_backblaze_10k_2025_tablas_ingresos.txt"
+# JSON de los que parte la petición; si uno falta o está en PARADO o ERROR, no se calcula nada
 PREVIOS = ["analisis-exploratorio__modelo_trimestre", "analisis-exploratorio__dias_por_tramo",
            "indicadores__discos_modelos_edad"]
 # Tablas salidas de la transformación y tablas de entrada (las corregidas y el calendario)
@@ -76,31 +76,31 @@ TABLAS_SALIDA = ["dim_modelo", "dim_precio_gb", "modelo_trimestre", "inicio_trim
                  "fallos_detalle", "vida_discos"]
 TABLAS_ENTRADA = ["recuento_diario_corregido", "fotos_mensuales_corregido", "ventanas_fallo_corregido", "calendario"]
 
-# Fecha de referencia de los datos (reglas §5)
+# Fecha de referencia de los datos (reglas, apartado 5)
 FECHA_DATOS = dt.date(2025, 6, 30)
-# Mínimo para un ranking y para la tasa de una celda de la previsión: días de disco (reglas §7; encargo, criterio 5)
+# Mínimo para un ranking y para la tasa de una celda de la previsión: días de disco (reglas, apartado 7; petición, criterio 5)
 MINIMO_DIAS_ANO = 50_000
-# Un año de edad con menos fallos que esto corta la curva de supervivencia (reglas §7, CP-009; encargo 13)
+# Un año de edad con menos fallos que esto corta la curva de supervivencia (reglas, apartado 7, cuestión 009; petición 13)
 MINIMO_FALLOS_EDAD = 20
-# Confianza de los intervalos (skill, parametros.md; 42.6 del manual)
+# Confianza de los intervalos (método, parametros.md; 42.6 del manual)
 CONFIANZA = 0.95
-# Vida contable en años, mano de obra de un cambio en dólares y horas de técnico por cambio (reglas §5 y §6)
+# Vida contable en años, mano de obra de un cambio en dólares y horas de técnico por cambio (reglas, apartado 5 y §6)
 VIDA_CONTABLE = 6
 COSTE_CAMBIO = 37
 HORAS_POR_CAMBIO = 0.74
-# Gigabytes por terabyte (reglas §6) y días de un año para pasar días de disco a terabytes-año
+# Gigabytes por terabyte (reglas, apartado 6) y días de un año para pasar días de disco a terabytes-año
 GB_POR_TB = 1000
 DIAS_ANO = 365
-# Factor de la tasa anual en %: 100 × 365 (reglas §6)
+# Factor de la tasa anual en %: 100 × 365 (reglas, apartado 6)
 FACTOR_TASA = 100 * DIAS_ANO
-# Años de edad de la tabla de vida (reglas de transformación §6: de 0 a 10) y nivel de la vida real (encargo)
+# Años de edad de la tabla de vida (reglas de transformación §6: de 0 a 10) y nivel de la vida real (petición)
 EDADES = list(range(11))
 S_VIDA = 0.5
-# Años con ingreso por TB: 2025 necesita la reserva (reglas §6)
+# Años con ingreso por TB: 2025 necesita la reserva (reglas, apartado 6)
 ANOS_INGRESO = [2023, 2024]
-# Primer trimestre que se prevé: tiene un año de tasas detrás (encargo; reglas §7)
+# Primer trimestre que se prevé: tiene un año de tasas detrás (petición; reglas, apartado 7)
 PRIMER_PREVISTO = (2021, 1)
-# Niveles de la tasa de la previsión, en su orden (encargo, criterio 5)
+# Niveles de la tasa de la previsión, en su orden (petición, criterio 5)
 NIVELES = ("modelo", "capacidad", "edad")
 # Sensibilidad, solo para leer: (nombre, meses de historia o None si toda, mínimo de días, niveles)
 MESES_CORTO = 12
@@ -108,17 +108,17 @@ VARIANTES = [("12 meses de historia", MESES_CORTO, MINIMO_DIAS_ANO, NIVELES),
              ("mínimo de 1 día, toda la historia", None, 1, NIVELES),
              ("mínimo de 1 día, 12 meses de historia", MESES_CORTO, 1, NIVELES),
              ("solo capacidad y año de edad", None, MINIMO_DIAS_ANO, ("capacidad", "edad"))]
-# Diferencia que se admite entre dos vías en importes y en cifras con decimales (encargo, «SEGUNDA VÍA»)
+# Diferencia que se admite entre dos vías en importes y en cifras con decimales (petición, «SEGUNDA VÍA»)
 TOLERANCIA = 1e-6
-# Primeros del ranking en los que se cuenta el precio inferido (encargo, B4.2)
+# Primeros del ranking en los que se cuenta el precio inferido (petición, B4.2)
 N_PRIMEROS = 10
-# Un modelo con menos fallos que esto en sus años que pasan el mínimo sale sin puesto (reglas §7, CP-012; encargo 17)
+# Un modelo con menos fallos que esto en sus años que pasan el mínimo sale sin puesto (reglas, apartado 7, cuestión 012; petición 17)
 MINIMO_FALLOS_MODELO = 20
-# Factores sobre el precio inferido en la sensibilidad (encargo 17, B4.3; criterio técnico de Claude)
+# Factores sobre el precio inferido en la sensibilidad (petición 17, B4.3; criterio técnico
 FACTORES_PRECIO = (0.8, 1.2)
-# JSON del 09 del que sale la tasa a igual edad de cada modelo (encargo 17, B4.2)
+# JSON del 09 del que sale la tasa a igual edad de cada modelo (petición 17, B4.2)
 JSON_09 = "informes/indicadores__discos_modelos_edad.json"
-# La palabra vetada para el conjunto de discos (Juan, 17/11; R68-91), partida para que el código no la lleve
+# La palabra vetada para el conjunto de discos (El responsable del caso, 17/11; una nota del caso), partida para que el código no la lleve
 VETADA = "flo" + "ta"
 
 COMPROBACIONES = ["unidad", "minimo", "empates", "referencia", "azar_en_grupos", "pesos", "hacia_adelante",
@@ -210,7 +210,7 @@ def nativo(x):
 def intervalo_poisson(fallos, dias, confianza=CONFIANZA):
     """Tasa anual en % y su intervalo exacto de Poisson (con chi2), pasados a tasa con los mismos días de disco.
 
-    Inferior chi2.ppf(α/2; 2f)/2, 0 si f = 0; superior chi2.ppf(1 − α/2; 2f + 2)/2 (encargo 13, el mismo criterio).
+    Inferior chi2.ppf(α/2; 2f)/2, 0 si f = 0; superior chi2.ppf(1 − α/2; 2f + 2)/2 (petición 13, el mismo criterio).
     """
     a = 1 - confianza
     f = int(fallos)
@@ -221,7 +221,7 @@ def intervalo_poisson(fallos, dias, confianza=CONFIANZA):
 
 
 def tabla_de_vida(edad_entrada, edad_fin, es_evento, edades=EDADES):
-    """Exposición en años, eventos y tasa por año de edad, con entrada tardía (encargo 13, criterio 2 de este encargo).
+    """Exposición en años, eventos y tasa por año de edad, con entrada tardía (petición 13, criterio 2 de esta petición).
 
     Exposición del año j = suma de max(0, min(edad_fin, j + 1) − max(edad_entrada, j)); eventos del año j = discos con
     evento y floor(edad_fin) = j; tasa = eventos / exposición (None si no hay exposición).
@@ -253,7 +253,7 @@ def supervivencia(tasas):
 
 
 def cortar_curva(s, eventos_por_ano, minimo):
-    """Corta la curva antes del primer año de edad con menos de `minimo` fallos (CP-009; encargo 13).
+    """Corta la curva antes del primer año de edad con menos de `minimo` fallos (cuestión 009; petición 13).
 
     S(k) usa las tasas de los años 0 a k − 1, así que S(j) vale aunque el año j tenga pocos fallos; desde S(j + 1), None.
     Devuelve la curva cortada y el motivo, o None si no hay que cortar.
@@ -302,7 +302,7 @@ def tabla_de_vida_bucle(modelos, entrada, fin, evento, edades=EDADES):
 
 
 # =================================================================================================================
-# 5. Comprobaciones (skill §4 y encargo): cada una devuelve True o False calculado con lo ejecutado
+# 5. Comprobaciones (método §4 y petición): cada una devuelve True o False calculado con lo ejecutado
 # =================================================================================================================
 def comp_unidad(claves):
     """La unidad se cuenta una vez: ninguna clave repetida."""
@@ -324,12 +324,12 @@ def comp_minimo_ranking(dias_ano, marcas, minimo):
 
 
 def comp_puesto_minimo(filas, minimo=MINIMO_FALLOS_MODELO):
-    """Ningún modelo con menos de `minimo` fallos lleva puesto, y todos los demás lo llevan (CP-012; encargo 17)."""
+    """Ningún modelo con menos de `minimo` fallos lleva puesto, y todos los demás lo llevan (cuestión 012; petición 17)."""
     return all((f["puesto"] is None) == (f["fallos"] < minimo) for f in filas)
 
 
 def comp_puesto_grupo(filas, minimo=MINIMO_FALLOS_MODELO):
-    """Ningún puesto de B4 compara modelos de distinta capacidad o año de compra (encargo 19).
+    """Ningún puesto de B4 compara modelos de distinta capacidad o año de compra (petición 19).
 
     Rehace los grupos con la capacidad y el año de compra de cada fila y, dentro de cada uno, el puesto de los modelos
     con `minimo` fallos o más por su coste (empates, el mismo puesto); los demás, sin puesto.
@@ -393,7 +393,7 @@ def comp_sin_vetada(textos):
 # 6. Entradas: estado de la fase anterior, huellas y lectura
 # =================================================================================================================
 def comprobar_previos(raiz):
-    """Para con PARADO si falta un JSON del que parte el encargo o su estado es PARADO o ERROR."""
+    """Para con PARADO si falta un JSON del que parte la petición o su estado es PARADO o ERROR."""
     estados = {}
     for n in PREVIOS:
         ruta = raiz / "informes" / f"{n}.json"
@@ -480,14 +480,14 @@ def leer(raiz):
                     "cal": ["fecha"], "fv": ["fecha"]}.items():
         for c in cols:
             d[t][c] = a_ms(d[t][c])
-    # Discos de datos: la población de todo el encargo (reglas §3 y §7)
+    # Discos de datos: la población de todo la petición (reglas, apartado 3 y §7)
     datos = set(d["dm"].loc[d["dm"]["tipo_disco"] == "datos", "model"])
     for t in ["mt", "it", "dpt", "vida"]:
         if not set(d[t]["model"]) <= datos:
             raise Parada("ERROR", f"{t} trae un modelo que no es de datos")
     d["datos"] = datos
     d["dmd"] = d["dm"].loc[d["dm"]["tipo_disco"] == "datos"].copy()
-    # El año de compra de cada modelo, del que sale el grupo del puesto de B4 (reglas §6 y §7; encargo 19)
+    # El año de compra de cada modelo, del que sale el grupo del puesto de B4 (reglas, apartado 6 y §7; petición 19)
     fc = d["dmd"].loc[d["dmd"]["fecha_compra"].notna()]
     d["ano_compra"] = {m: int(f.year) for m, f in zip(fc["model"], pd.to_datetime(fc["fecha_compra"]))}
     cap = d["dmd"].set_index("model")["capacidad_tb"]
@@ -529,13 +529,13 @@ def celdas_desde_mt(mt):
 
 
 def coste_nuevo(dpg):
-    """Lo que cuesta un fallo de cada capacidad y año: disco nuevo al coste por GB del año, más el cambio (reglas §6)."""
+    """Lo que cuesta un fallo de cada capacidad y año: disco nuevo al coste por GB del año, más el cambio (reglas, apartado 6)."""
     c = dpg.assign(coste=dpg["capacidad_tb"] * GB_POR_TB * dpg["coste_gb"] + COSTE_CAMBIO)
     return {(float(x["capacidad_tb"]), int(x["ano"])): float(x["coste"]) for _, x in c.iterrows()}
 
 
 def celdas_desde_recuento(rec_d, dmd, dpg):
-    """Las mismas celdas desde el recuento, con el coste de los fallos por la fórmula de las reglas §6 (segunda vía)."""
+    """Las mismas celdas desde el recuento, con el coste de los fallos por la fórmula de las reglas, apartado 6 (segunda vía)."""
     c = rec_d.assign(ano=rec_d["fecha"].dt.year).groupby(["model", "ano"]).agg(
         dias_disco=("discos", "sum"), fallos=("fallos", "sum")).reset_index()
     c = c.merge(dmd[["model", "capacidad_tb", "precio_usd", "origen_precio"]], on="model", how="left",
@@ -559,7 +559,7 @@ def spearman(a, b):
 
 
 def coste_igual_edad(amort, tasa_ie, por_fallo, dias, tb):
-    """Coste por TB y año a igual edad (encargo 17, B4.2): amortización + tasa a igual edad / 100 × coste medio de un
+    """Coste por TB y año a igual edad (petición 17, B4.2): amortización + tasa a igual edad / 100 × coste medio de un
     fallo del modelo × días de disco / 365 / terabytes-año. None si no hay tasa a igual edad."""
     if tasa_ie is None:
         return None
@@ -573,7 +573,7 @@ def salto_de_puesto(a, b):
 
 
 def sensibilidad_precio(filas, factores=FACTORES_PRECIO, n=N_PRIMEROS):
-    """Si los `n` primeros siguen siéndolo con el precio inferido por cada factor (encargo 17, B4.3).
+    """Si los `n` primeros siguen siéndolo con el precio inferido por cada factor (petición 17, B4.3).
 
     Solo cambia la amortización de los modelos con origen_precio «inferido»; la parte de los fallos no se toca (el disco
     nuevo de un fallo sale de dim_precio_gb, no del precio del modelo). `filas` son los modelos con puesto.
@@ -594,17 +594,17 @@ def sensibilidad_precio(filas, factores=FACTORES_PRECIO, n=N_PRIMEROS):
 def leer_igual_edad(raiz):
     """La tasa a igual edad de cada modelo de B2 en el JSON del 09: {modelo: (días, fallos, tasa a igual edad)}.
 
-    Para con PARADO si el JSON no la trae (es anterior al encargo 17); su estado ya lo mira comprobar_previos.
+    Para con PARADO si el JSON no la trae (es anterior a la petición 17); su estado ya lo mira comprobar_previos.
     """
     j = json.loads((raiz / JSON_09).read_text(encoding="utf-8"))
     b2 = next((p for p in j.get("preguntas", []) if p.get("id") == "B2"), None)
     ranking = (b2 or {}).get("tablas", {}).get("ranking", [])
     if not ranking or any("tasa_igual_edad" not in f for f in ranking):
-        raise Parada("PARADO", f"{JSON_09} no trae la tasa a igual edad de cada modelo (encargo 17): hay que ejecutar "
+        raise Parada("PARADO", f"{JSON_09} no trae la tasa a igual edad de cada modelo (petición 17): hay que ejecutar "
                                "antes el 09")
-    # Encargo 19: la tasa a igual edad es la de cada edad y trimestre, con φ; un JSON del 09 sin φ es de antes
+    # Petición 19: la tasa a igual edad es la de cada edad y trimestre, con φ; un JSON del 09 sin φ es de antes
     if not isinstance((b2.get("tablas", {}).get("a_igual_edad") or {}).get("phi"), dict):
-        raise Parada("PARADO", f"{JSON_09} no trae φ en la comparación a igual edad: es anterior al encargo 19 y hay "
+        raise Parada("PARADO", f"{JSON_09} no trae φ en la comparación a igual edad: es anterior a la petición 19 y hay "
                                "que ejecutar antes el 09")
     return {f["model"]: (f["dias_disco"], f["fallos"], f["tasa_igual_edad"]) for f in ranking}
 
@@ -637,10 +637,10 @@ def b4_ranking(celdas, dias_total, nuevo, minimo=MINIMO_FALLOS_MODELO, ano_compr
     """Coste por TB y año de cada modelo con sus celdas que pasan el mínimo, de menor a mayor, y su referencia.
 
     Amortización = precio / capacidad / 6; fallos = coste de los fallos / terabytes-año; el intervalo del coste pone en
-    la parte de los fallos el intervalo de la tasa (encargo, B4.1 y criterio 1). Un modelo con menos de `minimo` fallos
-    sale sin puesto, al final, y el resumen se calcula con los que tienen puesto (CP-012; encargo 17). El puesto se da
+    la parte de los fallos el intervalo de la tasa (petición, B4.1 y criterio 1). Un modelo con menos de `minimo` fallos
+    sale sin puesto, al final, y el resumen se calcula con los que tienen puesto (cuestión 012; petición 17). El puesto se da
     dentro de cada capacidad y año de compra (`ano_compra`, {modelo: año}); el de todos juntos va al lado, en
-    `puesto_global`, con su resumen (reglas §7; encargo 19).
+    `puesto_global`, con su resumen (reglas, apartado 7; petición 19).
     """
     ano_compra = ano_compra or {}
     pasan = celdas.loc[celdas["pasa"] & celdas["precio_usd"].notna()]
@@ -667,7 +667,7 @@ def b4_ranking(celdas, dias_total, nuevo, minimo=MINIMO_FALLOS_MODELO, ano_compr
                       "coste_hasta": amort + hi / 100 * por_fallo * dias / DIAS_ANO / tb,
                       "parte_fallos_pct": 100 * fallos_tb / (amort + fallos_tb), "coste_por_fallo": por_fallo,
                       "discos_medios": dias / dias_total, "anos_que_pasan": sorted(int(a) for a in g["ano"])})
-    # Puesto solo con `minimo` fallos o más (CP-012); los demás, sin puesto y al final, también por coste
+    # Puesto solo con `minimo` fallos o más (cuestión 012); los demás, sin puesto y al final, también por coste
     con = sorted((f for f in filas if f["fallos"] >= minimo), key=lambda f: (f["coste_tb_ano"], f["model"]))
     sin = sorted((f for f in filas if f["fallos"] < minimo), key=lambda f: (f["coste_tb_ano"], f["model"]))
     puestos = pd.Series([f["coste_tb_ano"] for f in con], dtype="float64").rank(method="min").astype(int).tolist()
@@ -676,7 +676,7 @@ def b4_ranking(celdas, dias_total, nuevo, minimo=MINIMO_FALLOS_MODELO, ano_compr
     for f in sin:
         f["puesto_global"] = None
         f["puesto"] = None
-    # El puesto dentro de cada capacidad y año de compra, donde la tasa de fallo decide (reglas §7; encargo 19)
+    # El puesto dentro de cada capacidad y año de compra, donde la tasa de fallo decide (reglas, apartado 7; petición 19)
     grupos = {}
     for f in con:
         grupos.setdefault((f["capacidad_tb"], f["ano_compra"]), []).append(f)
@@ -736,7 +736,7 @@ def curva_modelo(tv):
 
 
 def b4_vida(vida, modelos):
-    """Vida real de cada modelo de datos por su tabla de vida (encargo, criterio 2)."""
+    """Vida real de cada modelo de datos por su tabla de vida (petición, criterio 2)."""
     out = []
     por_modelo = {m: g for m, g in vida.groupby("model")}
     for m in sorted(modelos):
@@ -773,7 +773,7 @@ def b4_mejor(celdas, parciales):
 
     Mejor = el de menor coste por TB y año ese año entre los que pasan el mínimo (empates, por nombre). Coste real de
     todos los modelos con precio de esa capacidad ese año; con el mejor = sus terabytes-año × el coste del mejor
-    (encargo, criterio 3).
+    (petición, criterio 3).
     """
     c = celdas.loc[celdas["precio_usd"].notna()].copy()
     c["amort"] = c["precio_usd"] / c["capacidad_tb"] / VIDA_CONTABLE
@@ -811,7 +811,7 @@ def b4_mejor(celdas, parciales):
 
 
 def b4_ingreso(celdas_todas, celdas, ingresos, dias_ano):
-    """Ingreso por TB de 2023 y 2024 y el coste por TB y año de todos los discos con precio (encargo, criterio 4).
+    """Ingreso por TB de 2023 y 2024 y el coste por TB y año de todos los discos con precio (petición, criterio 4).
 
     Capacidad media = suma de días × capacidad del año / días del año en los datos, con todos los discos de datos.
     """
@@ -833,7 +833,7 @@ def b4_ingreso(celdas_todas, celdas, ingresos, dias_ano):
 # 8. Bloque 9 · Cuántos discos fallarán el próximo trimestre
 # =================================================================================================================
 def prever_trimestre(ano, trimestre, it, dpt, meses_historia=None, minimo=MINIMO_DIAS_ANO, niveles=NIVELES):
-    """Fallos previstos de un trimestre con lo sabido hasta el día anterior a su primer día (reglas §7, CP-011).
+    """Fallos previstos de un trimestre con lo sabido hasta el día anterior a su primer día (reglas, apartado 7, cuestión 011).
 
     Para cada fila de inicio_trimestre del trimestre (modelo y año de edad del primer día): previsto = discos ×
     días del trimestre × fallos / días de disco de su nivel de tasa, con los meses de dias_por_tramo anteriores al
@@ -906,7 +906,7 @@ def prever_trimestre_bucle(ano, trimestre, it, dpt, meses_historia=None, minimo=
 
 
 def error_ponderado(previstos, reales):
-    """Error absoluto ponderado = suma de |previsto − real| / suma de reales; sesgo, lo mismo con signo (CP-011)."""
+    """Error absoluto ponderado = suma de |previsto − real| / suma de reales; sesgo, lo mismo con signo (cuestión 011)."""
     s = float(sum(reales))
     if s == 0:
         return None, None
@@ -926,7 +926,7 @@ def etiqueta_serie(fechas):
 
 
 def montar_pares(previsiones, reales, prev_q, anterior):
-    """Pares de trimestre y capacidad: los que tienen discos el primer día, reales o referencia (encargo, B9.1)."""
+    """Pares de trimestre y capacidad: los que tienen discos el primer día, reales o referencia (petición, B9.1)."""
     pares = []
     for q in prev_q:
         p = previsiones[q["trimestre"]]
@@ -973,7 +973,7 @@ def correr_prevision(it, dpt, prev_q, reales, anterior, meses=None, minimo=MINIM
 
 
 # =================================================================================================================
-# 9. Segundas vías: cada una parte de otra tabla o de otro cálculo (skill §5)
+# 9. Segundas vías: cada una parte de otra tabla o de otro cálculo (método §5)
 # =================================================================================================================
 def comparar(nombre, via1, via2, a, b, tolerancia=None, recuento=False):
     """Compara dos series indexadas por la misma clave; exacta o con tolerancia. Devuelve la ficha de la segunda vía.
@@ -1011,7 +1011,7 @@ def calcular(d, ingresos):
     ranking, ref4, resumen = b4_ranking(celdas, cal_info["dias_total"], nuevo, ano_compra=d["ano_compra"])
     ranking_rec, ref4_rec, resumen_rec = b4_ranking(celdas_rec, cal_info["dias_total"], nuevo,
                                                     ano_compra=d["ano_compra"])
-    # Encargo 17: coste a igual edad con la tasa del 09, y sensibilidad al precio inferido con los que tienen puesto
+    # Petición 17: coste a igual edad con la tasa del 09, y sensibilidad al precio inferido con los que tienen puesto
     poner_igual_edad(ranking, d["ie"])
     poner_igual_edad(ranking_rec, d["ie"])
     ie_res, ie_res_rec = resumen_igual_edad(ranking), resumen_igual_edad(ranking_rec)
@@ -1041,7 +1041,7 @@ def calcular(d, ingresos):
                        "fallos del recuento × (capacidad en GB × coste_gb de dim_precio_gb + 37)",
                        "modelo_trimestre (suma de coste_fallos_usd)", a["coste_f"], b["coste_f"], TOLERANCIA))
     sv.append(comparar("coste por TB y año de cada modelo del ranking, en dólares",
-                       "recuento_diario_corregido + dim_precio_gb (fórmula de las reglas §6)", "modelo_trimestre",
+                       "recuento_diario_corregido + dim_precio_gb (fórmula de las reglas, apartado 6)", "modelo_trimestre",
                        pd.Series({f["model"]: f["coste_tb_ano"] for f in ranking_rec}),
                        pd.Series({f["model"]: f["coste_tb_ano"] for f in ranking}), TOLERANCIA))
     sv.append(comparar("coste por TB y año a igual edad de cada modelo, en dólares",
@@ -1096,9 +1096,9 @@ def calcular(d, ingresos):
     }
     motivos_b4 = {"azar_en_grupos": ("B4 ordena los modelos por coste y no compara cada uno con el conjunto de discos; "
                                      "la tasa frente al conjunto, con su intervalo y lo que saldría por azar, está en B2"),
-                  "pesos": ("el coste suma dos partes con su fórmula (reglas §6), sin pesos que se puedan mover"),
+                  "pesos": ("el coste suma dos partes con su fórmula (reglas, apartado 6), sin pesos que se puedan mover"),
                   "hacia_adelante": ("B4 describe el coste del periodo; si un modelo barato lo sigue siendo después se "
-                                     "mide en la reserva, que no se mira (reglas §5)")}
+                                     "mide en la reserva, que no se mira (reglas, apartado 5)")}
 
     # ---------------------------------------------------------------------------------------------------------
     # B9 · previsión trimestre a trimestre, referencia, niveles, sensibilidad y fallos que no se ven
@@ -1239,7 +1239,7 @@ def calcular(d, ingresos):
                     sin_precio["dias_disco"] == sin_precio_rec["dias_disco"]
                     and sin_precio["fallos"] == sin_precio_rec["fallos"]))
     rec_por_modelo = {f["model"]: f for f in ranking_rec}
-    # Los tres primeros y los dos últimos con puesto (CP-012: los que no lo tienen van al final, aparte)
+    # Los tres primeros y los dos últimos con puesto (cuestión 012: los que no lo tienen van al final, aparte)
     con_puesto = [f for f in ranking if f["puesto"] is not None]
     for f in con_puesto[:3] + con_puesto[-2:]:
         g = rec_por_modelo.get(f["model"], {})
@@ -1247,7 +1247,7 @@ def calcular(d, ingresos):
                         f"preguntas.B4.tablas.ranking[model={f['model']}].coste_tb_ano", r(f["coste_tb_ano"], 8),
                         "dólares por TB y año", pob4 + f"; {f['model']}", ", ".join(str(x) for x in f["anos_que_pasan"]),
                         len(f["anos_que_pasan"]), r(g.get("coste_tb_ano"), 8),
-                        "recuento_diario_corregido + dim_precio_gb (fórmula de las reglas §6)",
+                        "recuento_diario_corregido + dim_precio_gb (fórmula de las reglas, apartado 6)",
                         igual(g.get("coste_tb_ano"), f["coste_tb_ano"])))
     for nombre, clave in [("mediana de la parte de los fallos en el coste, en %", "mediana_parte_fallos_pct"),
                           ("correlación de Spearman entre el coste y la tasa", "spearman_coste_tasa"),
@@ -1255,7 +1255,7 @@ def calcular(d, ingresos):
         c4.append(cifra(nombre, f"preguntas.B4.tablas.resumen_ranking.{clave}", r(resumen[clave], 8), clave, pob4,
                         periodo_todo, len(con_puesto), r(resumen_rec[clave], 8),
                         "recuento_diario_corregido + dim_precio_gb", igual(resumen_rec[clave], resumen[clave])))
-    # Encargo 19: el puesto dentro de cada capacidad y año de compra
+    # Petición 19: el puesto dentro de cada capacidad y año de compra
     gc, gc_rec = resumen["grupos_compra"], resumen_rec["grupos_compra"]
     ok_puesto = ok.get("puesto dentro de capacidad y año de compra de cada modelo", False)
     for nombre, clave in [("grupos de capacidad y año de compra con algún modelo con puesto", "grupos_con_puesto"),
@@ -1264,7 +1264,7 @@ def calcular(d, ingresos):
         c4.append(cifra(nombre, f"preguntas.B4.tablas.resumen_ranking.grupos_compra.{clave}", gc[clave], "grupos",
                         pob4 + "; modelos con puesto", periodo_todo, resumen["con_puesto"], gc_rec[clave],
                         "recuento_diario_corregido + dim_precio_gb", gc[clave] == gc_rec[clave] and ok_puesto))
-    # Encargo 17: modelos con puesto, coste a igual edad y sensibilidad al precio inferido
+    # Petición 17: modelos con puesto, coste a igual edad y sensibilidad al precio inferido
     c4.append(cifra("modelos con puesto en el ranking de coste (20 fallos o más)",
                     "preguntas.B4.tablas.resumen_ranking.con_puesto", resumen["con_puesto"], "modelos", pob4,
                     periodo_todo, len(ranking), resumen_rec["con_puesto"], "recuento_diario_corregido",
@@ -1325,7 +1325,7 @@ def calcular(d, ingresos):
                             igual(g[clave], x[clave])))
 
     c9 = []
-    pob9 = POBLACION + "; todos los modelos (reglas §7, «Población del análisis»)"
+    pob9 = POBLACION + "; todos los modelos (reglas, apartado 7, «Población del análisis»)"
     per9 = f"de {prev_q[0]['trimestre']} a {prev_q[-1]['trimestre']}"
     pares_rec = set(da.loc[da > 0].index) | set(ra.index)
     pares_rec |= {(q["trimestre"], k) for q in prev_q for (t_, k) in ra.index if t_ == anterior[q["trimestre"]]}
@@ -1397,17 +1397,17 @@ def calcular(d, ingresos):
                          "capacidad_tb": f["capacidad_tb"]} for f in ranking]
     q4 = {"id": "B4", "pregunta": "Cuánto cuesta cada modelo de disco por terabyte y año, contando los que se rompen",
           "decision": "qué modelos comprar: un disco barato que falla mucho puede salir más caro (plan, bloque 4)",
-          "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 4; metodo/04_planteamientos.md §1.A",
+          "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 4; metodo/04_planteamientos.md §1.A",
           "funcion": "otra",
           "funcion_adaptada": ("ninguna función del capítulo 42 calcula un coste por unidad con averías: se usa la "
-                               "fórmula de las reglas §6 con el esquema de consulta agrupada (13.6), el ranking con "
-                               "empates «min» (11.10) y la tabla de vida del encargo 13 para la vida real"),
+                               "fórmula de las reglas, apartado 6 con el esquema de consulta agrupada (13.6), el ranking con "
+                               "empates «min» (11.10) y la tabla de vida de la petición 13 para la vida real"),
           "poblacion": {"regla": POBLACION + "; en el ranking, modelos con precio y sus años con 50.000 días de disco o más",
                         "periodo": periodo_todo, "filas": int(len(mt)), "unidad": "modelo de disco",
                         "entidades": int(mt["model"].nunique())},
           "medida": ("coste por TB y año = precio / capacidad / 6 + tasa anual × (disco nuevo del año del fallo + 37 "
-                     "dólares) / capacidad, que se calcula como suma del coste de los fallos / terabytes-año (reglas §6)"),
-          "minimo_casos": "50.000 días de disco del modelo en el año (reglas §7)",
+                     "dólares) / capacidad, que se calcula como suma del coste de los fallos / terabytes-año (reglas, apartado 6)"),
+          "minimo_casos": "50.000 días de disco del modelo en el año (reglas, apartado 7)",
           "que_cambia_la_decision": ("un modelo cuyo coste por TB y año queda por debajo de los demás de su capacidad es "
                                      "candidato a comprarse; la parte de los fallos dice cuánto pesa la fiabilidad"),
           "cifras": c4,
@@ -1431,10 +1431,10 @@ def calcular(d, ingresos):
                                                                          for x in con if x["diferencia"] < -TOLERANCIA]},
                      "ingreso_por_tb": ingreso,
                      "ingreso_2025": "no se calcula: necesita la capacidad de julio a diciembre de 2025, que es reserva "
-                                     "(reglas §6)"}}
+                                     "(reglas, apartado 6)"}}
     q9 = {"id": "B9", "pregunta": "Cuántos discos fallarán el próximo trimestre, por capacidad",
           "decision": "cuántos discos de repuesto comprar y cuántas horas de técnico hacen falta (plan, bloque 9)",
-          "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 9; metodo/04_planteamientos.md §1.B",
+          "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 9; metodo/04_planteamientos.md §1.B",
           "funcion": "otra",
           "funcion_adaptada": ("ninguna función del capítulo 42 prevé un recuento: es una cuenta con las tasas por "
                                "modelo y edad medidas hasta el día anterior, medida con el error absoluto ponderado y "
@@ -1444,10 +1444,10 @@ def calcular(d, ingresos):
                         "entidades": len(pares)},
           "medida": ("previstos = suma de discos del primer día × días del trimestre × tasa diaria de su modelo y año "
                      "de edad, con los meses anteriores al primer día; error absoluto ponderado = suma de |previsto − "
-                     "real| / suma de reales, y el sesgo con signo (reglas §7, CP-011)"),
-          "minimo_casos": "50.000 días de disco en la celda de modelo y edad, o de capacidad y edad (reglas §7; criterio 5)",
+                     "real| / suma de reales, y el sesgo con signo (reglas, apartado 7, cuestión 011)"),
+          "minimo_casos": "50.000 días de disco en la celda de modelo y edad, o de capacidad y edad (reglas, apartado 7; criterio 5)",
           "que_cambia_la_decision": ("si la cuenta gana a repetir el trimestre anterior, se usa para comprar repuestos y "
-                                     "planificar horas; si no gana, la cuenta no vale y se usa la referencia (reglas §7)"),
+                                     "planificar horas; si no gana, la cuenta no vale y se usa la referencia (reglas, apartado 7)"),
           "cifras": c9,
           "referencia": {"que_es": "repetir los fallos reales del trimestre anterior de la misma capacidad",
                          "valor": r(tot["wape_referencia"], 8), "sesgo": r(tot["sesgo_referencia"], 8),
@@ -1460,7 +1460,7 @@ def calcular(d, ingresos):
                                "referencia": {"wape": tot["wape_referencia"], "sesgo": tot["sesgo_referencia"]},
                                "previsto": tot["previsto"], "real": tot["real"], "gana_la_cuenta": bool(gana),
                                "veredicto": ("la cuenta gana a la referencia y se usa" if gana else
-                                             "la cuenta no gana: no vale y se usa la referencia (reglas §7)")},
+                                             "la cuenta no gana: no vale y se usa la referencia (reglas, apartado 7)")},
                      "serie_lineas": por_trimestre, "por_capacidad": por_capacidad, "niveles": niveles,
                      "parte_de_discos_con_tasa": parte_con_tasa, "sensibilidad": sensibilidad,
                      "filas_sin_dias": {"filas": int(dpt["dias_disco"].isna().sum()),
@@ -1471,7 +1471,7 @@ def calcular(d, ingresos):
 
 
 # =================================================================================================================
-# 11. Validaciones (skill §7) y búsqueda de resultados escritos
+# 11. Validaciones (método §7) y búsqueda de resultados escritos
 # =================================================================================================================
 def buscar_resultados_escritos(texto):
     """Líneas del código con una comprobación o validación puesta a True o con una cifra larga escrita.
@@ -1493,7 +1493,7 @@ def buscar_resultados_escritos(texto):
 
 
 def validar(res, fuente, h_antes, h_despues, res2):
-    """Las nueve validaciones de la skill, cada una calculada sobre el resultado y el código."""
+    """Las nueve validaciones de el método, cada una calculada sobre el resultado y el código."""
     pregs = res.get("preguntas", [])
 
     def lleno(x):
@@ -1561,7 +1561,7 @@ NOMBRES_COMPROBACION = {"unidad": "La unidad", "minimo": "El mínimo de casos", 
                         "periodos": "Los periodos"}
 NOMBRES_EXTRA = {"partes_suman_total": "las dos partes de la diferencia con el mejor modelo suman el total en cada celda",
                  "puesto_dentro_del_grupo": ("ningún puesto compara modelos de distinta capacidad o año de compra "
-                                             "(encargo 19)"),
+                                             "(petición 19)"),
                  "sin_futuro": "ninguna tasa de la previsión usa un mes igual o posterior al primer día de su trimestre",
                  "reales_cuadran_recuento": "los fallos reales de los trimestres previstos suman lo mismo que el recuento",
                  "sin_palabra_vetada": "ni el JSON ni este informe llevan la palabra vetada para el conjunto de discos"}
@@ -1577,14 +1577,14 @@ NOMBRES_VALIDACION = {"planteamiento_completo": "cada pregunta tiene su planteam
 
 
 def seccion_comprobaciones(L, q):
-    """Las nueve comprobaciones de una pregunta y las del encargo, con su resultado o su motivo."""
+    """Las nueve comprobaciones de una pregunta y las de la petición, con su resultado o su motivo."""
     L.append(f"Las comprobaciones de {q['id']}:")
     L.append("")
     for k, v in q["comprobaciones"].items():
         texto = "sí" if v is True else "no" if v is False else "no aplica, porque " + q["motivos_null"][k]
         L.append(f"- {NOMBRES_COMPROBACION[k]}: {texto}.")
     for k, v in q.get("comprobaciones_extra", {}).items():
-        L.append(f"- Del encargo, {NOMBRES_EXTRA[k]}: {'sí' if v else 'no'}.")
+        L.append(f"- Del petición, {NOMBRES_EXTRA[k]}: {'sí' if v else 'no'}.")
     L.append("")
 
 
@@ -1617,7 +1617,7 @@ def informe(j):
     # Las preguntas y su planteamiento
     L.append("## Las preguntas y su planteamiento")
     L.append("")
-    L.append("Las dos preguntas salen del plan de la analítica, aprobado por Juan el 16/11/2026, y de los "
+    L.append("Las dos preguntas salen del plan de la analítica, aprobado por el responsable del caso el 16/11/2026, y de los "
              "planteamientos 1.A y 1.B. Entran los discos de datos, sin los de arranque, del 01/01/2020 al "
              "30/06/2025. La tasa anual de fallo es 100 × 365 × fallos / días de disco.")
     L.append("")
@@ -1637,7 +1637,7 @@ def informe(j):
     # B4
     rk = b4["ranking"]
     rr = b4["resumen_ranking"]
-    # El más barato y el más caro, entre los que tienen puesto (CP-012: los que no lo tienen van al final)
+    # El más barato y el más caro, entre los que tienen puesto (cuestión 012: los que no lo tienen van al final)
     rkp = [f for f in rk if f["puesto"] is not None]
     L.append("## B4 · Cuánto cuesta cada modelo")
     L.append("")
@@ -1645,8 +1645,8 @@ def informe(j):
              f"y el más caro el {rkp[-1]['model']}, con {usd(rkp[-1]['coste_tb_ano'], 4)}. Entran {len(rk)} modelos, "
              f"con los {b4['celdas_que_pasan']} años de modelo que pasan el mínimo de 50.000 días de disco. "
              + (f"{len(rkp)} llevan puesto; los {rr['sin_puesto']} con menos de {rr['minimo_fallos']} fallos salen con "
-                "su coste, sin puesto y al final de la tabla (reglas §7, CP-012)." if rr["sin_puesto"] else
-                f"Todos tienen {rr['minimo_fallos']} fallos o más y llevan puesto (reglas §7, CP-012)."))
+                "su coste, sin puesto y al final de la tabla (reglas, apartado 7, cuestión 012)." if rr["sin_puesto"] else
+                f"Todos tienen {rr['minimo_fallos']} fallos o más y llevan puesto (reglas, apartado 7, cuestión 012)."))
     L.append("")
     L.append(f"Los fallos pesan poco en el coste: su parte tiene una mediana del {pct(rr['mediana_parte_fallos_pct'])} "
              f"entre los {len(rkp)} modelos con puesto, y el resto es la amortización del precio de compra. El orden por coste se "
@@ -1656,7 +1656,7 @@ def informe(j):
     L.append("")
     gc = rr["grupos_compra"]
     L.append(f"El puesto se da dentro de cada capacidad y año de compra, que es donde la tasa de fallo decide: entre "
-             "años de compra, el orden lo pone el precio de cada año (reglas §7). Hay "
+             "años de compra, el orden lo pone el precio de cada año (reglas, apartado 7). Hay "
              f"{gc['grupos_con_puesto']} grupos con algún modelo con puesto, y {gc['grupos_con_dos_o_mas']} con dos o "
              "más, que son los únicos donde el puesto compara modelos:")
     L.append("")
@@ -1684,7 +1684,7 @@ def informe(j):
                  f"{numero(f['coste_tb_ano_garantia'], 4) if f['coste_tb_ano_garantia'] is not None else 'sin dato'} | "
                  f"{numero(cie, 4) if cie is not None else 'sin dato'} |")
     L.append("")
-    # Encargo 17: el coste con la tasa a igual edad y la sensibilidad al precio inferido
+    # Petición 17: el coste con la tasa a igual edad y la sensibilidad al precio inferido
     ce = b4["coste_igual_edad"]
     L.append(f"La última columna pone en la parte de los fallos la tasa a igual edad de cada modelo, la del bloque 2: "
              "la que tendría con la mezcla de edades de todos los discos. Con los "
@@ -1771,7 +1771,7 @@ def informe(j):
     else:
         L.append(f"La cuenta no gana a la referencia: su error absoluto ponderado es {numero(e['cuenta']['wape'], 4)}, "
                  f"frente a {numero(e['referencia']['wape'], 4)} de repetir los fallos del trimestre anterior. Con la "
-                 "regla del caso (reglas §7), la cuenta no vale y se usa la referencia.")
+                 "regla del caso (reglas, apartado 7), la cuenta no vale y se usa la referencia.")
     L.append("")
     L.append(f"La cuenta prevé de más: su sesgo es de {numero(e['cuenta']['sesgo'], 4, con_signo=True)}, y el de la "
              f"referencia, de {numero(e['referencia']['sesgo'], 4, con_signo=True)}. En los "
@@ -1821,7 +1821,7 @@ def informe(j):
     inv = b9["invisibles"]
     L.append(f"La cuenta no puede ver {numero(inv['fallos'])} de los {numero(inv['de'])} fallos reales, el "
              f"{pct(inv['pct'])}: son de discos que aparecen después del primer día de su trimestre, y la regla de la "
-             "previsión solo cuenta los discos de ese día (reglas §7). La referencia sí los cuenta.")
+             "previsión solo cuenta los discos de ese día (reglas, apartado 7). La referencia sí los cuenta.")
     L.append("")
     seccion_comprobaciones(L, p["B9"])
 
@@ -1841,7 +1841,7 @@ def informe(j):
             elif x["tipo"] == "pocos fallos":
                 L.append(f"- B4, {x['grupo']}: {numero(x['casos'])} fallos en {numero(x['dias_disco'])} días de disco, "
                          f"menos de 20. Sale con su coste, {usd(x['coste_tb_ano'], 4)} por TB y año, pero sin puesto "
-                         "(CP-012).")
+                         "(cuestión 012).")
             elif x["tipo"] == "vida sin base":
                 L.append(f"- B4, {x['casos']} modelos sin ningún año de edad con 20 fallos o más: su curva no tiene "
                          "base y no dan vida real.")
@@ -1895,11 +1895,11 @@ def informe(j):
 # =================================================================================================================
 # 13. Ejecución
 # =================================================================================================================
-def version_skill(raiz):
-    """La fecha y el código de la última línea de versión del SKILL.md (bloque común)."""
-    ruta = raiz / SKILL_MD
+def version_metodo(raiz):
+    """La fecha y el código de la última línea de versión del METODO.md (bloque común)."""
+    ruta = raiz / METODO_MD
     if not ruta.exists():
-        ruta = CASO / SKILL_MD
+        ruta = CASO / METODO_MD
     lineas = [x for x in ruta.read_text(encoding="utf-8").splitlines() if x.startswith("Versión ")]
     m = re.match(r"Versión (\S+) \(([^)]+)\)", lineas[-1]) if lineas else None
     return f"{m.group(1)} ({m.group(2)})" if m else None
@@ -1909,62 +1909,62 @@ def parametros():
     """Los valores con que se ejecutó, cada uno con su origen."""
     return [
         {"nombre": "mínimo de días de disco en el año para un ranking y para el mejor modelo",
-         "valor": numero(MINIMO_DIAS_ANO), "origen": "reglas-negocio §7; sustituye al mínimo de 30 casos de la skill"},
+         "valor": numero(MINIMO_DIAS_ANO), "origen": "reglas-negocio §7; sustituye al mínimo de 30 casos de el método"},
         {"nombre": "mínimo de días de disco de una celda de tasa en la previsión", "valor": numero(MINIMO_DIAS_ANO),
-         "origen": "criterio técnico 5 de Claude, con el mínimo de las reglas §7"},
-        {"nombre": "vida contable", "valor": f"{VIDA_CONTABLE} años", "origen": "reglas-negocio §3 y §6, CP-001"},
-        {"nombre": "coste de un cambio", "valor": f"{COSTE_CAMBIO} dólares", "origen": "reglas-negocio §6, CP-002"},
+         "origen": "criterio técnico 5, con el mínimo de las reglas, apartado 7"},
+        {"nombre": "vida contable", "valor": f"{VIDA_CONTABLE} años", "origen": "reglas-negocio §3 y §6, cuestión 001"},
+        {"nombre": "coste de un cambio", "valor": f"{COSTE_CAMBIO} dólares", "origen": "reglas-negocio §6, cuestión 002"},
         {"nombre": "disco nuevo de un fallo", "valor": "misma capacidad al coste por GB del año del fallo (dim_precio_gb)",
          "origen": "reglas-negocio §6"},
-        {"nombre": "horas de técnico por cambio", "valor": numero(HORAS_POR_CAMBIO, 2), "origen": "reglas §5, doc. 12b"},
+        {"nombre": "horas de técnico por cambio", "valor": numero(HORAS_POR_CAMBIO, 2), "origen": "reglas, apartado 5, doc. 12b"},
         {"nombre": "coste de un modelo en todo el periodo", "valor": "solo sus celdas de modelo y año que pasan el mínimo",
-         "origen": "criterio técnico 1 de Claude, en el encargo"},
+         "origen": "criterio técnico 1, en la petición"},
         {"nombre": "intervalo del coste", "valor": "la parte de los fallos con el intervalo exacto de Poisson de la tasa",
-         "origen": "encargo, B4.1"},
+         "origen": "petición, B4.1"},
         {"nombre": "vida real", "valor": "edad a la que S baja de 0,5 en la tabla de vida, con la curva cortada antes "
                                          "del primer año de edad con menos de 20 fallos",
-         "origen": "criterio técnico 2 de Claude, en el encargo, con el método del encargo 13"},
+         "origen": "criterio técnico 2, en la petición, con el método de la petición 13"},
         {"nombre": "mejor modelo de una capacidad y año", "valor": "el de menor coste por TB y año entre los que pasan "
                                                                    "el mínimo; empates, por nombre",
-         "origen": "criterio técnico 3 de Claude, en el encargo"},
+         "origen": "criterio técnico 3, en la petición"},
         {"nombre": "ingreso por TB", "valor": "«Total revenue» del doc. 16 / capacidad media del año (días × capacidad / "
                                               "días del año en los datos)",
-         "origen": "criterio técnico 4 de Claude, en el encargo; reglas §6"},
+         "origen": "criterio técnico 4, en la petición; reglas, apartado 6"},
         {"nombre": "tasa de la previsión", "valor": "modelo y edad, capacidad y edad, o edad, con los meses anteriores al "
                                                     "primer día del trimestre y toda la historia",
-         "origen": "criterio técnico 5 de Claude, en el encargo; reglas §7"},
+         "origen": "criterio técnico 5, en la petición; reglas, apartado 7"},
         {"nombre": "filas de dias_por_tramo sin días de disco", "valor": "cuentan 0 días, y sus fallos entran en la tasa",
          "origen": "reglas de transformación §6 (los fallos de una fila sin días están en «fallos»); criterio de "
-                   "Claude, el mismo de las sumas por grupo de pandas, que dejan fuera el vacío"},
+                   "el analista, el mismo de las sumas por grupo de pandas, que dejan fuera el vacío"},
         {"nombre": "primer trimestre previsto", "valor": etiqueta(*PRIMER_PREVISTO),
-         "origen": "plan, bloque 9; encargo: tiene al menos un año de tasas detrás"},
+         "origen": "plan, bloque 9; petición: tiene al menos un año de tasas detrás"},
         {"nombre": "medida de la previsión", "valor": "error absoluto ponderado de todos los trimestres y capacidades "
                                                       "a la vez, con el sesgo al lado",
-         "origen": "reglas-negocio §7, CP-011"},
+         "origen": "reglas-negocio §7, cuestión 011"},
         {"nombre": "confianza de los intervalos", "valor": numero(CONFIANZA, 2),
-         "origen": "parametros.md de la skill y 42.6 del manual"},
+         "origen": "parametros.md de el método y 42.6 del manual"},
         {"nombre": "tolerancia de las segundas vías en importes y cifras con decimales", "valor": f"{TOLERANCIA:g}",
-         "origen": "encargo, «SEGUNDA VÍA»; en los años de exposición de la tabla de vida, 0,001 años, por el redondeo "
-                   "de sumar cientos de miles de discos en distinto orden (criterio de Claude)"},
+         "origen": "petición, «SEGUNDA VÍA»; en los años de exposición de la tabla de vida, 0,001 años, por el redondeo "
+                   "de sumar cientos de miles de discos en distinto orden (criterio"},
         {"nombre": "mínimo de fallos para tener puesto en el ranking de coste", "valor": str(MINIMO_FALLOS_MODELO),
-         "origen": "reglas-negocio §7, CP-012; encargo 17: con menos, el modelo sale con su coste y sin puesto, y el "
+         "origen": "reglas-negocio §7, cuestión 012; petición 17: con menos, el modelo sale con su coste y sin puesto, y el "
                    "resumen del ranking se calcula sin él"},
         {"nombre": "coste a igual edad",
          "valor": "amortización + tasa a igual edad / 100 × coste medio de un fallo del modelo × días de disco / 365 / "
                   "terabytes-año, con la tasa a igual edad del ranking de B2 de " + JSON_09,
-         "origen": "encargo 17, B4.2; reglas §7, «Una tasa por modelo se compara a igual edad»"},
+         "origen": "petición 17, B4.2; reglas, apartado 7, «Una tasa por modelo se compara a igual edad»"},
         {"nombre": "sensibilidad al precio inferido",
          "valor": "el precio de los modelos con origen «inferido» × " + " y × ".join(numero(x, 1) for x in FACTORES_PRECIO)
                   + "; cambia solo la amortización (el disco nuevo de un fallo sale de dim_precio_gb); con los modelos "
                     f"con puesto, cuántos de los {N_PRIMEROS} primeros siguen y cuál es el primero",
-         "origen": "criterio técnico de Claude, en el encargo 17 (B4.3)"},
+         "origen": "criterio técnico, en la petición 17 (B4.3)"},
         {"nombre": "puesto del ranking de coste",
-         "valor": ("dentro de cada capacidad y año de compra (el año de fecha_compra de dim_modelo), con CP-012; el "
+         "valor": ("dentro de cada capacidad y año de compra (el año de fecha_compra de dim_modelo), con cuestión 012; el "
                    "puesto de todos juntos, al lado, con su resumen"),
-         "origen": "reglas-negocio §7 («El coste por TB y año se ordena dentro de cada capacidad y año de compra», Juan, "
-                   "18/11/2026); encargo 19"},
-        {"nombre": "tasa a igual edad del 09", "valor": "la de cada año de edad y trimestre, con φ (encargo 19)",
-         "origen": "encargo 19; el script para si el JSON del 09 no trae φ"},
+         "origen": "reglas-negocio §7 («El coste por TB y año se ordena dentro de cada capacidad y año de compra», el responsable del caso, "
+                   "18/11/2026); petición 19"},
+        {"nombre": "tasa a igual edad del 09", "valor": "la de cada año de edad y trimestre, con φ (petición 19)",
+         "origen": "petición 19; el script para si el JSON del 09 no trae φ"},
         {"nombre": "semilla", "valor": "no aplica", "origen": "ningún cálculo usa azar"},
     ]
 
@@ -1983,21 +1983,21 @@ def limites(res):
         "Dos modelos de la misma capacidad comprados el mismo año tienen el mismo precio, así que entre ellos el orden "
         "lo pone solo la tasa de fallo.",
         f"{b4['resumen_ranking']['sin_puesto']} modelos tienen menos de {MINIMO_FALLOS_MODELO} fallos y salen sin puesto "
-        "(CP-012); su coste está en la tabla, pero no se ordena.",
+        "(cuestión 012); su coste está en la tabla, pero no se ordena.",
         "El coste a igual edad depende de la tasa a igual edad del 09: si el 09 cambia, este coste cambia con él. La "
         "sensibilidad al precio inferido solo mueve la amortización.",
         "La cifra con garantía usa la garantía de la ficha de cada fabricante y la edad al fallar por horas encendido; "
-        "si Backblaze reclama la garantía no consta (CP-005).",
+        "si Backblaze reclama la garantía no consta (cuestión 005).",
         "2025 tiene seis meses: su fila del mejor modelo no se compara con un año entero.",
         "El ingreso por TB es un orden de magnitud: la capacidad incluye paridad y espacio libre. El de 2025 necesita "
         "la reserva.",
         f"La previsión no ve {numero(inv['fallos'])} fallos de {numero(inv['de'])} ({pct(inv['pct'])}), de discos que "
-        "entran después del primer día de su trimestre; es la regla de las reglas §7, y la referencia sí los cuenta.",
+        "entran después del primer día de su trimestre; es la regla de las reglas, apartado 7, y la referencia sí los cuenta.",
         "La sensibilidad es solo para leer: cambiar la regla de la tasa después de ver el resultado sería elegir la "
         "regla para que salga bien.",
-        "Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas §5). La prueba final de la "
+        "Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas, apartado 5). La prueba final de la "
         "previsión usará la misma función, prever_trimestre, en esos cuatro trimestres.",
-        "Pendiente: el auditor sin memoria del cierre del paso (skill §8) necesita el sí de Juan, porque es un agente.",
+        "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente.",
     ]
 
 
@@ -2016,7 +2016,7 @@ def textos(j):
 def principal(raiz):
     """Lee, calcula dos veces, comprueba, valida y escribe; devuelve el código de salida."""
     inicio = time.time()
-    j = {"skill": "indicadores-y-analisis", "version_skill": version_skill(raiz), "script": SCRIPT, "encargo": ENCARGO,
+    j = {"metodo": "indicadores-y-analisis", "version_metodo": version_metodo(raiz), "script": SCRIPT, "peticion": PETICION,
          "fecha_datos": FECHA_DATOS.isoformat(), "fecha_ejecucion": dt.datetime.now().isoformat(timespec="seconds"),
          "entradas": [], "resultado": {}, "pendientes": []}
     h_antes = huellas_raw(raiz)
@@ -2064,7 +2064,7 @@ def principal(raiz):
             {"apartado": "4.5 y 4.7", "por_que": "intervalo al 95 % de la tasa; el mínimo de casos lo fijan las reglas "
                                                  "del caso, no el manual"},
             {"apartado": "4.11 y 4.12", "por_que": "no se contrastan proporciones: el intervalo de la tasa es el exacto "
-                                                   "de Poisson, como en el encargo 13"},
+                                                   "de Poisson, como en la petición 13"},
             {"apartado": "31.9", "por_que": "la previsión se mide con el error absoluto ponderado y el sesgo aparte, "
                                             "frente a la referencia ingenua de repetir el periodo anterior"},
         ]
@@ -2088,7 +2088,7 @@ def principal(raiz):
                         "por el mínimo o por falta de precio, y el coste depende de precios inferidos."),
             "artefactos": [SALIDA_JSON, SALIDA_MD],
             "siguiente": ("bloques 5 a 8 del plan; el informe final y el cuadro de mando leen este JSON; antes, el "
-                          "auditor sin memoria del paso con el sí de Juan")}
+                          "auditor sin memoria del paso con el sí de el responsable del caso")}
         j["comprobaciones_salida"] = {"sin_palabra_vetada": None}
         tj, tm = textos(j)
         j["comprobaciones_salida"]["sin_palabra_vetada"] = comp_sin_vetada([tj, tm])

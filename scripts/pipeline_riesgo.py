@@ -1,6 +1,6 @@
-"""Módulo de producción del caso 68: el riesgo de fallo de cada disco a 30 días (skill preproduccion §2.1).
+"""Módulo de producción del caso 68: el riesgo de fallo de cada disco a 30 días (método preproduccion §2.1).
 
-Trae, según el contrato aprobado (contexto-proyecto/modelo/contrato_produccion.md e informes/preproduccion.json):
+Trae, según el contrato aprobado (config/modelo/contrato_produccion.md e informes/preproduccion.json):
   - lo que no aprende y lo que necesita otras filas, para pasar una foto mensual en bruto a las columnas del modelo:
     el nombre del modelo, la capacidad del modelo, la capacidad en TB, el tipo de disco, el fabricante, la garantía, la
     edad, los avisos y los cambios contra la foto anterior (P01 a P15 del contrato);
@@ -47,20 +47,20 @@ INFORME_MD = "informes/preproduccion.md"
 LIMITE_ARRANQUE_BYTES = 2_048_408_248_320
 # Convención técnica 1 de las reglas de transformación: el año de edad son 8.766 horas; sin horas, días entre 365,25
 HORAS_ANO, DIAS_ANO = 8766.0, 365.25
-# Los cinco contadores de avería (reglas §3) y los cuatro que llevan cambio y suma (sin el 188)
+# Los cinco contadores de avería (reglas, apartado 3) y los cuatro que llevan cambio y suma (sin el 188)
 CONTADORES = ["smart_5_raw", "smart_187_raw", "smart_188_raw", "smart_197_raw", "smart_198_raw"]
 CONTADORES_SIN_188 = ["smart_5_raw", "smart_187_raw", "smart_197_raw", "smart_198_raw"]
-# El fabricante por el nombre del modelo (reglas §3)
+# El fabricante por el nombre del modelo (reglas, apartado 3)
 FABRICANTE_EXCEPCIONES = {"Hitachi HDS5C4040ALE630": "HGST", "WUH721816ALE6L4": "WDC"}
 FABRICANTE_PREFIJOS = [("TOSHIBA", "Toshiba"), ("WDC", "WDC"), ("HGST", "HGST")]
 # Las categorías raras (matriz, P-03; scripts/13_preparacion.py)
 ETIQUETA_OTRAS, SIN_DATO = "otras", "sin dato"
 MINIMO_FOTOS, MINIMO_FALLOS, MINIMO_SANAS = 30, 20, 20
-# Los motivos de una fila que no se puntúa (skill §2.3)
-MOTIVO_ARRANQUE = "disco de arranque: fuera del modelo (reglas §3 y §7)"
+# Los motivos de una fila que no se puntúa (método §2.3)
+MOTIVO_ARRANQUE = "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)"
 MOTIVO_DIA_FALLO = "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)"
 MOTIVO_SIN_CAPACIDAD = "modelo sin ninguna capacidad válida hasta la fecha de la foto"
-MOTIVO_DOS_CAPACIDADES = "modelo con dos capacidades válidas: la regla §3 no se puede aplicar"
+MOTIVO_DOS_CAPACIDADES = "modelo con dos capacidades válidas: la regla, apartado 3 no se puede aplicar"
 MOTIVO_EDAD = "edad negativa o vacía"
 # Las columnas que no son números en la foto en bruto
 TEXTOS = {"serial_number", "model", "datacenter", "date"}
@@ -113,7 +113,7 @@ def capacidad_en_tb(capacity_bytes):
 
 
 def fabricante(modelo):
-    """Fabricante por el nombre del modelo, con las dos excepciones de las reglas §3; None si no sigue ningún patrón (P09)."""
+    """Fabricante por el nombre del modelo, con las dos excepciones de las reglas, apartado 3; None si no sigue ningún patrón (P09)."""
     if modelo in FABRICANTE_EXCEPCIONES:
         return FABRICANTE_EXCEPCIONES[modelo]
     if modelo.startswith("ST"):
@@ -125,7 +125,7 @@ def fabricante(modelo):
 
 
 def garantia(modelo, fab):
-    """Años de garantía por familia (reglas §6); None sin garantía comprobada (P10)."""
+    """Años de garantía por familia (reglas, apartado 6); None sin garantía comprobada (P10)."""
     if fab == "Seagate" and "NM" in modelo:
         return 5
     if fab == "Seagate" and "DM" in modelo:
@@ -161,7 +161,7 @@ def _fecha_de_texto(serie):
 
 def ventanas_utiles(ventanas, fecha):
     """Las filas de ventana que cuentan el día de la foto: fallos ya ocurridos (dia_fallo anterior a la foto, el arreglo
-    de Juan del 19/11/2026) y sin las filas cuya fecha no es la de su texto (R-007)."""
+    de el responsable del caso del 19/11/2026) y sin las filas cuya fecha no es la de su texto (R-007)."""
     v = ventanas.loc[(ventanas["dia_fallo"] < fecha).to_numpy()]
     return v.loc[(_fecha_de_texto(v["date"]) == v["fecha"]).to_numpy()]
 
@@ -247,7 +247,7 @@ def leer_foto(ruta, columnas):
 
 
 def capacidades_del_modelo(pares, minimo):
-    """La capacidad válida de cada modelo: la única que trae; None si trae dos (P04, regla §3)."""
+    """La capacidad válida de cada modelo: la única que trae; None si trae dos (P04, regla, apartado 3)."""
     validas = pares.loc[(pares["capacity_bytes"] >= minimo).to_numpy()].drop_duplicates()
     cuantas = validas.groupby("model")["capacity_bytes"].nunique()
     unica = validas.loc[validas["model"].isin(cuantas.index[cuantas == 1])].set_index("model")["capacity_bytes"]
@@ -487,7 +487,7 @@ def comprobar_columnas_de_salida(pipe, esperadas):
     return salen
 
 
-def radiografia(pipe):
+def estructura(pipe):
     """Lo que hay dentro del Pipeline, para la ficha: pasos, ramas con sus columnas, remainder, columnas de salida,
     columnas vacías del ajuste, categorías aprendidas y el modelo (pipelines.md, regla 8)."""
     ct = pipe.named_steps["preparacion"]
@@ -508,7 +508,7 @@ def radiografia(pipe):
 
 def filas_dentro(objeto, n, ruta="modelo", vistos=None, profundidad=0):
     """Busca en el objeto ajustado matrices con tantas filas como el entrenamiento: si las hay, el modelo guarda
-    filas de entrenamiento (skill §2.2, paso 5). Devuelve dónde."""
+    filas de entrenamiento (método §2.2, paso 5). Devuelve dónde."""
     vistos = set() if vistos is None else vistos
     if id(objeto) in vistos or profundidad > 6:
         return []

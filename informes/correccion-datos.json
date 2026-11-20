@@ -1,6 +1,6 @@
 {
-  "skill": "correccion-datos",
-  "version_skill": "06/11/2026 (WF-59)",
+  "metodo": "correccion-datos",
+  "version_metodo": "06/11/2026",
   "script": "scripts/03_correccion_datos.py",
   "fecha_datos": "2025-06-30",
   "fecha_ejecucion": "2026-11-17T17:01:20",
@@ -555,7 +555,7 @@
   "resultado": {
     "estado": "AVISO",
     "riesgo": "medio",
-    "resumen": "Los cuatro datasets corregidos, uno por tabla en data/processed/: 16 correcciones con cambio y 23 problemas que se dejan como están, con su motivo, para que los lea la skill siguiente. Ningún vacío rellenado y ninguna fila perdida sin explicar.",
+    "resumen": "Los cuatro datasets corregidos, uno por tabla en data/processed/: 16 correcciones con cambio y 23 problemas que se dejan como están, con su motivo, para que los lea el método siguiente. Ningún vacío rellenado y ninguna fila perdida sin explicar.",
     "artefactos": [
       "data/processed/fotos_mensuales_corregido.parquet",
       "data/processed/ventanas_fallo_corregido.parquet",
@@ -563,9 +563,9 @@
       "data/processed/fallos_corregido.parquet",
       "informes/correccion-datos.json",
       "informes/correccion-datos.md",
-      "contexto-proyecto/modelo/registro-transformaciones.md"
+      "config/modelo/registro-transformaciones.md"
     ],
-    "siguiente": "modelado-datos: el diseño del modelo de datos, que aprueba Juan"
+    "siguiente": "modelado-datos: el diseño del modelo de datos, que aprueba el responsable del caso"
   },
   "pendientes": [],
   "salidas": [
@@ -2448,7 +2448,7 @@
           "nulos": 0,
           "distintos": 7,
           "regla_aplicada": null,
-          "nota": "«sin dato» quiere decir que el centro no consta (reglas §4 y §5); es la etiqueta del vacío en una categórica de correccion-datos"
+          "nota": "«sin dato» quiere decir que el centro no consta (reglas, apartado 4 y §5); es la etiqueta del vacío en una categórica de correccion-datos"
         },
         {
           "columna": "discos",
@@ -2553,9 +2553,9 @@
       "tabla": "fotos_mensuales",
       "columna": "date",
       "correccion": "El texto de la fecha pasa a fecha, leído con el patrón %Y-%m-%d.",
-      "criterio": "usuario",
-      "criterio_texto": "usuario: el encargo 07 pide las fechas como fecha, que es el rol de date en el diccionario",
-      "motivo": "el rol de date en el diccionario es fecha y llega como texto ISO; el encargo 07 pide las fechas como fecha",
+      "criterio": "responsable",
+      "criterio_texto": "responsable: la petición 07 pide las fechas como fecha, que es el rol de date en el diccionario",
+      "motivo": "el rol de date en el diccionario es fecha y llega como texto ISO; la petición 07 pide las fechas como fecha",
       "ficha": "R-003",
       "antes": 14851669,
       "despues": 0,
@@ -2567,9 +2567,9 @@
       "tabla": "ventanas_fallo",
       "columna": "date",
       "correccion": "El texto de la fecha pasa a fecha, leído con el patrón %Y-%m-%d.",
-      "criterio": "usuario",
-      "criterio_texto": "usuario: el encargo 07 pide las fechas como fecha",
-      "motivo": "el rol de date en el diccionario es fecha y llega como texto ISO; el encargo 07 pide las fechas como fecha",
+      "criterio": "responsable",
+      "criterio_texto": "responsable: la petición 07 pide las fechas como fecha",
+      "motivo": "el rol de date en el diccionario es fecha y llega como texto ISO; la petición 07 pide las fechas como fecha",
       "ficha": "R-003",
       "antes": 536597,
       "despues": 0,
@@ -2581,8 +2581,8 @@
       "tabla": "fotos_mensuales",
       "columna": "model",
       "correccion": "Los modelos escritos con dos espacios tras «WDC» pasan a su nombre con uno, con el mapeo cerrado de D1 (3.896 filas cambiadas).",
-      "criterio": "usuario",
-      "criterio_texto": "usuario: D1, cerrada por Juan el 17/11/2026 en el plan de calidad",
+      "criterio": "responsable",
+      "criterio_texto": "responsable: D1, cerrada por el responsable del caso el 17/11/2026 en el plan de calidad",
       "motivo": null,
       "ficha": "R-004",
       "antes": 4,
@@ -2595,8 +2595,8 @@
       "tabla": "ventanas_fallo",
       "columna": "model",
       "correccion": "Los modelos escritos con dos espacios tras «WDC» pasan a su nombre con uno, con el mapeo cerrado de D1 (25 filas cambiadas).",
-      "criterio": "usuario",
-      "criterio_texto": "usuario: D1, cerrada por Juan el 17/11/2026 en el plan de calidad",
+      "criterio": "responsable",
+      "criterio_texto": "responsable: D1, cerrada por el responsable del caso el 17/11/2026 en el plan de calidad",
       "motivo": null,
       "ficha": "R-004",
       "antes": 2,
@@ -2609,8 +2609,8 @@
       "tabla": "recuento_diario",
       "columna": "model",
       "correccion": "Los modelos escritos con dos espacios tras «WDC» pasan a su nombre con uno, con el mapeo cerrado de D1 (1.536 filas cambiadas).",
-      "criterio": "usuario",
-      "criterio_texto": "usuario: D1, cerrada por Juan el 17/11/2026 en el plan de calidad",
+      "criterio": "responsable",
+      "criterio_texto": "responsable: D1, cerrada por el responsable del caso el 17/11/2026 en el plan de calidad",
       "motivo": null,
       "ficha": "R-004",
       "antes": 4,
@@ -2666,7 +2666,7 @@
       "columna": "(fila)",
       "correccion": "Las filas que quedan con la misma clave (fecha, modelo, capacidad y centro) se suman en una: discos y fallos.",
       "criterio": "regla_documentada",
-      "criterio_texto": "regla documentada: reglas de negocio §3, con el orden del encargo 07 (nombre, capacidad y suma)",
+      "criterio_texto": "regla documentada: reglas de negocio §3, con el orden de la petición 07 (nombre, capacidad y suma)",
       "motivo": null,
       "ficha": "R-006",
       "antes": 201502,
@@ -2679,8 +2679,8 @@
       "tabla": "ventanas_fallo",
       "columna": "(fila)",
       "correccion": "Salen las filas cuya fecha no es la de su texto: traen las horas encendido del día siguiente y no tienen datos propios.",
-      "criterio": "usuario",
-      "criterio_texto": "usuario: el encargo 07 resuelve P-01; quitarlas no cambia ninguna respuesta (CLAUDE.md, «Datos que no sirven o están mal»; criterios.md §2)",
+      "criterio": "responsable",
+      "criterio_texto": "responsable: la petición 07 resuelve P-01; quitarlas no cambia ninguna respuesta (las instrucciones del caso, «Datos que no sirven o están mal»; criterios.md §2)",
       "motivo": null,
       "ficha": "R-007",
       "antes": 536825,
@@ -2693,8 +2693,8 @@
       "tabla": "fotos_mensuales",
       "columna": "(fichero)",
       "correccion": "Las 66 fotos mensuales se juntan en un solo Parquet con las 130 columnas que trae alguna; donde una pieza no trae una columna, queda vacía.",
-      "criterio": "usuario",
-      "criterio_texto": "usuario: el encargo 07 y metodo/como_estan_organizados_los_datos.md (las filas son las mismas: solo cambia el fichero)",
+      "criterio": "responsable",
+      "criterio_texto": "responsable: la petición 07 y metodo/como_estan_organizados_los_datos.md (las filas son las mismas: solo cambia el fichero)",
       "motivo": null,
       "ficha": "R-008",
       "antes": 66,
@@ -2707,8 +2707,8 @@
       "tabla": "ventanas_fallo",
       "columna": "(fichero)",
       "correccion": "Las 22 ventanas se juntan en un solo Parquet con las 131 columnas que trae alguna; donde una pieza no trae una columna, queda vacía.",
-      "criterio": "usuario",
-      "criterio_texto": "usuario: el encargo 07 y metodo/como_estan_organizados_los_datos.md",
+      "criterio": "responsable",
+      "criterio_texto": "responsable: la petición 07 y metodo/como_estan_organizados_los_datos.md",
       "motivo": null,
       "ficha": "R-008",
       "antes": 22,
@@ -2730,17 +2730,17 @@
     {
       "problema_calidad": "C-08",
       "resultado_calidad": "84.647 filas con centro «sin dato», 4.551 desde el 01/07/2023",
-      "motivo": "el sitio que falta se cuenta y se dice (reglas §5 y §7); en el recuento, «sin dato» se queda como etiqueta del centro que no consta, la de correccion-datos/parametros.md"
+      "motivo": "el sitio que falta se cuenta y se dice (reglas, apartado 5 y §7); en el recuento, «sin dato» se queda como etiqueta del centro que no consta, la de correccion-datos/parametros.md"
     },
     {
       "problema_calidad": "C-09",
       "resultado_calidad": "235.772 filas sin dato desde el 01/07/2023; de discos de datos, 234.446",
-      "motivo": "el sitio que falta se cuenta y se dice (reglas §5 y §7)"
+      "motivo": "el sitio que falta se cuenta y se dice (reglas, apartado 5 y §7)"
     },
     {
       "problema_calidad": "C-10",
       "resultado_calidad": "103.221 filas sin dato desde el 01/07/2023; de discos de datos, 1.613",
-      "motivo": "el sitio que falta se cuenta y se dice (reglas §5 y §7)"
+      "motivo": "el sitio que falta se cuenta y se dice (reglas, apartado 5 y §7)"
     },
     {
       "problema_calidad": "C-11",
@@ -2750,7 +2750,7 @@
     {
       "problema_calidad": "C-12",
       "resultado_calidad": "82 variables con los vacíos concentrados en algún segmento",
-      "motivo": "un contador vacío quiere decir que el modelo no lo apunta y no se rellena (reglas §5)"
+      "motivo": "un contador vacío quiere decir que el modelo no lo apunta y no se rellena (reglas, apartado 5)"
     },
     {
       "problema_calidad": "C-14",
@@ -2770,7 +2770,7 @@
     {
       "problema_calidad": "C-18",
       "resultado_calidad": "RC-01 incumplida: 3.468 veces bajan las horas entre dos fotos seguidas; 3.468 más de un día",
-      "motivo": "la edad la calcula la transformación con la regla de las reglas §3 (horas encendido y, sin ellas, primera aparición, también en las ventanas); las horas que bajan afectan a 3.443 discos y 52 fallos de 17.960 (cifras del encargo 07)"
+      "motivo": "la edad la calcula la transformación con la regla de las reglas, apartado 3 (horas encendido y, sin ellas, primera aparición, también en las ventanas); las horas que bajan afectan a 3.443 discos y 52 fallos de 17.960 (cifras de la petición 07)"
     },
     {
       "problema_calidad": "C-19",
@@ -2780,52 +2780,52 @@
     {
       "problema_calidad": "C-20",
       "resultado_calidad": "RC-03 incumplida: smart_5_raw baja 575 veces en 413 discos; smart_187_raw baja 12 veces en 12 discos; smart_188_raw baja 1.650 veces en 1.650 discos; smart_197_raw baja 24.477 veces en 11.547 discos; smart_198_raw baja 10.055 veces en 5.517 discos",
-      "motivo": "el aviso mira si un contador pasa de cero el día anterior (reglas §6), no si sube"
+      "motivo": "el aviso mira si un contador pasa de cero el día anterior (reglas, apartado 6), no si sube"
     },
     {
       "problema_calidad": "C-21",
       "resultado_calidad": "2.738 filas de discos de datos sin horas encendido",
-      "motivo": "la edad la calcula la transformación con la regla de las reglas §3 (horas encendido y, sin ellas, primera aparición, también en las ventanas)"
+      "motivo": "la edad la calcula la transformación con la regla de las reglas, apartado 3 (horas encendido y, sin ellas, primera aparición, también en las ventanas)"
     },
     {
       "problema_calidad": "C-22",
       "resultado_calidad": "67 fallos antes de la primera foto de su disco",
-      "motivo": "la edad la calcula la transformación con la regla de las reglas §3 (horas encendido y, sin ellas, primera aparición, también en las ventanas)"
+      "motivo": "la edad la calcula la transformación con la regla de las reglas, apartado 3 (horas encendido y, sin ellas, primera aparición, también en las ventanas)"
     },
     {
       "problema_calidad": "C-23",
       "resultado_calidad": "210 fallos de 210 discos que no salen en ninguna foto",
-      "motivo": "la edad la calcula la transformación con la regla de las reglas §3 (horas encendido y, sin ellas, primera aparición, también en las ventanas)"
+      "motivo": "la edad la calcula la transformación con la regla de las reglas, apartado 3 (horas encendido y, sin ellas, primera aparición, también en las ventanas)"
     },
     {
       "problema_calidad": "C-24",
       "resultado_calidad": "161 discos salen en alguna foto después de su fallo",
-      "motivo": "reglas §3: un disco puede seguir en servicio tras un fallo y sus días siguen contando"
+      "motivo": "reglas, apartado 3: un disco puede seguir en servicio tras un fallo y sus días siguen contando"
     },
     {
       "problema_calidad": "C-25",
       "resultado_calidad": "7.798 discos de datos faltan en alguna foto y vuelven",
-      "motivo": "reglas §3: un disco que falta en una foto y vuelve no ha desaparecido"
+      "motivo": "reglas, apartado 3: un disco que falta en una foto y vuelve no ha desaparecido"
     },
     {
       "problema_calidad": "C-26",
       "resultado_calidad": "163 pares de modelo y contador con vacíos solo en parte de sus filas; suman 2.789.298 filas vacías",
-      "motivo": "de 16.101 fallos de discos de datos con día anterior, 4.049 llegan sin aviso y solo 69 tienen un contador vacío que su modelo sí apunta; aunque contaran como aviso, la parte sin aviso pasa del 25,1 % al 24,7 % (cifras del encargo 07)"
+      "motivo": "de 16.101 fallos de discos de datos con día anterior, 4.049 llegan sin aviso y solo 69 tienen un contador vacío que su modelo sí apunta; aunque contaran como aviso, la parte sin aviso pasa del 25,1 % al 24,7 % (cifras de la petición 07)"
     },
     {
       "problema_calidad": "C-27",
       "resultado_calidad": "13 fallos de discos de datos desde el 01/07/2023 sin ranura ningún día de su ventana",
-      "motivo": "el sitio que falta se cuenta y se dice (reglas §5 y §7)"
+      "motivo": "el sitio que falta se cuenta y se dice (reglas, apartado 5 y §7)"
     },
     {
       "problema_calidad": "C-28",
       "resultado_calidad": "141 fallos de discos de datos desde el 01/07/2023 sin tomo completo ningún día de su ventana",
-      "motivo": "el sitio que falta se cuenta y se dice (reglas §5 y §7)"
+      "motivo": "el sitio que falta se cuenta y se dice (reglas, apartado 5 y §7)"
     },
     {
       "problema_calidad": "C-29",
       "resultado_calidad": "896 fallos de discos de datos sin el día anterior en su ventana",
-      "motivo": "el sitio que falta se cuenta y se dice (reglas §5 y §7); al quitar las filas de C-17 pasan de 896 a 903 fallos de discos de datos sin el día anterior en su ventana"
+      "motivo": "el sitio que falta se cuenta y se dice (reglas, apartado 5 y §7); al quitar las filas de C-17 pasan de 896 a 903 fallos de discos de datos sin el día anterior en su ventana"
     },
     {
       "problema_calidad": "C-30",
@@ -2833,34 +2833,34 @@
       "motivo": "ninguna pregunta usa la tasa de un día"
     }
   ],
-  "decisiones_usuario": [
+  "decisiones_responsable": [
     {
       "pendiente": "P-01",
-      "decision": "son una copia del día que dice el texto: su fecha no tiene datos propios y sus filas sobran. Quitarlas no cambia ninguna respuesta (CLAUDE.md, «Datos que no sirven o están mal»; criterios.md §2); el recuento de ese día se queda como está",
-      "quien": "Juan, con el encargo 07",
+      "decision": "son una copia del día que dice el texto: su fecha no tiene datos propios y sus filas sobran. Quitarlas no cambia ninguna respuesta (las instrucciones del caso, «Datos que no sirven o están mal»; criterios.md §2); el recuento de ese día se queda como está",
+      "quien": "El responsable del caso, con la petición 07",
       "fecha": "2026-11-17",
-      "fuente": "prompts/07_encargo_correccion.md"
+      "fuente": "peticiones/07_correccion.md"
     },
     {
       "pendiente": "D1",
-      "decision": "los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo, porque son los mismos discos, con el mismo número de serie, escritos de dos formas; la corrección los junta (Juan, 17/11/2026, plan de calidad, «Lo aprobado»)",
-      "quien": "Juan",
+      "decision": "los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo, porque son los mismos discos, con el mismo número de serie, escritos de dos formas; la corrección los junta (El responsable del caso, 17/11/2026, plan de calidad, «Lo aprobado»)",
+      "quien": "El responsable del caso",
       "fecha": "2026-11-17",
       "fuente": "informes/plan_calidad_datos.md, «Lo aprobado»"
     },
     {
       "pendiente": "tipos de fecha",
       "decision": "las fechas como fecha: el texto date pasa a fecha",
-      "quien": "Juan, con el encargo 07",
+      "quien": "El responsable del caso, con la petición 07",
       "fecha": "2026-11-17",
-      "fuente": "prompts/07_encargo_correccion.md"
+      "fuente": "peticiones/07_correccion.md"
     },
     {
       "pendiente": "juntar las piezas",
       "decision": "las 66 fotos en un Parquet y las 22 ventanas en otro, con todas las columnas",
-      "quien": "Juan, con el encargo 07",
+      "quien": "El responsable del caso, con la petición 07",
       "fecha": "2026-11-17",
-      "fuente": "prompts/07_encargo_correccion.md; contexto-proyecto/metodo/como_estan_organizados_los_datos.md"
+      "fuente": "peticiones/07_correccion.md; config/metodo/como_estan_organizados_los_datos.md"
     }
   ],
   "sumas_control": [
@@ -2946,7 +2946,7 @@
     {
       "nombre": "etiqueta del vacío en una categórica",
       "valor": "sin dato",
-      "origen": "por defecto; coincide con la del centro que no consta en el recuento (reglas §4 y §5)"
+      "origen": "por defecto; coincide con la del centro que no consta en el recuento (reglas, apartado 4 y §5)"
     },
     {
       "nombre": "marca de lo imputado",
@@ -2956,7 +2956,7 @@
     {
       "nombre": "si los datos van a un modelo",
       "valor": "no se imputa aquí",
-      "origen": "por defecto; reglas §7, el caso entrena un modelo"
+      "origen": "por defecto; reglas, apartado 7, el caso entrena un modelo"
     },
     {
       "nombre": "formato de la tabla corregida",
@@ -3110,16 +3110,16 @@
   ],
   "teoria": "Manual 8.1 antes de corregir (cada corrección responde a un problema diagnosticado, con su regla y su recuento); 8.3 para los tipos (la fecha del texto con el patrón explícito %Y-%m-%d, contando los vacíos que crea); 8.7 para el nombre del modelo (mapeo cerrado con replace, que deja como está lo que no encuentra); 8.6 para el recuento (se suman las filas con la misma clave porque la granularidad documentada da una fila por clave); 8.4 y 33.4 para las filas quitadas de las ventanas (se cuentan, y la regla se puede aplicar siempre); 8.10 para el cierre (filas, vacíos y sumas antes y después). Los apartados 4.5 y 4.6 no se aplican: las filas quitadas repiten el día siguiente y no tienen datos propios, así que no cambian ninguna comparación entre grupos.",
   "datos_personales_texto": [
-    "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
-    "No hay datos de personas (reglas §9): el paso de protección se saltó el 17/11/2026 con el sí de Juan.",
+    "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+    "No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí de el responsable del caso.",
     "Ninguna columna de los datos tiene el papel de dato personal en el diccionario del origen. El número de serie identifica un disco, no a una persona.",
     "Antes de corregir se buscaron correos, documentos de identidad, cuentas bancarias y teléfonos en los textos (número de serie, modelo y centro): 0 columnas con alguno.",
-    "Esta skill no usa ni deja ninguna columna de datos personales."
+    "Este método no usa ni deja ninguna columna de datos personales."
   ],
   "limites": [
     "La corrección mira una tabla cada vez. Una clave huérfana o repetida al otro lado de un cruce no se ve ni se corrige aquí.",
     "No se repite aquí el diagnóstico completo sobre las tablas corregidas (manual 8.10, paso 1); se comprueban las cifras de cada corrección, los vacíos y las sumas.",
-    "Las cifras de los motivos de C-18 y C-26 son las del encargo 07 y no se vuelven a medir en esta ejecución.",
+    "Las cifras de los motivos de C-18 y C-26 son las de la petición 07 y no se vuelven a medir en esta ejecución.",
     "Los contadores siguen como decimales (ver «Elementos mantenidos sin cambios»).",
     "Las fechas fecha y dia_fallo ya llegan como fecha y no se cambian; date pasa a fecha con la misma precisión que fecha."
   ],
@@ -3129,7 +3129,7 @@
     "fecha_ejecucion": "2026-11-17T16:01:35"
   },
   "variantes_fuera_del_mapeo": [],
-  "tipos_sin_cambiar": "Los contadores (smart_N_raw y smart_N_normalized) siguen como decimales: el encargo 07 nombra como correcciones de tipo solo el centro, la ranura y las fechas, y un decimal es un tipo válido para una magnitud. La calidad los marcó como «toca entero» sin abrir ningún problema; si se quieren enteros, es una decisión para el paso siguiente.",
+  "tipos_sin_cambiar": "Los contadores (smart_N_raw y smart_N_normalized) siguen como decimales: la petición 07 nombra como correcciones de tipo solo el centro, la ranura y las fechas, y un decimal es un tipo válido para una magnitud. La calidad los marcó como «toca entero» sin abrir ningún problema; si se quieren enteros, es una decisión para el paso siguiente.",
   "metricas": [
     {
       "tabla": "fotos_mensuales",

@@ -12,14 +12,14 @@ Y dos más de la prueba final, con la fecha del año guardado (30/06/2026) en lu
 - prueba_final.json (scripts/19_...): la lista de riesgo frente a la regla en el año guardado;
 - prueba_final_prevision.json (scripts/20_...): la previsión de repuestos en el año guardado;
 - punto_ciego.json (scripts/22_punto_ciego.py): la parte de los fallos a 30 días cuya foto mensual no avisa, medida
-  como la ve el modelo (auditor antes de entregar, 20/11/2026, R68-153).
+  como la ve el modelo (auditor antes de entregar, 20/11/2026, una nota del caso).
 Y la medida del modelo en uso en el año guardado, de modelos/reentrenos/2026-11-19/reentreno.json, con la huella de
 modelos/en_uso/ (el año guardado se usó para elegirlo, y el anexo lo dice).
 
 Deja informes/informe_final.html e informes/informe_final_graficos.csv.
 
 No calcula ninguna cifra: las lee de los JSON y las escribe a la española; solo hace medias de las cifras por mes que el
-JSON ya trae. Los textos son los de contexto-proyecto/metodo/borrador_informe_final.md, versión 3 (19/11/2026, con la prueba final): la de
+JSON ya trae. Los textos son los de config/metodo/borrador_informe_final.md, versión 3 (19/11/2026, con la prueba final): la de
 la versión 1 corregida con la revisión de un auditor de reporting y la de un lector simulado de la dirección. Cada frase
 que nombra un sentido lleva delante un exigir() que para si los datos ya no la sostienen. No importa ningún script del
 caso: solo las piezas comunes de assets/ (informe.py y graficos.py), que no ejecutan nada al importarse.
@@ -112,7 +112,7 @@ DEFINICIONES_LISTA = [
     # incorrecta
     ["Intervalo de confianza", "Margen que, al repetir la medida muchas veces, contendría la cifra verdadera 95 de "
                                "cada 100."]]
-# Nombre de la regla, siempre entero (Juan, 19/11/2026: «la regla actual» no lo entiende quien lo lee)
+# Nombre de la regla, siempre entero (El responsable del caso, 19/11/2026: «la regla actual» no lo entiende quien lo lee)
 REGLA = "regla de los cinco avisos SMART"
 # Fuentes en palabras del lector (F1)
 FUENTE_TODO = "registro diario de los discos de Backblaze, enero de 2020 a junio de 2025"
@@ -124,7 +124,7 @@ FUENTE_FINAL = "estado de los discos de Backblaze el primer día de cada mes, ju
 # Jerga que no puede salir fuera del anexo: nombres internos, de columna y de fichero
 JERGA = [r"\bparidad", r"\bvaults?\b", r"\bfoto\b", r"\bpliegue", r"\bbloque\b", r"\bφ\b", r"\bphi\b", r"\bminicubo", r"\bwape\b", r"\bcanario",
          r"\b[a-z0-9]+_[a-z0-9_]+\b", r"\.(?:json|csv|py|parquet|md|html)\b", r"\bCP-\d", r"\bB\d\b"]
-# Palabras vetadas en todo el informe: las de la hoja de vocabulario del lector y las que corrigió Juan el 19/11
+# Palabras vetadas en todo el informe: las de la hoja de vocabulario del lector y las que corrigió el responsable del caso el 19/11
 PROHIBIDAS = [r"\bflota\b", r"\bparque\b", r"\bunidades\b", r"regla actual", r"gastar menos", r"\bbajar el coste",
               r"\bimpagad", r"\bcontadores,"]
 
@@ -150,7 +150,7 @@ def leer_entradas(carpeta):
 
 
 def comprobar_fechas(entradas):
-    """Para si algún JSON no trae su fecha de datos (programacion-del-caso, SC-65): la del análisis o, en los de la
+    """Para si algún JSON no trae su fecha de datos (programacion-del-caso): la del análisis o, en los de la
     prueba final, la del año guardado."""
     esperada = {n: FECHA_RESERVA if n in ENTRADAS_RESERVA else FECHA_DATOS for n in entradas}
     distintas = {n: d.get("fecha_datos") for n, d in entradas.items() if d.get("fecha_datos") != esperada[n]}
@@ -239,7 +239,7 @@ def sin_prohibidas(texto_html):
 
 
 def titulos_claros(titulos):
-    """Para si un título va partido por una coma o por dos puntos (skill de redacción, «No escribas»)."""
+    """Para si un título va partido por una coma o por dos puntos (método de redacción, «No escribas»)."""
     malos = [f"«{t}»" for t in titulos if "," in t or ":" in t]
     if malos:
         raise ValueError("título partido por una coma o por dos puntos: " + "; ".join(malos))
@@ -280,7 +280,7 @@ def leer_cifras(entradas):
     # Página 3: dentro de cada grupo de compra, el más barato es el que falla menos
     resumen = b4["resumen_ranking"]
     # Precio de compra y tasa de cada modelo, para comprobar que dentro de un grupo el precio cambia menos que la tasa.
-    # Error de Claude del 19/11/2026: la página decía que dentro de un grupo el precio era el mismo, y solo lo es en uno
+    # Error del 19/11/2026: la página decía que dentro de un grupo el precio era el mismo, y solo lo es en uno
     # de los siete grupos (los 14 TB de 2020); en los demás difiere hasta un 13 %
     precio = {r["model"]: r["precio_usd"] for r in b4["ranking"]}
     grupos = [g for g in resumen["grupos_compra"]["grupos"] if len(g["modelos"]) >= 2]
@@ -422,7 +422,7 @@ def leer_cifras(entradas):
            "el punto ciego está medido y cuadra con los fallos del modelo")
     c["punto_ciego"] = ciego["ano_guardado"]["parte"]
     exigir(0.25 <= c["punto_ciego"] <= 0.4, "uno de cada tres fallos del último año no avisaba el primer día del mes")
-    # El modelo en uso, medido en el año guardado antes de aprobarlo (R68-140 y R68-141)
+    # El modelo en uso, medido en el año guardado antes de aprobarlo
     reentreno = json.loads(REENTRENO.read_text(encoding="utf-8"))["comparacion_con_el_en_uso"]
     huellas = [json.loads(f.read_text(encoding="utf-8"))["huella"] for f in (FICHA_REENTRENO, FICHA_EN_USO)]
     exigir(huellas[0] == huellas[1], "el reentreno medido es el modelo en uso")
@@ -444,7 +444,7 @@ def trimestre(t):
 def pagina_resumen(inf, c, filas):
     """Página 1: la recomendación con el dinero, sus cifras clave y los límites que pesan (D1, D2).
 
-    Sin tabla de preguntas: el modelo de informe por resultados que aprobó Juan el 10/11 no la lleva, y con ella la
+    Sin tabla de preguntas: el modelo de informe por resultados que aprobó el responsable del caso el 10/11 no la lleva, y con ella la
     página mide unos 873 px. La lista de control 08 y sus lectores (19/11/2026) pidieron: la acción en la primera
     frase, la garantía al lado del coste de los fallos, por qué los fallos pesan poco frente a lo que costaron y que el
     ahorro de la compra no se puede calcular.

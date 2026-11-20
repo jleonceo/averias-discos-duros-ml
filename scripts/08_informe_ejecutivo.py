@@ -1,6 +1,6 @@
 """Informe ejecutivo del caso 68 (patrón assets/07_patron_informe_ejecutivo.md), en HTML A4 y en PDF.
 
-El texto es el aprobado en contexto-proyecto/metodo/borrador_informe_ejecutivo.md, desde «# Los fallos de los discos de
+El texto es el aprobado en config/metodo/borrador_informe_ejecutivo.md, desde «# Los fallos de los discos de
 datos» hasta el final, copiado tal cual en BLOQUES. Cada cifra va marcada como [[nombre|cifra]]: «nombre» es la cifra
 de informes/consultas-informe-ejecutivo.json y «cifra», cómo la escribe el texto aprobado. El HTML lleva la cifra del
 JSON escrita con numero() de assets/graficos.py, con tantos decimales como la del texto; si no sale igual, para.
@@ -26,6 +26,7 @@ Uso: python -W error scripts/08_informe_ejecutivo.py [--raiz CARPETA_DEL_CASO]
 # =================================================================================================================
 # 1. Preparación
 # =================================================================================================================
+import os
 import argparse
 import datetime as dt
 import hashlib
@@ -53,15 +54,15 @@ HTML = "informes/informe_ejecutivo.html"
 PDF = "informes/informe_ejecutivo.pdf"
 RESUMEN = "informes/informe_ejecutivo.json"
 FECHA_DATOS = "2025-06-30"
-EDGE = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+EDGE = str(Path(os.environ.get("ProgramFiles(x86)", "")) / "Microsoft" / "Edge" / "Application" / "msedge.exe")
 # Espera al PDF: Edge puede devolver el control antes de terminar de escribirlo (patrón §6)
 ESPERA_MAXIMA_S = 120
 INTERVALO_S = 0.5
 
 # Topes de palabras de cada apartado (patrón §1)
 TOPES = {"resumen": 300, "encontrado": 400, "limites": 100, "recomendaciones": 200, "anexo": 500}
-# Palabras que no salen en el informe (encargo)
-# La palabra vetada para el conjunto de discos va partida para que el script tampoco la lleve (R68-93)
+# Palabras que no salen en el informe (petición)
+# La palabra vetada para el conjunto de discos va partida para que el script tampoco la lleve
 VETADAS = ["foto", "fotos", "construcción", "validación", "suceso", "entidad", "avería", "averías", "flo" + "ta", "pliegue"]
 # Números que el texto escribe sin sacarlos del JSON: años y días de las fechas, la fecha de emisión y los datos fijos
 # de las reglas (37 dólares de mano de obra por disco, 50 dólares por hora, 0,74 horas por disco, 365 días)

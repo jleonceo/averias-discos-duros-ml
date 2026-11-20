@@ -1,4 +1,4 @@
-"""Prueba por otro camino de la salida de produccion/ejecutar.py (skill preproduccion §2.4, validación 5).
+"""Prueba por otro camino de la salida de produccion/ejecutar.py (método preproduccion §2.4, validación 5).
 
 Rehace la puntuación de una foto mensual sin cargar el modelo y sin importar código de producción (ni
 scripts/pipeline_riesgo.py ni nada de produccion/), con su propio código escrito desde las reglas:
@@ -53,7 +53,7 @@ def ruta_de(raiz, texto):
 # 2. Las columnas del modelo desde la foto en bruto
 # ---------------------------------------------------------------------------------------------------------------
 def fab(m):
-    """Fabricante por el nombre del modelo (reglas §3)."""
+    """Fabricante por el nombre del modelo (reglas, apartado 3)."""
     excepciones = {"Hitachi HDS5C4040ALE630": "HGST", "WUH721816ALE6L4": "WDC"}
     if m in excepciones:
         return excepciones[m]
@@ -64,7 +64,7 @@ def fab(m):
 
 
 def anos_garantia(m, f):
-    """Garantía por familia (reglas §6)."""
+    """Garantía por familia (reglas, apartado 6)."""
     if f == "Seagate":
         if "NM" in m:
             return 5.0

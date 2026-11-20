@@ -1,4 +1,4 @@
-"""Puntuación de una foto mensual con el modelo de riesgo del caso 68 (skill preproduccion §2.3).
+"""Puntuación de una foto mensual con el modelo de riesgo del caso 68 (método preproduccion §2.3).
 
   1. Carga el modelo en uso (o el de --modelo) solo si su ficha cuadra: versiones, huella del fichero y del módulo, y
      las columnas de entrada iguales a las del contrato.
@@ -51,7 +51,7 @@ def cargar(raiz, conf, contrato, modelo):
     texto = modelo or conf.get("modelo_en_uso")
     if not texto:
         raise pr.ErrorDeProduccion("no hay modelo en uso en produccion/configuracion.json ni se ha pasado --modelo: "
-                                   "el modelo en uso lo aprueba Juan")
+                                   "el modelo en uso lo aprueba el responsable del caso")
     pipe, ficha = pr.cargar_modelo(ruta_de(raiz, texto))
     if ficha.get("columnas_entrada") != contrato["lee"]:
         raise pr.ErrorDeProduccion("las columnas de entrada del modelo no son las del contrato: el modelo se entrenó con otro contrato")

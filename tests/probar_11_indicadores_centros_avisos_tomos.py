@@ -8,22 +8,22 @@ que cargarlo no lo ejecuta) y prueba cada función con datos pequeños escritos 
   - la tasa ajustada por centro, contra una cuenta a mano;
   - los tomos con k fallos en d días, los discos a la vez, el recuento de coincidencias en bucle y el azar;
   - el riesgo vivo de un mes, contra la binomial escrita a mano;
-  - el desenlace a 90 días por las dos cuentas, y repetido solo con las fotos de Seagate (encargo 17);
+  - el desenlace a 90 días por las dos cuentas, y repetido solo con las fotos de Seagate (petición 17);
   - los grupos de un factor del bloque 8 y el minicubo;
   - cada comprobación con un caso que da verde y otro que tiene que dar rojo (error 24), también la de las fotos de
     validación, la de las partes que suman el total y la de la palabra vetada;
   - cada una de las nueve validaciones con un caso que tiene que dar rojo, y la búsqueda de resultados escritos.
 Parte 2, el script entero sobre un caso pequeño. Monta en tests/tmp_indicadores_centros/ las tablas que lee el script,
 con el tipo de cada columna tomado del parquet real (pyarrow.parquet.read_schema, sin cargar datos), su
-informes/transformacion-datos.json con las huellas, los JSON de los encargos 13 y 14 y un data/raw/. Ejecuta el script
+informes/transformacion-datos.json con las huellas, los JSON de las peticiones 13 y 14 y un data/raw/. Ejecuta el script
 con -W error y comprueba las cifras contra las calculadas aquí con bucles de Python, sin pandas. Después, cinco casos
 que tienen que parar:
   - centro_mes con un fallo de más: la segunda vía de los días y fallos por centro no coincide, ERROR;
   - fallos_detalle con una coincidencia cambiada: el recuento en bucle no coincide con la columna, ERROR;
   - un fallo cuya última foto anterior no está en fotos_riesgo: los fallos con su foto no cuadran, ERROR;
   - la huella de una tabla distinta de la de transformacion-datos.json, ERROR;
-  - el JSON del encargo 14 en PARADO: el script no calcula, PARADO.
-Parte 3, el JSON real, si existe: las cifras de CONTROLES del encargo (prompts/15_…), escritas como las da el encargo, y
+  - el JSON de la petición 14 en PARADO: el script no calcula, PARADO.
+Parte 3, el JSON real, si existe: las cifras de CONTROLES de la petición (prompts/15_…), escritas como las da la petición, y
 dos cifras rehechas con pyarrow, sin pandas: los fallos de discos de datos desde el 01/07/2023 en
 recuento_diario_corregido, frente a los fallos de B7, y las fotos con smart_90_raw no vacío.
 Además, ni el JSON ni el informe llevan la palabra vetada para el conjunto de discos.
@@ -56,7 +56,7 @@ TMP = CASO / "tests" / "tmp_indicadores_centros"
 SALIDA = "informes/indicadores__centros_avisos_tomos.json"
 SALIDA_MD = "informes/indicadores__centros_avisos_tomos.md"
 PROCESADOS = CASO / "data" / "processed"
-# La palabra vetada para el conjunto de discos (Juan, 17/11; R68-91), partida para que esta prueba no la lleve
+# La palabra vetada para el conjunto de discos (El responsable del caso, 17/11; una nota del caso), partida para que esta prueba no la lleve
 VETADA = "flo" + "ta"
 FALLOS = []
 
@@ -139,7 +139,7 @@ def probar_piezas(m):
               and rep["fotos_sin_dias"] == 1, "reparto: cada foto pesa los días de su celda entre sus fotos")
 
     # 2.4 Tasa ajustada, a mano: modelo A edad 1 en dos centros, modelo B edad 1 solo en el centro y
-    # Encargo 19: la mezcla lleva el trimestre; todo en un mes, la cuenta es la de antes. ajustada devuelve también φ
+    # Petición 19: la mezcla lleva el trimestre; todo en un mes, la cuenta es la de antes. ajustada devuelve también φ
     dpt = pd.DataFrame({"model": ["A", "A", "B"], "centro": ["x", "y", "y"], "edad_anos_cumplidos": [1, 1, 1],
                         "mes": pd.to_datetime(["2024-01-01"] * 3).astype("datetime64[ms]"),
                         "dias_disco": [1000.0, 3000.0, 2000.0], "fallos": [4, 4, 8]})
@@ -216,7 +216,7 @@ def probar_piezas(m):
     comprobar(len(n2) == 1 and n2[0]["dimensiones"] == ["d1", "d2"] and n2[0]["celdas"] == 4,
               "minicubo nivel 2: un par de dimensiones, cuatro celdas")
     # Un peso grande y 20.000 pesos diminutos: una suma uno detrás de otro pierde los pequeños (6e-4 días); los días
-    # de cada valor tienen que sumar lo mismo que la suma exacta de los pesos, a menos de 1e-6 (encargo)
+    # de cada valor tienen que sumar lo mismo que la suma exacta de los pesos, a menos de 1e-6 (petición)
     pesos = np.array([1e9] + [3e-8] * 20000)
     n1, _ = m.minicubo({"d1": np.array(["a"] * len(pesos))}, pesos, {"d1": np.array(["a"])}, 1, 1)
     comprobar(abs(n1[0]["dias"] - math.fsum(pesos)) < 1e-6,
@@ -270,7 +270,7 @@ def probar_piezas(m):
     comprobar(m.validar(base, "x = 1\n", {"a": "1"}, {"a": "2"}, base)["raw_intacto"] is False,
               "validación raw_intacto: rojo si cambia una huella de data/raw/")
     comprobar(len(m.buscar_resultados_escritos('x["sin_validacion"] = True\n')) == 1,
-              "búsqueda: encuentra una comprobación del encargo puesta a True")
+              "búsqueda: encuentra una comprobación de la petición puesta a True")
     comprobar(len(m.buscar_resultados_escritos("total = 8634\n")) == 1, "búsqueda: encuentra una cifra de cuatro cifras")
     comprobar(len(m.buscar_resultados_escritos("MINIMO = 50_000\nANO = 2023\nH = 8766\n")) == 0,
               "búsqueda: el mínimo, un año y las horas del año pasan")
@@ -279,7 +279,7 @@ def probar_piezas(m):
 
 
 def phi_a_mano(filas):
-    """φ de Poisson con un bucle propio y sin pandas (segunda vía del encargo 19): filas (grupo, celda, observados,
+    """φ de Poisson con un bucle propio y sin pandas (segunda vía de la petición 19): filas (grupo, celda, observados,
     esperados); fuera las celdas sin esperados; reescalado por grupo; chi2 / (celdas − grupos); por debajo de 1, 1."""
     celdas = {}
     for g, c, o, e in filas:
@@ -320,8 +320,8 @@ def phi_bin_a_mano(celdas, exitos):
     return {"phi": max(1.0, chi2 / gl), "celdas": len(por), "gl": gl}
 
 
-def probar_encargo19(m):
-    """Encargo 19: φ de Poisson y binomial, los intervalos con φ, la mezcla con el trimestre en B5, el azar y sus
+def probar_peticion19(m):
+    """Petición 19: φ de Poisson y binomial, los intervalos con φ, la mezcla con el trimestre en B5, el azar y sus
     comprobaciones, cada una con su caso en rojo."""
     import numpy as np
     import pandas as pd
@@ -329,48 +329,48 @@ def probar_encargo19(m):
 
     faltan = [f for f in ("phi_poisson", "phi_binomial", "phi_edad", "intervalo_cp", "comp_phi",
                           "comp_veredicto_centros", "comp_lado_azar") if not hasattr(m, f)]
-    comprobar(not faltan, f"encargo 19: el script tiene φ, Clopper-Pearson y sus comprobaciones (faltan {faltan})")
+    comprobar(not faltan, f"petición 19: el script tiene φ, Clopper-Pearson y sus comprobaciones (faltan {faltan})")
     if faltan:
         return
     filas = [("A", 1, 10, 5.0), ("A", 2, 0, 5.0), ("B", 1, 5, 5.0), ("B", 2, 5, 5.0)]
     p = m.phi_poisson([f[0] for f in filas], [f[1] for f in filas], [f[2] for f in filas], [f[3] for f in filas])
     comprobar(cerca(p["phi"], 5.0) and cerca(p["phi"], phi_a_mano(filas)["phi"]) and p["gl"] == 2,
-              f"encargo 19: φ de Poisson a mano, 5 con 2 grados de libertad (da {p})")
+              f"petición 19: φ de Poisson a mano, 5 con 2 grados de libertad (da {p})")
     comprobar(m.comp_phi([{"phi": 0.8, "phi_bruto": 0.8}]) is False and m.comp_phi([{"phi": 1.0, "phi_bruto": 0.8}]) is True,
-              "encargo 19, comprobación: un φ de 0,8 usado sin subir a 1, rojo")
+              "petición 19, comprobación: un φ de 0,8 usado sin subir a 1, rojo")
     # φ binomial: 100 fotos con 10 fallos y 100 con 0; p = 0,05; chi2 = 2 × 25 / 4,75; un grado de libertad
     cel = np.array([1] * 100 + [2] * 100)
     exi = np.array([1] * 10 + [0] * 90 + [0] * 100)
     pb = m.phi_binomial(cel, exi)
     comprobar(cerca(pb["phi"], 50 / 4.75) and cerca(pb["phi"], phi_bin_a_mano(cel, exi)["phi"]) and pb["gl"] == 1,
-              f"encargo 19: φ binomial a mano, 10,53 con 1 grado de libertad (da {pb})")
+              f"petición 19: φ binomial a mano, 10,53 con 1 grado de libertad (da {pb})")
     comprobar(m.phi_binomial(np.array([1, 1, 2, 2]), np.array([1, 0, 1, 0]))["phi"] == 1.0,
-              "encargo 19: φ binomial sin variación de más, 1")
+              "petición 19: φ binomial sin variación de más, 1")
     # Clopper-Pearson: con φ = 1, el exacto de scipy (otra implementación); con φ = 4, el de 2,5 en 50
     lo, hi = m.intervalo_cp(10, 200)
     ci = stats.binomtest(10, 200).proportion_ci(confidence_level=0.95, method="exact")
-    comprobar(cerca(lo, ci.low) and cerca(hi, ci.high), "encargo 19: Clopper-Pearson igual que binomtest de scipy")
+    comprobar(cerca(lo, ci.low) and cerca(hi, ci.high), "petición 19: Clopper-Pearson igual que binomtest de scipy")
     lo4, hi4 = m.intervalo_cp(10, 200, 4.0)
     comprobar(cerca(lo4, stats.beta.ppf(0.025, 2.5, 48.5)) and cerca(hi4, stats.beta.ppf(0.975, 3.5, 47.5))
-              and lo4 < lo and hi4 > hi, "encargo 19: Clopper-Pearson con fallan/φ y fotos/φ, más ancho")
+              and lo4 < lo and hi4 > hi, "petición 19: Clopper-Pearson con fallan/φ y fotos/φ, más ancho")
     # Intervalos de Poisson con φ, contra la gamma
     t, lo, hi = m.intervalo_poisson(100, 36500, phi=4.0)
     comprobar(cerca(t, 100.0) and cerca(lo, stats.gamma.ppf(0.025, 25) * 4) and cerca(hi, stats.gamma.ppf(0.975, 26) * 4),
-              "encargo 19: tasa con φ = 4, igual que la gamma de 25 fallos en un cuarto de los días")
+              "petición 19: tasa con φ = 4, igual que la gamma de 25 fallos en un cuarto de los días")
     rz, lo, hi = m.razon_poisson(200, 200 / 1.2, phi=4.0)
     comprobar(cerca(rz, 1.2) and lo < 1 < hi and cerca(lo, stats.gamma.ppf(0.025, 50) / (200 / 1.2 / 4)),
-              "encargo 19: razón 1,2 con φ = 4 cruza 1")
+              "petición 19: razón 1,2 con φ = 4 cruza 1")
     # El veredicto de un centro sale del intervalo con φ (caso en rojo: razón 1,2 que con φ = 4 cruza 1 y dice «más»)
     c = {"centro": "x", "dias_ano": 60000, "observados": 200, "esperados": 200 / 1.2}
     comprobar(m.comp_veredicto_centros([dict(c, veredicto="falla más por sí mismo")], 4.0) is False
               and m.comp_veredicto_centros([dict(c, veredicto="no se distingue")], 4.0) is True
               and m.comp_veredicto_centros([dict(c, veredicto="falla más por sí mismo")], 1.0) is True,
-              "encargo 19, comprobación: razón 1,2 con φ = 4 que dice «falla más por sí mismo», rojo")
+              "petición 19, comprobación: razón 1,2 con φ = 4 que dice «falla más por sí mismo», rojo")
     # El lado frente al azar es un resultado, no una parada: la comprobación mira que cada marca sale de su cifra
     comprobar(m.comp_lado_azar([{"observados": 8, "p95": 5.0, "por_encima_del_p95": True},
                                 {"observados": 3, "p95": 5.0, "por_encima_del_p95": False}]) is True
               and m.comp_lado_azar([{"observados": 3, "p95": 5.0, "por_encima_del_p95": True}]) is False,
-              "encargo 19, comprobación: un tomo por debajo del p95 marcado «por encima», rojo")
+              "petición 19, comprobación: un tomo por debajo del p95 marcado «por encima», rojo")
     # B5 con la mezcla de modelo, edad y trimestre: A edad 1 en x e y, dos trimestres con tasas distintas.
     # 2024T1: x 1.000 días y 1 fallo, y 1.000 y 9 (tasa 10/2.000); 2024T2: x 3.000 y 3, y 1.000 y 1 (4/4.000).
     # Esperados: x 5 + 3 = 8, y 5 + 1 = 6; con solo modelo y edad (14/6.000), x 9,33 e y 4,67
@@ -382,9 +382,9 @@ def probar_encargo19(m):
     pm = phi_a_mano([("x", 1, 1, 5.0), ("x", 2, 3, 3.0), ("y", 1, 9, 5.0), ("y", 2, 1, 1.0)])
     comprobar(cerca(aj.loc["x", "esperados"], 8.0) and cerca(aj.loc["y", "esperados"], 6.0)
               and cerca(ph["phi"], pm["phi"]) and ph["celdas"] == pm["celdas"],
-              f"encargo 19: B5 con la tasa de cada modelo, edad y trimestre, y su φ, a mano (da {ph}, prueba {pm})")
+              f"petición 19: B5 con la tasa de cada modelo, edad y trimestre, y su φ, a mano (da {ph}, prueba {pm})")
     comprobar(cerca(aj.loc["y", "razon_desde"], stats.gamma.ppf(0.025, 10 / ph["phi"]) / (6.0 / ph["phi"])),
-              "encargo 19: el intervalo de la razón de un centro, con φ")
+              "petición 19: el intervalo de la razón de un centro, con φ")
     # Una celda de modelo, edad y trimestre con fallos y sin días no tiene tasa: sus fallos cuentan en los observados de
     # su centro y no pueden tener esperados; se cuentan aparte para que la suma de esperados se compare con lo demás
     d2 = pd.concat([dpt, pd.DataFrame({"model": ["A"], "centro": ["x"], "edad_anos_cumplidos": [1],
@@ -394,21 +394,21 @@ def probar_encargo19(m):
     a2 = a2.set_index("centro")
     comprobar("fallos_sin_tasa" in a2.columns and a2.loc["x", "fallos_sin_tasa"] == 2 and a2.loc["y", "fallos_sin_tasa"] == 0
               and a2.loc["x", "observados"] == 6 and cerca(a2["esperados"].sum(), (a2["observados"] - a2["fallos_sin_tasa"]).sum()),
-              "encargo 19: los fallos de una celda sin días, en sus observados y contados aparte; los esperados suman el resto")
+              "petición 19: los fallos de una celda sin días, en sus observados y contados aparte; los esperados suman el resto")
     # φ de la edad (el de B3 del 09, calculado igual): celdas modelo × edad × trimestre
     d3 = pd.DataFrame({"model": ["A", "A", "B", "B"], "centro": ["x"] * 4, "edad_anos_cumplidos": [0, 0, 1, 1],
                        "mes": pd.to_datetime(["2021-01-01", "2021-04-01", "2021-01-01", "2021-04-01"]).astype("datetime64[ms]"),
                        "dias_disco": [1000.0, 1000.0, 2000.0, float("nan")], "fallos": [10, 0, 4, 2]})
     pe = m.phi_edad(d3)
     pm_e = phi_a_mano([(("A", 0), 1, 10, 5.0), (("A", 0), 2, 0, 5.0), (("B", 1), 1, 4, 6.0), (("B", 1), 2, 2, 0.0)])
-    comprobar(cerca(pe["phi"], pm_e["phi"]) and pe["celdas"] == pm_e["celdas"], "encargo 19: φ de la edad, a mano")
+    comprobar(cerca(pe["phi"], pm_e["phi"]) and pe["celdas"] == pm_e["celdas"], "petición 19: φ de la edad, a mano")
     # Minicubo con φ: el intervalo de cada valor con fallos y días entre φ
     dims = {"d1": np.array(["a", "a", "b", "b"])}
     n1, _ = m.minicubo(dims, np.array([40000.0, 30000.0, 20000.0, 10000.0]), {"d1": np.array(["a"] * 30)}, 50000, 20,
                        phi=4.0)
     va = next(x for x in n1 if x["valor"] == "a")
     comprobar(cerca(va["desde"], stats.gamma.ppf(0.025, 7.5) * 36500 / (70000 / 4)),
-              "encargo 19: minicubo, el intervalo de cada valor con φ")
+              "petición 19: minicubo, el intervalo de cada valor con φ")
 
 
 def resultado_minimo():
@@ -516,7 +516,7 @@ def plan_fotos(fallos):
                     break
                 sitio = dia(a, mm) >= INICIO_SITIO
                 aviso = c == "sac0" and k in (0, 1) and (a, mm) >= (2024, 1)
-                # Encargo 17: en phx1, el 197 avisa en un disco de Seagate y el 198 en dos, desde 2024-01; en sac2, el 197
+                # Petición 17: en phx1, el 197 avisa en un disco de Seagate y el 198 en dos, desde 2024-01; en sac2, el 197
                 # de un disco de HGST, que el filtro de Seagate tiene que dejar fuera
                 desde24 = (a, mm) >= (2024, 1)
                 v197 = 1.0 if desde24 and ((mo == "ST8A" and c == "phx1" and k == 0)
@@ -726,7 +726,7 @@ def montar_caso(raiz, estropear=None):
             vd.append({"serial_number": f["serial"], "ultima_foto": None, "evento": "fallo"})
     escribir(raiz, "vida_discos", vd, ["serial_number", "ultima_foto", "evento"])
 
-    # transformacion-datos.json con las huellas, y los JSON de los encargos 13 y 14
+    # transformacion-datos.json con las huellas, y los JSON de las peticiones 13 y 14
     p = raiz / "data" / "processed"
     salidas = [{"ruta": f"data/processed/{t}.parquet", "sha256": sha256(p / f"{t}.parquet")}
                for t in ["dim_modelo", "fotos_riesgo", "fallos_detalle", "vida_discos", "dias_por_tramo", "centro_mes"]]
@@ -737,7 +737,7 @@ def montar_caso(raiz, estropear=None):
     (raiz / "informes" / "transformacion-datos.json").write_text(
         json.dumps({"salidas": salidas, "entradas": entradas}), encoding="utf-8")
     for n in ["indicadores__discos_modelos_edad", "indicadores__coste_prevision"]:
-        estado = "PARADO" if (estropear == "encargo14" and n == "indicadores__coste_prevision") else "AVISO"
+        estado = "PARADO" if (estropear == "peticion14" and n == "indicadores__coste_prevision") else "AVISO"
         (raiz / "informes" / f"{n}.json").write_text(json.dumps({"resultado": {"estado": estado}}), encoding="utf-8")
     return fallos, fotos, rec
 
@@ -853,7 +853,7 @@ def esperado(fallos, fotos, rec):
 
 
 def esperado_seagate(fallos, fotos):
-    """Encargo 17: el desenlace a 90 días solo con las fotos de Seagate, con bucles y sin pandas, y las fotos con el 197,
+    """Petición 17: el desenlace a 90 días solo con las fotos de Seagate, con bucles y sin pandas, y las fotos con el 197,
     con el 198 y con los dos."""
     datos = [f for f in fallos if f["model"] != "BOOT"]
     fd_por_disco = {}
@@ -892,8 +892,8 @@ def trimestre_num(fecha):
     return fecha.year * 10 + (fecha.month - 1) // 3 + 1
 
 
-def esperado_encargo19(fallos, fotos):
-    """Encargo 19, con bucles propios y sin pandas: φ binomial del desenlace por trimestre de la foto, «sin aviso» por
+def esperado_peticion19(fallos, fotos):
+    """Petición 19, con bucles propios y sin pandas: φ binomial del desenlace por trimestre de la foto, «sin aviso» por
     año, esperados y φ de B5 con la mezcla de modelo, edad y trimestre, y φ de la edad del minicubo."""
     e = {}
     datos = [f for f in fallos if f["model"] != "BOOT"]
@@ -951,26 +951,26 @@ def esperado_encargo19(fallos, fotos):
     return e
 
 
-def probar_caso_pequeno_encargo19(j, fallos, fotos):
-    """Encargo 19 sobre el caso pequeño: cada φ y cada intervalo contra la cuenta propia de la prueba."""
+def probar_caso_pequeno_peticion19(j, fallos, fotos):
+    """Petición 19 sobre el caso pequeño: cada φ y cada intervalo contra la cuenta propia de la prueba."""
     from scipy import stats
-    e = esperado_encargo19(fallos, fotos)
+    e = esperado_peticion19(fallos, fotos)
     b5, b6, b7, mc = (pregunta(j, x)["tablas"] for x in ("B5", "B6", "B7", "MC"))
     ex = {x: pregunta(j, x)["comprobaciones_extra"] for x in ("B5", "B6", "B7", "MC")}
     # B5
     ph = b5.get("phi") or {}
     pm = e["phi_b5"]
     comprobar(cerca(ph.get("phi"), pm["phi"], 1e-8) and ph.get("celdas") == pm["celdas"] and ph.get("gl") == pm["gl"],
-              f"encargo 19, B5: φ en centro × trimestre, a mano (da {ph}, prueba {pm})")
+              f"petición 19, B5: φ en centro × trimestre, a mano (da {ph}, prueba {pm})")
     cen = {x["centro"]: x for x in b5["centros"]}
     comprobar(all(cerca(cen[c]["esperados"], v, 1e-8) for c, v in e["esperados_b5"].items()),
-              "encargo 19, B5: esperados de cada centro con la tasa de cada modelo, edad y trimestre (bucle propio)")
+              "petición 19, B5: esperados de cada centro con la tasa de cada modelo, edad y trimestre (bucle propio)")
     f = ph.get("phi", 0.0)
     comprobar(f >= 1 and all(cerca(x["razon_desde"], stats.gamma.ppf(0.025, x["observados"] / f) / (x["esperados"] / f), 1e-8)
                              for x in b5["centros"] if x["observados"] > 0 and x["esperados"] > 0),
-              "encargo 19, B5: el intervalo de la razón de cada centro, con φ")
+              "petición 19, B5: el intervalo de la razón de cada centro, con φ")
     comprobar(ex["B5"].get("phi_minimo_uno") is True and ex["B5"].get("veredicto_del_intervalo") is True,
-              "encargo 19, B5: comprobaciones de φ y del veredicto, en verde")
+              "petición 19, B5: comprobaciones de φ y del veredicto, en verde")
     # B6
     des = {x["grupo"]: x for x in b6["desenlace"]["grupos"]}
     for g, pb in e["phi_desenlace"].items():
@@ -980,32 +980,32 @@ def probar_caso_pequeno_encargo19(j, fallos, fotos):
         lo = stats.beta.ppf(0.025, x["falla"] / f, (x["fotos"] - x["falla"]) / f + 1) if x["falla"] and f else 0.0
         comprobar(cerca(f, pb["phi"], 1e-8) and ph.get("celdas") == pb["celdas"] and ph.get("gl") == pb["gl"]
                   and cerca(x["falla_desde"], 100 * lo, 1e-8),
-                  f"encargo 19, B6: φ binomial de «{g}» por trimestre de la foto y su Clopper-Pearson (da {ph}, prueba {pb})")
+                  f"petición 19, B6: φ binomial de «{g}» por trimestre de la foto y su Clopper-Pearson (da {ph}, prueba {pb})")
     comprobar(all("phi" in x for x in b6["desenlace"]["grupos"] + b6["desenlace_seagate"]["grupos"]),
-              "encargo 19, B6: cada grupo, también los de Seagate, con su φ")
+              "petición 19, B6: cada grupo, también los de Seagate, con su φ")
     sa = b6.get("sin_aviso_por_ano") or []
     comprobar({x["ano"]: [x["fallos"], x["sin_aviso"]] for x in sa} == e["sin_aviso_por_ano"]
               and all(x["sin_dia_anterior"] == 0 and x["con_dia_anterior"] == x["fallos"]
                       and cerca(x["pct_sin_aviso"], 100 * x["sin_aviso"] / x["con_dia_anterior"], 1e-8) for x in sa),
-              "encargo 19, B6: «sin aviso» por año, recuento propio")
-    comprobar(ex["B6"].get("phi_minimo_uno") is True, "encargo 19, B6: φ nunca menor que 1, en verde")
+              "petición 19, B6: «sin aviso» por año, recuento propio")
+    comprobar(ex["B6"].get("phi_minimo_uno") is True, "petición 19, B6: φ nunca menor que 1, en verde")
     # B7
     az = b7["azar"]
     sc = az.get("solo_centro") or {}
     comprobar(az.get("estrato") == "centro y trimestre" and sc.get("estrato") == "centro"
               and sc.get("iteraciones") == az["iteraciones"] and len(sc.get("resultados", [])) == len(az["resultados"]),
-              "encargo 19, B7: el azar dentro de centro y trimestre, y el de solo centro al lado")
+              "petición 19, B7: el azar dentro de centro y trimestre, y el de solo centro al lado")
     comprobar(all(x["por_encima_del_p95"] == (x["observados"] > x["p95"]) for x in az["resultados"] + sc.get("resultados", []))
               and ex["B7"].get("lado_del_azar") is True and "por_encima_del_p95" not in ex["B7"],
-              "encargo 19, B7: el lado frente al azar es un resultado calculado, no una parada")
+              "petición 19, B7: el lado frente al azar es un resultado calculado, no una parada")
     # MC
     ph = mc.get("phi") or {}
     f = ph.get("phi", 0.0)
     comprobar(cerca(f, e["phi_mc"]["phi"], 1e-8) and ph.get("celdas") == e["phi_mc"]["celdas"],
-              f"encargo 19, MC: φ de la edad, a mano (da {ph}, prueba {e['phi_mc']})")
+              f"petición 19, MC: φ de la edad, a mano (da {ph}, prueba {e['phi_mc']})")
     comprobar(f >= 1 and all(cerca(x["desde"], stats.gamma.ppf(0.025, x["fallos"] / f) * 36500 / (x["dias"] / f), 1e-8)
                              for x in mc["nivel_1"] if x["fallos"] > 0 and x["dias"] > 0)
-              and ex["MC"].get("phi_minimo_uno") is True, "encargo 19, MC: el intervalo de cada valor, con φ")
+              and ex["MC"].get("phi_minimo_uno") is True, "petición 19, MC: el intervalo de cada valor, con φ")
 
 
 def probar_caso_pequeno():
@@ -1052,19 +1052,19 @@ def probar_caso_pequeno():
                fv["dias_mediana"]) == e["ventana"], "B6: la ventana antes del fallo, contada a mano")
     comprobar(fv["sin_aviso"] == e["sin_aviso"] and fv["sin_dia_anterior"] == 0, "B6: fallos sin aviso")
     comprobar(len(b6["serie_dias_antes"]) == 30, "B6: la serie de los 30 días antes del fallo")
-    # Encargo 17: el desenlace por contador, solo con las fotos de Seagate, frente al recuento propio de la prueba
+    # Petición 17: el desenlace por contador, solo con las fotos de Seagate, frente al recuento propio de la prueba
     ds = b6.get("desenlace_seagate")
-    comprobar(ds is not None, "encargo 17, B6: el desenlace a 90 días repetido con las fotos de Seagate")
+    comprobar(ds is not None, "petición 17, B6: el desenlace a 90 días repetido con las fotos de Seagate")
     if ds is not None:
         gs = {x["grupo"]: x for x in ds["grupos"]}
         es = esperado_seagate(fallos, fotos)
         comprobar(all(g in gs and [gs[g]["sigue"], gs[g]["falla"], gs[g]["desaparece"]] == es["grupos"][g]
                       for g in ("sin aviso", "contador 197", "contador 198")),
-                  "encargo 17, B6 Seagate: sin aviso, 197 y 198, contados a mano (el HGST con el 197 queda fuera)")
-        comprobar(ds["fotos"] == es["fotos"], "encargo 17, B6 Seagate: fotos de Seagate con 90 días por delante")
+                  "petición 17, B6 Seagate: sin aviso, 197 y 198, contados a mano (el HGST con el 197 queda fuera)")
+        comprobar(ds["fotos"] == es["fotos"], "petición 17, B6 Seagate: fotos de Seagate con 90 días por delante")
         c = ds["contadores_197_198"]
         comprobar((c["fotos_197"], c["fotos_198"], c["las_dos"]) == es["197_198"] and c["mismas_fotos"] is False,
-                  "encargo 17, B6 Seagate: el 197 y el 198 no marcan las mismas fotos en el caso pequeño, con su recuento")
+                  "petición 17, B6 Seagate: el 197 y el 198 no marcan las mismas fotos en el caso pequeño, con su recuento")
 
     # B7
     t7 = b7["fallos"]
@@ -1082,7 +1082,7 @@ def probar_caso_pequeno():
               "B7: el peor tomo y su línea de tiempo; el primero, con coincide vacío (NA), no coincide")
     comprobar(len(b7["riesgo_vivo"]["meses"]) == 24 and b7["azar"]["iteraciones"] == 200,
               "B7: 24 meses de riesgo vivo y 200 repeticiones del azar")
-    probar_caso_pequeno_encargo19(j, fallos, fotos)
+    probar_caso_pequeno_peticion19(j, fallos, fotos)
 
     # B8
     rp = b8["reparto"]
@@ -1116,7 +1116,7 @@ def probar_caso_pequeno():
             ("coincide", "ERROR", "coincidencias"),
             ("foto", "ERROR", "con su foto"),
             ("huella", "ERROR", "huella"),
-            ("encargo14", "PARADO", "indicadores__coste_prevision")]:
+            ("peticion14", "PARADO", "indicadores__coste_prevision")]:
         montar_caso(TMP, estropear)
         codigo, j = ejecutar(TMP)
         comprobar(codigo != 0 and j is not None and j["resultado"]["estado"] == estado
@@ -1125,14 +1125,14 @@ def probar_caso_pequeno():
 
 
 # ---------------------------------------------------------------------------------------------------------------
-# 4. Parte 3 · el JSON real, contra los controles del encargo y por otro camino
+# 4. Parte 3 · el JSON real, contra los controles de la petición y por otro camino
 # ---------------------------------------------------------------------------------------------------------------
-def probar_json_real_encargo19(b5, b6, b7, mc, rd, m=None):
-    """Los CONTROLES del encargo 19 sobre el JSON real.
+def probar_json_real_peticion19(b5, b6, b7, mc, rd, m=None):
+    """Los CONTROLES de la petición 19 sobre el JSON real.
 
     B5: el control se midió con los centros que constan, sin «sin dato» en la mezcla; el script la calcula con «sin
-    dato» dentro (criterio técnico 1 del encargo 15). Las cifras del control se comprueban exactas con la función del
-    script sobre esas mismas celdas, y el JSON, con los mismos lados y a menos de una centésima, como permite el encargo
+    dato» dentro (criterio técnico 1 de la petición 15). Las cifras del control se comprueban exactas con la función del
+    script sobre esas mismas celdas, y el JSON, con los mismos lados y a menos de una centésima, como permite la petición
     («pueden moverse en el tercer decimal; los lados tienen que salir iguales»).
     """
     controles = [("sac2", 1.099, 1.057, 1.143, "falla más por sí mismo"), ("sac0", 0.900, 0.867, 0.934, "falla menos"),
@@ -1192,7 +1192,7 @@ def probar_json_real_encargo19(b5, b6, b7, mc, rd, m=None):
 
 
 def probar_json_real(m=None):
-    """Controles del encargo 15 y dos cifras rehechas con pyarrow; con el JSON del encargo 19, sus controles."""
+    """Controles de la petición 15 y dos cifras rehechas con pyarrow; con el JSON de la petición 19, sus controles."""
     ruta = CASO / SALIDA
     if not ruta.exists():
         print("aviso  no hay JSON real todavía: la parte 3 no se prueba")
@@ -1206,7 +1206,7 @@ def probar_json_real(m=None):
     b5, b6, b7, b8, mc = (pregunta(j, x)["tablas"] for x in ("B5", "B6", "B7", "B8", "MC"))
 
     def rd(x, d):
-        """Redondeo como lo escribe el encargo."""
+        """Redondeo como lo escribe la petición."""
         return round(x + 1e-12, d)
 
     # B5
@@ -1241,9 +1241,9 @@ def probar_json_real(m=None):
         comprobar(rd(cen["sac0"]["tasa_ajustada"], 4) == 1.3635 and rd(cen["sac2"]["tasa_ajustada"], 4) == 1.6522,
                   "control B5: tasa ajustada de sac0 1,3635 y de sac2 1,6522")
     else:
-        # La mezcla de B5 lleva el trimestre desde el encargo 19: la razón y la tasa ajustada del 15 ya no valen
-        print("aviso  B5 con la mezcla del encargo 19: los controles de la razón del encargo 15 no se aplican")
-        probar_json_real_encargo19(b5, b6, b7, mc, rd, m)
+        # La mezcla de B5 lleva el trimestre desde la petición 19: la razón y la tasa ajustada del 15 ya no valen
+        print("aviso  B5 con la mezcla de la petición 19: los controles de la razón de la petición 15 no se aplican")
+        probar_json_real_peticion19(b5, b6, b7, mc, rd, m)
     comprobar(b5["modelos_minimo_dos_centros"] == 21, "control B5: 21 modelos con el mínimo en dos centros o más")
     tm = {x["centro"]: x["media"] for x in b5["temperatura"]["por_centro"]}
     comprobar(all(rd(tm[c], 2) == v for c, v in [("ams5", 34.50), ("iad1", 33.73), ("phx1", 33.44), ("sac0", 30.02),
@@ -1275,10 +1275,10 @@ def probar_json_real(m=None):
     comprobar((fv["con_filas_antes"], fv["avisan_algun_dia"], fv["ya_primer_dia"], fv["empiezan_dentro"])
               == (16917, 12900, 10171, 2729) and (fv["dias_mediana"], fv["dias_q1"], fv["dias_q3"]) == (10, 4, 19),
               "control B6: 16.917, 12.900, 10.171 y 2.729; 10 días (4 y 19)")
-    # Encargo 17: el desenlace en Seagate; un JSON real de antes del encargo no lo trae y se avisa
+    # Petición 17: el desenlace en Seagate; un JSON real de antes de la petición no lo trae y se avisa
     ds = b6.get("desenlace_seagate")
     if ds is None:
-        print("aviso  el JSON real es de antes del encargo 17: el desenlace en Seagate se prueba tras la ejecución real")
+        print("aviso  el JSON real es de antes de la petición 17: el desenlace en Seagate se prueba tras la ejecución real")
     else:
         gs = {x["grupo"]: x for x in ds["grupos"]}
         for g, n, pf_ in [("contador 5", 344356, 4.05), ("contador 187", 218789, 6.46), ("contador 188", 267606, 1.30),
@@ -1322,7 +1322,7 @@ def probar_json_real(m=None):
                   and az[(3, 7)]["observados"] == 8 and az[(3, 7)]["por_encima_del_p95"] is True,
                   "control B7: los dos, por encima del percentil 95 del azar (el lado)")
     else:
-        # Desde el encargo 19 el lado es un resultado; los de 3 en 7 días se dicen, sin control escrito
+        # Desde la petición 19 el lado es un resultado; los de 3 en 7 días se dicen, sin control escrito
         print(f"info   B7, 3 fallos en 7 días: {az[(3, 7)]['observados']} observados, media {az[(3, 7)]['media']:.2f}, "
               f"p95 {az[(3, 7)]['p95']:.1f}, por encima: {az[(3, 7)]['por_encima_del_p95']}")
     rv = b7["riesgo_vivo"]
@@ -1387,7 +1387,7 @@ if __name__ == "__main__":
         modulo = cargar_modulo()
         if modulo is not None:
             probar_piezas(modulo)
-            probar_encargo19(modulo)
+            probar_peticion19(modulo)
             probar_caso_pequeno()
         probar_json_real(modulo)
     finally:

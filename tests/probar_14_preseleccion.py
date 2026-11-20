@@ -1,4 +1,4 @@
-"""Prueba de scripts/14_preseleccion.py (skill preseleccion-variables; encargo 21, primera parte).
+"""Prueba de scripts/14_preseleccion.py (método preseleccion-variables; petición 21, primera parte).
 
 Parte 1, las piezas sueltas. Carga el script como módulo (su trabajo está dentro de `if __name__ == "__main__":`) y
 prueba con datos pequeños escritos aquí, cada pieza con un caso que tiene que salir bien y otro que tiene que salir mal:
@@ -11,7 +11,7 @@ prueba con datos pequeños escritos aquí, cada pieza con un caso que tiene que 
   - el tope, que quita familias enteras de peor ranking y nunca una obligatoria;
   - los meses más recientes de la muestra, enteros, y la muestra entera cuando no llega;
   - los pliegues internos por fecha, que quitan las fotos cuyo horizonte no acabó el primer día de lo que miden;
-  - las seis validaciones de la skill §8 en verde y en rojo, y que ninguna está escrita con True puesto.
+  - las seis validaciones de el método §8 en verde y en rojo, y que ninguna está escrita con True puesto.
 Parte 2, el script entero sobre un caso pequeño en tests/tmp_preseleccion/, que se crea y se borra: una tabla de
 entrenamiento con las 144 columnas de la real (tipos tomados con read_schema, sin cargar datos), una copia de la matriz
 con su estado escrito en la copia y un informes/preparacion.json en OK con la huella. Sin fichero de validación: el
@@ -21,7 +21,7 @@ script no lo necesita. Comprueba:
   - los árboles reciben las 64 columnas sin votar;
   - una fuga puesta a propósito salta la alarma y el script para (PARADO);
   - preparacion.json fuera de OK, o la matriz sin aprobar, paran (PARADO).
-Parte 3, el JSON real, si la sesión principal ya ejecutó el script: las cifras de control del encargo.
+Parte 3, el JSON real, si la sesión principal ya ejecutó el script: las cifras de control de la petición.
 
 Sale con 0 si todo pasa y con 1 si algo falla, e imprime qué caso falla. La carpeta temporal se borra siempre.
 """
@@ -49,12 +49,12 @@ import pyarrow.parquet as pq
 CASO = Path(__file__).resolve().parents[1]
 SCRIPT = CASO / "scripts" / "14_preseleccion.py"
 TMP = CASO / "tests" / "tmp_preseleccion"
-MATRIZ = "contexto-proyecto/modelo/matriz_transformaciones.md"
+MATRIZ = "config/modelo/matriz_transformaciones.md"
 ENT = "data/processed/fotos_riesgo_entrenamiento.parquet"
 SALIDA = "informes/preseleccion.json"
 VALIDACIONES = ["sin_validacion", "origen_en_matriz", "familias_enteras", "tope", "sin_prohibidas", "lista_valida"]
 OBLIGATORIAS = ["smart_5_raw", "smart_187_raw", "smart_197_raw", "smart_198_raw"]
-LIMITE_S = 150                                      # el encargo: si una ejecución pasa de 150 s, se para y se dice
+LIMITE_S = 150                                      # la petición: si una ejecución pasa de 150 s, se para y se dice
 FALLOS = []
 
 
@@ -179,7 +179,7 @@ def probar_parecidas(m):
 
 
 def probar_parecido_por_vacio(m):
-    """Dos variables que solo coinciden en qué filas no tienen dato no se parecen (skill §6, último punto): el vacío
+    """Dos variables que solo coinciden en qué filas no tienen dato no se parecen (método §6, último punto): el vacío
     de un contador SMART lo fija el modelo que lo registra, no la información. Una copia con el mismo vacío sí se parece."""
     rng = np.random.default_rng(3)
     n = 6000
@@ -237,7 +237,7 @@ def probar_pliegues(m):
 
 
 def probar_validaciones(m):
-    """Las seis de la skill §8, cada una en verde y en rojo."""
+    """Las seis de el método §8, cada una en verde y en rojo."""
     comprobar(m.v_sin_validacion(["data/processed/fotos_riesgo_entrenamiento.parquet"])
               and not m.v_sin_validacion(["data/processed/fotos_riesgo_validacion.parquet"]), "1 sin validación: verde y rojo")
     comprobar(m.v_origen_en_matriz(["a_1"], {"a_1": "a"}, ["a"]) and not m.v_origen_en_matriz(["z_1"], {}, ["a"])
@@ -267,7 +267,7 @@ def probar_escritos():
 
 
 def probar_importa_solo_13():
-    """El script importa solo el 13 (nota del encargo, punto 1) y no abre la validación."""
+    """El script importa solo el 13 (nota de la petición, punto 1) y no abre la validación."""
     texto = SCRIPT.read_text(encoding="utf-8")
     nombrados = set(re.findall(r"scripts\W+(\d\d_\w+)\.py", texto)) | set(re.findall(r'"(\d\d_\w+)\.py"', texto))
     comprobar(nombrados <= {"13_preparacion", "14_preseleccion", "06_analisis_exploratorio"},
@@ -318,13 +318,13 @@ def tabla_mes(esquema, mes, k, rng, fuga):
     return pa.table(columnas, schema=esquema)
 
 
-def montar(fuga=False, estado_preparacion="OK", estado_matriz="aprobada por Juan el 18/11/2026 («Sí, siguiente pregunta»)"):
+def montar(fuga=False, estado_preparacion="OK", estado_matriz="aprobada por el responsable del caso el 18/11/2026 («Sí, siguiente pregunta»)"):
     """Monta tests/tmp_preseleccion/ con la tabla de entrenamiento, la matriz y preparacion.json."""
     if TMP.exists():
         shutil.rmtree(TMP)
     (TMP / "data" / "processed").mkdir(parents=True)
     (TMP / "informes").mkdir()
-    (TMP / "contexto-proyecto" / "modelo").mkdir(parents=True)
+    (TMP / "config" / "modelo").mkdir(parents=True)
     esquema = pq.read_schema(CASO / ENT).remove_metadata()
     rng = np.random.default_rng(7)
     with pq.ParquetWriter(TMP / ENT, esquema) as w:
@@ -336,7 +336,7 @@ def montar(fuga=False, estado_preparacion="OK", estado_matriz="aprobada por Juan
     (TMP / "informes" / "preparacion.json").write_text(json.dumps(
         {"resultado": {"estado": estado_preparacion},
          "entradas": [{"ruta": ENT, "sha256": sha256(TMP / ENT)}],
-         "matriz": {"aprobada_por": "Juan", "fecha": "2026-11-18"}}, ensure_ascii=False), encoding="utf-8")
+         "matriz": {"aprobada_por": "El responsable del caso", "fecha": "2026-11-18"}}, ensure_ascii=False), encoding="utf-8")
 
 
 def ejecutar():
@@ -400,7 +400,7 @@ def probar_caso_pequeno():
                   f"fuga: la alarma salta con smart_242_raw y queda sin decisión ({al})")
     # Las entradas que no están listas
     for nombre, montaje in (("preparacion.json sin OK", {"estado_preparacion": "PARADO"}),
-                            ("matriz sin aprobar", {"estado_matriz": "propuesta, pendiente de Juan"})):
+                            ("matriz sin aprobar", {"estado_matriz": "opción, pendiente de el responsable del caso"})):
         montar(**montaje)
         codigo, js, _ = ejecutar()
         comprobar(codigo == 2 and js is not None and js["resultado"]["estado"] == "PARADO", f"{nombre}: PARADO (código {codigo})")
@@ -410,7 +410,7 @@ def probar_caso_pequeno():
 # 4. Parte 3 · el JSON real
 # ---------------------------------------------------------------------------------------------------------------
 def probar_real():
-    """Si la sesión principal ya ejecutó el script, las cifras de control del encargo."""
+    """Si la sesión principal ya ejecutó el script, las cifras de control de la petición."""
     ruta = CASO / SALIDA
     js = json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else {}
     if not isinstance(js.get("familias"), dict):

@@ -1,8 +1,8 @@
 {
- "skill": "preparacion-modelo",
- "version_skill": "15/11/2026 (WF-134)",
+ "metodo": "preparacion-modelo",
+ "version_metodo": "15/11/2026",
  "script": "scripts/13_preparacion.py",
- "encargo": "prompts/20_encargo_particion_y_preparacion.md, tercera parte",
+ "peticion": "peticiones/20_particion_y_preparacion.md, tercera parte",
  "fecha_datos": "2025-06-30",
  "fecha_ejecucion": "2026-11-18T16:37:24",
  "entradas": [
@@ -19,9 +19,9 @@
    "columnas": 144
   },
   {
-   "ruta": "contexto-proyecto/modelo/matriz_transformaciones.md",
+   "ruta": "config/modelo/matriz_transformaciones.md",
    "sha256": "bfd1179467770392e949c585a8ec3db1fcdca24e785d57753acd8c5b6962a6f0",
-   "estado": "aprobada por Juan el 18/11/2026 («Sí, siguiente pregunta») y corregida con su aprobación el mismo día («arréglalo y haz lo que tengas que hacer», R68-114); no se cambia sin una nueva aprobación (preparacion-modelo §3)"
+   "estado": "aprobada por el responsable del caso el 18/11/2026 («Sí, siguiente pregunta») y corregida con su aprobación el mismo día («arréglalo y haz lo que tengas que hacer», una nota del caso); no se cambia sin una nueva aprobación (preparacion-modelo §3)"
   }
  ],
  "resultado": {
@@ -31,7 +31,7 @@
    "informes/preparacion.json",
    "informes/preparacion.md"
   ],
-  "resumen": "Tres preprocesadores sin ajustar, con la matriz aprobada por Juan; ajustados una vez para comprobar con 232.243 filas, dan 496, 97 y 64 columnas, y pasan las diez validaciones.",
+  "resumen": "Tres preprocesadores sin ajustar, con la matriz aprobada por el responsable del caso; ajustados una vez para comprobar con 232.243 filas, dan 496, 97 y 64 columnas, y pasan las diez validaciones.",
   "siguiente": "preseleccion-variables con entrenamiento; después aprendizaje-automatico, que ajusta cada preprocesador con su modelo"
  },
  "pendientes": [],
@@ -47,7 +47,7 @@
  ],
  "particion": {
   "estrategia": "fecha",
-  "por_que": "Por fecha, como manda reglas-negocio §7 (Juan, 17/11/2026): el modelo se usará hacia adelante, cada mes con las fotos nuevas, así que la validación es el periodo más reciente, del 01/07/2024 al 30/06/2025, y la construcción va del 01/01/2020 al 30/06/2024. Un disco sigue en servicio de una parte a la otra, como seguirá en producción: no se parte por disco.",
+  "por_que": "Por fecha, como manda reglas-negocio §7 (El responsable del caso, 17/11/2026): el modelo se usará hacia adelante, cada mes con las fotos nuevas, así que la validación es el periodo más reciente, del 01/07/2024 al 30/06/2025, y la construcción va del 01/01/2020 al 30/06/2024. Un disco sigue en servicio de una parte a la otra, como seguirá en producción: no se parte por disco.",
   "partes": [
    {
     "parte": "entrenamiento",
@@ -127,14 +127,14 @@
   "como": "todas las fotos con fallo y, de cada mes, el 2 % de las sanas, sorteadas con la semilla en el orden de los meses"
  },
  "matriz": {
-  "ruta": "contexto-proyecto/modelo/matriz_transformaciones.md",
-  "aprobada_por": "Juan",
+  "ruta": "config/modelo/matriz_transformaciones.md",
+  "aprobada_por": "El responsable del caso",
   "fecha": "2026-11-18",
-  "estado": "aprobada por Juan el 18/11/2026 («Sí, siguiente pregunta») y corregida con su aprobación el mismo día («arréglalo y haz lo que tengas que hacer», R68-114); no se cambia sin una nueva aprobación (preparacion-modelo §3)",
+  "estado": "aprobada por el responsable del caso el 18/11/2026 («Sí, siguiente pregunta») y corregida con su aprobación el mismo día («arréglalo y haz lo que tengas que hacer», una nota del caso); no se cambia sin una nueva aprobación (preparacion-modelo §3)",
   "decisiones": [
    [
     "P-01",
-    "aprueba la matriz tal como la propuso el encargo 20 («Sí, siguiente pregunta»)."
+    "aprueba la matriz tal como la propuso la petición 20 («Sí, siguiente pregunta»)."
    ],
    [
     "P-04",
@@ -142,7 +142,7 @@
    ],
    [
     "P-05",
-    "seis variables que repetían a otra salen de la matriz (smart_190_raw, copia de smart_194_raw, y cinco normalizados que son función exacta de su bruto: 183, 184, 187, 189 y 222), y smart_197_normalized entra solo en los árboles («arréglalo y haz lo que tengas que hacer», R68-114)."
+    "seis variables que repetían a otra salen de la matriz (smart_190_raw, copia de smart_194_raw, y cinco normalizados que son función exacta de su bruto: 183, 184, 187, 189 y 222), y smart_197_normalized entra solo en los árboles («arréglalo y haz lo que tengas que hacer», una nota del caso)."
    ],
    [
     "P-02",
@@ -173,7 +173,7 @@
     "relleno": "no hace falta: sin vacíos",
     "salida": "L: capacidad_tb_disc_cs_*<br>B y H: capacidad_tb",
     "entra": "sí",
-    "porque": "Tasa por tramos en entrenamiento: 7 tramos, tasa de 0,062 % a 0,276 %, 2 cambios de sentido, Spearman -0,64; asimetría -0,7. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Sale del modelo (reglas §3).",
+    "porque": "Tasa por tramos en entrenamiento: 7 tramos, tasa de 0,062 % a 0,276 %, 2 cambios de sentido, Spearman -0,64; asimetría -0,7. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Sale del modelo (reglas, apartado 3).",
     "seccion": "entran"
    },
    {
@@ -184,7 +184,7 @@
     "relleno": "no hace falta: sin vacíos",
     "salida": "L: fabricante_ohe_*<br>B: fabricante_ohe_*<br>H: fabricante_oe",
     "entra": "sí",
-    "porque": "4 fabricantes, todos por encima del mínimo; referencia Seagate, el de más fotos. Sale del nombre del modelo (reglas §3). Comparar fabricantes mezcla modelos y edades (reglas §7, alerta A-11): es una variable, no una conclusión",
+    "porque": "4 fabricantes, todos por encima del mínimo; referencia Seagate, el de más fotos. Sale del nombre del modelo (reglas, apartado 3). Comparar fabricantes mezcla modelos y edades (reglas, apartado 7, alerta A-11): es una variable, no una conclusión",
     "seccion": "entran"
    },
    {
@@ -195,7 +195,7 @@
     "relleno": "L: el vacío es su propio tramo, sin marca (catálogo, «Vacíos», J46)<br>B y H: ninguno: el vacío entra como vacío (bosque y HistGradientBoosting lo admiten en 1.9, fichas §4) y cada corte aprende a qué lado va",
     "salida": "L: garantia_anos_disc_cs_*<br>B y H: garantia_anos",
     "entra": "sí",
-    "porque": "Tasa por tramos en entrenamiento: 3 tramos, tasa de 0,030 % a 0,181 %, 1 cambio de sentido, Spearman -0,50; asimetría -1,6. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Sale del modelo (reglas §6, garantía de la ficha del fabricante); 3 valores.",
+    "porque": "Tasa por tramos en entrenamiento: 3 tramos, tasa de 0,030 % a 0,181 %, 1 cambio de sentido, Spearman -0,50; asimetría -1,6. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Sale del modelo (reglas, apartado 6, garantía de la ficha del fabricante); 3 valores.",
     "seccion": "entran"
    },
    {
@@ -294,7 +294,7 @@
     "relleno": "L: el vacío no llega al mínimo de un tramo (2.539 fotos, 9 fallos): va al tramo de referencia (pendiente P-02)<br>B y H: ninguno: el vacío entra como vacío (bosque y HistGradientBoosting lo admiten en 1.9, fichas §4) y cada corte aprende a qué lado va",
     "salida": "L: smart_1_raw_disc_cs_*<br>B y H: smart_1_raw",
     "entra": "sí",
-    "porque": "Tasa por tramos en entrenamiento: 11 tramos, tasa de 0,068 % a 0,157 %, 6 cambios de sentido, Spearman 0,05; asimetría 0,9. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Formato propio de cada fabricante, que no se compara entre fabricantes (reglas §5; plan): fuera de Seagate vale 0 en el 100,0 % de las fotos de Toshiba, el 99,8 % de las de HGST y el 99,9 % de las de WDC; en Seagate la tasa por quintiles va de 0,139 % a 0,146 %. Por eso en la logística los tramos salen solo de Seagate. En los árboles no se mezclan fabricantes: el 0 de los demás queda por debajo de casi todos los valores de Seagate, y el árbol puede cortar antes por fabricante.",
+    "porque": "Tasa por tramos en entrenamiento: 11 tramos, tasa de 0,068 % a 0,157 %, 6 cambios de sentido, Spearman 0,05; asimetría 0,9. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Formato propio de cada fabricante, que no se compara entre fabricantes (reglas, apartado 5; plan): fuera de Seagate vale 0 en el 100,0 % de las fotos de Toshiba, el 99,8 % de las de HGST y el 99,9 % de las de WDC; en Seagate la tasa por quintiles va de 0,139 % a 0,146 %. Por eso en la logística los tramos salen solo de Seagate. En los árboles no se mezclan fabricantes: el 0 de los demás queda por debajo de casi todos los valores de Seagate, y el árbol puede cortar antes por fabricante.",
     "seccion": "entran"
    },
    {
@@ -305,7 +305,7 @@
     "relleno": "L: el vacío no llega al mínimo de un tramo (2.539 fotos, 9 fallos): va al tramo de referencia (pendiente P-02)<br>B y H: ninguno: el vacío entra como vacío (bosque y HistGradientBoosting lo admiten en 1.9, fichas §4) y cada corte aprende a qué lado va",
     "salida": "L: smart_7_raw_disc_cs_*<br>B y H: smart_7_raw",
     "entra": "sí",
-    "porque": "Tasa por tramos en entrenamiento: 11 tramos, tasa de 0,071 % a 0,200 %, 4 cambios de sentido, Spearman 0,98; asimetría 514,8. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Formato propio de cada fabricante, que no se compara entre fabricantes (reglas §5; plan): fuera de Seagate vale 0 en el 100,0 % de las fotos de Toshiba, el 100,0 % de las de HGST y el 100,0 % de las de WDC; en Seagate la tasa por quintiles va de 0,121 % a 0,186 %. Por eso en la logística los tramos salen solo de Seagate. En los árboles no se mezclan fabricantes: el 0 de los demás queda por debajo de casi todos los valores de Seagate, y el árbol puede cortar antes por fabricante.",
+    "porque": "Tasa por tramos en entrenamiento: 11 tramos, tasa de 0,071 % a 0,200 %, 4 cambios de sentido, Spearman 0,98; asimetría 514,8. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Formato propio de cada fabricante, que no se compara entre fabricantes (reglas, apartado 5; plan): fuera de Seagate vale 0 en el 100,0 % de las fotos de Toshiba, el 100,0 % de las de HGST y el 100,0 % de las de WDC; en Seagate la tasa por quintiles va de 0,121 % a 0,186 %. Por eso en la logística los tramos salen solo de Seagate. En los árboles no se mezclan fabricantes: el 0 de los demás queda por debajo de casi todos los valores de Seagate, y el árbol puede cortar antes por fabricante.",
     "seccion": "entran"
    },
    {
@@ -316,7 +316,7 @@
     "relleno": "no hace falta: sin vacíos",
     "salida": "L: edad_anos_disc_cs_*<br>B y H: edad_anos",
     "entra": "sí",
-    "porque": "Tasa por tramos en entrenamiento: 10 tramos, tasa de 0,055 % a 0,181 %, 1 cambio de sentido, Spearman 0,99; asimetría 0,7. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Sin vacíos: sin horas encendido, cuenta desde la primera aparición (reglas §3).",
+    "porque": "Tasa por tramos en entrenamiento: 10 tramos, tasa de 0,055 % a 0,181 %, 1 cambio de sentido, Spearman 0,99; asimetría 0,7. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Sin vacíos: sin horas encendido, cuenta desde la primera aparición (reglas, apartado 3).",
     "seccion": "entran"
    },
    {
@@ -327,7 +327,7 @@
     "relleno": "L: —<br>B y H: no hace falta: sin vacíos",
     "salida": "L: —<br>B y H: avisa",
     "entra": "solo bosque, hgb",
-    "porque": "En la logística no entra: es contadores_que_avisan mayor que 0, así que su columna es la suma de las de los tramos 1 a 5 de contadores_que_avisan (combinación exacta, validación 6 de la skill). Tasa por tramos en entrenamiento: 2 tramos, tasa de 0,041 % a 1,189 %, 0 cambios de sentido, Spearman —; asimetría 3,8. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Dos valores: el menos frecuente tiene 644.539 fotos, unas 20.401 en la muestra del 2 %, por encima de la hoja: varía de verdad (error 33). En los árboles es candidata; la preselección elige entre ella y contadores_que_avisan.",
+    "porque": "En la logística no entra: es contadores_que_avisan mayor que 0, así que su columna es la suma de las de los tramos 1 a 5 de contadores_que_avisan (combinación exacta, validación 6 de el método). Tasa por tramos en entrenamiento: 2 tramos, tasa de 0,041 % a 1,189 %, 0 cambios de sentido, Spearman —; asimetría 3,8. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Dos valores: el menos frecuente tiene 644.539 fotos, unas 20.401 en la muestra del 2 %, por encima de la hoja: varía de verdad (error 33). En los árboles es candidata; la preselección elige entre ella y contadores_que_avisan.",
     "seccion": "entran"
    },
    {
@@ -338,7 +338,7 @@
     "relleno": "no hace falta: sin vacíos",
     "salida": "L: contadores_que_avisan_disc_cs_*<br>B y H: contadores_que_avisan",
     "entra": "sí",
-    "porque": "Tasa por tramos en entrenamiento: 6 tramos, tasa de 0,041 % a 18,917 %, 0 cambios de sentido, Spearman 1,00; asimetría 6,2. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Es la variable de la regla de los cinco contadores con la que se compara el modelo (reglas §7, CP-010).",
+    "porque": "Tasa por tramos en entrenamiento: 6 tramos, tasa de 0,041 % a 18,917 %, 0 cambios de sentido, Spearman 1,00; asimetría 6,2. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4). Es la variable de la regla de los cinco contadores con la que se compara el modelo (reglas, apartado 7, cuestión 010).",
     "seccion": "entran"
    },
    {
@@ -734,7 +734,7 @@
     "relleno": "L: —<br>B y H: ninguno: el vacío entra como vacío (bosque y HistGradientBoosting lo admiten en 1.9, fichas §4) y cada corte aprende a qué lado va",
     "salida": "L: —<br>B y H: smart_197_normalized",
     "entra": "solo bosque, hgb",
-    "porque": "En la logística no entra: sale de 100 en solo 1.582 fotos de entrenamiento (479 fallos), y con el 2 % de las sanas no llega a 20 sanas fuera de 100; su vacío lo lleva smart_197_raw. No dejaba ninguna columna (validación 7 en rojo con la matriz del 18/11; corregido con Juan, R68-114). No es función de smart_197_raw (219 brutos con más de un normalizado). En los árboles entra tal cual. Candidata a la preselección (no prevista; no entra sin pasar por ella). Tasa por tramos en entrenamiento: 7 tramos, tasa de 0,105 % a 52,414 %, 0 cambios de sentido, Spearman -1,00; asimetría 145,5. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4).",
+    "porque": "En la logística no entra: sale de 100 en solo 1.582 fotos de entrenamiento (479 fallos), y con el 2 % de las sanas no llega a 20 sanas fuera de 100; su vacío lo lleva smart_197_raw. No dejaba ninguna columna (validación 7 en rojo con la matriz del 18/11; corregido con el responsable del caso, una nota del caso). No es función de smart_197_raw (219 brutos con más de un normalizado). En los árboles entra tal cual. Candidata a la preselección (no prevista; no entra sin pasar por ella). Tasa por tramos en entrenamiento: 7 tramos, tasa de 0,105 % a 52,414 %, 0 cambios de sentido, Spearman -1,00; asimetría 145,5. Va por tramos porque no cumple a la vez «tasa sin cambios de sentido» y «asimetría por debajo de 1», la medida escrita de «regular» (catálogo, tramos, J47; ficha de la logística §4.2); los extremos quedan en los tramos de los bordes sin recortarlos. En los árboles entra tal cual: no ven la escala ni les afectan los extremos (fichas §4).",
     "seccion": "entran"
    },
    {
@@ -855,7 +855,7 @@
     "relleno": "constante «sin dato»",
     "salida": "L: datacenter_ohe_*<br>B: datacenter_ohe_*<br>H: datacenter_oe",
     "entra": "sí",
-    "porque": "Entra solo si mejora al modelo en cada mes de la comprobación, que lo mide el encargo 21. Vacía en el 71,62 % de las fotos de entrenamiento y el 67,63 % de las de fallo, porque el sitio solo consta desde el 01/07/2023 (reglas §4). En entrenamiento hay 5 centros, todos por encima del mínimo; yyz1 no sale y, si llega, va a «sin dato» en las tres familias, la referencia de la logística (pendiente P-03)",
+    "porque": "Entra solo si mejora al modelo en cada mes de la comprobación, que lo mide la petición 21. Vacía en el 71,62 % de las fotos de entrenamiento y el 67,63 % de las de fallo, porque el sitio solo consta desde el 01/07/2023 (reglas, apartado 4). En entrenamiento hay 5 centros, todos por encima del mínimo; yyz1 no sale y, si llega, va a «sin dato» en las tres familias, la referencia de la logística (pendiente P-03)",
     "seccion": "entran"
    },
    {
@@ -866,7 +866,7 @@
     "relleno": "—",
     "salida": "—",
     "entra": "no",
-    "porque": "No entra: función exacta de smart_183_raw: ningún bruto con dos normalizados en 971.473 fotos, y el mismo vacío fila a fila. No aporta nada que no lleve la otra, y en la logística daba columnas idénticas (validación 6 en rojo con la matriz del 18/11; corregido con Juan, R68-114) (error 33)",
+    "porque": "No entra: función exacta de smart_183_raw: ningún bruto con dos normalizados en 971.473 fotos, y el mismo vacío fila a fila. No aporta nada que no lleve la otra, y en la logística daba columnas idénticas (validación 6 en rojo con la matriz del 18/11; corregido con el responsable del caso, una nota del caso) (error 33)",
     "seccion": "no_entran"
    },
    {
@@ -877,7 +877,7 @@
     "relleno": "—",
     "salida": "—",
     "entra": "no",
-    "porque": "No entra: función exacta de smart_184_raw: ningún bruto con dos normalizados en 2.325.900 fotos, y el mismo vacío fila a fila. No aporta nada que no lleve la otra, y en la logística daba columnas idénticas (validación 6 en rojo con la matriz del 18/11; corregido con Juan, R68-114) (error 33)",
+    "porque": "No entra: función exacta de smart_184_raw: ningún bruto con dos normalizados en 2.325.900 fotos, y el mismo vacío fila a fila. No aporta nada que no lleve la otra, y en la logística daba columnas idénticas (validación 6 en rojo con la matriz del 18/11; corregido con el responsable del caso, una nota del caso) (error 33)",
     "seccion": "no_entran"
    },
    {
@@ -888,7 +888,7 @@
     "relleno": "—",
     "salida": "—",
     "entra": "no",
-    "porque": "No entra: función exacta de smart_187_raw: ningún bruto con dos normalizados en 5.652.045 fotos, y el mismo vacío fila a fila. No aporta nada que no lleve la otra, y en la logística daba columnas idénticas (validación 6 en rojo con la matriz del 18/11; corregido con Juan, R68-114) (error 33)",
+    "porque": "No entra: función exacta de smart_187_raw: ningún bruto con dos normalizados en 5.652.045 fotos, y el mismo vacío fila a fila. No aporta nada que no lleve la otra, y en la logística daba columnas idénticas (validación 6 en rojo con la matriz del 18/11; corregido con el responsable del caso, una nota del caso) (error 33)",
     "seccion": "no_entran"
    },
    {
@@ -899,7 +899,7 @@
     "relleno": "—",
     "salida": "—",
     "entra": "no",
-    "porque": "No entra: función exacta de smart_189_raw: ningún bruto con dos normalizados en 2.325.486 fotos, y el mismo vacío fila a fila. No aporta nada que no lleve la otra, y en la logística daba columnas idénticas (validación 6 en rojo con la matriz del 18/11; corregido con Juan, R68-114) (error 33)",
+    "porque": "No entra: función exacta de smart_189_raw: ningún bruto con dos normalizados en 2.325.486 fotos, y el mismo vacío fila a fila. No aporta nada que no lleve la otra, y en la logística daba columnas idénticas (validación 6 en rojo con la matriz del 18/11; corregido con el responsable del caso, una nota del caso) (error 33)",
     "seccion": "no_entran"
    },
    {
@@ -910,7 +910,7 @@
     "relleno": "—",
     "salida": "—",
     "entra": "no",
-    "porque": "No entra: copia de smart_194_raw: igual en todas las fotos en que existe (5.652.045, solo Seagate); su vacío es «no Seagate», que ya recoge fabricante. No aporta nada que no lleve la otra, y en la logística daba columnas idénticas (validación 6 en rojo con la matriz del 18/11; corregido con Juan, R68-114) (error 33)",
+    "porque": "No entra: copia de smart_194_raw: igual en todas las fotos en que existe (5.652.045, solo Seagate); su vacío es «no Seagate», que ya recoge fabricante. No aporta nada que no lleve la otra, y en la logística daba columnas idénticas (validación 6 en rojo con la matriz del 18/11; corregido con el responsable del caso, una nota del caso) (error 33)",
     "seccion": "no_entran"
    },
    {
@@ -921,7 +921,7 @@
     "relleno": "—",
     "salida": "—",
     "entra": "no",
-    "porque": "No entra: función exacta de smart_222_raw: ningún bruto con dos normalizados en 2.226.961 fotos (41.704 valores), y el mismo vacío fila a fila. No aporta nada que no lleve la otra, y en la logística daba columnas idénticas (validación 6 en rojo con la matriz del 18/11; corregido con Juan, R68-114) (error 33)",
+    "porque": "No entra: función exacta de smart_222_raw: ningún bruto con dos normalizados en 2.226.961 fotos (41.704 valores), y el mismo vacío fila a fila. No aporta nada que no lleve la otra, y en la logística daba columnas idénticas (validación 6 en rojo con la matriz del 18/11; corregido con el responsable del caso, una nota del caso) (error 33)",
     "seccion": "no_entran"
    },
    {
@@ -6338,7 +6338,7 @@
   {
    "nombre": "muestra de partida",
    "valor": "todos los fallos y el 2 % de las sanas de cada mes",
-   "origen": "reglas §7 (R68-109)"
+   "origen": "reglas, apartado 7"
   },
   {
    "nombre": "mínimo por tramo y por categoría",
@@ -6378,7 +6378,7 @@
   "35.12: ningún escalador, porque la logística solo recibe columnas 0 y 1 y los árboles cortan por orden.",
   "20.8, fugas: el ajuste usa solo entrenamiento y la validación se transforma sin leer su objetivo."
  ],
- "datos_personales": "Ninguno: los datos son de discos y serial_number identifica un disco, no a una persona (reglas §9); el preprocesador no lo usa. No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
+ "datos_personales": "Ninguno: los datos son de discos y serial_number identifica un disco, no a una persona (reglas, apartado 9); el preprocesador no lo usa. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
  "limites": [
   "El ajuste de este script es solo para comprobar: no se guarda. Lo ajusta aprendizaje-automatico con el modelo, dentro de cada pliegue, y los tramos y las categorías pueden cambiar con cada muestra.",
   "Las piezas propias (Tramos, AgruparRaras, ColumnasMenosReferencia) viven en este script: quien guarde el Pipeline con joblib tiene que poder importarlas al cargarlo.",

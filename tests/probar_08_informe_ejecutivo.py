@@ -35,7 +35,7 @@ CASO = Path(__file__).resolve().parents[1]
 SCRIPT = CASO / "scripts" / "08_informe_ejecutivo.py"
 TMP = CASO / "tests" / "tmp_informe_ejecutivo"
 CONSULTAS = "informes/consultas-informe-ejecutivo.json"
-BORRADOR = CASO / "contexto-proyecto" / "metodo" / "borrador_informe_ejecutivo.md"
+BORRADOR = CASO / "config" / "metodo" / "borrador_informe_ejecutivo.md"
 FALLOS = []
 
 
@@ -236,8 +236,8 @@ if __name__ == "__main__":
             comprobar(False, "existe scripts/08_informe_ejecutivo.py")
         else:
             fuente = SCRIPT.read_text(encoding="utf-8")
-            # Juan, 17/11: la palabra vetada para el conjunto de discos no sale en ningún texto del repositorio
-            # (R68-93). Se escribe partida para que esta prueba tampoco la lleve.
+            # el responsable del caso, 17/11: la palabra vetada para el conjunto de discos no sale en ningún texto del repositorio
+            #. Se escribe partida para que esta prueba tampoco la lleve.
             comprobar(("flo" + "ta") not in fuente.lower(), "el script no lleva la palabra vetada")
             comprobar(not re.search(r"[\"'](cumple|coincide|estado)[\"']\s*:\s*(True|\"OK\")", fuente),
                       "el script no escribe ninguna comprobación con su resultado puesto")

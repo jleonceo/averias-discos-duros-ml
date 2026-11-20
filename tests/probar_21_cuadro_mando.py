@@ -43,12 +43,12 @@ RAIZ = Path(__file__).resolve().parents[1]
 SCRIPT = RAIZ / "scripts" / "21_cuadro_mando.py"
 TMP = RAIZ / "tests" / "tmp_cuadro"
 # La cabecera del CSV: centro, tomo (con su vault y su ranura), modelo, edad, disco y, al final, la puntuación de
-# riesgo (ordena los discos; el modelo no está calibrado y no es una probabilidad, R68-153)
+# riesgo (ordena los discos; el modelo no está calibrado y no es una probabilidad, una nota del caso)
 CABECERA = ["Puesto", "Centro de datos", "Ciudad", "Tomo en peligro", "Vault", "Ranura", "Fabricante", "Modelo",
             "Capacidad (TB)", "Años cumplidos", "Número de serie", "Puntuación de riesgo (0 a 100)"]
 FALLOS = []
 FECHA = pd.Timestamp("2026-06-01")
-# La ciudad de cada centro, copiada de contexto-proyecto/negocio/reglas-negocio.md §4 («Centro de datos»)
+# La ciudad de cada centro, copiada de config/negocio/reglas-negocio.md §4 («Centro de datos»)
 CIUDADES = {"ams5": "Ámsterdam", "iad1": "Virginia", "phx1": "Phoenix", "sac0": "Sacramento", "sac2": "Sacramento",
             "yyz1": "Toronto"}
 
@@ -247,7 +247,7 @@ def main():
         caso("9. un sitio vacío queda vacío", leido[3][4] == "" and leido[3][5] == "", leido[3])
         caso("9. la capacidad sin decimales si es entera", leido[2][8] == "16", leido[2][8])
         caso("9. el número de serie, antes de la puntuación", leido[2][10] == "ZA1", leido[2][10])
-        caso("9. la ciudad de cada centro, la de las reglas §4", m.CIUDADES == CIUDADES, m.CIUDADES)
+        caso("9. la ciudad de cada centro, la de las reglas, apartado 4", m.CIUDADES == CIUDADES, m.CIUDADES)
 
         # 10. Ninguna validación con su resultado escrito
         caso("10. el buscador caza un resultado escrito",

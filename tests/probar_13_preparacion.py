@@ -1,4 +1,4 @@
-"""Prueba de scripts/13_preparacion.py (skill preparacion-modelo §4 y §5; encargo 20, tercera parte).
+"""Prueba de scripts/13_preparacion.py (método preparacion-modelo §4 y §5; petición 20, tercera parte).
 
 Parte 1, las piezas sueltas. Carga el script como módulo (su trabajo está dentro de `if __name__ == "__main__":`) y
 prueba con datos pequeños escritos aquí:
@@ -19,7 +19,7 @@ la copia y un informes/particion.json con las huellas. Comprueba el verde y cinc
   - una columna de más en la tabla, que no está en la matriz: ERROR, la décima en rojo;
   - las listas del script distintas de la matriz (avisa marcada para la logística en la copia): ERROR, la décima en rojo;
   - «sin dato» como centro real en entrenamiento: ERROR, relleno_sin_choque en rojo.
-Parte 3, el JSON real, si la sesión principal ya ejecutó el script: las cifras de control del encargo (la muestra con
+Parte 3, el JSON real, si la sesión principal ya ejecutó el script: las cifras de control de la petición (la muestra con
 todos los fallos, las filas de validación y los 3 modelos nuevos con 19.757 fotos) y las referencias de la matriz.
 
 Sale con 0 si todo pasa y con 1 si algo falla, e imprime qué caso falla. La carpeta temporal se borra siempre.
@@ -47,7 +47,7 @@ import pyarrow.parquet as pq
 CASO = Path(__file__).resolve().parents[1]
 SCRIPT = CASO / "scripts" / "13_preparacion.py"
 TMP = CASO / "tests" / "tmp_preparacion"
-MATRIZ = "contexto-proyecto/modelo/matriz_transformaciones.md"
+MATRIZ = "config/modelo/matriz_transformaciones.md"
 ENT = "data/processed/fotos_riesgo_entrenamiento.parquet"
 VAL = "data/processed/fotos_riesgo_validacion.parquet"
 SALIDA = "informes/preparacion.json"
@@ -209,7 +209,7 @@ def probar_validaciones(m):
     mal = m.leer_matriz(texto.replace("| solo bosque, hgb |", "| sí |"))
     ok, det = m.v_columnas_en_matriz(cols, mal)
     comprobar(not ok, "10 columnas en la matriz: rojo si las listas del script no son la matriz aprobada")
-    comprobar(mz["aprobada_por"] == "Juan" and mz["fecha"] == "2026-11-18", "la matriz se lee aprobada por Juan el 2026-11-18")
+    comprobar(mz["aprobada_por"] == "El responsable del caso" and mz["fecha"] == "2026-11-18", "la matriz se lee aprobada por el responsable del caso el 2026-11-18")
 
 
 def buscar_escritos(texto):
@@ -268,14 +268,14 @@ def escribir_parte(ruta, esquema, meses, rng, por_mes, fallos_por_mes, modelos, 
             w.write_table(t, row_group_size=n)
 
 
-def montar(estado_matriz="aprobada por Juan el 18/11/2026 («Sí, siguiente pregunta»)", huella_buena=True,
+def montar(estado_matriz="aprobada por el responsable del caso el 18/11/2026 («Sí, siguiente pregunta»)", huella_buena=True,
            columna_de_mas=False, sin_dato_real=False, matriz_cambiada=False):
     """Monta tests/tmp_preparacion/ con las dos partes, la matriz y particion.json."""
     if TMP.exists():
         shutil.rmtree(TMP)
     (TMP / "data" / "processed").mkdir(parents=True)
     (TMP / "informes").mkdir()
-    (TMP / "contexto-proyecto" / "modelo").mkdir(parents=True)
+    (TMP / "config" / "modelo").mkdir(parents=True)
     esquema = pq.read_schema(CASO / ENT).remove_metadata()
     if columna_de_mas:
         esquema = esquema.append(pa.field("smart_999_raw", pa.float64()))
@@ -300,7 +300,7 @@ def montar(estado_matriz="aprobada por Juan el 18/11/2026 («Sí, siguiente preg
                        "fecha_min": None, "fecha_max": None, "discos": None})
     partes.append({"parte": "lote_produccion", "ruta": None, "sha256": None, "filas": None, "motivo": "no hay"})
     (TMP / "informes" / "particion.json").write_text(json.dumps(
-        {"resultado": {"estado": "OK"}, "estrategia": "fecha", "por_que": "reglas §7", "partes": partes,
+        {"resultado": {"estado": "OK"}, "estrategia": "fecha", "por_que": "reglas, apartado 7", "partes": partes,
          "discos_en_las_dos_partes": 0, "diferencia_tasa_puntos": 0.0}, ensure_ascii=False), encoding="utf-8")
 
 
@@ -326,7 +326,7 @@ def probar_caso_pequeno():
     comprobar(js["resultado"]["estado"] == "OK", f"pequeño: estado OK ({js['resultado']['estado']}: {js['resultado']['resumen']})")
     for v in VALIDACIONES:
         comprobar(((js.get("validaciones") or {}).get(v) or {}).get("resultado") is True, f"pequeño: validación {v} en verde")
-    comprobar(js["matriz"]["aprobada_por"] == "Juan" and js["matriz"]["fecha"] == "2026-11-18", "pequeño: matriz aprobada por Juan el 2026-11-18")
+    comprobar(js["matriz"]["aprobada_por"] == "El responsable del caso" and js["matriz"]["fecha"] == "2026-11-18", "pequeño: matriz aprobada por el responsable del caso el 2026-11-18")
     mu = js["muestra"]
     comprobar(mu["fallos"] == 210 and mu["sanas_muestra"] == 3 * round(0.02 * (6800 - 70)) and mu["semilla"] == 42,
               "pequeño: la muestra son todos los fallos y el 2 % de las sanas de cada mes")
@@ -345,7 +345,7 @@ def probar_caso_pequeno():
         comprobar(f"## {ap}" in texto, f"pequeño: el informe tiene el apartado «{ap}»")
     # Los casos que tienen que parar
     for nombre, montaje, estado, val in (
-            ("matriz sin aprobar", {"estado_matriz": "propuesta, pendiente de Juan"}, "PARADO", None),
+            ("matriz sin aprobar", {"estado_matriz": "opción, pendiente de el responsable del caso"}, "PARADO", None),
             ("huella de entrenamiento distinta", {"huella_buena": False}, "PARADO", None),
             ("una columna de más en la tabla", {"columna_de_mas": True}, "ERROR", "columnas_en_matriz"),
             ("las listas del script no son la matriz", {"matriz_cambiada": True}, "ERROR", "columnas_en_matriz"),
@@ -362,7 +362,7 @@ def probar_caso_pequeno():
 # 5. Parte 3 · el JSON real
 # ---------------------------------------------------------------------------------------------------------------
 def probar_real():
-    """Si la sesión principal ya ejecutó el script, las cifras de control del encargo."""
+    """Si la sesión principal ya ejecutó el script, las cifras de control de la petición."""
     ruta = CASO / SALIDA
     js = json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else {}
     if not isinstance(js.get("validaciones"), dict):

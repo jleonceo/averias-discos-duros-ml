@@ -1,6 +1,6 @@
 {
- "skill": "preproduccion",
- "version_skill": "11/11/2026 (WF-85)",
+ "metodo": "preproduccion",
+ "version_metodo": "11/11/2026",
  "script": "scripts/18_contrato_produccion.py",
  "fecha_datos": "2025-06-30",
  "fecha_ejecucion": "2026-11-19T14:26:47",
@@ -14,32 +14,32 @@
    "sha256": "6d3939fc84f00276740c83971553ee5ce4faedd44aa00480684288bb2d615ac3"
   },
   {
-   "ruta": "contexto-proyecto/modelo/registro-transformaciones.md",
+   "ruta": "config/modelo/registro-transformaciones.md",
    "sha256": "4a1757bf91016ed04fc8f9767a4195dc9bf4b520360175215b4df5af2a270ad3"
   },
   {
-   "ruta": "contexto-proyecto/negocio/reglas-transformacion.md",
+   "ruta": "config/negocio/reglas-transformacion.md",
    "sha256": "490f1d20791ca034436242041d22e2053885cefe24a8af8940869ddd982f931e"
   },
   {
-   "ruta": "contexto-proyecto/modelo/matriz_transformaciones.md",
+   "ruta": "config/modelo/matriz_transformaciones.md",
    "sha256": "6d4df68ef6a182f27a3e18ec301f0bf8ef89fc131040febe097000acb9768f3e"
   }
  ],
  "resultado": {
   "estado": "OK",
   "riesgo": "medio",
-  "resumen": "Contrato aprobado (Juan, 19/11/2026: «Sí, con el arreglo»). Las 11 validaciones, en verde.",
+  "resumen": "Contrato aprobado (El responsable del caso, 19/11/2026: «Sí, con el arreglo»). Las 11 validaciones, en verde.",
   "artefactos": [
-   "contexto-proyecto/modelo/contrato_produccion.md",
+   "config/modelo/contrato_produccion.md",
    "informes/preproduccion.json"
   ],
   "siguiente": "la parte 2: el Pipeline, reentrenar, ejecutar y la prueba por otro camino"
  },
  "pendientes": [],
  "contrato": {
-  "ruta": "contexto-proyecto/modelo/contrato_produccion.md",
-  "aprobado_por": "Juan, 19/11/2026: «Sí, con el arreglo»",
+  "ruta": "config/modelo/contrato_produccion.md",
+  "aprobado_por": "El responsable del caso, 19/11/2026: «Sí, con el arreglo»",
   "fecha": "2026-11-19"
  },
  "identificador": "serial_number y fecha: la foto: un disco (serial_number) el día de su foto mensual (fecha)",
@@ -4640,7 +4640,7 @@
   "puntuadas": 349495,
   "sin_puntuar": [
    {
-    "motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)",
+    "motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)",
     "filas": 3893
    },
    {
@@ -4702,7 +4702,7 @@
   {
    "nombre": "corte",
    "valor": "listas de 20, 100, 500, 1000 por foto mensual; principal 100",
-   "origen": "informes/modelado.json (validacion.por_mes y aprobado_antes); reglas §7, CP-010"
+   "origen": "informes/modelado.json (validacion.por_mes y aprobado_antes); reglas, apartado 7, cuestión 010"
   },
   {
    "nombre": "carpeta de reentrenos",
@@ -4725,7 +4725,7 @@
   "39.4, las reglas del pipeline: lo que quita filas va fuera del Pipeline y solo al reentrenar; lo que no aprende puede ir como función; lo que aprende, con fit en entrenamiento.",
   "39.8, los dos scripts: al ejecutar no se tira ninguna fila; lo que no se puede puntuar sale con su motivo."
  ],
- "datos_personales": "Los datos son de discos: serial_number identifica un disco, no a una persona (reglas §9). El contrato no usa ni deja ninguna columna de datos personales. No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+ "datos_personales": "Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9). El contrato no usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
  "limites": [
   "El contrato describe la parte 2, que todavía no existe: nada de él se ha ejecutado sobre los datos.",
   "La capacidad del modelo se toma al ejecutar de la historia de fotos y ventanas hasta el día de la foto. En el desarrollo salió de todo el periodo, también del recuento diario. Si algún modelo tiene su única capacidad válida solo en el recuento, NO SE PUEDE SABER sin medirlo; lo mide la parte 2 con las fotos de control.",
@@ -4768,7 +4768,7 @@
    "fuente": "R-004",
    "clase": "no aprende",
    "que": "Los modelos escritos con dos espacios tras «WDC» pasan a su nombre con el mapeo cerrado de decisiones-correccion.json; lo que no está en el mapeo se queda como está.",
-   "por_que": "El mapeo es una lista fija aprobada por Juan, no algo aprendido de los datos.",
+   "por_que": "El mapeo es una lista fija aprobada por el responsable del caso, no algo aprendido de los datos.",
    "reentrenar": "Ya está aplicado en la tabla de entrenamiento.",
    "ejecutar": "Se aplica a la foto y a su historia.",
    "historia": [
@@ -4782,7 +4782,7 @@
    "fuente": "R-005",
    "clase": "necesita otras filas",
    "que": "Una capacidad no válida (-1 o 0,1 TB, por debajo del mínimo de decisiones-correccion.json) pasa a la única capacidad válida de su modelo.",
-   "por_que": "No aprende nada de la tabla de entrenamiento: aplica la regla §3, la capacidad de un disco es la de su modelo, y para saberla mira otras filas del mismo modelo con capacidad válida. En el desarrollo se miró todo el periodo y cada modelo tenía una sola; al ejecutar se mira solo lo que hay hasta el día de la foto, la propia foto incluida. Si un modelo no tiene ninguna capacidad válida hasta ese día, su fila sale sin puntuar y con su motivo.",
+   "por_que": "No aprende nada de la tabla de entrenamiento: aplica la regla, apartado 3, la capacidad de un disco es la de su modelo, y para saberla mira otras filas del mismo modelo con capacidad válida. En el desarrollo se miró todo el periodo y cada modelo tenía una sola; al ejecutar se mira solo lo que hay hasta el día de la foto, la propia foto incluida. Si un modelo no tiene ninguna capacidad válida hasta ese día, su fila sale sin puntuar y con su motivo.",
    "reentrenar": "Ya está aplicado en la tabla de entrenamiento.",
    "ejecutar": "Se calcula con la foto y su historia, modelo a modelo.",
    "historia": [
@@ -4811,7 +4811,7 @@
    "fuente": "R-007",
    "clase": "necesita otras filas",
    "que": "De la historia de ventanas salen las filas cuya fecha no es la de su texto (date), que son copia del día siguiente, y las ventanas de fallos que no han ocurrido antes del día de la foto (dia_fallo igual o posterior a su fecha).",
-   "por_que": "Quita filas de la tabla de historia, nunca de la foto que se puntúa; por eso no es de la clase que quita filas. Sirve para la primera aparición de la edad y para la capacidad del modelo. Una ventana son los 30 días anteriores a un fallo: que exista una fila de ventana el día de la foto anuncia un fallo que ese día no se conoce (arreglo aprobado por Juan el 19/11/2026).",
+   "por_que": "Quita filas de la tabla de historia, nunca de la foto que se puntúa; por eso no es de la clase que quita filas. Sirve para la primera aparición de la edad y para la capacidad del modelo. Una ventana son los 30 días anteriores a un fallo: que exista una fila de ventana el día de la foto anuncia un fallo que ese día no se conoce (arreglo aprobado por el responsable del caso el 19/11/2026).",
    "reentrenar": "Ya está aplicado en la tabla de entrenamiento.",
    "ejecutar": "Se aplica a la historia de ventanas antes de usarla.",
    "historia": [
@@ -4838,7 +4838,7 @@
    "nombre": "disco de arranque o de datos",
    "fuente": "R-011; reglas de transformación, «`dim_modelo`»",
    "clase": "no aprende",
-   "que": "tipo_disco es «arranque» si la capacidad del modelo no pasa del límite de las reglas §3 y §7 y «datos» si lo pasa.",
+   "que": "tipo_disco es «arranque» si la capacidad del modelo no pasa del límite de las reglas, apartado 3 y §7 y «datos» si lo pasa.",
    "por_que": "Es un corte fijo de las reglas sobre la capacidad del modelo, ya puesta en P04.",
    "reentrenar": "Decide la población, ya aplicada en la tabla.",
    "ejecutar": "Se calcula en la foto para el motivo de P11.",
@@ -4852,7 +4852,7 @@
    "nombre": "el fabricante",
    "fuente": "R-011; reglas de transformación, «`dim_modelo`»",
    "clase": "no aprende",
-   "que": "fabricante sale del nombre del modelo: «ST» es Seagate; TOSHIBA, WDC y HGST delante dan su nombre; dos excepciones escritas en las reglas §3.",
+   "que": "fabricante sale del nombre del modelo: «ST» es Seagate; TOSHIBA, WDC y HGST delante dan su nombre; dos excepciones escritas en las reglas, apartado 3.",
    "por_que": "Es una regla fija sobre el nombre. En el desarrollo se guardó en dim_modelo, una tabla por modelo, pero esa tabla solo repite la regla: un modelo nuevo la cumple igual. Un modelo que no sigue ningún patrón queda vacío.",
    "reentrenar": "Llega hecho en la tabla de entrenamiento.",
    "ejecutar": "Se calcula en la foto.",
@@ -4866,7 +4866,7 @@
    "nombre": "la garantía",
    "fuente": "R-011; reglas de transformación, «`dim_modelo`»",
    "clase": "no aprende",
-   "que": "garantia_anos sale del nombre del modelo, solo en los discos de datos (reglas §6); un modelo sin garantía comprobada queda vacío.",
+   "que": "garantia_anos sale del nombre del modelo, solo en los discos de datos (reglas, apartado 6); un modelo sin garantía comprobada queda vacío.",
    "por_que": "Igual que el fabricante: una regla fija sobre el nombre, que la tabla dim_modelo solo guarda.",
    "reentrenar": "Llega hecha en la tabla de entrenamiento.",
    "ejecutar": "Se calcula en la foto.",
@@ -4881,7 +4881,7 @@
    "fuente": "R-013; reglas de transformación, «3. `fotos_riesgo`»",
    "clase": "quita filas",
    "que": "Entran los discos de datos y sale la foto del día en que el disco falla (failure = 1).",
-   "por_que": "Son los discos del modelo (reglas §3 y §7); la foto del día del fallo ya está marcada como fallada.",
+   "por_que": "Son los discos del modelo (reglas, apartado 3 y §7); la foto del día del fallo ya está marcada como fallada.",
    "reentrenar": "La tabla ya llega sin esas filas: se comprueba que no queda ninguna y se cuenta.",
    "ejecutar": "No se quita ninguna: el disco de arranque y la foto del día del fallo salen con la puntuación vacía y su motivo.",
    "historia": [
@@ -4895,7 +4895,7 @@
    "fuente": "R-013; reglas de transformación, «3. `fotos_riesgo`»; «De qué se parte»",
    "clase": "necesita otras filas",
    "que": "edad_anos son las horas encendido entre 8.766; sin horas, los días desde la primera aparición del disco entre 365,25. Al ejecutar, la primera aparición solo usa las ventanas de fallos con dia_fallo anterior a la fecha de la foto.",
-   "por_que": "Con horas es la propia fila. Sin horas cuenta desde la primera aparición, que es su primera foto o, si sale antes, el primer día de una ventana suya: eso pide la historia del disco hasta el día de la foto, nunca después. La ventana de un fallo que aún no ha ocurrido no cuenta, porque anuncia ese fallo (arreglo de Juan, 19/11/2026). En el desarrollo sí contó: de las 2.735 fotos de fotos_riesgo sin horas, en una sola la primera aparición sale de una ventana, y esa foto puede salir distinta.",
+   "por_que": "Con horas es la propia fila. Sin horas cuenta desde la primera aparición, que es su primera foto o, si sale antes, el primer día de una ventana suya: eso pide la historia del disco hasta el día de la foto, nunca después. La ventana de un fallo que aún no ha ocurrido no cuenta, porque anuncia ese fallo (arreglo de el responsable del caso, 19/11/2026). En el desarrollo sí contó: de las 2.735 fotos de fotos_riesgo sin horas, en una sola la primera aparición sale de una ventana, y esa foto puede salir distinta.",
    "reentrenar": "Llega hecha en la tabla de entrenamiento.",
    "ejecutar": "Se calcula con la foto y su historia.",
    "historia": [
@@ -4994,7 +4994,7 @@
    "fuente": "informes/modelado.json, ganador.muestra; reglas de negocio §7",
    "clase": "quita filas",
    "que": "Entrenan todas las fotos con fallo y una parte de las sanas de cada mes, sorteada con la semilla, como en el modelado.",
-   "por_que": "Es el tratamiento del desequilibrio, que se hace solo al entrenar (reglas §7).",
+   "por_que": "Es el tratamiento del desequilibrio, que se hace solo al entrenar (reglas, apartado 7).",
    "reentrenar": "Antes del Pipeline, contado.",
    "ejecutar": "No aplica: se puntúan todas las filas.",
    "historia": [

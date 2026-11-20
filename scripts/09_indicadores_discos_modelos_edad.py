@@ -1,6 +1,6 @@
 """Indicadores de los bloques 1, 2 y 3 del plan de la analítica del caso 68: el conjunto de discos, los modelos y la edad.
 
-Skill indicadores-y-analisis (paso 5, parte sin modelo), con el encargo prompts/13_encargo_indicadores_discos_modelos_edad.md.
+Método indicadores-y-analisis (paso 5, parte sin modelo), con la petición peticiones/13_indicadores_discos_modelos_edad.md.
 Calcula, comprueba y deja en informes/indicadores__discos_modelos_edad.json (y su informe .md, generado del mismo
 diccionario en la misma ejecución):
 
@@ -8,14 +8,14 @@ diccionario en la misma ejecución):
     trimestre; los diez modelos con más discos de cada año; los días de disco por centro y año desde julio de 2023.
   - B2, los modelos: tasa anual de fallo por modelo con los años que pasan el mínimo, frente al conjunto de discos de las mismas
     celdas; la tabla de modelo por año; la tasa por fabricante y por capacidad con la edad media al lado. Desde el
-    encargo 17 (prompts/17_encargo_correcciones_del_auditor.md), cada modelo se compara además a igual edad (razón de
+    petición 17 (peticiones/17_correcciones_del_auditor.md), cada modelo se compara además a igual edad (razón de
     observados entre esperados con la tasa de cada año de edad), el ranking se ordena por esa razón, un modelo con menos
-    de 20 fallos sale sin puesto (CP-012) y se mide si los veredictos aguantan al quitar cada modelo o el año parcial.
+    de 20 fallos sale sin puesto (cuestión 012) y se mide si los veredictos aguantan al quitar cada modelo o el año parcial.
   - B3, la edad: tasa por año de edad (todos los discos, fabricantes y los cinco modelos con más días), con «sube» frente al año
     anterior; la supervivencia por tabla de vida; los discos de 8 años o más.
 
 Cada cifra lleva su segunda vía, que parte de otra tabla (recuento_diario_corregido, fotos y ventanas corregidas,
-fallos_detalle o dias_por_tramo). Si una no coincide, para con ERROR. Las comprobaciones y las validaciones de la skill
+fallos_detalle o dias_por_tramo). Si una no coincide, para con ERROR. Las comprobaciones y las validaciones de el método
 se calculan; ninguna lleva el resultado escrito.
 
 Lee data/processed/ (sin fotos_riesgo) y los JSON de informes/ de la transformación y del exploratorio, que no
@@ -55,46 +55,46 @@ from graficos import numero  # noqa: E402  (pieza común: números a la español
 # 2. Configuración
 # =================================================================================================================
 SCRIPT = "scripts/09_indicadores_discos_modelos_edad.py"
-ENCARGO = ("prompts/13_encargo_indicadores_discos_modelos_edad.md; B2 cambiado por "
-           "prompts/17_encargo_correcciones_del_auditor.md; B2 y B3, por "
-           "prompts/19_encargo_correcciones_del_segundo_auditor.md")
+PETICION = ("peticiones/13_indicadores_discos_modelos_edad.md; B2 cambiado por "
+           "peticiones/17_correcciones_del_auditor.md; B2 y B3, por "
+           "peticiones/19_correcciones_del_segundo_auditor.md")
 SALIDA_JSON = "informes/indicadores__discos_modelos_edad.json"
 SALIDA_MD = "informes/indicadores__discos_modelos_edad.md"
 TRANSFORMACION = "informes/transformacion-datos.json"
-SKILL_MD = ".claude/skills/indicadores-y-analisis/SKILL.md"
-PROTECCION = "contexto-proyecto/fuentes/proteccion-datos.json"
-# Los cuatro exploratorios de las tablas que lee el encargo; si uno está en PARADO o ERROR, no se calcula nada
+METODO_MD = "metodos/indicadores-y-analisis/METODO.md"
+PROTECCION = "config/fuentes/proteccion-datos.json"
+# Los cuatro exploratorios de las tablas que lee la petición; si uno está en PARADO o ERROR, no se calcula nada
 EXPLORATORIOS = ["modelo_trimestre", "dias_por_tramo", "vida_discos", "centro_mes"]
 # Tablas salidas de la transformación y tablas de entrada de la transformación (las corregidas y el calendario)
 TABLAS_SALIDA = ["dim_modelo", "modelo_trimestre", "dias_por_tramo", "vida_discos", "fallos_detalle", "centro_mes",
                  "inicio_trimestre"]
 TABLAS_ENTRADA = ["recuento_diario_corregido", "fotos_mensuales_corregido", "ventanas_fallo_corregido", "calendario"]
 
-# Fecha de referencia de los datos (reglas §5) y primer día con centro de datos (reglas §4)
+# Fecha de referencia de los datos (reglas, apartado 5) y primer día con centro de datos (reglas, apartado 4)
 FECHA_DATOS = dt.date(2025, 6, 30)
 PRIMER_DIA_SITIO = pd.Timestamp(2023, 7, 1)
-# Mínimo para entrar en un ranking: días de disco del modelo en el año (reglas §7)
+# Mínimo para entrar en un ranking: días de disco del modelo en el año (reglas, apartado 7)
 MINIMO_DIAS_ANO = 50_000
-# Un año de edad con menos fallos que esto no saca conclusión (reglas §7, CP-009)
+# Un año de edad con menos fallos que esto no saca conclusión (reglas, apartado 7, cuestión 009)
 MINIMO_FALLOS_EDAD = 20
-# Un modelo con menos fallos que esto en sus años que pasan el mínimo sale sin puesto y sin conclusión (reglas §7, CP-012)
+# Un modelo con menos fallos que esto en sus años que pasan el mínimo sale sin puesto y sin conclusión (reglas, apartado 7, cuestión 012)
 MINIMO_FALLOS_MODELO = 20
-# Los veredictos a igual edad, en el orden en que se cuentan (encargo 17)
+# Los veredictos a igual edad, en el orden en que se cuentan (petición 17)
 VEREDICTOS = ["por encima", "por debajo", "no se distingue", "sin conclusión"]
-# Confianza de los intervalos (skill, parametros.md; 42.6 del manual)
+# Confianza de los intervalos (método, parametros.md; 42.6 del manual)
 CONFIANZA = 0.95
 # Años de edad de la tasa y de la supervivencia (reglas de transformación §6: de 0 a 10)
 EDADES = list(range(11))
 # Supervivencia a estos años (plan, bloque 3)
 ANOS_S = [1, 3, 5]
-# Diferencia máxima entre las dos vías de la supervivencia, en puntos (encargo, «SEGUNDA VÍA»)
+# Diferencia máxima entre las dos vías de la supervivencia, en puntos (petición, «SEGUNDA VÍA»)
 TOLERANCIA_S_PUNTOS = 0.5
-# Cuántos modelos por año en B1 y cuántos modelos en B3 (plan, bloques 1 y 3; encargo)
+# Cuántos modelos por año en B1 y cuántos modelos en B3 (plan, bloques 1 y 3; petición)
 N_TOP = 10
 N_MODELOS_EDAD = 5
 # Edad desde la que un disco es «de 8 años o más» (plan, bloque 3)
 EDAD_VIEJOS = 8
-# Días de un año para pasar fallos por día de disco a tasa anual en %: 100 × 365 (reglas §6)
+# Días de un año para pasar fallos por día de disco a tasa anual en %: 100 × 365 (reglas, apartado 6)
 FACTOR_TASA = 100 * 365
 
 COMPROBACIONES = ["unidad", "minimo", "empates", "referencia", "azar_en_grupos", "pesos", "hacia_adelante",
@@ -102,7 +102,7 @@ COMPROBACIONES = ["unidad", "minimo", "empates", "referencia", "azar_en_grupos",
 VALIDACIONES = ["planteamiento_completo", "cifras_con_poblacion", "segunda_via", "minimo_respetado",
                 "con_referencia", "comprobaciones_calculadas", "reproducible", "sin_resultados_escritos",
                 "raw_intacto"]
-# Comprobaciones del encargo 17, aparte de las nueve de la skill
+# Comprobaciones de la petición 17, aparte de las nueve de el método
 EXTRAS = ["veredicto_del_intervalo", "esperados_suman_observados", "phi_minimo_uno"]
 POBLACION = "discos de datos (dim_modelo, tipo_disco «datos»); los de arranque no entran"
 
@@ -182,8 +182,8 @@ def nativo(x):
 def intervalo_poisson(fallos, dias, confianza=CONFIANZA, phi=1.0):
     """Tasa anual en % y su intervalo exacto de Poisson (con chi2), pasados a tasa con los mismos días de disco.
 
-    Inferior chi2.ppf(α/2; 2f)/2, 0 si f = 0; superior chi2.ppf(1 − α/2; 2f + 2)/2 (criterio técnico de Claude, encargo).
-    Con φ (encargo 19, reglas §7), los fallos y los días se dividen entre φ: la tasa no cambia y el intervalo se ensancha.
+    Inferior chi2.ppf(α/2; 2f)/2, 0 si f = 0; superior chi2.ppf(1 − α/2; 2f + 2)/2 (criterio técnico, petición).
+    Con φ (petición 19, reglas, apartado 7), los fallos y los días se dividen entre φ: la tasa no cambia y el intervalo se ensancha.
     """
     a = 1 - confianza
     f = int(fallos)
@@ -198,8 +198,8 @@ def intervalo_poisson(fallos, dias, confianza=CONFIANZA, phi=1.0):
 def razon_poisson(observados, esperados, confianza=CONFIANZA, phi=1.0):
     """Razón observados / esperados y el intervalo exacto de Poisson de los observados dividido por los esperados.
 
-    El mismo método que la tasa ajustada por centro del bloque 5 (encargo 15, criterio 1), con el año de edad en lugar
-    del modelo (encargo 17). Con φ (encargo 19), observados y esperados entre φ: la razón no cambia.
+    El mismo método que la tasa ajustada por centro del bloque 5 (petición 15, criterio 1), con el año de edad en lugar
+    del modelo (petición 17). Con φ (petición 19), observados y esperados entre φ: la razón no cambia.
     """
     a = 1 - confianza
     o = int(observados)
@@ -210,7 +210,7 @@ def razon_poisson(observados, esperados, confianza=CONFIANZA, phi=1.0):
 
 
 def phi_poisson(grupos, celdas, observados, esperados):
-    """φ, lo que varían los fallos entre celdas más de lo que supone Poisson (encargo 19; reglas §7).
+    """φ, lo que varían los fallos entre celdas más de lo que supone Poisson (petición 19; reglas, apartado 7).
 
     Suma observados y esperados por grupo y celda; deja fuera las celdas sin esperados; reescala los esperados de cada
     grupo para que sumen sus observados; chi2 de Pearson = suma de (o − e)² / e; grados de libertad = celdas − grupos.
@@ -234,7 +234,7 @@ def phi_poisson(grupos, celdas, observados, esperados):
 
 
 def phi_edad(dpt):
-    """φ de B3 y del minicubo (encargo 19): celdas de modelo × año de edad × trimestre de dias_por_tramo, con el
+    """φ de B3 y del minicubo (petición 19): celdas de modelo × año de edad × trimestre de dias_por_tramo, con el
     esperado de cada una = sus días × la tasa de su modelo y año de edad en todo el periodo; grupo, modelo y año de
     edad. Una fila sin días cuenta 0 días y sus fallos."""
     d = dpt.assign(dias=dpt["dias_disco"].fillna(0.0), q=dpt["mes"].dt.year * 10 + dpt["mes"].dt.quarter)
@@ -245,7 +245,7 @@ def phi_edad(dpt):
 
 
 def veredicto_razon(desde, hasta, fallos, minimo=MINIMO_FALLOS_MODELO):
-    """Veredicto a igual edad (encargo 17): «sin conclusión» con menos de `minimo` fallos (CP-012) o sin intervalo;
+    """Veredicto a igual edad (petición 17): «sin conclusión» con menos de `minimo` fallos (cuestión 012) o sin intervalo;
     «por encima» si el intervalo de la razón queda entero por encima de 1, «por debajo» si queda entero por debajo y «no
     se distingue» en los demás."""
     if fallos < minimo or desde is None or hasta is None:
@@ -265,7 +265,7 @@ def spearman(a, b):
 
 
 def tabla_de_vida(edad_entrada, edad_fin, es_evento, edades=EDADES):
-    """Exposición en años, eventos y tasa por año de edad, con entrada tardía (encargo, B3.2).
+    """Exposición en años, eventos y tasa por año de edad, con entrada tardía (petición, B3.2).
 
     Exposición del año j = suma de max(0, min(edad_fin, j + 1) − max(edad_entrada, j)); eventos del año j = discos con
     evento y floor(edad_fin) = j; tasa = eventos / exposición (None si no hay exposición).
@@ -297,7 +297,7 @@ def supervivencia(tasas):
 
 
 def cortar_curva(s, eventos_por_ano, minimo):
-    """Corta la curva antes del primer año de edad con menos de `minimo` fallos (CP-009).
+    """Corta la curva antes del primer año de edad con menos de `minimo` fallos (cuestión 009).
 
     S(k) usa las tasas de los años 0 a k − 1, así que S(j) vale aunque el año j tenga pocos fallos; desde S(j + 1), None.
     Devuelve la curva cortada y el motivo, o None si no hay que cortar.
@@ -314,8 +314,8 @@ def cortar_curva(s, eventos_por_ano, minimo):
 def frente_al_anterior(filas, minimo, phi=1.0):
     """Tasa, intervalo y si sube o baja frente al año anterior; sin conclusión si alguno tiene menos de `minimo` fallos.
 
-    «Sube» si el intervalo del año no se solapa con el del anterior por arriba (reglas §7); «baja», lo mismo por abajo.
-    El intervalo lleva el φ de B3 (encargo 19).
+    «Sube» si el intervalo del año no se solapa con el del anterior por arriba (reglas, apartado 7); «baja», lo mismo por abajo.
+    El intervalo lleva el φ de B3 (petición 19).
     """
     out, prev = [], None
     for f in filas:
@@ -336,7 +336,7 @@ def frente_al_anterior(filas, minimo, phi=1.0):
 
 
 # =================================================================================================================
-# 5. Comprobaciones (skill §4): cada una devuelve True o False calculado con lo ejecutado
+# 5. Comprobaciones (método §4): cada una devuelve True o False calculado con lo ejecutado
 # =================================================================================================================
 def comp_unidad(claves):
     """La unidad se cuenta una vez: ninguna clave repetida."""
@@ -403,12 +403,12 @@ def comp_cobertura(parte):
 
 
 def comp_puesto_minimo(filas, minimo):
-    """Ningún modelo con menos de `minimo` fallos lleva puesto, y los demás sí (reglas §7, CP-012)."""
+    """Ningún modelo con menos de `minimo` fallos lleva puesto, y los demás sí (reglas, apartado 7, cuestión 012)."""
     return all((f["puesto"] is None) == (f["fallos"] < minimo) for f in filas)
 
 
 def comp_veredicto_intervalo(filas, minimo, phi=1.0, confianza=CONFIANZA):
-    """El veredicto a igual edad de cada modelo es el que dice el intervalo de su razón con φ (encargos 17 y 19).
+    """El veredicto a igual edad de cada modelo es el que dice el intervalo de su razón con φ (peticiones 17 y 19).
 
     Se rehace aquí con su propia cuenta, con la gamma y sin llamar a razon_poisson ni a veredicto_razon: el intervalo de
     los observados entre φ dividido por los esperados entre φ; entero por encima de 1, «por encima»; entero por debajo,
@@ -434,7 +434,7 @@ def comp_veredicto_intervalo(filas, minimo, phi=1.0, confianza=CONFIANZA):
 
 
 def comp_phi(registros):
-    """Cada φ usado es el medido, y nunca menor que 1: si el medido sale por debajo de 1, se usa 1 (encargo 19)."""
+    """Cada φ usado es el medido, y nunca menor que 1: si el medido sale por debajo de 1, se usa 1 (petición 19)."""
     for x in registros:
         bruto = x.get("phi_bruto")
         debe = 1.0 if bruto is None else max(1.0, bruto)
@@ -447,7 +447,7 @@ def comp_phi(registros):
 # 6. Entradas: estado de la fase anterior, huellas y lectura
 # =================================================================================================================
 def comprobar_exploratorios(raiz):
-    """Para con PARADO si falta un exploratorio o su estado es PARADO o ERROR (skill, «Al empezar»)."""
+    """Para con PARADO si falta un exploratorio o su estado es PARADO o ERROR (método, «Al empezar»)."""
     estados = {}
     for t in EXPLORATORIOS:
         ruta = raiz / "informes" / f"analisis-exploratorio__{t}.json"
@@ -511,7 +511,7 @@ def leer(raiz):
                     "fd": ["dia_fallo"], "cm": ["mes"], "fo": ["fecha"], "ve": ["fecha"]}.items():
         for c in cols:
             d[t][c] = a_ms(d[t][c])
-    # Discos de datos: la población de todo el encargo (reglas §3 y §7)
+    # Discos de datos: la población de todo la petición (reglas, apartado 3 y §7)
     datos = set(d["dm"].loc[d["dm"]["tipo_disco"] == "datos", "model"])
     if not set(d["mt"]["model"]) <= datos or not set(d["dpt"]["model"]) <= datos or not set(d["vida"]["model"]) <= datos:
         raise Parada("ERROR", "modelo_trimestre, dias_por_tramo o vida_discos traen un modelo que no es de datos")
@@ -594,7 +594,7 @@ def celdas_modelo_ano(dias_fallos):
 def b1_top10(celdas, cal_info, primeros_ultimos):
     """Los diez modelos con más discos medios de cada año (días del año / días del año en los datos).
 
-    Solo entran los modelos que pasan el mínimo de días ese año (reglas §7; consultas §11, filtrar antes de ordenar).
+    Solo entran los modelos que pasan el mínimo de días ese año (reglas, apartado 7; consultas §11, filtrar antes de ordenar).
     """
     c = celdas.loc[celdas["pasa"]]
     c = c.assign(dias_en_datos=c["ano"].map(cal_info["dias_ano"]))
@@ -696,7 +696,7 @@ def b2_grupos(dias_fallos, dpt_grupo, clave, ref):
 
 
 # -----------------------------------------------------------------------------------------------------------------
-# 8.1 Bloque 2 a igual edad (encargo 17; reglas §7, «Una tasa por modelo se compara a igual edad» y CP-012)
+# 8.1 Bloque 2 a igual edad (petición 17; reglas, apartado 7, «Una tasa por modelo se compara a igual edad» y cuestión 012)
 # -----------------------------------------------------------------------------------------------------------------
 def celdas_que_pasan(dpt, celdas):
     """Filas de dias_por_tramo (modelo, mes, centro y año de edad) cuyo modelo y año de calendario pasan el mínimo.
@@ -706,20 +706,20 @@ def celdas_que_pasan(dpt, celdas):
     """
     pasan = celdas.loc[celdas["pasa"]]
     clave = pd.MultiIndex.from_arrays([pasan["model"], pasan["ano"].astype("int64")])
-    # El trimestre de calendario de cada fila, como año × 10 + trimestre, para la tasa de edad y trimestre (encargo 19)
+    # El trimestre de calendario de cada fila, como año × 10 + trimestre, para la tasa de edad y trimestre (petición 19)
     d = dpt.assign(ano=dpt["mes"].dt.year.astype("int64"), dias=dpt["dias_disco"].fillna(0.0),
                    trimestre=(dpt["mes"].dt.year * 10 + dpt["mes"].dt.quarter).astype("int64"))
     return d.loc[pd.MultiIndex.from_arrays([d["model"], d["ano"]]).isin(clave)].copy()
 
 
 def igual_edad(c, minimo=MINIMO_FALLOS_MODELO, por_trimestre=True, con_phi=True):
-    """La razón a igual edad y en el mismo trimestre de cada modelo con las celdas `c` (encargos 17 y 19).
+    """La razón a igual edad y en el mismo trimestre de cada modelo con las celdas `c` (peticiones 17 y 19).
 
     Tasa de cada año de edad y trimestre de calendario = fallos / días de las celdas, con todos los modelos juntos;
     esperados de un modelo = suma de sus días × la tasa de su año de edad y su trimestre; razón = observados /
     esperados con el intervalo exacto de Poisson entre φ; tasa a igual edad = razón × tasa de todas las celdas. φ se
-    mide en las celdas de modelo × trimestre con esos esperados, con el modelo como grupo (reglas §7). Con
-    `por_trimestre` y `con_phi` en falso, el método del encargo 17 (solo la edad y sin φ), que se da al lado.
+    mide en las celdas de modelo × trimestre con esos esperados, con el modelo como grupo (reglas, apartado 7). Con
+    `por_trimestre` y `con_phi` en falso, el método de la petición 17 (solo la edad y sin φ), que se da al lado.
     """
     clave = ["edad_anos_cumplidos", "trimestre"] if por_trimestre else ["edad_anos_cumplidos"]
     por_clave = c.groupby(clave).agg(d=("dias", "sum"), f=("fallos", "sum"))
@@ -751,7 +751,7 @@ def igual_edad(c, minimo=MINIMO_FALLOS_MODELO, por_trimestre=True, con_phi=True)
 def igual_edad_bucle(modelos, edades, dias, fallos, trimestres=None):
     """La misma cuenta fila a fila, con diccionarios y sin pandas (segunda vía, otro cálculo).
 
-    La tasa es la de cada año de edad y trimestre (encargo 19); sin `trimestres`, la de cada año de edad. Devuelve
+    La tasa es la de cada año de edad y trimestre (petición 19); sin `trimestres`, la de cada año de edad. Devuelve
     {modelo: (observados, esperados)} y, en la clave None, (fallos, días) de todas las celdas.
     """
     trimestres = trimestres if trimestres is not None else [None] * len(modelos)
@@ -772,7 +772,7 @@ def igual_edad_bucle(modelos, edades, dias, fallos, trimestres=None):
 
 def ordenar_ranking(filas, minimo=MINIMO_FALLOS_MODELO):
     """Puesto por la razón, de menor a mayor, entre los modelos con `minimo` fallos o más; los demás, sin puesto y al
-    final (CP-012). Empates en la razón, mismo puesto («min»); el orden de los empatados, por nombre."""
+    final (cuestión 012). Empates en la razón, mismo puesto («min»); el orden de los empatados, por nombre."""
     con = sorted((f for f in filas if f["fallos"] >= minimo and f.get("razon") is not None),
                  key=lambda f: (f["razon"], f["model"]))
     dentro = {f["model"] for f in con}
@@ -783,7 +783,7 @@ def ordenar_ranking(filas, minimo=MINIMO_FALLOS_MODELO):
 
 
 def estabilidad(c, base, parciales, minimo=MINIMO_FALLOS_MODELO):
-    """Si los veredictos a igual edad aguantan (directriz 37 del auditor; encargo 17, B2.3).
+    """Si los veredictos a igual edad aguantan (directriz 37 del auditor; petición 17, B2.3).
 
     Quita cada modelo uno a uno, recalcula las tasas por año de edad sin él y cuenta cuántos veredictos de los demás
     cambian. Después repite con todas las celdas sin los años parciales. Un modelo que se queda sin celdas cuenta como
@@ -810,10 +810,10 @@ def estabilidad(c, base, parciales, minimo=MINIMO_FALLOS_MODELO):
 
 
 def b2_igual_edad(ranking, celdas, dpt, parciales, minimo=MINIMO_FALLOS_MODELO):
-    """El ranking del bloque 2 con la comparación a igual edad, ordenado por la razón (encargo 17).
+    """El ranking del bloque 2 con la comparación a igual edad, ordenado por la razón (petición 17).
 
     Cada modelo lleva su razón, su intervalo, su tasa a igual edad, su edad media, el veredicto a igual edad y el
-    veredicto bruto con CP-012. Devuelve el ranking ordenado, el resumen de la comparación y las celdas usadas.
+    veredicto bruto con cuestión 012. Devuelve el ranking ordenado, el resumen de la comparación y las celdas usadas.
     """
     c = celdas_que_pasan(dpt, celdas)
     ie = igual_edad(c, minimo)
@@ -830,11 +830,11 @@ def b2_igual_edad(ranking, celdas, dpt, parciales, minimo=MINIMO_FALLOS_MODELO):
     con = [f for f in orden if f["puesto"] is not None]
     con_razon = [f for f in orden if f["razon"] is not None]
     cambian = [f for f in orden if f["veredicto"] != f["veredicto_bruto"]]
-    # Al lado, el método del encargo 17 (solo la edad y sin φ): qué veredictos cambian y cuánto se parece el orden
+    # Al lado, el método de la petición 17 (solo la edad y sin φ): qué veredictos cambian y cuánto se parece el orden
     ant = igual_edad(c, minimo, por_trimestre=False, con_phi=False)["modelos"]
     par = [f for f in orden if f["razon"] is not None and ant.get(f["model"], {}).get("razon") is not None]
     frente_anterior = {
-        "metodo_anterior": "tasa de cada año de edad, sin trimestre y sin φ (encargo 17)",
+        "metodo_anterior": "tasa de cada año de edad, sin trimestre y sin φ (petición 17)",
         "cambian": [{"model": f["model"], "antes": ant.get(f["model"], {}).get("veredicto", "sin conclusión"),
                      "despues": f["veredicto"]} for f in orden
                     if ant.get(f["model"], {}).get("veredicto", "sin conclusión") != f["veredicto"]],
@@ -871,7 +871,7 @@ def tasa_por_edad(dpt_grupo, columna_fallos="fallos", phi=1.0):
 
 
 def curva_vida(v, es_evento):
-    """Tabla de vida, curva sin cortar, curva cortada por CP-009 y S a 1, 3 y 5 años de un grupo de vida_discos."""
+    """Tabla de vida, curva sin cortar, curva cortada por cuestión 009 y S a 1, 3 y 5 años de un grupo de vida_discos."""
     tv = tabla_de_vida(v["edad_entrada_anos"], v["edad_fin_anos"], es_evento)
     s = supervivencia([f["tasa"] for f in tv])
     eventos = [f["eventos"] for f in tv]
@@ -890,7 +890,7 @@ def curva_dias_por_tramo(dpt_grupo, columnas_evento):
 
 
 # =================================================================================================================
-# 10. Segundas vías: cada una parte de otra tabla (skill §5)
+# 10. Segundas vías: cada una parte de otra tabla (método §5)
 # =================================================================================================================
 def comparar(nombre, via1, via2, a, b, tolerancia=None, recuento=False, texto=None):
     """Compara dos series indexadas por la misma clave; exacta o con tolerancia. Devuelve la ficha de la segunda vía.
@@ -910,7 +910,7 @@ def comparar(nombre, via1, via2, a, b, tolerancia=None, recuento=False, texto=No
 
 
 def segundas_vias(d, t):
-    """Las segundas vías del encargo y las que añade este script, todas desde otra tabla."""
+    """Las segundas vías de la petición y las que añade este script, todas desde otra tabla."""
     rec_d, mt, dpt, vida, fd_d, it = d["rec_d"], d["mt"], d["dpt"], d["vida"], d["fd_d"], d["it"]
     sv = []
     # SV1: días y fallos por modelo y año, recuento frente a modelo_trimestre
@@ -1018,7 +1018,7 @@ def calcular(d):
     rec_d, mt, dpt, vida, fd_d, dmd = d["rec_d"], d["mt"], d["dpt"], d["vida"], d["fd_d"], d["dmd"]
     t = {}
 
-    # Recuento de discos de datos: la base de días y fallos de todo el encargo
+    # Recuento de discos de datos: la base de días y fallos de todo la petición
     recuento = {"dias_disco": int(rec_d["discos"].sum()), "fallos": int(rec_d["fallos"].sum()), "filas": int(len(rec_d)),
                 "poblacion": POBLACION, "periodo": f"del {iso(d['cal']['fecha'].min())} al {FECHA_DATOS.isoformat()}",
                 "tabla": "recuento_diario_corregido"}
@@ -1080,11 +1080,11 @@ def calcular(d):
     # ---------------------------------------------------------------------------------------------------------
     ranking, ref_rk, fuera = b2_ranking(t["celdas_mt"])
     ranking_rec, ref_rk_rec, fuera_rec = b2_ranking(t["celdas_rec"])
-    # Lo que se decide con la tasa bruta, antes de pasar a igual edad: se queda en el JSON, al lado (encargo 17)
+    # Lo que se decide con la tasa bruta, antes de pasar a igual edad: se queda en el JSON, al lado (petición 17)
     distintos_bruto = sum(1 for f in ranking if f["distinto"])
     distintos_bruto_rec = sum(1 for f in ranking_rec if f["distinto"])
     esperados_bruto = round(len(ranking) * (1 - CONFIANZA), 1)
-    # A igual edad, con las celdas marcadas por modelo_trimestre y, como segunda vía, por el recuento (encargo 17)
+    # A igual edad, con las celdas marcadas por modelo_trimestre y, como segunda vía, por el recuento (petición 17)
     ranking, ie_res, celdas_ie = b2_igual_edad(ranking, t["celdas_mt"], dpt, cal_info["parciales"])
     ranking_rec, ie_rec, _ = b2_igual_edad(ranking_rec, t["celdas_rec"], dpt, cal_info["parciales"])
     bucle = igual_edad_bucle(celdas_ie["model"].tolist(), celdas_ie["edad_anos_cumplidos"].tolist(),
@@ -1141,7 +1141,7 @@ def calcular(d):
                                                                                    kind="mergesort")
     cinco = orden_dias["model"].head(N_MODELOS_EDAD).tolist()
     t["cinco"] = cinco
-    # φ de B3 (encargo 19; reglas §7): uno para la tasa de cada año de edad de todos los grupos y su «sube»
+    # φ de B3 (petición 19; reglas, apartado 7): uno para la tasa de cada año de edad de todos los grupos y su «sube»
     phi3 = phi_edad(dpt)
     f3 = phi3["phi"]
     edad_todos = tasa_por_edad(dpt, phi=f3)
@@ -1283,7 +1283,7 @@ def calcular(d):
                "valor": r(ref_rk["tasa"]), "unidad": "% anual", "poblacion": POBLACION + ", celdas que pasan el mínimo",
                "periodo": periodo_todo, "filas": int(t["celdas_mt"]["pasa"].sum()), "segunda_via": r(ref_rk_rec["tasa"]),
                "segunda_via_de": "recuento_diario_corregido", "coinciden": r(ref_rk["tasa"]) == r(ref_rk_rec["tasa"])})
-    # El ranking va por la razón (encargo 17): la tasa bruta más baja y la más alta se buscan entre todos
+    # El ranking va por la razón (petición 17): la tasa bruta más baja y la más alta se buscan entre todos
     def por_tasa(filas, fn):
         """El modelo de tasa bruta más baja o más alta; empates, por nombre."""
         return fn(sorted(filas, key=lambda f: f["model"]), key=lambda f: f["tasa"])
@@ -1298,10 +1298,10 @@ def calcular(d):
     distintos = ie_res["distintos"]
     c2.append({"nombre": "modelos que se distinguen a igual edad, de los que tienen conclusión",
                "clave": "preguntas.B2.tablas.distintos", "valor": distintos,
-               "unidad": "modelos", "poblacion": POBLACION + "; modelos con 20 fallos o más (CP-012)", "periodo": periodo_todo,
+               "unidad": "modelos", "poblacion": POBLACION + "; modelos con 20 fallos o más (cuestión 012)", "periodo": periodo_todo,
                "filas": len(con_puesto), "segunda_via": ie_rec["distintos"],
                "segunda_via_de": "celdas marcadas con recuento_diario_corregido", "coinciden": distintos == ie_rec["distintos"]})
-    # Cifras de la comparación a igual edad (encargo 17)
+    # Cifras de la comparación a igual edad (petición 17)
     pob_ie = POBLACION + "; celdas de dias_por_tramo cuyo modelo y año pasan el mínimo"
     c2.append({"nombre": "fallos de las celdas a igual edad", "clave": "preguntas.B2.tablas.a_igual_edad.fallos",
                "valor": ie_res["fallos"], "unidad": "fallos", "poblacion": pob_ie, "periodo": periodo_todo,
@@ -1441,9 +1441,9 @@ def calcular(d):
                   "hacia_adelante": "B1 describe el conjunto de discos; no predice nada que se pueda medir en el periodo siguiente"}
     motivos_b2 = {"pesos": "no hay ninguna puntuación con pesos",
                   "hacia_adelante": ("la tasa describe el periodo; si un modelo malo lo sigue siendo después se mide "
-                                     "en la reserva, que no se mira (reglas §5)")}
+                                     "en la reserva, que no se mira (reglas, apartado 5)")}
     motivos_b3 = {"empates": "B3 no ordena entidades en un ranking", "azar_en_grupos": (
-                      "B3 compara cada año de edad con el anterior con el criterio de las reglas §7 (intervalos que no "
+                      "B3 compara cada año de edad con el anterior con el criterio de las reglas, apartado 7 (intervalos que no "
                       "se solapan), no grupos frente al total"),
                   "pesos": "no hay ninguna puntuación con pesos",
                   "hacia_adelante": "la tasa por edad y la supervivencia describen el periodo; la previsión es el bloque 9",
@@ -1455,7 +1455,7 @@ def calcular(d):
                                   "de enero de 2020 a junio de 2025: altas, bajas, modelos principales y centros"),
          "decision": ("ninguna por sí sola; da los discos y los días de disco sobre los que se leen el ranking de B2 y "
                       "la edad de B3, que son los que deciden compras y renovaciones"),
-         "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 1; metodo/04_planteamientos.md §1.A",
+         "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 1; metodo/04_planteamientos.md §1.A",
          "funcion": "otra", "funcion_adaptada": ("consultas agrupadas, top N y tabla cruzada de assets/18_consultas_"
                                                  "interactivas.md §8, §9 y §13; ninguna función del capítulo 42 cuenta "
                                                  "un conjunto de discos"),
@@ -1464,7 +1464,7 @@ def calcular(d):
          "medida": ("discos el día 1 de cada mes y capacidad = discos × capacidad del modelo / 1.000, en PB; altas = discos con "
                     "su primera aparición en el trimestre; bajas = fallos y discos que desaparecen sin fallo; discos medios "
                     "del año = días de disco / días del año en los datos; parte de cada centro en los días del año"),
-         "minimo_casos": "50.000 días de disco en el año para entrar entre los diez de cada año (reglas §7)",
+         "minimo_casos": "50.000 días de disco en el año para entrar entre los diez de cada año (reglas, apartado 7)",
          "que_cambia_la_decision": "nada por sí sola; sitúa las tasas de B2 y B3 en el tamaño y la mezcla del conjunto de discos",
          "cifras": c1,
          "referencia": {"que_es": ("el total del conjunto de discos de cada mes y de cada año, frente al que se leen las partes "
@@ -1477,22 +1477,22 @@ def calcular(d):
                     "centros_resumen": {"dias_desde_sitio": dias_desde_sitio, "dias_sin_dato": sin_dato_desde_sitio}}},
         {"id": "B2", "pregunta": "Qué modelos de disco fallan más, por tasa anual de fallo, y si el ranking se mantiene de un año a otro",
          "decision": "qué modelos comprar y cuáles evitar, porque es la base de la decisión de compra (plan, bloque 2)",
-         "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 2; metodo/04_planteamientos.md §1.A",
+         "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 2; metodo/04_planteamientos.md §1.A",
          "funcion": "comparar_con_total",
          "funcion_adaptada": ("42.6 con tres cambios: la medida es una tasa por días de disco y no una proporción, así que "
                               "el intervalo es el exacto de Poisson y no el de Wilson; cada modelo se compara a igual edad, "
                               "con la razón de sus fallos entre los esperados por la tasa de cada año de edad de todos los "
-                              "modelos del ranking (estandarización indirecta, 5.6; reglas §7; encargo 17); y la tasa "
+                              "modelos del ranking (estandarización indirecta, 5.6; reglas, apartado 7; petición 17); y la tasa "
                               "bruta frente a la de todos los discos de las mismas celdas queda al lado"),
          "poblacion": {"regla": POBLACION + "; en el ranking, solo los años de cada modelo con 50.000 días de disco o más",
                        "periodo": periodo_todo, "filas": int(len(mt)), "unidad": "modelo de disco",
                        "entidades": int(mt["model"].nunique())},
-         "medida": ("tasa anual de fallo = 100 × 365 × fallos / días de disco (reglas §6), con su intervalo exacto de "
+         "medida": ("tasa anual de fallo = 100 × 365 × fallos / días de disco (reglas, apartado 6), con su intervalo exacto de "
                     "Poisson al 95 %; a igual edad, razón = fallos observados / esperados con la tasa de cada año de "
                     "edad, con el intervalo de Poisson de los observados, y tasa a igual edad = razón × tasa de todas "
                     "las celdas"),
          "minimo_casos": ("50.000 días de disco del modelo en el año, y 20 fallos en sus años que pasan el mínimo para "
-                          "llevar puesto y sacar conclusión (reglas §7, CP-012)"),
+                          "llevar puesto y sacar conclusión (reglas, apartado 7, cuestión 012)"),
          "que_cambia_la_decision": ("un modelo cuyo intervalo de la razón queda entero por encima de 1 falla más que lo "
                                     "esperado a su edad y es candidato a no comprarse; uno entero por debajo, a "
                                     "comprarse, siempre a igual capacidad (bloque 4)"),
@@ -1518,17 +1518,17 @@ def calcular(d):
                                                "desde": tasa_todos[1], "hasta": tasa_todos[2]}}},
         {"id": "B3", "pregunta": "A qué edad empiezan a fallar los discos y qué parte sigue funcionando a los 1, 3 y 5 años",
          "decision": "cuándo renovar, por el año de vida en que sube el riesgo de cada modelo (plan, bloque 3)",
-         "planteamiento": "contexto-proyecto/metodo/plan_de_la_analitica.md, bloque 3; metodo/04_planteamientos.md §1.A",
+         "planteamiento": "config/metodo/plan_de_la_analitica.md, bloque 3; metodo/04_planteamientos.md §1.A",
          "funcion": "otra",
          "funcion_adaptada": ("tasa por año de edad con intervalo exacto de Poisson y supervivencia por tabla de vida con "
                               "entrada tardía, en lugar del kaplan_meier del 42.1: con entrada tardía, a edad 0 hay pocos "
-                              "discos en riesgo y la curva de Kaplan-Meier cae de golpe (encargo)"),
-         "poblacion": {"regla": POBLACION + "; la edad es la de las horas encendido (reglas §3)", "periodo": periodo_todo,
+                              "discos en riesgo y la curva de Kaplan-Meier cae de golpe (petición)"),
+         "poblacion": {"regla": POBLACION + "; la edad es la de las horas encendido (reglas, apartado 3)", "periodo": periodo_todo,
                        "filas": int(len(dpt)), "unidad": "día de disco por año de edad; disco en la supervivencia",
                        "entidades": int(len(vida))},
          "medida": ("tasa anual por año de edad (0 a 10) desde dias_por_tramo; supervivencia S(k) = exp(−suma de las tasas "
                     "de los años 0 a k − 1), con la tasa de cada año = primeros fallos / años de exposición de vida_discos"),
-         "minimo_casos": "20 fallos en el año de edad (reglas §7, CP-009)",
+         "minimo_casos": "20 fallos en el año de edad (reglas, apartado 7, cuestión 009)",
          "que_cambia_la_decision": ("el primer año de edad cuyo intervalo queda por encima del anterior marca cuándo sube "
                                     "el riesgo, y con él cuándo renovar"),
          "cifras": c3,
@@ -1558,7 +1558,7 @@ def calcular(d):
 
 
 # =================================================================================================================
-# 12. Validaciones (skill §7) y búsqueda de resultados escritos
+# 12. Validaciones (método §7) y búsqueda de resultados escritos
 # =================================================================================================================
 def buscar_resultados_escritos(texto):
     """Líneas del código con una comprobación o validación puesta a True o con una cifra larga escrita.
@@ -1580,7 +1580,7 @@ def buscar_resultados_escritos(texto):
 
 
 def validar(res, fuente, h_antes, h_despues, res2):
-    """Las nueve validaciones de la skill, cada una calculada sobre el resultado y el código."""
+    """Las nueve validaciones de el método, cada una calculada sobre el resultado y el código."""
     pregs = res.get("preguntas", [])
 
     def lleno(x):
@@ -1677,7 +1677,7 @@ def informe(j):
     # Las preguntas y su planteamiento
     L.append("## Las preguntas y su planteamiento")
     L.append("")
-    L.append("Las tres preguntas salen del plan de la analítica, aprobado por Juan el 16/11/2026, y del planteamiento "
+    L.append("Las tres preguntas salen del plan de la analítica, aprobado por el responsable del caso el 16/11/2026, y del planteamiento "
              "1.A. La población es la misma en las tres: los discos de datos, sin los de arranque, del 01/01/2020 al "
              "30/06/2025. La tasa anual de fallo es 100 × 365 × fallos / días de disco, siempre con sus fallos y sus días.")
     L.append("")
@@ -1762,11 +1762,11 @@ def informe(j):
              f"50.000 días, de {len(rk)} modelos. Con esos años, la tasa bruta va del {pct(baja['tasa'])} del "
              f"{baja['model']} al {pct(alta['tasa'])} del {alta['model']}.")
     L.append("")
-    L.append("Cada modelo se compara a igual edad y en los mismos trimestres (reglas §7): sus fallos frente a los que "
+    L.append("Cada modelo se compara a igual edad y en los mismos trimestres (reglas, apartado 7): sus fallos frente a los que "
              "tendría con la tasa de cada año de edad y trimestre de todos los modelos del ranking juntos. La razón entre "
              "los dos dice cuánto falla por encima o por debajo de lo esperado a su edad, y el ranking se ordena por ella. "
              f"{ie['con_conclusion']} modelos tienen 20 fallos o más y llevan puesto; "
-             f"{len(ie['sin_conclusion'])} no llegan y salen con su tasa, sin puesto y sin conclusión (CP-012).")
+             f"{len(ie['sin_conclusion'])} no llegan y salen con su tasa, sin puesto y sin conclusión (cuestión 012).")
     L.append("")
     ph = ie["phi"]
     L.append(f"Los fallos de un modelo varían de un trimestre a otro más de lo que supone el intervalo de Poisson. Esa "
@@ -1864,7 +1864,7 @@ def informe(j):
              "se ensancha.")
     L.append("")
     L.append("Al lado va la misma tasa contando como fallo a los discos que desaparecen avisando, porque desaparecen "
-             "más viejos y avisando más que el conjunto de discos (reglas §3).")
+             "más viejos y avisando más que el conjunto de discos (reglas, apartado 3).")
     L.append("")
     L.append("| Edad | Días de disco | Fallos | Tasa | Intervalo al 95 % | Frente al año anterior | Contando los que desaparecen avisando |")
     L.append("|---:|---:|---:|---:|---|---|---:|")
@@ -1943,7 +1943,7 @@ def informe(j):
     for x in sc:
         if x["tipo"] == "pocos fallos":
             L.append(f"- B2, {x['grupo']}: {numero(x['fallos'])} fallos en {numero(x['dias_disco'])} días de disco, tasa "
-                     f"bruta del {pct(x['tasa'])}; menos de 20 fallos, sin puesto y sin conclusión (CP-012).")
+                     f"bruta del {pct(x['tasa'])}; menos de 20 fallos, sin puesto y sin conclusión (cuestión 012).")
     por_grupo = {}
     for x in sc:
         if x["tipo"] == "edad":
@@ -2013,25 +2013,25 @@ NOMBRES_EXTRA = {"veredicto_del_intervalo": "el veredicto a igual edad de cada m
 
 
 def seccion_comprobaciones(L, q):
-    """Las nueve comprobaciones de una pregunta y las de los encargos 17 y 19, con su resultado o su motivo."""
+    """Las nueve comprobaciones de una pregunta y las de las peticiones 17 y 19, con su resultado o su motivo."""
     L.append(f"Las comprobaciones de {q['id']}:")
     L.append("")
     for k, v in q["comprobaciones"].items():
         texto = "sí" if v is True else "no" if v is False else "no aplica, porque " + q["motivos_null"][k]
         L.append(f"- {NOMBRES_COMPROBACION[k]}: {texto}.")
     for k, v in q.get("comprobaciones_extra", {}).items():
-        L.append(f"- Del encargo, {NOMBRES_EXTRA[k]}: {'sí' if v else 'no'}.")
+        L.append(f"- Del petición, {NOMBRES_EXTRA[k]}: {'sí' if v else 'no'}.")
     L.append("")
 
 
 # =================================================================================================================
 # 14. Ejecución
 # =================================================================================================================
-def version_skill(raiz):
-    """La fecha y el código de la última línea de versión del SKILL.md (bloque común)."""
-    ruta = raiz / SKILL_MD
+def version_metodo(raiz):
+    """La fecha y el código de la última línea de versión del METODO.md (bloque común)."""
+    ruta = raiz / METODO_MD
     if not ruta.exists():
-        ruta = CASO / SKILL_MD
+        ruta = CASO / METODO_MD
     lineas = [x for x in ruta.read_text(encoding="utf-8").splitlines() if x.startswith("Versión ")]
     m = re.match(r"Versión (\S+) \(([^)]+)\)", lineas[-1]) if lineas else None
     return f"{m.group(1)} ({m.group(2)})" if m else None
@@ -2041,60 +2041,60 @@ def parametros():
     """Los valores con que se ejecutó, cada uno con su origen."""
     return [
         {"nombre": "mínimo de días de disco en el año para un ranking", "valor": numero(MINIMO_DIAS_ANO),
-         "origen": "reglas-negocio §7; sustituye al mínimo de 30 casos de la skill, que cambian las reglas del caso"},
+         "origen": "reglas-negocio §7; sustituye al mínimo de 30 casos de el método, que cambian las reglas del caso"},
         {"nombre": "mínimo de fallos en un año de edad para sacar conclusión", "valor": numero(MINIMO_FALLOS_EDAD),
-         "origen": "reglas-negocio §7, CP-009"},
+         "origen": "reglas-negocio §7, cuestión 009"},
         {"nombre": "mínimo de fallos de un modelo, en sus años que pasan el mínimo, para llevar puesto y sacar conclusión",
-         "valor": numero(MINIMO_FALLOS_MODELO), "origen": "reglas-negocio §7, CP-012 (Juan, 18/11/2026)"},
+         "valor": numero(MINIMO_FALLOS_MODELO), "origen": "reglas-negocio §7, cuestión 012 (El responsable del caso, 18/11/2026)"},
         {"nombre": "comparación a igual edad y en el mismo trimestre",
          "valor": ("razón = fallos observados / esperados con la tasa de cada año de edad y trimestre de calendario de "
                    "las celdas de dias_por_tramo cuyo modelo y año pasan el mínimo, con todos los modelos juntos; "
                    "intervalo exacto de Poisson con observados y esperados entre φ; tasa a igual edad = razón × tasa de "
                    "todas las celdas"),
-         "origen": ("reglas-negocio §7 («Una tasa por modelo se compara a igual edad y en el mismo trimestre», Juan, "
-                    "18/11/2026); encargos 17 y 19")},
+         "origen": ("reglas-negocio §7 («Una tasa por modelo se compara a igual edad y en el mismo trimestre», el responsable del caso, "
+                    "18/11/2026); peticiones 17 y 19")},
         {"nombre": "φ de B2",
          "valor": ("chi2 de Pearson / grados de libertad en las celdas de modelo × trimestre, con los esperados de arriba "
                    "reescalados para que cada modelo sume sus fallos; gl = celdas − modelos; si sale menor que 1, vale 1"),
-         "origen": "criterio técnico de Claude (reglas §7, R68-105 y R68-106); encargo 19"},
+         "origen": "criterio técnico (reglas, apartado 7, una nota del caso y una nota del caso); petición 19"},
         {"nombre": "φ de B3",
          "valor": ("el mismo cálculo en las celdas de modelo × año de edad × trimestre de dias_por_tramo, con el esperado "
                    "= días × la tasa de su modelo y año de edad en todo el periodo; un solo φ para la tasa de cada año de "
                    "edad de todos los grupos y su «sube»"),
-         "origen": "criterio técnico de Claude (reglas §7, R68-105 y R68-106); encargo 19"},
+         "origen": "criterio técnico (reglas, apartado 7, una nota del caso y una nota del caso); petición 19"},
         {"nombre": "veredicto a igual edad",
          "valor": ("por encima o por debajo si el intervalo de la razón con φ queda entero a un lado de 1; si no, no se "
                    "distingue"),
-         "origen": "encargos 17 y 19"},
+         "origen": "peticiones 17 y 19"},
         {"nombre": "comparación con el método anterior",
          "valor": "la razón solo a igual edad y sin φ, al lado: los veredictos que cambian y la Spearman de las razones",
-         "origen": "criterio de Claude, para que se vea qué mueve el encargo 19"},
+         "origen": "criterio, para que se vea qué mueve la petición 19"},
         {"nombre": "edad media de un modelo", "valor": "años cumplidos + 0,5, ponderados por días de disco, en sus celdas",
-         "origen": "criterio de Claude: la misma edad media de fabricantes y capacidades del encargo 13"},
+         "origen": "criterio: la misma edad media de fabricantes y capacidades de la petición 13"},
         {"nombre": "estabilidad de los veredictos a igual edad",
          "valor": "quitando cada modelo uno a uno, con las tasas por edad rehechas sin él, y sin el año parcial",
-         "origen": "directriz 37 del auditor del cierre analítico; encargo 17"},
+         "origen": "directriz 37 del auditor del cierre analítico; petición 17"},
         {"nombre": "correlación de Spearman entre la tasa bruta y la razón",
          "valor": "con todos los modelos que tienen razón y con los que llevan puesto",
-         "origen": "criterio de Claude: el encargo 17 no dice con cuáles, y se dan las dos"},
+         "origen": "criterio: la petición 17 no dice con cuáles, y se dan las dos"},
         {"nombre": "confianza de los intervalos", "valor": numero(CONFIANZA, 2),
-         "origen": "parametros.md de la skill y 42.6 del manual"},
+         "origen": "parametros.md de el método y 42.6 del manual"},
         {"nombre": "intervalo de una tasa", "valor": "exacto de Poisson con scipy.stats.chi2",
-         "origen": "criterio técnico de Claude, fijado en el encargo"},
+         "origen": "criterio técnico, fijado en la petición"},
         {"nombre": "supervivencia", "valor": "tabla de vida con entrada tardía, años de edad 0 a 10",
-         "origen": "criterio técnico de Claude, fijado en el encargo"},
+         "origen": "criterio técnico, fijado en la petición"},
         {"nombre": "diferencia máxima entre las dos vías de la supervivencia",
          "valor": numero(TOLERANCIA_S_PUNTOS, 1) + " puntos",
-         "origen": "el encargo la fija para el conjunto de discos; el script aplica la misma a los cinco modelos y a la cifra que "
-                   "cuenta a los que desaparecen avisando, por criterio de Claude"},
+         "origen": "la petición la fija para el conjunto de discos; el script aplica la misma a los cinco modelos y a la cifra que "
+                   "cuenta a los que desaparecen avisando, por criterio"},
         {"nombre": "«baja» frente al año anterior", "valor": "el intervalo del año queda por debajo del anterior",
-         "origen": "criterio de Claude, simétrico al «sube» de las reglas §7"},
+         "origen": "criterio, simétrico al «sube» de las reglas, apartado 7"},
         {"nombre": "días del año en los datos", "valor": "los del calendario, con 2025 del 01/01 al 30/06",
-         "origen": "calendario.parquet; encargo"},
+         "origen": "calendario.parquet; petición"},
         {"nombre": "modelos de cada año en B1 y modelos en B3", "valor": f"{N_TOP} y {N_MODELOS_EDAD}",
-         "origen": "plan, bloques 1 y 3; encargo"},
+         "origen": "plan, bloques 1 y 3; petición"},
         {"nombre": "parte de cada centro en su año", "valor": "sobre todos los días del año, con «sin dato» dentro",
-         "origen": "criterio de Claude: así las partes suman 100 y «sin dato» se ve con su peso"},
+         "origen": "criterio: así las partes suman 100 y «sin dato» se ve con su peso"},
         {"nombre": "semilla", "valor": "no aplica", "origen": "ningún cálculo usa azar"},
     ]
 
@@ -2113,10 +2113,10 @@ def limites(res):
         "La comparación a igual edad corrige la edad de cada modelo y el trimestre de calendario, no su centro. Usa las "
         f"celdas por año de edad, que dejan fuera {numero(ie['dias_ranking'] - ie['dias'])} días de disco sin foto de "
         "los años que pasan el mínimo.",
-        "Los intervalos de B2 y B3 llevan φ, medido con la variación entre trimestres; es un criterio técnico de Claude "
+        "Los intervalos de B2 y B3 llevan φ, medido con la variación entre trimestres; es un criterio técnico "
         "y no cambia ninguna razón ni ninguna tasa, solo lo ancho del intervalo.",
         f"{len(ie['sin_conclusion'])} modelos tienen menos de 20 fallos en sus años que pasan el mínimo: salen con su "
-        "tasa, sus fallos y sus días, pero sin puesto y sin conclusión (CP-012).",
+        "tasa, sus fallos y sus días, pero sin puesto y sin conclusión (cuestión 012).",
         "Las cifras describen el periodo del 01/01/2020 al 30/06/2025. Ninguna dice por qué un modelo, un fabricante o "
         "una edad falla más: solo valen verbos de asociación.",
         "2025 tiene seis meses. Sus discos medios, su columna del mapa y sus días por centro no se comparan con un año "
@@ -2124,7 +2124,7 @@ def limites(res):
         f"Las bajas sin fallo de {cu['trimestre_incompleto']} están incompletas: la última foto de los datos es del "
         f"{fecha_es(cu['ultima_foto_de_los_datos'])}, y un disco que la tiene cuenta como que sigue aunque se vaya en "
         "junio.",
-        "Comparar fabricantes o capacidades mezcla modelos de edades distintas (reglas §7). La edad media al lado lo "
+        "Comparar fabricantes o capacidades mezcla modelos de edades distintas (reglas, apartado 7). La edad media al lado lo "
         "deja ver, pero no lo corrige.",
         f"El centro solo consta desde el 01/07/2023. Desde entonces, {numero(cen['dias_sin_dato'])} días de disco de "
         f"{numero(cen['dias_desde_sitio'])} vienen sin centro y se cuentan aparte.",
@@ -2141,8 +2141,8 @@ def limites(res):
         + (f", y la lectura frente al año anterior cambia en los años de edad {lista_y(dif)}." if dif else "."),
         "Si la tasa de los discos más viejos baja porque son los que han aguantado no se puede saber con estos datos: "
         "la tasa describe a los que quedan, y los datos no dicen por qué salieron los demás.",
-        "Ninguna cifra se ha medido hacia adelante: la reserva, del 01/07/2025 al 30/06/2026, no se mira (reglas §5).",
-        "Pendiente: el auditor sin memoria del cierre del paso (skill §8) necesita el sí de Juan, porque es un agente.",
+        "Ninguna cifra se ha medido hacia adelante: la reserva, del 01/07/2025 al 30/06/2026, no se mira (reglas, apartado 5).",
+        "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente.",
     ]
 
 
@@ -2156,7 +2156,7 @@ def escribir(raiz, j):
 def principal(raiz):
     """Lee, calcula dos veces, comprueba, valida y escribe; devuelve el código de salida."""
     inicio = time.time()
-    j = {"skill": "indicadores-y-analisis", "version_skill": version_skill(raiz), "script": SCRIPT, "encargo": ENCARGO,
+    j = {"metodo": "indicadores-y-analisis", "version_metodo": version_metodo(raiz), "script": SCRIPT, "peticion": PETICION,
          "fecha_datos": FECHA_DATOS.isoformat(), "fecha_ejecucion": dt.datetime.now().isoformat(timespec="seconds"),
          "entradas": [], "resultado": {}, "pendientes": []}
     h_antes = huellas_raw(raiz)
@@ -2220,16 +2220,16 @@ def principal(raiz):
             "estado": "AVISO" if (avisos or sens) else "OK", "riesgo": "medio" if (avisos or sens) else "bajo",
             "resumen": (f"Tres bloques calculados con {n_cifras} cifras, todas con su segunda vía, y las nueve validaciones "
                         f"en verde. B2 compara cada modelo a igual edad y en los mismos trimestres, con φ en el "
-                        f"intervalo, y ordena el ranking por la razón (encargos 17 y 19). "
+                        f"intervalo, y ordena el ranking por la razón (peticiones 17 y 19). "
                         f"Sin conclusión por el mínimo: {celdas_fuera} años de modelo ({cuenta['modelo']} "
                         f"modelos sin ningún año en el ranking), {cuenta['pocos fallos']} modelos con menos de 20 fallos "
-                        f"sin puesto (CP-012), {cuenta['edad']} años de edad de algún grupo con menos "
+                        f"sin puesto (cuestión 012), {cuenta['edad']} años de edad de algún grupo con menos "
                         f"de 20 fallos y {cuenta['curva']} curvas de supervivencia cortadas"
                         + (f"; contar a los que desaparecen avisando cambia la lectura en los años de edad "
                            f"{lista_y(sens)}." if sens else ".")),
             "artefactos": [SALIDA_JSON, SALIDA_MD],
             "siguiente": ("bloques 4 a 9 del plan (coste, centros, avisos, tomos, otros factores y previsión), que leen "
-                          "este JSON; antes, el auditor sin memoria del paso con el sí de Juan")}
+                          "este JSON; antes, el auditor sin memoria del paso con el sí de el responsable del caso")}
         codigo = 0
     except Parada as e:
         j["resultado"] = {"estado": e.estado, "riesgo": "alto", "resumen": f"Paró con {e.estado}: {e.motivo}",

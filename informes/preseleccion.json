@@ -1,8 +1,8 @@
 {
- "skill": "preseleccion-variables",
- "version_skill": "15/11/2026 (WF-140)",
+ "metodo": "preseleccion-variables",
+ "version_metodo": "15/11/2026",
  "script": "scripts/14_preseleccion.py",
- "encargo": "prompts/21_encargo_preseleccion_competicion_y_ganador.md, primera parte, con la nota de respuestas",
+ "peticion": "peticiones/21_preseleccion_competicion_y_ganador.md, primera parte, con la nota de respuestas",
  "fecha_datos": "2025-06-30",
  "fecha_ejecucion": "2026-11-18T21:52:16",
  "entradas": [
@@ -11,9 +11,9 @@
    "estado": "OK"
   },
   {
-   "ruta": "contexto-proyecto/modelo/matriz_transformaciones.md",
+   "ruta": "config/modelo/matriz_transformaciones.md",
    "sha256": "bfd1179467770392e949c585a8ec3db1fcdca24e785d57753acd8c5b6962a6f0",
-   "estado": "aprobada por Juan el 18/11/2026 («Sí, siguiente pregunta») y corregida con su aprobación el mismo día («arréglalo y haz lo que tengas que hacer», R68-114); no se cambia sin una nueva aprobación (preparacion-modelo §3)"
+   "estado": "aprobada por el responsable del caso el 18/11/2026 («Sí, siguiente pregunta») y corregida con su aprobación el mismo día («arréglalo y haz lo que tengas que hacer», una nota del caso); no se cambia sin una nueva aprobación (preparacion-modelo §3)"
   },
   {
    "ruta": "data/processed/fotos_riesgo_entrenamiento.parquet",
@@ -46,17 +46,17 @@
  ],
  "leidos": [
   "informes/preparacion.json",
-  "contexto-proyecto/modelo/matriz_transformaciones.md",
+  "config/modelo/matriz_transformaciones.md",
   "data/processed/fotos_riesgo_entrenamiento.parquet"
  ],
  "familias": {
   "logistica": {
    "se_preselecciona": true,
-   "por_que": "Es un modelo lineal: scikit-learn no da la significación de cada coeficiente y el tope de columnas obliga (skill §1), y Juan lo fijó en las reglas §7 el 18/11/2026.",
+   "por_que": "Es un modelo lineal: scikit-learn no da la significación de cada coeficiente y el tope de columnas obliga (método §1), y el responsable del caso lo fijó en las reglas, apartado 7 el 18/11/2026.",
    "algoritmo_previsto": "regresión logística regularizada",
    "modo": "comparativo",
    "escenario": "consenso amplio",
-   "escenario_fijado_en": "contexto-proyecto/negocio/reglas-negocio.md §7",
+   "escenario_fijado_en": "config/negocio/reglas-negocio.md §7",
    "obligatorias": [
     "smart_5_raw",
     "smart_187_raw",
@@ -11590,7 +11590,7 @@
   },
   "bosque": {
    "se_preselecciona": false,
-   "por_que": "los árboles manejan bien muchas variables y Juan fijó en las reglas §7 (18/11/2026) que no se preseleccionan por votación: reciben las columnas de la matriz.",
+   "por_que": "los árboles manejan bien muchas variables y el responsable del caso fijó en las reglas, apartado 7 (18/11/2026) que no se preseleccionan por votación: reciben las columnas de la matriz.",
    "algoritmo_previsto": "bosque aleatorio",
    "fuera_de_entrada": [
     {
@@ -11993,7 +11993,7 @@
   },
   "hgb": {
    "se_preselecciona": false,
-   "por_que": "los árboles manejan bien muchas variables y Juan fijó en las reglas §7 (18/11/2026) que no se preseleccionan por votación: reciben las columnas de la matriz.",
+   "por_que": "los árboles manejan bien muchas variables y el responsable del caso fijó en las reglas, apartado 7 (18/11/2026) que no se preseleccionan por votación: reciben las columnas de la matriz.",
    "algoritmo_previsto": "HistGradientBoosting",
    "fuera_de_entrada": [
     {
@@ -12399,42 +12399,42 @@
   {
    "nombre": "semillas",
    "valor": "42 en la muestra y en los tres métodos; 43 en la segunda muestra",
-   "origen": "parametros.md y encargo 21"
+   "origen": "parametros.md y petición 21"
   },
   {
    "nombre": "muestra",
    "valor": "todas las fotos con fallo y el 2 % de las sanas de cada mes; de ella, los meses más recientes enteros hasta pasar de 100.000 filas; si la lista cambia con la segunda muestra se dobla, y si no cabe se usa entera",
-   "origen": "reglas §7; parametros.md, «filas para muestrear»; nota del encargo 21, punto 5"
+   "origen": "reglas, apartado 7; parametros.md, «filas para muestrear»; nota de la petición 21, punto 5"
   },
   {
    "nombre": "escenario de votación",
    "valor": "consenso amplio, 2 votos o más",
-   "origen": "reglas §7, Juan, 18/11/2026"
+   "origen": "reglas, apartado 7, el responsable del caso, 18/11/2026"
   },
   {
    "nombre": "obligatorias",
    "valor": "smart_5_raw, smart_187_raw, smart_197_raw, smart_198_raw",
-   "origen": "reglas §7, Juan, 18/11/2026"
+   "origen": "reglas, apartado 7, el responsable del caso, 18/11/2026"
   },
   {
    "nombre": "información mutua",
    "valor": "mutual_info_classif con random_state=42 y la máscara de discretas",
-   "origen": "metodos.md; encargo 21"
+   "origen": "metodos.md; petición 21"
   },
   {
    "nombre": "RFECV",
    "valor": "RandomForestClassifier(100 árboles, profundidad 5, semilla 42), TimeSeriesSplit(3) por fecha con el horizonte cerrado, step=0.05, min_features_to_select=1, average_precision",
-   "origen": "parametros.md; encargo 21; nota del encargo 21, punto 3"
+   "origen": "parametros.md; petición 21; nota de la petición 21, punto 3"
   },
   {
    "nombre": "importancia por permutación",
    "valor": "HistGradientBoostingClassifier por defecto con semilla 42 y early_stopping=False; el 80 % más antiguo entrena y el 20 % más reciente mide; 10 repeticiones; average_precision",
-   "origen": "parametros.md; encargo 21; early_stopping escrito por aprendizaje-automatico §5 y algoritmos.md"
+   "origen": "parametros.md; petición 21; early_stopping escrito por aprendizaje-automatico §5 y algoritmos.md"
   },
   {
    "nombre": "corte de información mutua y permutación",
    "valor": "salto natural: el mayor cociente entre un valor y el siguiente",
-   "origen": "metodos.md, «El corte»; encargo 21"
+   "origen": "metodos.md, «El corte»; petición 21"
   },
   {
    "nombre": "umbral de las que dicen lo mismo",
@@ -12444,12 +12444,12 @@
   {
    "nombre": "alarma de fuga",
    "valor": "|2·AUC − 1| de 0,90 o más, con el AUC de la variable sola",
-   "origen": "UMBRAL_FUGA de scripts/06_analisis_exploratorio.py, línea 88; nota del encargo 21, punto 4"
+   "origen": "UMBRAL_FUGA de scripts/06_analisis_exploratorio.py, línea 88; nota de la petición 21, punto 4"
   },
   {
    "nombre": "tope",
    "valor": "una columna por cada 10 fotos con fallo de entrenamiento",
-   "origen": "skill §7"
+   "origen": "método §7"
   }
  ],
  "teoria": [
@@ -12460,9 +12460,9 @@
   "36.8: votación de los tres métodos, con el corte de los dos que dan un valor por salto natural.",
   "36.9 y 5.2: entre las que pasaron, Spearman y V de Cramér para no dejar dos variables que dicen lo mismo en una regresión, donde se reparten el efecto y pueden salir con el signo al revés."
  ],
- "datos_personales": "Los datos son de discos: serial_number identifica un disco, no a una persona (reglas §9), y esta preselección no lo lee. No usa ni deja ninguna columna de datos personales. No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
+ "datos_personales": "Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9), y esta preselección no lo lee. No usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
  "limites": [
-  "La preselección se hizo una vez, sobre una muestra de entrenamiento, y su lista entra fija en cada pliegue del modelado: la validación cruzada del modelado sale algo optimista (skill §9). Cuánto, NO SE PUEDE SABER sin medirlo.",
+  "La preselección se hizo una vez, sobre una muestra de entrenamiento, y su lista entra fija en cada pliegue del modelado: la validación cruzada del modelado sale algo optimista (método §9). Cuánto, NO SE PUEDE SABER sin medirlo.",
   "Los modelos auxiliares van sin búsqueda y solo ordenan; sus cifras no son rendimiento.",
   "El AUC de cada variable sola se mide en la misma muestra, con el valor en bruto y con cada tramo puntuado por su tasa de fallo: sirve para la alarma, no como medida del modelo.",
   "El parecido entre dos variables se mide solo con las fotos que tienen dato en las dos, para que el vacío de los contadores que solo registra algún modelo no fabrique parecidos; cada par dice con cuántas filas se midió."

@@ -19,8 +19,8 @@ error y comprueba las cifras contra las que se saben del caso pequeño. Después
   - vida_discos con fallos a edad cero: la supervivencia se aleja más de 0,5 puntos de la de dias_por_tramo, ERROR;
   - la huella de una tabla distinta de la de transformacion-datos.json, ERROR;
   - un exploratorio en PARADO: el script no calcula, PARADO.
-Parte 3, el JSON real, si existe: las cifras de control del encargo (prompts/13_…, «CONTROLES»), escritas como las da
-el encargo, y dos cifras rehechas por otro camino, con pyarrow y sin pandas:
+Parte 3, el JSON real, si existe: las cifras de control de la petición (prompts/13_…, «CONTROLES»), escritas como las da
+la petición, y dos cifras rehechas por otro camino, con pyarrow y sin pandas:
   - días de disco y fallos de los discos de datos desde recuento_diario_corregido, frente al JSON (que los toma de
     modelo_trimestre);
   - discos del 01/04/2025 desde recuento_diario_corregido, frente al JSON (que los toma de inicio_trimestre).
@@ -215,14 +215,14 @@ def probar_piezas(m):
 
 
 def probar_igual_edad(m):
-    """Encargo 17: la razón a igual edad, CP-012, el veredicto por el intervalo y la estabilidad, con datos escritos aquí."""
+    """Petición 17: la razón a igual edad, cuestión 012, el veredicto por el intervalo y la estabilidad, con datos escritos aquí."""
     import pandas as pd
     from scipy import stats
 
     faltan = [f for f in ("razon_poisson", "celdas_que_pasan", "igual_edad", "igual_edad_bucle", "veredicto_razon",
                           "ordenar_ranking", "comp_puesto_minimo", "comp_veredicto_intervalo", "estabilidad")
               if not hasattr(m, f)]
-    comprobar(not faltan, f"encargo 17: el script tiene las funciones de la comparación a igual edad (faltan {faltan})")
+    comprobar(not faltan, f"petición 17: el script tiene las funciones de la comparación a igual edad (faltan {faltan})")
     if faltan:
         return
 
@@ -242,7 +242,7 @@ def probar_igual_edad(m):
 
     # A mano: A, edad 0 con 1.000 días y 1 fallo, edad 1 con 1.000 y 4; B, edad 0 con 3.000 y 3, edad 1 con 1.000 y 1.
     # Tasa por día: edad 0, 4/4.000; edad 1, 5/2.000. Esperados: A 1 + 2,5 = 3,5; B 3 + 2,5 = 5,5. Todo en un mismo
-    # trimestre (encargo 19: la tasa es la de cada año de edad y trimestre; con uno solo, la cuenta del encargo 17)
+    # trimestre (petición 19: la tasa es la de cada año de edad y trimestre; con uno solo, la cuenta de la petición 17)
     c = pd.DataFrame({"model": ["A", "A", "B", "B"], "edad_anos_cumplidos": [0, 1, 0, 1],
                       "dias": [1000.0, 1000.0, 3000.0, 1000.0], "fallos": [1, 4, 3, 1], "ano": [2021] * 4,
                       "trimestre": [20211] * 4})
@@ -272,15 +272,15 @@ def probar_igual_edad(m):
     comprobar(m.comp_veredicto_intervalo(bien, 20) is True and m.comp_veredicto_intervalo(mal, 20) is False,
               "comprobación del veredicto: una razón 1,5 de 0,9 a 2,1 que dice «por encima», rojo")
 
-    # CP-012: puesto por la razón entre los de 20 fallos o más; los demás, sin puesto y al final
+    # cuestión 012: puesto por la razón entre los de 20 fallos o más; los demás, sin puesto y al final
     filas = [{"model": "P", "fallos": 30, "razon": 1.2}, {"model": "Q", "fallos": 19, "razon": 0.1},
              {"model": "R", "fallos": 40, "razon": 0.8}]
     orden = m.ordenar_ranking(filas, 20)
     comprobar([f["model"] for f in orden] == ["R", "P", "Q"] and [f["puesto"] for f in orden] == [1, 2, None],
-              "CP-012: puesto por la razón; el de 19 fallos sin puesto, al final")
+              "cuestión 012: puesto por la razón; el de 19 fallos sin puesto, al final")
     comprobar(m.comp_puesto_minimo(orden, 20) is True
               and m.comp_puesto_minimo([{"model": "Q", "fallos": 19, "puesto": 3}], 20) is False,
-              "comprobación de CP-012: un modelo con 19 fallos y puesto, rojo")
+              "comprobación de cuestión 012: un modelo con 19 fallos y puesto, rojo")
 
     # Estabilidad: A en 2021 y 2025, B solo en 2025 (parcial). Sin 2025, B se queda sin días: pasa a sin conclusión
     c = pd.DataFrame({"model": ["A", "A", "B"], "edad_anos_cumplidos": [0, 0, 0], "dias": [10000.0, 10000.0, 1000.0],
@@ -292,7 +292,7 @@ def probar_igual_edad(m):
 
 
 def phi_a_mano(filas):
-    """φ con un bucle propio y sin pandas (segunda vía del encargo 19): filas (grupo, celda, observados, esperados).
+    """φ con un bucle propio y sin pandas (segunda vía de la petición 19): filas (grupo, celda, observados, esperados).
 
     Se suman por grupo y celda; fuera las celdas sin esperados; los esperados de cada grupo se reescalan para que sumen
     sus observados; chi2 de Pearson entre grados de libertad (celdas − grupos); por debajo de 1, vale 1.
@@ -320,13 +320,13 @@ def phi_a_mano(filas):
     return {"phi": max(1.0, bruto) if bruto is not None else 1.0, "phi_bruto": bruto, "celdas": n, "gl": gl}
 
 
-def probar_encargo19(m):
-    """Encargo 19: φ, los intervalos con φ, la tasa de cada año de edad y trimestre y sus comprobaciones en rojo."""
+def probar_peticion19(m):
+    """Petición 19: φ, los intervalos con φ, la tasa de cada año de edad y trimestre y sus comprobaciones en rojo."""
     import pandas as pd
     from scipy import stats
 
     faltan = [f for f in ("phi_poisson", "comp_phi") if not hasattr(m, f)]
-    comprobar(not faltan, f"encargo 19: el script tiene φ y su comprobación (faltan {faltan})")
+    comprobar(not faltan, f"petición 19: el script tiene φ y su comprobación (faltan {faltan})")
     if faltan:
         return
 
@@ -336,41 +336,41 @@ def probar_encargo19(m):
     p = m.phi_poisson([f[0] for f in filas], [f[1] for f in filas], [f[2] for f in filas], [f[3] for f in filas])
     pm = phi_a_mano(filas)
     comprobar(cerca(p["phi"], 5.0) and p["celdas"] == 4 and p["gl"] == 2 and cerca(pm["phi"], 5.0),
-              f"encargo 19: φ = 5 a mano, con 4 celdas y 2 grados de libertad (da {p})")
+              f"petición 19: φ = 5 a mano, con 4 celdas y 2 grados de libertad (da {p})")
     # Los esperados se reescalan por grupo: A con 12 y 8 esperados para 10 y 10 observados sale igual que con 10 y 10
     p2 = m.phi_poisson(["A", "A", "B", "B"], [1, 2, 1, 2], [10, 10, 4, 16], [12.0, 8.0, 10.0, 10.0])
     pm2 = phi_a_mano([("A", 1, 10, 12.0), ("A", 2, 10, 8.0), ("B", 1, 4, 10.0), ("B", 2, 16, 10.0)])
     comprobar(cerca(p2["phi"], pm2["phi"]) and cerca(p2["phi_bruto"], pm2["phi_bruto"]),
-              "encargo 19: φ con los esperados reescalados por grupo, igual que el bucle de la prueba")
+              "petición 19: φ con los esperados reescalados por grupo, igual que el bucle de la prueba")
     # φ por debajo de 1 vale 1: sin ninguna variación de más, chi2 0
     p3 = m.phi_poisson(["A", "A"], [1, 2], [5, 5], [5.0, 5.0])
-    comprobar(p3["phi"] == 1.0 and cerca(p3["phi_bruto"], 0.0, 1e-12), "encargo 19: φ bruto 0 se usa como 1")
+    comprobar(p3["phi"] == 1.0 and cerca(p3["phi_bruto"], 0.0, 1e-12), "petición 19: φ bruto 0 se usa como 1")
     comprobar(m.comp_phi([{"phi": 0.8, "phi_bruto": 0.8}]) is False
               and m.comp_phi([{"phi": 1.0, "phi_bruto": 0.8}]) is True
               and m.comp_phi([{"phi": 5.0, "phi_bruto": 5.0}]) is True
               and m.comp_phi([{"phi": 4.0, "phi_bruto": 5.0}]) is False,
-              "encargo 19, comprobación: un φ de 0,8 usado sin subir a 1, rojo; uno que no es el medido, rojo")
+              "petición 19, comprobación: un φ de 0,8 usado sin subir a 1, rojo; uno que no es el medido, rojo")
 
     # El intervalo con φ: los observados y los esperados entre φ; la razón no cambia
     rz, lo, hi = m.razon_poisson(200, 200 / 1.2, phi=4.0)
     e4 = 200 / 1.2 / 4
     comprobar(cerca(rz, 1.2) and cerca(lo, stats.gamma.ppf(0.025, 50) / e4) and cerca(hi, stats.gamma.ppf(0.975, 51) / e4),
-              "encargo 19: razón con φ = 4, intervalo igual que con la gamma de 50 observados")
+              "petición 19: razón con φ = 4, intervalo igual que con la gamma de 50 observados")
     rz1, lo1, _ = m.razon_poisson(200, 200 / 1.2)
-    comprobar(lo1 > 1 and lo < 1, "encargo 19: la razón 1,2 queda por encima sin φ y cruza 1 con φ = 4")
+    comprobar(lo1 > 1 and lo < 1, "petición 19: la razón 1,2 queda por encima sin φ y cruza 1 con φ = 4")
     fila = {"model": "X", "fallos": 200, "observados": 200, "esperados": 200 / 1.2, "razon": 1.2,
             "razon_desde": lo1, "razon_hasta": 1.4}
     comprobar(m.comp_veredicto_intervalo([dict(fila, veredicto="por encima")], 20, 4.0) is False
               and m.comp_veredicto_intervalo([dict(fila, veredicto="no se distingue")], 20, 4.0) is True
               and m.comp_veredicto_intervalo([dict(fila, veredicto="por encima")], 20, 1.0) is True,
-              "encargo 19, comprobación: razón 1,2 con φ = 4 que dice «por encima», rojo")
+              "petición 19, comprobación: razón 1,2 con φ = 4 que dice «por encima», rojo")
     t, lo, hi = m.intervalo_poisson(100, 36500, phi=4.0)
     comprobar(cerca(t, 100.0) and cerca(lo, stats.gamma.ppf(0.025, 25) * 4) and cerca(hi, stats.gamma.ppf(0.975, 26) * 4),
-              "encargo 19: tasa con φ = 4, la misma tasa con el intervalo de 25 fallos en un cuarto de los días")
+              "petición 19: tasa con φ = 4, la misma tasa con el intervalo de 25 fallos en un cuarto de los días")
     filas_e = [{"edad": 0, "fallos": 100, "dias_disco": 3650000.0}, {"edad": 1, "fallos": 300, "dias_disco": 3650000.0}]
     sube1 = m.frente_al_anterior(filas_e, 20)[1]["sube"]
     sube50 = m.frente_al_anterior(filas_e, 20, 50.0)[1]["sube"]
-    comprobar(sube1 is True and sube50 is False, "encargo 19: «sube» con φ = 50 deja de salir")
+    comprobar(sube1 is True and sube50 is False, "petición 19: «sube» con φ = 50 deja de salir")
 
     # La tasa de cada año de edad y trimestre: A y B con la misma edad, en dos trimestres con tasas distintas.
     # Trimestre 1: A 1.000 días y 1 fallo, B 1.000 y 9 (tasa 10/2.000); trimestre 2: A 3.000 y 3, B 1.000 y 1
@@ -381,18 +381,18 @@ def probar_encargo19(m):
     r = m.igual_edad(c, 2)
     comprobar(cerca(r["modelos"]["A"]["esperados"], 8.0) and cerca(r["modelos"]["B"]["esperados"], 6.0)
               and r.get("celdas_edad_trimestre") == 2,
-              "encargo 19: esperados con la tasa de cada año de edad y trimestre, a mano")
+              "petición 19: esperados con la tasa de cada año de edad y trimestre, a mano")
     bu = m.igual_edad_bucle(c["model"].tolist(), c["edad_anos_cumplidos"].tolist(), c["dias"].tolist(),
                             c["fallos"].tolist(), c["trimestre"].tolist())
-    comprobar(cerca(bu["A"][1], 8.0) and cerca(bu["B"][1], 6.0), "encargo 19: la misma cuenta en bucle")
+    comprobar(cerca(bu["A"][1], 8.0) and cerca(bu["B"][1], 6.0), "petición 19: la misma cuenta en bucle")
     # φ de B2: celdas modelo × trimestre con esperados A (5, 3) y B (5, 1), observados A (1, 3) y B (9, 1)
     pm = phi_a_mano([("A", 20211, 1, 5.0), ("A", 20212, 3, 3.0), ("B", 20211, 9, 5.0), ("B", 20212, 1, 1.0)])
     comprobar(cerca(r["phi"]["phi"], pm["phi"]) and r["phi"]["celdas"] == pm["celdas"] and r["phi"]["gl"] == pm["gl"],
-              f"encargo 19: φ de B2 igual que el bucle de la prueba (da {r['phi']}, prueba {pm})")
+              f"petición 19: φ de B2 igual que el bucle de la prueba (da {r['phi']}, prueba {pm})")
     rv = r["modelos"]["B"]
     eb = 6.0 / r["phi"]["phi"]
     comprobar(cerca(rv["razon"], 10 / 6) and cerca(rv["razon_desde"], stats.gamma.ppf(0.025, 10 / r["phi"]["phi"]) / eb),
-              "encargo 19: razón de B con su intervalo con φ, a mano")
+              "petición 19: razón de B con su intervalo con φ, a mano")
     # φ de B3: celdas modelo × año de edad × trimestre con la tasa de su modelo y edad en todo el periodo
     dpt = pd.DataFrame({"model": ["A", "A", "B", "B"], "centro": ["x"] * 4, "edad_anos_cumplidos": [0, 0, 1, 1],
                         "mes": pd.to_datetime(["2021-01-01", "2021-04-01", "2021-01-01", "2021-04-01"]).astype("datetime64[ms]"),
@@ -400,7 +400,7 @@ def probar_encargo19(m):
     p_e = m.phi_edad(dpt)
     pm_e = phi_a_mano([(("A", 0), 1, 10, 5.0), (("A", 0), 2, 0, 5.0), (("B", 1), 1, 4, 6.0), (("B", 1), 2, 2, 0.0)])
     comprobar(cerca(p_e["phi"], pm_e["phi"]) and p_e["celdas"] == pm_e["celdas"] == 3 and p_e["gl"] == pm_e["gl"] == 1,
-              f"encargo 19: φ de B3 por modelo, edad y trimestre, igual que el bucle de la prueba (da {p_e})")
+              f"petición 19: φ de B3 por modelo, edad y trimestre, igual que el bucle de la prueba (da {p_e})")
 
 
 def resultado_minimo():
@@ -541,7 +541,7 @@ def igual_edad_a_mano(lista):
             for i in range(66):
                 dias_ano[(modelo, MESES[i].year)] = dias_ano.get((modelo, MESES[i].year), 0) + v[3]
     celdas = [f for f in filas_dpt(fallos_por_mes(lista)) if dias_ano[(f["model"], f["mes"].year)] >= 50000]
-    # Encargo 19: la tasa es la de cada año de edad y trimestre de calendario, con todos los modelos juntos
+    # Petición 19: la tasa es la de cada año de edad y trimestre de calendario, con todos los modelos juntos
     por_eq, por_meq = {}, {}
     for f in celdas:
         q = (f["mes"].year, (f["mes"].month - 1) // 3 + 1)
@@ -587,7 +587,7 @@ def montar_caso(raiz, estropear=None, extra=()):
     fallos a FALLOS_PEQ en todas las tablas a la vez."""
     if raiz.exists():
         shutil.rmtree(raiz)
-    for c in ["data/processed", "data/raw", "informes", "contexto-proyecto/fuentes"]:
+    for c in ["data/processed", "data/raw", "informes", "config/fuentes"]:
         (raiz / c).mkdir(parents=True)
     (raiz / "data" / "raw" / "origen.csv").write_text("a\n1\n", encoding="utf-8")
     lista = FALLOS_PEQ + list(extra)
@@ -725,8 +725,8 @@ def probar_caso_pequeno():
             print(json.dumps(j["resultado"], ensure_ascii=False)[:2000])
         return
     comprobar((TMP / "informes" / "indicadores__discos_modelos_edad.md").exists(), "caso pequeño: deja el MD")
-    # Juan, 17/11: la palabra vetada para el conjunto de discos no sale en ningún informe ni texto del repositorio
-    # (R68-91). Se escribe partida para que esta prueba tampoco la lleve.
+    # el responsable del caso, 17/11: la palabra vetada para el conjunto de discos no sale en ningún informe ni texto del repositorio
+    #. Se escribe partida para que esta prueba tampoco la lleve.
     vetada = "flo" + "ta"
     textos = [(TMP / "informes" / n).read_text(encoding="utf-8").lower()
               for n in ("indicadores__discos_modelos_edad.json", "indicadores__discos_modelos_edad.md")
@@ -782,14 +782,14 @@ def probar_caso_pequeno():
     comprobar(v8["discos_8_o_mas"] == 5000 and v8["discos_total"] == 18000, "caso pequeño: discos de 8 años o más")
     comprobar(all(s["coinciden"] is True for s in j["segundas_vias"]), "caso pequeño: todas las segundas vías coinciden")
 
-    # Encargo 17, CP-012: los dos modelos tienen 3 y 4 fallos, menos de 20: sin puesto y «sin conclusión»
+    # Petición 17, cuestión 012: los dos modelos tienen 3 y 4 fallos, menos de 20: sin puesto y «sin conclusión»
     comprobar(all(rk[mo].get("puesto", 0) is None and rk[mo].get("veredicto") == "sin conclusión" for mo in rk),
-              "encargo 17, caso pequeño: con menos de 20 fallos, sin puesto y «sin conclusión» (CP-012)")
+              "petición 17, caso pequeño: con menos de 20 fallos, sin puesto y «sin conclusión» (cuestión 012)")
     sc_b2 = {x["grupo"] for x in j["sin_conclusion"] if x["bloque"] == "B2" and x["tipo"] == "pocos fallos"}
-    comprobar(sc_b2 == {"ST4000X", "WDC W12"}, "encargo 17, caso pequeño: los dos, en lo que no saca conclusión")
+    comprobar(sc_b2 == {"ST4000X", "WDC W12"}, "petición 17, caso pequeño: los dos, en lo que no saca conclusión")
     a_mano, _, _, _ = igual_edad_a_mano(FALLOS_PEQ)
     comprobar(all(cerca(rk[mo].get("razon"), a_mano[mo]["razon"]) for mo in rk),
-              "encargo 17, caso pequeño: la razón de cada modelo, igual que el bucle de la prueba")
+              "petición 17, caso pequeño: la razón de cada modelo, igual que el bucle de la prueba")
     probar_caso_veinte()
 
     # Casos que tienen que parar
@@ -808,7 +808,7 @@ def probar_caso_pequeno():
 
 
 def probar_caso_veinte():
-    """Encargo 17: el caso pequeño con 30 y 25 fallos de más, para que los dos modelos del ranking lleven puesto.
+    """Petición 17: el caso pequeño con 30 y 25 fallos de más, para que los dos modelos del ranking lleven puesto.
 
     La razón, su intervalo, la tasa a igual edad, la edad media, el veredicto y el puesto se comparan con el bucle de la
     prueba (igual_edad_a_mano), que no usa pandas y saca el intervalo de la gamma.
@@ -816,7 +816,7 @@ def probar_caso_veinte():
     montar_caso(TMP, extra=FALLOS_VEINTE)
     codigo, j = ejecutar(TMP)
     comprobar(codigo == 0 and j is not None and j["resultado"]["estado"] in ("OK", "AVISO"),
-              f"encargo 17, caso con 20 fallos: termina sin parar (código {codigo})")
+              f"petición 17, caso con 20 fallos: termina sin parar (código {codigo})")
     if j is None or "preguntas" not in j:
         if j is not None:
             print(json.dumps(j["resultado"], ensure_ascii=False)[:2000])
@@ -827,53 +827,53 @@ def probar_caso_veinte():
     ie0 = b2.get("a_igual_edad", {})
     ph = ie0.get("phi") or {}
     # En el caso pequeño cada año de edad y trimestre tiene un solo modelo: los esperados son los observados y φ vale 1.
-    # El φ mayor que 1 lo prueban las piezas (probar_encargo19)
+    # El φ mayor que 1 lo prueban las piezas (probar_peticion19)
     comprobar(phi["phi"] >= 1 and cerca(ph.get("phi"), phi["phi"], 1e-9) and ph.get("celdas") == phi["celdas"]
               and ph.get("gl") == phi["gl"],
-              f"encargo 19, caso con 20 fallos: φ de B2 con sus celdas y grados de libertad, igual que el bucle de la "
+              f"petición 19, caso con 20 fallos: φ de B2 con sus celdas y grados de libertad, igual que el bucle de la "
               f"prueba ({phi}; da {ph})")
     b3 = pregunta(j, "B3")["tablas"]
     comprobar(isinstance(b3.get("phi"), dict) and b3["phi"].get("phi", 0) >= 1 and "celdas" in b3["phi"]
-              and "gl" in b3["phi"], "encargo 19, caso con 20 fallos: φ de B3 en el JSON, con celdas y grados de libertad")
+              and "gl" in b3["phi"], "petición 19, caso con 20 fallos: φ de B3 en el JSON, con celdas y grados de libertad")
     comprobar(all(v is True for v in pregunta(j, "B3").get("comprobaciones_extra", {"falta": False}).values()),
-              "encargo 19, caso con 20 fallos: las comprobaciones del encargo en B3, en verde")
+              "petición 19, caso con 20 fallos: las comprobaciones de la petición en B3, en verde")
     comprobar(rk["ST4000X"]["fallos"] == 33 and rk["WDC W12"]["fallos"] == 29 and all(
-        rk[mo]["fallos"] == esp[mo]["observados"] for mo in rk), "encargo 17, caso con 20 fallos: 33 y 29 fallos")
+        rk[mo]["fallos"] == esp[mo]["observados"] for mo in rk), "petición 17, caso con 20 fallos: 33 y 29 fallos")
     comprobar(all(cerca(rk[mo].get("razon"), esp[mo]["razon"]) and cerca(rk[mo].get("razon_desde"), esp[mo]["desde"])
                   and cerca(rk[mo].get("razon_hasta"), esp[mo]["hasta"]) for mo in rk),
-              "encargo 17, caso con 20 fallos: razón e intervalo de cada modelo, igual que el bucle de la prueba")
+              "petición 17, caso con 20 fallos: razón e intervalo de cada modelo, igual que el bucle de la prueba")
     comprobar(all(cerca(rk[mo].get("tasa_igual_edad"), esp[mo]["tasa_igual_edad"], 1e-6)
                   and cerca(rk[mo].get("edad_media_anos"), esp[mo]["edad_media"], 1e-6) for mo in rk),
-              "encargo 17, caso con 20 fallos: tasa a igual edad y edad media, a mano")
+              "petición 17, caso con 20 fallos: tasa a igual edad y edad media, a mano")
     comprobar(all(rk[mo].get("veredicto") == esp[mo]["veredicto"] for mo in rk),
-              "encargo 17, caso con 20 fallos: el veredicto a igual edad sale del intervalo")
-    # Encargo 19: con la tasa de cada edad y trimestre, en el caso pequeño las dos razones valen 1 (cada edad y trimestre
+              "petición 17, caso con 20 fallos: el veredicto a igual edad sale del intervalo")
+    # Petición 19: con la tasa de cada edad y trimestre, en el caso pequeño las dos razones valen 1 (cada edad y trimestre
     # tiene un solo modelo), y su orden lo pone el redondeo. El orden se mira con las razones del JSON, que la
     # comprobación de arriba compara con el bucle
     rz = [r["razon"] for r in b2["ranking"]]
     comprobar(all(a <= b + 1e-9 for a, b in zip(rz, rz[1:]))
               and sorted(r.get("puesto") for r in b2["ranking"]) in ([1, 1], [1, 2]),
-              "encargo 17, caso con 20 fallos: ranking y puestos por la razón")
+              "petición 17, caso con 20 fallos: ranking y puestos por la razón")
     ie = b2.get("a_igual_edad", {})
     comprobar(cerca(ie.get("dias"), dias_t) and ie.get("fallos") == fallos_t
               and cerca(ie.get("tasa_todos"), 36500 * fallos_t / dias_t, 1e-6),
-              "encargo 17, caso con 20 fallos: días, fallos y tasa de todas las celdas que pasan")
+              "petición 17, caso con 20 fallos: días, fallos y tasa de todas las celdas que pasan")
     # Por construcción del método, no como segunda vía de la cifra
     comprobar(cerca(sum(r.get("esperados", math.nan) for r in b2["ranking"]), sum(r["fallos"] for r in b2["ranking"]), 1e-9),
-              "encargo 17, caso con 20 fallos: los esperados suman los observados (por construcción, no es segunda vía)")
+              "petición 17, caso con 20 fallos: los esperados suman los observados (por construcción, no es segunda vía)")
     est = ie.get("estabilidad", {})
     comprobar(len(est.get("retiradas", [])) == 2 and "sin_parciales" in est,
-              "encargo 17, caso con 20 fallos: la estabilidad, con una retirada por modelo y sin 2025")
+              "petición 17, caso con 20 fallos: la estabilidad, con una retirada por modelo y sin 2025")
     comprobar(all(v is True for v in j["validaciones"].values())
               and all(v is True for v in pregunta(j, "B2").get("comprobaciones_extra", {"falta": False}).values()),
-              "encargo 17, caso con 20 fallos: las validaciones y las comprobaciones del encargo en verde")
+              "petición 17, caso con 20 fallos: las validaciones y las comprobaciones de la petición en verde")
 
 
 # ---------------------------------------------------------------------------------------------------------------
-# 4. Parte 3 · el JSON real, contra los controles del encargo y por otro camino
+# 4. Parte 3 · el JSON real, contra los controles de la petición y por otro camino
 # ---------------------------------------------------------------------------------------------------------------
 def probar_json_real():
-    """Controles del encargo y dos cifras rehechas con pyarrow desde el recuento."""
+    """Controles de la petición y dos cifras rehechas con pyarrow desde el recuento."""
     ruta = CASO / SALIDA
     if not ruta.exists():
         print("aviso  no hay JSON real todavía: la parte 3 no se prueba")
@@ -883,7 +883,7 @@ def probar_json_real():
     b1, b2, b3 = pregunta(j, "B1"), pregunta(j, "B2"), pregunta(j, "B3")
 
     def pct(x, d=2):
-        """Redondeo a d decimales como se escribe en el encargo."""
+        """Redondeo a d decimales como se escribe en la petición."""
         return round(x + 1e-12, d)
 
     # Recuento de discos de datos
@@ -918,7 +918,7 @@ def probar_json_real():
               "control: 152 celdas de 299 pasan el mínimo, de 32 modelos")
     comprobar(fuera["dias_disco"] == 1282168 and fuera["fallos"] == 101, "control: fuera, 1.282.168 días y 101 fallos")
     rk = t2["ranking"]
-    # Desde el encargo 17 el ranking se ordena por la razón a igual edad: la tasa más baja y la más alta se buscan
+    # Desde la petición 17 el ranking se ordena por la razón a igual edad: la tasa más baja y la más alta se buscan
     lo, hi = min(rk, key=lambda f: f["tasa"]), max(rk, key=lambda f: f["tasa"])
     comprobar(lo["model"] == "HGST HMS5C4040BLE640" and pct(lo["tasa"]) == 0.33 and lo["fallos"] == 193
               and lo["dias_disco"] == 21590966 and pct(lo["desde"]) == 0.28 and pct(lo["hasta"]) == 0.38,
@@ -930,7 +930,7 @@ def probar_json_real():
     for g, t, n in [("HGST", 1.30, 2702), ("Seagate", 1.78, 10284), ("Toshiba", 1.09, 3279), ("WDC", 0.53, 731)]:
         comprobar(pct(fab[g]["tasa"]) == t and fab[g]["fallos"] == n, f"control: {g} {t} % ({n} fallos)")
     controles_igual_edad(t2, pct)
-    controles_encargo19(t2, b3["tablas"], pct)
+    controles_peticion19(t2, b3["tablas"], pct)
     # Tasa por edad del conjunto de discos
     edad = {f["edad"]: f for f in b3["tablas"]["tasa_por_edad"]["todos"]}
     for e, t in zip(range(6), [0.79, 0.86, 1.20, 1.59, 1.92, 2.58]):
@@ -973,17 +973,17 @@ def probar_json_real():
 
 
 def controles_igual_edad(t2, pct):
-    """Controles del encargo 17 (prompts/17_…, «CONTROLES», B2), escritos como los da el encargo.
+    """Controles de la petición 17 (prompts/17_…, «CONTROLES», B2), escritos como los da la petición.
 
-    Un JSON real de antes del encargo 17 no trae la comparación a igual edad: se avisa y no se prueba, porque lo escribe la
+    Un JSON real de antes de la petición 17 no trae la comparación a igual edad: se avisa y no se prueba, porque lo escribe la
     ejecución real de la sesión principal.
     """
     ie = t2.get("a_igual_edad")
     if ie is None:
-        print("aviso  el JSON real es de antes del encargo 17: sus controles de B2 se prueban tras la ejecución real")
+        print("aviso  el JSON real es de antes de la petición 17: sus controles de B2 se prueban tras la ejecución real")
         return
-    # Desde el encargo 19 la tasa es la de cada edad y trimestre y el intervalo lleva φ: las razones, los veredictos y
-    # la estabilidad del encargo 17 cambian por diseño, y mandan los controles del 19 (controles_encargo19)
+    # Desde la petición 19 la tasa es la de cada edad y trimestre y el intervalo lleva φ: las razones, los veredictos y
+    # la estabilidad de la petición 17 cambian por diseño, y mandan los controles del 19 (controles_peticion19)
     if "phi" in ie:
         return
     rk = {f["model"]: f for f in t2["ranking"]}
@@ -993,9 +993,9 @@ def controles_igual_edad(t2, pct):
     v = ie["veredictos"]
     comprobar((v.get("por encima"), v.get("por debajo"), v.get("no se distingue"), v.get("sin conclusión")) == (13, 11, 3, 5),
               f"control 17: 13 por encima, 11 por debajo, 3 no se distinguen y 5 sin conclusión (da {v})")
-    comprobar(ie["cambian_frente_al_bruto"]["n"] == 9, "control 17: cambian 9 frente al bruto con CP-012")
-    # La edad media del encargo (0,75 y 5,37) se midió con los años cumplidos; el script usa años cumplidos + 0,5, el
-    # punto medio del año, como desde el encargo 13 (sus parámetros lo dicen). El control se corrige al +0,5 (R68-103)
+    comprobar(ie["cambian_frente_al_bruto"]["n"] == 9, "control 17: cambian 9 frente al bruto con cuestión 012")
+    # La edad media de la petición (0,75 y 5,37) se midió con los años cumplidos; el script usa años cumplidos + 0,5, el
+    # punto medio del año, como desde la petición 13 (sus parámetros lo dicen). El control se corrige al +0,5
     for mo, f, rz, lo, hi, ed, ver, bru in [
             ("TOSHIBA MG08ACA16TA", 852, 1.3145, 1.2277, 1.4058, 1.25, "por encima", "por debajo"),
             ("ST8000DM002", 937, 0.8388, 0.7860, 0.8943, 5.87, "por debajo", "por encima")]:
@@ -1017,22 +1017,22 @@ def controles_igual_edad(t2, pct):
     comprobar(es["retiradas_que_cambian"] == 5 and es["max_cambian"] == 2 and es["modelo_max"] == "HGST HMS5C4040BLE640",
               f"control 17: estabilidad, 5 retiradas cambian algo y como mucho 2, la del HGST HMS5C4040BLE640 "
               f"(da {es['retiradas_que_cambian']}, {es['max_cambian']}, {es['modelo_max']})")
-    # El encargo daba 3 porque su medida dejó fuera el ST24000NM002H, que solo tiene 2025: sin ese año se queda sin
-    # días y pasa a «sin conclusión», un cambio más (R68-103)
+    # La petición daba 3 porque su medida dejó fuera el ST24000NM002H, que solo tiene 2025: sin ese año se queda sin
+    # días y pasa a «sin conclusión», un cambio más
     comprobar(es["sin_parciales"]["cambian"] == 4 and set(es["sin_parciales"]["modelos"]) == {
         "ST24000NM002H", "TOSHIBA MG08ACA16TEY", "TOSHIBA MG10ACA20TE", "WDC WUH722222ALE6L4"},
         f"control 17: sin 2025 cambian 4 (da {es['sin_parciales']['modelos']})")
 
 
-def controles_encargo19(t2, t3, pct):
-    """Controles del encargo 19 (prompts/19_…, «CONTROLES», B2 y B3), escritos como los da el encargo.
+def controles_peticion19(t2, t3, pct):
+    """Controles de la petición 19 (prompts/19_…, «CONTROLES», B2 y B3), escritos como los da la petición.
 
-    Un JSON real de antes del encargo 19 no trae φ: se avisa y no se prueba, porque lo escribe la ejecución real de la
+    Un JSON real de antes de la petición 19 no trae φ: se avisa y no se prueba, porque lo escribe la ejecución real de la
     sesión principal.
     """
     ie = t2.get("a_igual_edad") or {}
     if "phi" not in ie:
-        print("aviso  el JSON real es de antes del encargo 19: sus controles de B2 y B3 se prueban tras la ejecución real")
+        print("aviso  el JSON real es de antes de la petición 19: sus controles de B2 y B3 se prueban tras la ejecución real")
         return
     rk = {f["model"]: f for f in t2["ranking"]}
     comprobar(ie["celdas"] == 10039 and round(ie["dias"]) == 443929499 and ie["fallos"] == 16895
@@ -1084,7 +1084,7 @@ if __name__ == "__main__":
         if modulo is not None:
             probar_piezas(modulo)
             probar_igual_edad(modulo)
-            probar_encargo19(modulo)
+            probar_peticion19(modulo)
             probar_caso_pequeno()
         probar_json_real()
     finally:

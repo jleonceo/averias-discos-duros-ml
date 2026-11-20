@@ -1,6 +1,6 @@
 {
  "script": "scripts/22_punto_ciego.py",
- "origen": "auditor sin memoria antes de entregar (R68-153)",
+ "origen": "auditor sin memoria antes de entregar",
  "fecha_datos": "2026-06-30",
  "fecha_ejecucion": "2026-11-20T11:02:27",
  "estado": "OK",

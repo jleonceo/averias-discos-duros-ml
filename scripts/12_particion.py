@@ -1,4 +1,4 @@
-"""Partición por fecha de fotos_riesgo del caso 68 (skill preparacion-modelo §1; encargo 20, primera parte).
+"""Partición por fecha de fotos_riesgo del caso 68 (método preparacion-modelo §1; petición 20, primera parte).
 
 La transformación ya escribió en cada foto su periodo (construcción o validación), con el Calendario. Este script no
 vuelve a partir: separa las fotos por la columna periodo, comprueba fila a fila que coincide con las fechas de las
@@ -8,20 +8,20 @@ reglas de negocio §7 y guarda las dos partes:
   - data/processed/fotos_riesgo_validacion.parquet, la validación, del 01/07/2024 al 30/06/2025.
 
 Las dos con las mismas columnas que la entrada, en el mismo orden y con los mismos tipos, y un grupo de filas por fecha.
-No hay lote de producción: la prueba final es la reserva, del 01/07/2025 al 30/06/2026, fuera del caso (reglas §5 y §7).
+No hay lote de producción: la prueba final es la reserva, del 01/07/2025 al 30/06/2026, fuera del caso (reglas, apartado 5 y §7).
 
 Lee fotos_riesgo grupo a grupo (cada grupo es una foto mensual), sin cargar la tabla entera, y escribe cada parte en un
 fichero «.parcial». Solo si pasan las seis comprobaciones y las validaciones de la salida, los «.parcial» pasan a ser
 las partes; si no, se borran y el JSON queda en ERROR con la comprobación que falló. Nada de esto usa azar: la semilla
-se escribe en el JSON porque la skill lo pide, no porque se use.
+se escribe en el JSON porque el método lo pide, no porque se use.
 
 Depende de scripts/05_transformacion_datos.py: lee informes/transformacion-datos.json, para si su estado es PARADO o
 ERROR, si la huella de fotos_riesgo no es la que dejó la transformación o si sus fechas de partición no son las de las
 reglas. No importa ningún script.
 
 Deja informes/particion.json, con el bloque común y lo propio de resultado.md. No escribe informe para la persona: el
-de la fase es informes/preparacion.md, de la segunda y la tercera parte del encargo. La ficha de la partición en el
-registro de transformaciones la escribe Claude con las cifras de la ejecución real (encargo 20).
+de la fase es informes/preparacion.md, de la segunda y la tercera parte de la petición. La ficha de la partición en el
+registro de transformaciones la escribe el analista con las cifras de la ejecución real (petición 20).
 
 Uso: python -W error scripts/12_particion.py [--raiz CARPETA_DEL_CASO]
 Sale con 0 si termina, con 2 si para (PARADO o ERROR) y con 1 si falla por otra causa; en los tres casos escribe el JSON.
@@ -52,11 +52,11 @@ from graficos import numero  # noqa: E402  (pieza común: números a la español
 # =================================================================================================================
 # 2. Configuración
 # =================================================================================================================
-SKILL = "preparacion-modelo"
-SKILL_MD = CASO / ".claude" / "skills" / "preparacion-modelo" / "SKILL.md"
+METODO = "preparacion-modelo"
+METODO_MD = CASO / "metodos" / "preparacion-modelo" / "METODO.md"
 SCRIPT = "scripts/12_particion.py"
-ENCARGO = "prompts/20_encargo_particion_y_preparacion.md, primera parte"
-FECHA_DATOS = "2025-06-30"                                   # reglas §5, fecha de referencia
+PETICION = "peticiones/20_particion_y_preparacion.md, primera parte"
+FECHA_DATOS = "2025-06-30"                                   # reglas, apartado 5, fecha de referencia
 
 ENTRADA = "data/processed/fotos_riesgo.parquet"
 TRANSFORMACION = "informes/transformacion-datos.json"
@@ -67,7 +67,7 @@ COLUMNA_HORIZONTE = "horizonte_hasta"
 COLUMNA_OBJETIVO = "falla_30d"
 COLUMNA_DISCO = "serial_number"
 
-# Las dos partes, con las fechas de las reglas §7 (Juan, 17/11/2026: «Sí, apruebo»). Cada una: el valor de la columna
+# Las dos partes, con las fechas de las reglas, apartado 7 (El responsable del caso, 17/11/2026: «Sí, apruebo»). Cada una: el valor de la columna
 # periodo, el primer y el último día de la regla, y el fichero de salida.
 PARTES = [
     {"parte": "entrenamiento", "periodo": "construcción", "desde": dt.date(2020, 1, 1), "hasta": dt.date(2024, 6, 30),
@@ -78,11 +78,11 @@ PARTES = [
 # Nombre de cada parte en partición de transformacion-datos.json, para comparar sus fechas con las de las reglas
 CLAVE_EN_TRANSFORMACION = {"entrenamiento": "desarrollo", "validacion": "validacion"}
 
-# Parámetros de la skill (preparacion-modelo/parametros.md)
+# Parámetros de el método (preparacion-modelo/parametros.md)
 SEMILLA = 42                                                 # no se usa: la partición por fecha no sortea nada
 TOLERANCIA_PUNTOS = 2.0                                      # diferencia máxima de la tasa del objetivo entre partes
 
-POR_QUE = ("Por fecha, como manda reglas-negocio §7 (Juan, 17/11/2026): el modelo se usará hacia adelante, cada mes con "
+POR_QUE = ("Por fecha, como manda reglas-negocio §7 (El responsable del caso, 17/11/2026): el modelo se usará hacia adelante, cada mes con "
            "las fotos nuevas, así que la validación es el periodo más reciente, del 01/07/2024 al 30/06/2025, y la "
            "construcción va del 01/01/2020 al 30/06/2024. Un disco sigue en servicio de una parte a la otra, como "
            "seguirá en producción: no se parte por disco.")
@@ -98,7 +98,7 @@ TEORIA = [
 
 
 class Parada(Exception):
-    """Condición que impide seguir; `estado` dice si la skill paró a propósito (PARADO) o si falló algo (ERROR)."""
+    """Condición que impide seguir; `estado` dice si el método paró a propósito (PARADO) o si falló algo (ERROR)."""
 
     def __init__(self, mensaje, estado="ERROR"):
         super().__init__(mensaje)
@@ -117,11 +117,11 @@ def sha256(ruta):
     return h.hexdigest()
 
 
-def version_skill():
-    """La fecha y el código de la última línea de versión del SKILL.md (bloque común de resultado.md)."""
-    if not SKILL_MD.exists():
+def version_metodo():
+    """La fecha y el código de la última línea de versión del METODO.md (bloque común de resultado.md)."""
+    if not METODO_MD.exists():
         return None
-    lineas = [x for x in SKILL_MD.read_text(encoding="utf-8").splitlines() if x.startswith("Versión ")]
+    lineas = [x for x in METODO_MD.read_text(encoding="utf-8").splitlines() if x.startswith("Versión ")]
     if not lineas:
         return None
     m = re.match(r"Versión (\S+) \(([^),]+)", lineas[-1])
@@ -134,7 +134,7 @@ def dia(valor):
 
 
 def parte_por_regla(fecha):
-    """La parte que dan las reglas §7 a una fecha, o None si la fecha no cae en ninguna."""
+    """La parte que dan las reglas, apartado 7 a una fecha, o None si la fecha no cae en ninguna."""
     for p in PARTES:
         if p["desde"] <= fecha <= p["hasta"]:
             return p
@@ -148,7 +148,7 @@ def leer_transformacion(raiz, huella_entrada):
     """Lee el JSON de la transformación y para si no se puede partir con él (resultado.md, «Al empezar»).
 
     PARADO si su estado es PARADO o ERROR, si la huella de fotos_riesgo no es la que dejó o si sus fechas de partición
-    no son las de las reglas §7. Devuelve su estado.
+    no son las de las reglas, apartado 7. Devuelve su estado.
     """
     ruta = raiz / TRANSFORMACION
     if not ruta.exists():
@@ -165,7 +165,7 @@ def leer_transformacion(raiz, huella_entrada):
     for p in PARTES:
         fechas = particion.get(CLAVE_EN_TRANSFORMACION[p["parte"]], {})
         if (fechas.get("desde"), fechas.get("hasta")) != (p["desde"].isoformat(), p["hasta"].isoformat()):
-            raise Parada(f"las fechas de {p['parte']} en {TRANSFORMACION} ({fechas}) no son las de las reglas §7",
+            raise Parada(f"las fechas de {p['parte']} en {TRANSFORMACION} ({fechas}) no son las de las reglas, apartado 7",
                          "PARADO")
     return estado
 
@@ -214,7 +214,7 @@ def pasada(raiz, parciales):
             # 5.2 Claves repetidas dentro de la fecha (la clave es serial_number y fecha)
             discos_grupo = t[COLUMNA_DISCO]
             r["claves_repetidas"] += t.num_rows - len(pc.unique(discos_grupo))
-            # 5.3 Cada fila contra la regla: la parte que dan las reglas §7 a esta fecha frente a su periodo
+            # 5.3 Cada fila contra la regla: la parte que dan las reglas, apartado 7 a esta fecha frente a su periodo
             regla = parte_por_regla(fecha)
             periodo = t[COLUMNA_PERIODO]
             if regla is None:
@@ -258,7 +258,7 @@ def pasada(raiz, parciales):
 
 
 # =================================================================================================================
-# 6. Las comprobaciones (skill §1 y encargo), calculadas con lo que se ejecutó
+# 6. Las comprobaciones (método §1 y petición), calculadas con lo que se ejecutó
 # =================================================================================================================
 def tasa(a):
     """Parte de las fotos de una parte con el objetivo en 1; None si la parte no tiene fotos."""
@@ -339,10 +339,10 @@ def escribir_json(raiz, res):
 def base_json(huella_entrada, filas, columnas, grupos, estado_tr):
     """El bloque común y lo fijo de lo propio, antes de saber el resultado."""
     return {
-        "skill": SKILL,
-        "version_skill": version_skill(),
+        "metodo": METODO,
+        "version_metodo": version_metodo(),
         "script": SCRIPT,
-        "encargo": ENCARGO,
+        "peticion": PETICION,
         "fecha_datos": FECHA_DATOS,
         "fecha_ejecucion": dt.datetime.now().replace(microsecond=0).isoformat(),
         "entradas": [{"ruta": ENTRADA, "sha256": huella_entrada, "filas": filas, "columnas": columnas,
@@ -362,11 +362,11 @@ def base_json(huella_entrada, filas, columnas, grupos, estado_tr):
             {"nombre": "tolerancia de la tasa del objetivo entre partes", "valor": TOLERANCIA_PUNTOS,
              "origen": "parametros.md, 2 puntos porcentuales"},
             {"nombre": "proporción de validación", "valor": None,
-             "origen": "parametros.md da 30 %; no aplica: las fechas de la regla §7 fijan las partes"},
+             "origen": "parametros.md da 30 %; no aplica: las fechas de la regla, apartado 7 fijan las partes"},
         ],
         "teoria": TEORIA,
         "datos_personales": ("Ninguno: los datos son de discos y no traen nada de personas; serial_number identifica un "
-                             "disco (reglas-negocio §9). No existe contexto-proyecto/fuentes/proteccion-datos.json: "
+                             "disco (reglas-negocio §9). No existe config/fuentes/proteccion-datos.json: "
                              "los datos no pasaron por la protección porque no hacía falta."),
     }
 
@@ -434,7 +434,7 @@ def principal(raiz):
         res["resultado"] = {"estado": "OK", "riesgo": "bajo", "resumen": resumen(res),
                             "artefactos": [p["ruta"] for p in PARTES] + [SALIDA_JSON],
                             "siguiente": ("preparacion-modelo §2 y §3: el desequilibrio descrito y la matriz de "
-                                          "transformaciones propuesta, con la tabla de entrenamiento (encargo 20, "
+                                          "transformaciones opción, con la tabla de entrenamiento (petición 20, "
                                           "segunda parte)")}
         codigo = 0
     except Parada as p:

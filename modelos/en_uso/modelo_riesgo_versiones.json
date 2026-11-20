@@ -3,7 +3,7 @@
  "fichero": "modelo_riesgo.joblib",
  "huella": "6ff08f348207c3dced0d6569fedd957c64f2df450a0da2c2ed65da7170363b32",
  "modulo": "scripts/pipeline_riesgo.py",
- "huella_modulo": "44d85f73d35e27d6779f58a25b9e3085b2d809497e9612068779fd9e1bf4eeef",
+ "huella_modulo": "bf42df5e46e0f87a7559fa30d6e6bdb3dc8c7018f6b20222192ec34a0e5d7b11",
  "versiones": {
   "python": "3.13.15",
   "scikit-learn": "1.9.1",
@@ -155,7 +155,7 @@
   "datacenter_oe"
  ],
  "columnas_vacias_del_ajuste": [],
- "radiografia": {
+ "estructura": {
   "pasos": [
    "preparacion",
    "float32",
@@ -385,5 +385,5 @@
   }
  },
  "lleva_filas_de_entrenamiento": [],
- "contrato": "Juan, 19/11/2026: «Sí, con el arreglo»"
+ "contrato": "El responsable del caso, 19/11/2026: «Sí, con el arreglo»"
 }

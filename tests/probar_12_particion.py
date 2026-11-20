@@ -1,4 +1,4 @@
-"""Prueba de scripts/12_particion.py (skill preparacion-modelo §1, encargo 20, primera parte).
+"""Prueba de scripts/12_particion.py (método preparacion-modelo §1, petición 20, primera parte).
 
 Parte 1, el script entero sobre un caso pequeño. Monta en tests/tmp_particion/ una fotos_riesgo de 16 fotos en cuatro
 fechas (dos de construcción y dos de validación, un grupo de filas por fecha), con los tipos de la tabla real (texto,
@@ -17,8 +17,8 @@ motivo. Después, los casos que tienen que parar, cada uno con la comprobación 
 En todos, el JSON se escribe con su estado y no queda ninguna de las dos partes en disco.
 Parte 2, la búsqueda de resultados escritos a mano (error 24): ninguna comprobación del script lleva True puesto, y la
 búsqueda caza uno escrito a propósito.
-Parte 3, el JSON real, si existe (lo escribe la ejecución de la sesión principal): las cifras de control del encargo,
-escritas como las da el encargo, y las cifras rehechas por otro camino: contadas en las dos partes ya escritas (otra
+Parte 3, el JSON real, si existe (lo escribe la ejecución de la sesión principal): las cifras de control de la petición,
+escritas como las da la petición, y las cifras rehechas por otro camino: contadas en las dos partes ya escritas (otra
 tabla, leída con pyarrow grupo a grupo) frente a lo que el script contó al leer la entrada, y frente a las cifras de
 control de informes/transformacion-datos.json, que salen de la ejecución de la transformación. La misma función se
 prueba antes sobre el caso pequeño, en verde y con un JSON alterado que tiene que dar rojo.
@@ -55,7 +55,7 @@ COMPROBACIONES = ["sin_filas_compartidas", "suman_la_entrada", "tasa_dentro_de_t
 CONSTRUCCION, VALIDACION = "construcción", "validación"
 FALLOS = []
 
-# Las cifras de control del encargo 20 (CIFRAS DE CONTROL), escritas como las da el encargo
+# Las cifras de control de la petición 20 (CIFRAS DE CONTROL), escritas como las da la petición
 ESPERADAS_REALES = {
     "entrada_filas": 14604861, "entrada_columnas": 144, "entrada_grupos": 66, "objetivo_total": 16266,
     "entrenamiento": {"filas": 11026052, "objetivo": 11962, "tasa_pct": 0.108489, "fecha_min": "2020-01-01",
@@ -202,7 +202,7 @@ def probar_limpio():
     comprobar(js.get("estrategia") == "fecha" and js.get("semilla") == 42 and js.get("columna_fecha") == "fecha",
               "limpio: estrategia fecha, semilla 42, columna fecha")
     comprobar(js.get("fecha_datos") == "2025-06-30", "limpio: fecha_datos 2025-06-30")
-    comprobar(bool(js.get("por_que")) and "§7" in js["por_que"], "limpio: por_que cita la regla §7")
+    comprobar(bool(js.get("por_que")) and "§7" in js["por_que"], "limpio: por_que cita la regla, apartado 7")
     partes = {p["parte"]: p for p in js.get("partes", [])}
     e, v, lp = partes.get("entrenamiento"), partes.get("validacion"), partes.get("lote_produccion")
     comprobar(e is not None and v is not None and lp is not None, "limpio: las tres partes en el JSON")
@@ -382,10 +382,10 @@ def comprobar_json_real(raiz, esperadas):
         p, e = partes[parte], esperadas[parte]
         r = recontar(raiz / p["ruta"])
         recuentos[parte] = r
-        # Las cifras de control del encargo
+        # Las cifras de control de la petición
         if (p["filas"], p["fotos_con_objetivo"], p["fecha_min"], p["fecha_max"], p["fotos_mensuales"], p["discos"]) != \
                 (e["filas"], e["objetivo"], e["fecha_min"], e["fecha_max"], e["fechas"], e["discos"]):
-            fallos.append(f"{parte}: filas, fallos, fechas o discos distintos de los del encargo")
+            fallos.append(f"{parte}: filas, fallos, fechas o discos distintos de los de la petición")
         if round(p["tasa_objetivo_pct"], 6) != e["tasa_pct"]:
             fallos.append(f"{parte}: tasa {p['tasa_objetivo_pct']} frente a {e['tasa_pct']}")
         if "horizonte_max" in e and p["horizonte_hasta_max"] != e["horizonte_max"]:

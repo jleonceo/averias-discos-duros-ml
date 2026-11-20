@@ -1,5 +1,5 @@
 {
-  "fuente": "Controles del encargo del diccionario y del plan de calidad (prompts/05_encargo_diccionario_y_plan_de_calidad.md), medidos en el reconocimiento de los datos (informes/reconocimiento/reconocimiento_de_los_datos.ipynb). Las de discos de datos usan la capacidad del modelo en las filas con -1 o 0,1 TB (reglas §3). Desde el 17/11/2026 el diccionario describe solo el dataset y el esquema (Juan): los controles de los ZIP ya no aplican y data/raw/ tiene 91 ficheros.",
+  "fuente": "Controles de la petición del diccionario y del plan de calidad (peticiones/05_diccionario_y_plan_de_calidad.md), medidos en el reconocimiento de los datos (informes/reconocimiento/reconocimiento_de_los_datos.ipynb). Las de discos de datos usan la capacidad del modelo en las filas con -1 o 0,1 TB (reglas, apartado 3). Desde el 17/11/2026 el diccionario describe solo el dataset y el esquema (El responsable del caso): los controles de los ZIP ya no aplican y data/raw/ tiene 91 ficheros.",
   "fecha": "2026-11-17",
   "cifras": {
     "fotos.ficheros": 66,
@@ -40,7 +40,7 @@
     "huella.esquema": "365cf50ad5ebfc3e20d0959337d9877ce9539e0432955bda836b7482cd0f5358",
     "huella.fallos": "901e8e07fc0d89f5969af23787c46abfaa502b98139c169cef12f234ada5b2e5"
   },
-  "fuente_calidad": "Controles del encargo del script de calidad (prompts/06_encargo_script_de_calidad.md), del 17/11/2026, leídos tal cual sobre los ficheros enteros. Los compara tests/probar_02_calidad_datos.py con «cifras_de_control» de informes/calidad-datos.json. Van en una clave aparte porque tests/probar_01_diccionario_datos.py recorre «cifras» entera.",
+  "fuente_calidad": "Controles de la petición del script de calidad (peticiones/06_script_de_calidad.md), del 17/11/2026, leídos tal cual sobre los ficheros enteros. Los compara tests/probar_02_calidad_datos.py con «cifras_de_control» de informes/calidad-datos.json. Van en una clave aparte porque tests/probar_01_diccionario_datos.py recorre «cifras» entera.",
   "cifras_calidad": {
     "fotos.ficheros": 66,
     "fotos.filas": 14851669,
@@ -79,7 +79,7 @@
     "huella.esquema": "365cf50ad5ebfc3e20d0959337d9877ce9539e0432955bda836b7482cd0f5358",
     "huella.fallos": "901e8e07fc0d89f5969af23787c46abfaa502b98139c169cef12f234ada5b2e5"
   },
-  "fuente_correccion": "Controles del encargo de la corrección (prompts/07_encargo_correccion.md, «CONTROLES»), del 17/11/2026, escritos tal cual. Los compara tests/probar_03_correccion_datos.py con «controles» de informes/correccion-datos.json, aplanados como clave.antes y clave.despues. Los modelos con dos espacios van juntos en las tres tablas y por tabla en fotos y recuento; las ventanas solo traen dos de las cuatro variantes (calidad-datos.json, «categoricas»), así que de ellas solo se fija el después.",
+  "fuente_correccion": "Controles de la petición de la corrección (peticiones/07_correccion.md, «CONTROLES»), del 17/11/2026, escritos tal cual. Los compara tests/probar_03_correccion_datos.py con «controles» de informes/correccion-datos.json, aplanados como clave.antes y clave.despues. Los modelos con dos espacios van juntos en las tres tablas y por tabla en fotos y recuento; las ventanas solo traen dos de las cuatro variantes (calidad-datos.json, «categoricas»), así que de ellas solo se fija el después.",
   "cifras_correccion": {
     "fotos.filas.antes": 14851669,
     "fotos.filas.despues": 14851669,
@@ -109,7 +109,7 @@
     "ventanas.fallos_datos_sin_dia_anterior.despues": 903,
     "modelos_con_dos_capacidades_validas": 0
   },
-  "fuente_modelado": "Controles del encargo del diseño del modelo de datos (paso 3, modelado-datos), del 17/11/2026, escritos tal cual. Los compara tests/probar_04_modelado_datos.py con «cifras_de_control» de informes/modelado-datos.json. fallos.datos_construccion y fallos.datos_validacion son las de «cifras», las de la ficha.",
+  "fuente_modelado": "Controles de la petición del diseño del modelo de datos (paso 3, modelado-datos), del 17/11/2026, escritos tal cual. Los compara tests/probar_04_modelado_datos.py con «cifras_de_control» de informes/modelado-datos.json. fallos.datos_construccion y fallos.datos_validacion son las de «cifras», las de la ficha.",
   "cifras_modelado": {
     "fotos.filas": 14851669,
     "ventanas.filas": 536597,
@@ -151,7 +151,7 @@
     "fallos.datos_validacion": 4518
   },
   "transformacion": {
-    "fuente": "CONTROLES del encargo de la transformación (prompts/09_encargo_transformacion.md), medidos por Claude el 17/11/2026 sobre las tablas corregidas y escritos en contexto-proyecto/negocio/reglas-transformacion.md. Los compara tests/probar_05_transformacion_datos.py con «cifras_de_control» de informes/transformacion-datos.json. No se ajustan: si una no sale, el JSON la da tal como sale.",
+    "fuente": "CONTROLES de la petición de la transformación (peticiones/09_transformacion.md), medidos por el analista el 17/11/2026 sobre las tablas corregidas y escritos en config/negocio/reglas-transformacion.md. Los compara tests/probar_05_transformacion_datos.py con «cifras_de_control» de informes/transformacion-datos.json. No se ajustan: si una no sale, el JSON la da tal como sale.",
     "fecha": "2026-11-17",
     "cifras": {
       "dim_modelo.modelos": 94,
@@ -225,7 +225,7 @@
       "centro_mes.desde_sitio": 144
     }
   },
-  "fuente_cuadro": "Cifras de arriba del cuadro de mando sin filtros (scripts/21_cuadro_mando.py), del 20/11/2026, leídas de informes/cuadro_mando.json y cotejadas con las cifras de control del encargo del cuadro: 314.758 discos, 4.518 fallos y tasa 1,5166 % del último año, 832.698 $ de 2024, 1,8758 $ del primer modelo y 22,64 fallos al mes de la lista de 100. Los tomos en peligro (197) usan la fila con los cuatro datos de sitio, como scripts/05. Las compara tests/probar_21_cuadro_mando_pestanas.py con el data-valor del navegador; la clave es el id de la cifra.",
+  "fuente_cuadro": "Cifras de arriba del cuadro de mando sin filtros (scripts/21_cuadro_mando.py), del 20/11/2026, leídas de informes/cuadro_mando.json y cotejadas con las cifras de control de la petición del cuadro: 314.758 discos, 4.518 fallos y tasa 1,5166 % del último año, 832.698 $ de 2024, 1,8758 $ del primer modelo y 22,64 fallos al mes de la lista de 100. Los tomos en peligro (197) usan la fila con los cuatro datos de sitio, como scripts/05. Las compara tests/probar_21_cuadro_mando_pestanas.py con el data-valor del navegador; la clave es el id de la cifra.",
   "cifras_cuadro": {
     "discos": 314758,
     "fallos": 4518,

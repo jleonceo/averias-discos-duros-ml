@@ -23,6 +23,7 @@ Uso: python -W error tests/probar_21_cuadro_mando_pestanas.py
 """
 
 # html deshace los escapes del resultado que deja Edge
+import os
 import html
 # importlib carga el script por su ruta sin ejecutar su principal
 import importlib.util
@@ -45,9 +46,9 @@ RAIZ = Path(__file__).resolve().parents[1]
 SCRIPT = RAIZ / "scripts" / "21_cuadro_mando.py"
 HTML = RAIZ / "informes" / "cuadro_mando.html"
 TMP = RAIZ / "tests" / "tmp_cuadro"
-EDGE = Path("C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe")
+EDGE = Path(os.environ.get("ProgramFiles(x86)", "")) / "Microsoft" / "Edge" / "Application" / "msedge.exe"
 PESTANAS = ["vision", "centros", "modelos", "edad", "lista"]
-# Los órdenes de lo general a lo particular (Juan, 20/11/2026; reglas §4 «La instalación»)
+# Los órdenes de lo general a lo particular (El responsable del caso, 20/11/2026; reglas, apartado 4 «La instalación»)
 ORDEN_FILTROS = ["f-centro", "f-fabricante", "f-capacidad", "f-edad"]
 ORDEN_COLUMNAS = ["Puesto", "Centro de datos", "Tomo en peligro", "Fabricante", "Modelo", "TB", "Años cumplidos",
                   "Número de serie", "Puntuación de riesgo, 0 a 100"]
@@ -58,7 +59,7 @@ MINIMO_FALLOS = 20
 # Un título que dice uno de estos verbos o comparaciones concluye sobre un grupo
 CONCLUYE = re.compile(r"\b(sube|suben|baja|bajan|más|menos|no se distingue|no se distinguen|menor coste)\b", re.I)
 VETADAS = re.compile(r"\b(flota|parque|unidades)\b|regla actual|gastar menos", re.I)
-# La ciudad de cada centro, copiada de contexto-proyecto/negocio/reglas-negocio.md §4 («Centro de datos»)
+# La ciudad de cada centro, copiada de config/negocio/reglas-negocio.md §4 («Centro de datos»)
 CIUDADES = {"ams5": "Ámsterdam", "iad1": "Virginia", "phx1": "Phoenix", "sac0": "Sacramento", "sac2": "Sacramento",
             "yyz1": "Toronto"}
 FALLOS = []
@@ -213,7 +214,7 @@ def comprobar_pestana(r):
     caso(f"{nombre}: las pestañas, en su orden", r["pestanas"] == PESTANAS, r["pestanas"])
     if r["pestana"] == "p-lista":
         caso(f"{nombre}: las columnas de la lista, en su orden", r["columnas"] == ORDEN_COLUMNAS, r["columnas"])
-        # La puntuación ordena los discos; el modelo no está calibrado y no se presenta como probabilidad (R68-153)
+        # La puntuación ordena los discos; el modelo no está calibrado y no se presenta como probabilidad
         caso(f"{nombre}: el pie dice que la puntuación no es una probabilidad", "no es una probabilidad" in r["pie"],
              r["pie"])
         caso(f"{nombre}: la lista no habla de probabilidad de fallar",

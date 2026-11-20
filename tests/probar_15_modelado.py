@@ -1,4 +1,4 @@
-"""Prueba de scripts/15_modelado.py (skill aprendizaje-automatico; encargo 21, segunda y tercera parte).
+"""Prueba de scripts/15_modelado.py (método aprendizaje-automatico; petición 21, segunda y tercera parte).
 
 Parte 1, las piezas sueltas. Carga el script como módulo (su trabajo está dentro de `if __name__ == "__main__":`) y
 prueba con datos escritos aquí, cada pieza con un caso que tiene que salir bien y otro que tiene que salir mal:
@@ -7,8 +7,8 @@ prueba con datos escritos aquí, cada pieza con un caso que tiene que salir bien
   - los cinco bloques de tres meses;
   - el empate pliegue a pliegue, el ganador (con empate, el más estable frente al trivial) y el veredicto;
   - la recalibración por la corrección del prior;
-  - el paso 1: OK sigue, AVISO sigue solo si cada pendiente tiene la decisión de Juan escrita en el script;
-  - la ampliación de la rejilla por el borde;
+  - el paso 1: OK sigue, AVISO sigue solo si cada pendiente tiene la decisión de el responsable del caso escrita en el script;
+  - la extensión de la rejilla por el borde;
   - el canario, la probabilidad media y el intervalo remuestreando meses;
   - la selección de la logística por variable de origen, después del preprocesador entero;
   - que ninguna validación está escrita con True puesto y que solo se carga el script 13.
@@ -49,13 +49,13 @@ import pyarrow.parquet as pq
 CASO = Path(__file__).resolve().parents[1]
 SCRIPT = CASO / "scripts" / "15_modelado.py"
 TMP = CASO / "tests" / "tmp_modelado"
-MATRIZ = "contexto-proyecto/modelo/matriz_transformaciones.md"
+MATRIZ = "config/modelo/matriz_transformaciones.md"
 ENT = "data/processed/fotos_riesgo_entrenamiento.parquet"
 VAL = "data/processed/fotos_riesgo_validacion.parquet"
 SALIDA = "informes/modelado.json"
 LIMITE_S = 150
 FALLOS = []
-# Las validaciones del skill §9 que el script calcula
+# Las validaciones del método §9 que el script calcula
 VALIDACIONES = ["sin_filas_de_ajuste", "semillas", "validacion_una_vez", "con_probabilidad", "columnas_de_preseleccion",
                 "recalibrado_si_hace_falta", "citas_existen", "reproducible", "sin_identificadores_ni_posteriores",
                 "sin_resultados_escritos", "canario_objetivo_barajado", "probabilidad_media_cerca_de_la_tasa",
@@ -112,10 +112,10 @@ def probar_listas(m):
 
 
 def probar_bloques(m):
-    """Los cinco bloques de tres meses de la skill §3 y del encargo."""
+    """Los cinco bloques de tres meses de el método §3 y de la petición."""
     comprobar([(a, b) for a, b in m.BLOQUES] == [("2023-04-01", "2023-06-30"), ("2023-07-01", "2023-09-30"),
                                                  ("2023-10-01", "2023-12-31"), ("2024-01-01", "2024-03-31"),
-                                                 ("2024-04-01", "2024-06-30")], "bloques: los cinco del encargo")
+                                                 ("2024-04-01", "2024-06-30")], "bloques: los cinco de la petición")
 
 
 def probar_empate_y_ganador(m):
@@ -148,7 +148,7 @@ def probar_paso_1(m):
     ok, _ = m.preseleccion_lista({"resultado": {"estado": "OK"}, "pendientes": []})
     comprobar(ok, "paso 1: OK sigue")
     ok, _ = m.preseleccion_lista({"resultado": {"estado": "AVISO"}, "pendientes": [{"id": "P-01"}]})
-    comprobar(ok and "P-01" in m.DECISIONES_DE_JUAN, "paso 1: AVISO con P-01, decidido por Juan, sigue")
+    comprobar(ok and "P-01" in m.DECISIONES_DE_JUAN, "paso 1: AVISO con P-01, decidido por el responsable del caso, sigue")
     ok, motivo = m.preseleccion_lista({"resultado": {"estado": "AVISO"}, "pendientes": [{"id": "P-01"}, {"id": "P-02"}]})
     comprobar(not ok and "P-02" in motivo, "paso 1: un pendiente sin decisión para")
     for estado in ("PARADO", "ERROR", None):
@@ -157,7 +157,7 @@ def probar_paso_1(m):
 
 
 def probar_ampliar(m):
-    """Si el mejor valor cae en el borde de su rejilla, se amplía por ese lado (skill §5)."""
+    """Si el mejor valor cae en el borde de su rejilla, se amplía por ese lado (método §5)."""
     c = m.ESPACIOS["logistica"]["C"]
     nuevo = m.ampliar("logistica", "C", c[-1])
     comprobar(nuevo is not None and nuevo > c[-1], f"ampliar: C en el borde de arriba sube ({nuevo})")
@@ -276,7 +276,7 @@ def montar(estado="AVISO", pendientes=("P-01",)):
         shutil.rmtree(TMP)
     (TMP / "data" / "processed").mkdir(parents=True)
     (TMP / "informes").mkdir()
-    (TMP / "contexto-proyecto" / "modelo").mkdir(parents=True)
+    (TMP / "config" / "modelo").mkdir(parents=True)
     esquema = pq.read_schema(CASO / ENT).remove_metadata()
     rng = np.random.default_rng(7)
     with pq.ParquetWriter(TMP / ENT, esquema) as w:
@@ -284,7 +284,7 @@ def montar(estado="AVISO", pendientes=("P-01",)):
             w.write_table(tabla_mes(esquema, mes, k, rng, POR_MES, FALLOS_MES, dt.datetime(2024, 6, 30)), row_group_size=POR_MES)
     escribir_validacion(rota=True)
     texto = (CASO / MATRIZ).read_text(encoding="utf-8")
-    texto = re.sub(r"^estado: .*$", "estado: aprobada por Juan el 18/11/2026 («Sí, siguiente pregunta»)", texto, count=1, flags=re.M)
+    texto = re.sub(r"^estado: .*$", "estado: aprobada por el responsable del caso el 18/11/2026 («Sí, siguiente pregunta»)", texto, count=1, flags=re.M)
     (TMP / MATRIZ).write_text(texto, encoding="utf-8")
     m13 = importlib.util.spec_from_file_location("p13_prueba", CASO / "scripts" / "13_preparacion.py")
     p13 = importlib.util.module_from_spec(m13); m13.loader.exec_module(p13)
@@ -363,7 +363,7 @@ def probar_caso_pequeno():
             continue
         comprobar(val is True, f"pequeño: validación {v} en verde ({val})")
     # La validación 12 se calcula; si sale en rojo, para en PARADO, lo dice y conserva el ganador (su verde y su
-    # rojo, como pieza, están en probar_controles). Si sale en verde, para en la puerta de Juan con código 0.
+    # rojo, como pieza, están en probar_controles). Si sale en verde, para en la puerta de el responsable del caso con código 0.
     v12 = js["validaciones"].get("probabilidad_media_cerca_de_la_tasa")
     comprobar(v12 in (True, False) and len(js["probabilidad_media_por_bloque"]) == 5, f"pequeño: la validación 12 se calcula por bloque ({v12})")
     if v12 is False:
@@ -408,7 +408,7 @@ def probar_validacion(js_competicion):
     comprobar(codigo == 2 and js["resultado"]["estado"] == "PARADO" and js["validacion"]["abierta_una_vez"] is None,
               f"validación: sin aprobado_por no se abre (código {codigo})")
     comprobar(js["ranking"] == js_competicion["ranking"], "validación: la parada no toca la competición")
-    js["ganador"]["aprobado_por"] = "Juan (prueba)"
+    js["ganador"]["aprobado_por"] = "El responsable del caso (prueba)"
     (TMP / SALIDA).write_text(json.dumps(js, ensure_ascii=False), encoding="utf-8")
     escribir_validacion(rota=False)
     codigo, js, salida = ejecutar("--abrir-validacion")
@@ -435,7 +435,7 @@ def probar_entradas():
     """La preselección que no está lista para el script en PARADO."""
     for nombre, montaje in (("preselección en PARADO", {"estado": "PARADO", "pendientes": ()}),
                             ("preselección en ERROR", {"estado": "ERROR", "pendientes": ()}),
-                            ("un pendiente sin decisión de Juan", {"estado": "AVISO", "pendientes": ("P-01", "P-02")})):
+                            ("un pendiente sin decisión de el responsable del caso", {"estado": "AVISO", "pendientes": ("P-01", "P-02")})):
         montar(**montaje)
         codigo, js, _ = ejecutar()
         comprobar(codigo == 2 and js is not None and js["resultado"]["estado"] == "PARADO", f"{nombre}: PARADO (código {codigo})")
@@ -444,7 +444,7 @@ def probar_entradas():
 # ---------------------------------------------------------------------------------------------------------------
 # 4. Parte 4 · el JSON real, si la sesión principal ya ejecutó la competición
 # ---------------------------------------------------------------------------------------------------------------
-CONTROL_PLIEGUES = [  # fotos y fallos que miden; que entrenan antes de la muestra; que quita el horizonte (encargo 21)
+CONTROL_PLIEGUES = [  # fotos y fallos que miden; que entrenan antes de la muestra; que quita el horizonte (petición 21)
     (717312, 1297, 7103763, 6760, 0, 0), (752057, 905, 7579846, 7749, 241229, 308), (795015, 994, 8316843, 8673, 256289, 289),
     (814408, 906, 9368147, 9956, 0, 0), (843497, 1100, 10182555, 10862, 0, 0)]
 CONTROL_REGLA_100 = [20, 28, 34, 17, 26, 18, 30, 24, 19, 19, 20, 10, 12, 15, 15]
@@ -452,7 +452,7 @@ CONTROL_REGLA_20 = [7, 9, 12, 8, 7, 5, 12, 4, 7, 7, 6, 4, 4, 5, 6]
 
 
 def probar_real():
-    """Las cifras de control del encargo contra informes/modelado.json real, si existe."""
+    """Las cifras de control de la petición contra informes/modelado.json real, si existe."""
     ruta = CASO / SALIDA
     js = json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else {}
     if not isinstance(js.get("validacion_cruzada"), dict):

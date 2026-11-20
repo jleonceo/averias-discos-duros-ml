@@ -1,8 +1,8 @@
 {
-  "skill": "preparacion-modelo",
-  "version_skill": "15/11/2026 (WF-134)",
+  "metodo": "preparacion-modelo",
+  "version_metodo": "15/11/2026",
   "script": "scripts/12_particion.py",
-  "encargo": "prompts/20_encargo_particion_y_preparacion.md, primera parte",
+  "peticion": "peticiones/20_particion_y_preparacion.md, primera parte",
   "fecha_datos": "2025-06-30",
   "fecha_ejecucion": "2026-11-18T15:19:57",
   "entradas": [
@@ -27,11 +27,11 @@
       "data/processed/fotos_riesgo_validacion.parquet",
       "informes/particion.json"
     ],
-    "siguiente": "preparacion-modelo §2 y §3: el desequilibrio descrito y la matriz de transformaciones propuesta, con la tabla de entrenamiento (encargo 20, segunda parte)"
+    "siguiente": "preparacion-modelo §2 y §3: el desequilibrio descrito y la matriz de transformaciones opción, con la tabla de entrenamiento (petición 20, segunda parte)"
   },
   "pendientes": [],
   "estrategia": "fecha",
-  "por_que": "Por fecha, como manda reglas-negocio §7 (Juan, 17/11/2026): el modelo se usará hacia adelante, cada mes con las fotos nuevas, así que la validación es el periodo más reciente, del 01/07/2024 al 30/06/2025, y la construcción va del 01/01/2020 al 30/06/2024. Un disco sigue en servicio de una parte a la otra, como seguirá en producción: no se parte por disco.",
+  "por_que": "Por fecha, como manda reglas-negocio §7 (El responsable del caso, 17/11/2026): el modelo se usará hacia adelante, cada mes con las fotos nuevas, así que la validación es el periodo más reciente, del 01/07/2024 al 30/06/2025, y la construcción va del 01/01/2020 al 30/06/2024. Un disco sigue en servicio de una parte a la otra, como seguirá en producción: no se parte por disco.",
   "semilla": 42,
   "columna_fecha": "fecha",
   "columna_grupo": null,
@@ -102,14 +102,14 @@
     {
       "nombre": "proporción de validación",
       "valor": null,
-      "origen": "parametros.md da 30 %; no aplica: las fechas de la regla §7 fijan las partes"
+      "origen": "parametros.md da 30 %; no aplica: las fechas de la regla, apartado 7 fijan las partes"
     }
   ],
   "teoria": [
     "20.2, entrenamiento, validación y prueba: la validación se aparta y se mira una sola vez, al medir el modelo; la prueba final es la reserva, fuera del caso.",
     "20.8, las fugas: datos con fecha no se parten al azar. Un mismo disco a los dos lados es lo que pasará en producción, porque el modelo puntúa cada mes los discos que ya vio; se cuenta y se dice, y el horizonte de construcción no pasa del 30/06/2024, para que ninguna foto de construcción sepa nada de la validación."
   ],
-  "datos_personales": "Ninguno: los datos son de discos y no traen nada de personas; serial_number identifica un disco (reglas-negocio §9). No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
+  "datos_personales": "Ninguno: los datos son de discos y no traen nada de personas; serial_number identifica un disco (reglas-negocio §9). No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
   "objetivo_entrada": 16266,
   "claves_compartidas": 0,
   "claves_repetidas": 0,

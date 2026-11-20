@@ -1,4 +1,4 @@
-"""Prueba de scripts/22_punto_ciego.py (auditor antes de entregar, R68-153 y R68-155; skill programacion-del-caso).
+"""Prueba de scripts/22_punto_ciego.py (auditor antes de entregar, una nota del caso y una nota del caso; método programacion-del-caso).
 
 El script mide el punto ciego de la lista de riesgo: la parte de los fallos a 30 días cuya foto mensual no avisa.
 Esta prueba usa datos pequeños escritos aquí, nunca los de data/.

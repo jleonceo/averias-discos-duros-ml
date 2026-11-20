@@ -91,7 +91,7 @@ def main():
          all(x in p1.bloques[-1]["html"] for x in ("comprar en cada capacidad", "lista de riesgo", "sac2", "repuestos")))
     # Revisión externa del 19/11/2026: en el resumen «sac2» solo no dice qué es
     caso("2. resumen: sac2 se nombra como centro de datos", "centro de datos sac2" in p1.bloques[-1]["html"])
-    # Revisión externa de las páginas 2 a 4 y pasada propia de la 5 a la 10 (19/11/2026, Juan: «todo»)
+    # Revisión externa de las páginas 2 a 4 y pasada propia de la 5 a la 10 (19/11/2026, el responsable del caso: «todo»)
     caso("2. página 4: el año guardado compara los dos errores", "31,8 %" in
          "".join(b["html"] for b in antes[3].bloques))
     caso("2. página 3: el título dice que son siete grupos", antes[2].titulo.startswith("En los siete grupos"))
@@ -156,7 +156,7 @@ def main():
     caso("2. las definiciones del caso están en el anexo",
          any("Aviso SMART" in b["html"] for p in anexo for b in p.bloques))
     caso("2. la cifra 832.698 está en el informe", "832.698" in texto)
-    # Juan, 19/11/2026: «pones métricas clave, lo dejas vacío y luego pones la tabla a la derecha». Una página con un
+    # el responsable del caso, 19/11/2026: «pones métricas clave, lo dejas vacío y luego pones la tabla a la derecha». Una página con un
     # rótulo sin texto tiene que ir de arriba abajo, para que la tabla quede debajo de su rótulo
     for p in antes:
         vacios = [b for b in p.bloques if b["clase"] == "apartado" and not b["parrafos"]]
@@ -197,9 +197,9 @@ def main():
     caso("6. la guardia caza «la regla actual»",
          para(m.sin_prohibidas, '<section id="p1"><p>Mejora a la regla actual.</p></section>'))
 
-    # 7. Auditor sin memoria antes de entregar (20/11/2026, R68-153): el punto ciego medido igual que el modelo, el
-    # intervalo bien definido y el año guardado dicho como se usó. La regla sencilla que propuso no se usa (Juan,
-    # 20/11/2026, R68-155): la referencia es solo la regla de los cinco avisos SMART
+    # 7. Auditor sin memoria antes de entregar (20/11/2026, una nota del caso): el punto ciego medido igual que el modelo, el
+    # intervalo bien definido y el año guardado dicho como se usó. La regla sencilla que propuso no se usa (El responsable del caso,
+    # 20/11/2026, una nota del caso): la referencia es solo la regla de los cinco avisos SMART
     anexo_html = "".join(b["html"] for p in anexo for b in p.bloques)
     caso("7. no queda nada de la regla sencilla", "sencilla" not in texto.lower() and "24,55" not in texto
          and "referencia_cambio_contadores" not in texto)

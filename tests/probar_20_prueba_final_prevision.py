@@ -1,4 +1,4 @@
-"""Prueba de scripts/20_prueba_final_prevision.py (encargo 24; skill programacion-del-caso).
+"""Prueba de scripts/20_prueba_final_prevision.py (petición 24; método programacion-del-caso).
 
 Monta en tests/tmp_prevision/ un caso pequeño, que se borra al terminar, con dos trimestres (2024T3 y 2024T4):
   - seis fotos mensuales en bruto, de julio a diciembre de 2024, y la de junio, fuera del periodo, como historia de la de
@@ -274,7 +274,7 @@ def escribir_configuracion(carpetas):
     """produccion/configuracion.json de juguete: la historia en las carpetas que se pasan."""
     conf = {"historia_fotos": [f"{c}/fotos_mensuales" for c in carpetas],
             "historia_ventanas": [f"{c}/ventanas_fallo" for c in carpetas],
-            "decisiones_correccion": "contexto-proyecto/modelo/decisiones-correccion.json"}
+            "decisiones_correccion": "config/modelo/decisiones-correccion.json"}
     (TMP / "produccion" / "configuracion.json").write_text(json.dumps(conf), encoding="utf-8")
 
 
@@ -284,8 +284,8 @@ def montar():
         shutil.rmtree(TMP)
     montar_raw(POD)
     montar_raw(RES)
-    (TMP / "contexto-proyecto" / "modelo").mkdir(parents=True)
-    (TMP / "contexto-proyecto" / "modelo" / "decisiones-correccion.json").write_text(json.dumps(
+    (TMP / "config" / "modelo").mkdir(parents=True)
+    (TMP / "config" / "modelo" / "decisiones-correccion.json").write_text(json.dumps(
         {"modelos": {"mapeo": {"MA OLD": "MA"}}, "capacidad": {"minimo_valido_bytes": 200_000_000_000}}), encoding="utf-8")
     (TMP / "produccion").mkdir(parents=True)
     escribir_configuracion(["data/raw/podado", "data/raw/reserva"])
@@ -469,7 +469,7 @@ def casos_de_pares_cambiados(M):
 
 
 def casos_del_modelo_a_mitad_de_trimestre(M):
-    """Caso 9 (R68-145): un modelo nuevo que entra a mitad de trimestre sale en las fotos de un mes, pero no en la del
+    """Caso 9: un modelo nuevo que entra a mitad de trimestre sale en las fotos de un mes, pero no en la del
     primer día ni entre los fallos; su capacidad sale de esas fotos. En el año guardado real, ST12000NM002H paró el
     script con «modelos de la historia sin capacidad»."""
     dm = pd.DataFrame({"model": ["MA"], "capacidad_tb": [4.0], "tipo_disco": ["datos"]})

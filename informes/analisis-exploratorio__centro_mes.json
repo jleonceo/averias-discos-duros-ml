@@ -1,8 +1,8 @@
 {
- "skill": "analisis-exploratorio",
- "version_skill": "11/11/2026 (WF-87)",
+ "metodo": "analisis-exploratorio",
+ "version_metodo": "11/11/2026",
  "script": "scripts/06_analisis_exploratorio.py",
- "encargo": "prompts/10_encargo_exploratorio.md",
+ "peticion": "peticiones/10_exploratorio.md",
  "fecha_datos": "2025-06-30",
  "fecha_ejecucion": "2026-11-17T21:05:33",
  "tabla": "centro_mes",
@@ -2363,7 +2363,7 @@
   {
    "nombre": "muestra fija de fotos",
    "valor": "400000 fotos, semilla 42",
-   "origen": "encargo y criterio de este análisis"
+   "origen": "petición y criterio de este análisis"
   },
   {
    "nombre": "valores distintos que se siguen por columna al leer por bloques",
@@ -2388,7 +2388,7 @@
   {
    "nombre": "fallos mínimos para concluir sobre un año de edad",
    "valor": 20,
-   "origen": "reglas-negocio §7, CP-009"
+   "origen": "reglas-negocio §7, cuestión 009"
   },
   {
    "nombre": "señales de la tabla de estadísticos",
@@ -2933,7 +2933,7 @@
   "matplotlib": "3.11.2"
  },
  "datos_personales_texto": [
-  "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+  "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
   "No hay datos de personas (reglas-negocio §9): el número de serie identifica un disco, no a una persona.",
   "Este exploratorio no usa ni deja ninguna columna de datos personales."
  ],

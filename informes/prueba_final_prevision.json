@@ -1,7 +1,7 @@
 {
- "skill": "indicadores-y-analisis (método del bloque 9, copiado del script 10)",
+ "metodo": "indicadores-y-analisis (método del bloque 9, copiado del script 10)",
  "script": "scripts/20_prueba_final_prevision.py",
- "encargo": "prompts/24_encargo_prevision_en_el_ano_guardado.md",
+ "peticion": "peticiones/24_prevision_en_el_ano_guardado.md",
  "modo": "--reserva",
  "fecha_datos": "2026-06-30",
  "fecha_ejecucion": "2026-11-19T21:03:07",
@@ -17756,7 +17756,7 @@
   }
  ],
  "gana_la_cuenta": false,
- "veredicto": "la cuenta no gana: no vale y se usa la referencia (reglas §7)",
+ "veredicto": "la cuenta no gana: no vale y se usa la referencia (reglas, apartado 7)",
  "diferencias_admitidas": [],
  "limites": [
   "El error se da sin intervalo, como en el análisis: es una sola medida de todos los trimestres juntos.",
@@ -17773,12 +17773,12 @@
   {
    "nombre": "periodo",
    "valor": "2025-07 a 2026-06",
-   "origen": "encargo 24; guion, paso 6"
+   "origen": "petición 24; guion, paso 6"
   },
   {
    "nombre": "mínimo de días de un nivel de tasa",
    "valor": 50000,
-   "origen": "reglas §7; script 10"
+   "origen": "reglas, apartado 7; script 10"
   },
   {
    "nombre": "niveles de tasa",
@@ -17787,12 +17787,12 @@
     "capacidad",
     "edad"
    ],
-   "origen": "reglas §7; script 10"
+   "origen": "reglas, apartado 7; script 10"
   },
   {
    "nombre": "tolerancia en días y previstos",
    "valor": 1e-06,
-   "origen": "encargo 24"
+   "origen": "petición 24"
   }
  ],
  "ejecucion": {

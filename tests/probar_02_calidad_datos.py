@@ -166,7 +166,7 @@ def parte_1():
     comprobar("estado AVISO", cal["resultado"]["estado"] == "AVISO", cal["resultado"]["estado"])
     comprobar("fecha_datos", cal.get("fecha_datos") == "2025-06-30", cal.get("fecha_datos"))
     comprobar("parte del diccionario", cal.get("con_diccionario") is True, cal.get("con_diccionario"))
-    comprobar("plan aprobado", cal.get("plan_aprobado") == {"por": "Juan", "fecha": "2026-11-17"}, cal.get("plan_aprobado"))
+    comprobar("plan aprobado", cal.get("plan_aprobado") == {"por": "El responsable del caso", "fecha": "2026-11-17"}, cal.get("plan_aprobado"))
     comprobar("nueve parámetros", len(cal["parametros"]) >= 9, len(cal["parametros"]))
     comprobar("ocho reglas candidatas aprobadas", sorted(rc) == [f"RC-0{i}" for i in range(1, 9)] and all(r["aprobada"] is True for r in rc.values()),
               sorted(rc))

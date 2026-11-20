@@ -1,4 +1,4 @@
-"""Análisis exploratorio del caso 68 (skill analisis-exploratorio), un informe por tabla de análisis.
+"""Análisis exploratorio del caso 68 (método analisis-exploratorio), un informe por tabla de análisis.
 
 Describe las seis tablas de análisis de la transformación (reglas-transformacion.md §3 a §9): fotos_riesgo,
 fallos_detalle, vida_discos, dias_por_tramo, modelo_trimestre y centro_mes. inicio_trimestre, dim_modelo y dim_precio_gb
@@ -49,15 +49,15 @@ import graficos  # noqa: E402
 # =================================================================================================================
 # 2. Configuración
 # =================================================================================================================
-SKILL = "analisis-exploratorio"
-VERSION_SKILL = "11/11/2026 (WF-87)"
+METODO = "analisis-exploratorio"
+VERSION_METODO = "11/11/2026"
 SCRIPT = "scripts/06_analisis_exploratorio.py"
-ENCARGO = "prompts/10_encargo_exploratorio.md"
+PETICION = "peticiones/10_exploratorio.md"
 TRANSFORMACION = "informes/transformacion-datos.json"
 CALIDAD = "informes/calidad-datos.json"
 CORRECCION = "informes/correccion-datos.json"
-REGLAS = "contexto-proyecto/negocio/reglas-negocio.md"
-PROTECCION = "contexto-proyecto/fuentes/proteccion-datos.json"
+REGLAS = "config/negocio/reglas-negocio.md"
+PROTECCION = "config/fuentes/proteccion-datos.json"
 CSS = CASO / "assets" / "estilo.css"
 
 TABLAS = ["fotos_riesgo", "fallos_detalle", "vida_discos", "dias_por_tramo", "modelo_trimestre", "centro_mes"]
@@ -70,9 +70,9 @@ CONSTRUCCION = "construcción"                   # valores de periodo del Calend
 VALIDACION = "validación"
 FAB = "fabricante"
 CAP = "capacidad_tb"
-CONTADORES = ["smart_5_raw", "smart_187_raw", "smart_188_raw", "smart_197_raw", "smart_198_raw"]  # reglas §3
+CONTADORES = ["smart_5_raw", "smart_187_raw", "smart_188_raw", "smart_197_raw", "smart_198_raw"]  # reglas, apartado 3
 
-# Parámetros de parametros.md de la skill, con su valor por defecto (ninguno lo cambian las reglas del caso)
+# Parámetros de parametros.md de el método, con su valor por defecto (ninguno lo cambian las reglas del caso)
 MIN_FILAS_CATEGORIA = 30                        # §12: filas mínimas para comparar una categoría frente al objetivo
 ALTA_CARDINALIDAD = 50                          # §15
 MAS_FRECUENTES = 10                             # §15
@@ -80,7 +80,7 @@ TEXTO_CORTO = 3                                 # §14
 LIMITE_DISCRETA = 20                            # §13: entera y con como mucho min(20, 5 % de las filas) distintos
 PARTE_DISCRETA = 0.05
 
-# Umbrales que la skill no fija: elegidos antes de calcular, escritos en el JSON y en el informe (comprobaciones, intro)
+# Umbrales que el método no fija: elegidos antes de calcular, escritos en el JSON y en el informe (comprobaciones, intro)
 SEMILLA = 42
 TAM_MUESTRA = 400_000                           # fotos de la muestra fija para medianas y percentiles
 TOPE_DISTINTOS = 60                             # valores distintos que se siguen por columna para tipificar
@@ -96,10 +96,10 @@ MOVIL_MES, MOVIL_TRIMESTRE = 3, 4
 
 # Criterios del caso que se usan al describir (reglas-negocio §7)
 MINIMO_DIAS = 50_000                            # mínimo de días de disco para comparar una tasa (ranking, §7)
-MINIMO_FALLOS_EDAD = 20                         # un año de edad con menos fallos se enseña sin conclusión (CP-009)
+MINIMO_FALLOS_EDAD = 20                         # un año de edad con menos fallos se enseña sin conclusión (cuestión 009)
 FACTOR_TASA_ANUAL = 100 * 365                   # tasa anual = 100 × 365 × fallos / días de disco (§6)
 VACIO = "(vacío)"
-SIN_ORDENAR = ("model", "capacity_bytes")         # el modelo no se ordena aquí: su ranking es del paso 5 (encargo)
+SIN_ORDENAR = ("model", "capacity_bytes")         # el modelo no se ordena aquí: su ranking es del paso 5 (petición)
 MESES_ES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
 
 AVISO_EDADES = ("Comparar fabricantes o capacidades mezcla discos de edades y modelos distintos (reglas-negocio §7): "
@@ -391,7 +391,7 @@ def grafico_frecuencias(c, fr, tipo, nivel):
 
 
 # =================================================================================================================
-# 5. Tasas por grupo y la vista al separar por fabricante y por capacidad (SKILL §5)
+# 5. Tasas por grupo y la vista al separar por fabricante y por capacidad (método, apartado 5)
 # =================================================================================================================
 def medida_por(df, dim, num, den, factor, minimo):
     """Una fila por categoría de `dim`: numerador, denominador, la medida (factor × num / den) y si se compara."""
@@ -1333,7 +1333,7 @@ def nuevo_hallazgo(R, texto, alertas, cifra, filas, columnas, dims, grafico, nom
 
 
 def anomalia_preguntas():
-    """Las tres preguntas de una anomalía concentrada (SKILL §5), contestadas con lo que se puede saber aquí."""
+    """Las tres preguntas de una anomalía concentrada (método, apartado 5), contestadas con lo que se puede saber aquí."""
     return {"afecta_de_mas_a_la_entidad": "no se puede saber con esta tabla sola",
             "fuera_del_rango_dominante": "sí, por cómo se detecta",
             "coincide_con_otra_senal": "no se puede saber con esta tabla sola",
@@ -1355,7 +1355,7 @@ def hipotesis_separar(R):
 
 def base_tabla(nombre, ctx):
     """Diccionario vacío de una tabla, con el bloque común de resultado.md."""
-    return {"skill": SKILL, "version_skill": VERSION_SKILL, "script": SCRIPT, "encargo": ENCARGO,
+    return {"metodo": METODO, "version_metodo": VERSION_METODO, "script": SCRIPT, "peticion": PETICION,
             "fecha_datos": ctx["fecha_datos"].strftime("%Y-%m-%d"), "fecha_ejecucion": ctx["fecha_ejecucion"],
             "tabla": nombre, "entradas": [], "resultado": {}, "pendientes": [],
             "dataset": {"ruta": f"data/processed/{nombre}.parquet", "sha256": ctx["huellas_antes"].get(nombre),
@@ -1426,7 +1426,7 @@ def analizar_modelo_trimestre(raiz, ctx, t):
     R["vision_general"].update({"modelos": int(mt["model"].nunique()), "trimestres": int(mt[["ano", "trimestre"]].drop_duplicates().shape[0]),
                                 "dias_disco": int(mt["dias_disco"].sum()), "fallos": int(mt["fallos"].sum())})
 
-    # Por año: lo que espera el paso siguiente (encargo, punto 10)
+    # Por año: lo que espera el paso siguiente (petición, punto 10)
     pa_ = mt.groupby("ano").agg(dias_disco=("dias_disco", "sum"), fallos=("fallos", "sum"),
                                 fallos_en_garantia=("fallos_en_garantia", "sum"),
                                 coste_fallos_usd=("coste_fallos_usd", "sum"),
@@ -1603,7 +1603,7 @@ def analizar_dias_por_tramo(raiz, ctx, t):
     if pocos:
         R["alertas"].append({"id": None, "tipo": "pocos", "origen": None,
                              "texto": f"Los años de edad {', '.join(str(x) for x in pocos)} tienen menos de "
-                                      f"{MINIMO_FALLOS_EDAD} fallos: su tasa se enseña sin conclusión (reglas-negocio §7, CP-009)."})
+                                      f"{MINIMO_FALLOS_EDAD} fallos: su tasa se enseña sin conclusión (reglas-negocio §7, cuestión 009)."})
     if R["vision_general"]["filas_sin_dias"]:
         R["alertas"].append({"id": None, "tipo": "limitacion", "origen": "transformacion-datos",
                              "texto": f"{f(R['vision_general']['filas_sin_dias'])} filas solo tienen fallos, "
@@ -1846,7 +1846,7 @@ def comprobaciones(R, ctx):
 
 
 def parametros():
-    """Los parámetros con que se ejecutó: los de parametros.md y los umbrales que la skill no fija."""
+    """Los parámetros con que se ejecutó: los de parametros.md y los umbrales que el método no fija."""
     return [
         {"nombre": "numérica discreta", "valor": f"entera y con como mucho min({LIMITE_DISCRETA}, 5 % de las filas) valores distintos",
          "origen": "por defecto (parametros.md)"},
@@ -1858,7 +1858,7 @@ def parametros():
         {"nombre": "diagrama de caja", "valor": "no se dibuja ninguno: todas las tablas pasan de 1.000 filas o el "
          "histograma ya lo enseña", "origen": "por defecto"},
         {"nombre": "parte con que se cruza el objetivo", "valor": CONSTRUCCION, "origen": "reglas-negocio §7, la partición por fecha"},
-        {"nombre": "muestra fija de fotos", "valor": f"{TAM_MUESTRA} fotos, semilla {SEMILLA}", "origen": "encargo y criterio de este análisis"},
+        {"nombre": "muestra fija de fotos", "valor": f"{TAM_MUESTRA} fotos, semilla {SEMILLA}", "origen": "petición y criterio de este análisis"},
         {"nombre": "valores distintos que se siguen por columna al leer por bloques", "valor": TOPE_DISTINTOS,
          "origen": "criterio de este análisis, por encima del límite de discreta y del de alta cardinalidad"},
         {"nombre": "diferencia frente al objetivo", "valor": f"|2·AUC − 1|; se dibujan las de {UMBRAL_DIBUJAR} o más; "
@@ -1866,7 +1866,7 @@ def parametros():
         {"nombre": "cambio al separar", "valor": f"se invierte, o la diferencia del grupo es menos de 1/{FACTOR_TAMANO:g} o más de "
          f"{FACTOR_TAMANO:g} veces la del total", "origen": "criterio de este análisis, fijado antes de calcular"},
         {"nombre": "días mínimos para comparar una tasa anual", "valor": MINIMO_DIAS, "origen": "reglas-negocio §7, mínimo del ranking"},
-        {"nombre": "fallos mínimos para concluir sobre un año de edad", "valor": MINIMO_FALLOS_EDAD, "origen": "reglas-negocio §7, CP-009"},
+        {"nombre": "fallos mínimos para concluir sobre un año de edad", "valor": MINIMO_FALLOS_EDAD, "origen": "reglas-negocio §7, cuestión 009"},
         {"nombre": "señales de la tabla de estadísticos", "valor": f"media y mediana a más de {UMBRAL_MEDIA_MEDIANA} desviaciones; "
          f"máximo / mínimo positivo de {f(UMBRAL_ORDENES)} o más", "origen": "criterio de este análisis"},
         {"nombre": "correlación fuerte", "valor": f"|r| ≥ {UMBRAL_CORRELACION}", "origen": "criterio de este análisis"},
@@ -2270,7 +2270,7 @@ def escribir_estado(raiz, estado, motivo, fecha_datos):
     """Escribe los seis JSON con el estado PARADO o ERROR y su motivo (resultado.md, regla 5)."""
     (raiz / "informes").mkdir(exist_ok=True)
     for t in TABLAS:
-        R = {"skill": SKILL, "version_skill": VERSION_SKILL, "script": SCRIPT, "fecha_datos": fecha_datos,
+        R = {"metodo": METODO, "version_metodo": VERSION_METODO, "script": SCRIPT, "fecha_datos": fecha_datos,
              "fecha_ejecucion": dt.datetime.now().isoformat(timespec="seconds"), "tabla": t, "entradas": [],
              "resultado": {"estado": estado, "riesgo": "alto", "resumen": motivo, "artefactos": [],
                            "siguiente": "resolver el motivo y volver a ejecutar"}, "pendientes": []}
@@ -2315,7 +2315,7 @@ def main():
         dp_ = leer_json(prot)
         dp_texto = [f"Protección de datos: {json.dumps(dp_, ensure_ascii=False)[:500]}"]
     else:
-        dp_texto = ["No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+        dp_texto = ["No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
                     "No hay datos de personas (reglas-negocio §9): el número de serie identifica un disco, no a una persona.",
                     "Este exploratorio no usa ni deja ninguna columna de datos personales."]
     previas = {}

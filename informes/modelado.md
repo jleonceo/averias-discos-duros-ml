@@ -4,9 +4,9 @@ La validación, abierta una vez, da por bueno el modelo: en la lista de 100 encu
 
 ## Lo aprobado antes de entrenar
 
-La medida principal son los fallos encontrados entre los 100 discos de más riesgo de cada mes. Es lo que mide el negocio: de los N discos de más riesgo, cuántos fallan (reglas §7). Se da por bueno si en la validación el modelo encuentra en esa lista más fallos que la regla, con el intervalo de la diferencia por encima de cero, y su AUC es 0,70 o más.
+La medida principal son los fallos encontrados entre los 100 discos de más riesgo de cada mes. Es lo que mide el negocio: de los N discos de más riesgo, cuántos fallan (reglas, apartado 7). Se da por bueno si en la validación el modelo encuentra en esa lista más fallos que la regla, con el intervalo de la diferencia por encima de cero, y su AUC es 0,70 o más.
 
-Las referencias son la regla de los cinco contadores (CP-010), el trivial, DummyClassifier(strategy="prior"). La preselección llegó así: en AVISO, con cada pendiente decidido por Juan: P-01, seguir con la lista de la semilla 42 (Juan, 18/11/2026, R-023).
+Las referencias son la regla de los cinco contadores (cuestión 010), el trivial, DummyClassifier(strategy="prior"). La preselección llegó así: en AVISO, con cada pendiente decidido por el responsable del caso: P-01, seguir con la lista de la semilla 42 (El responsable del caso, 18/11/2026, R-023).
 
 ## Qué se probó y cuánto costó
 
@@ -22,7 +22,7 @@ La búsqueda tardó 3.443 segundos.
 
 ## El desequilibrio
 
-La regla del caso (reglas §7) entrena con todas las fotos con fallo y el 2 % de las sanas de cada mes, solo al ajustar cada pliegue; lo medido conserva la proporción real. La probabilidad del ganador se recalibra con la corrección del prior sobre el logit.
+La regla del caso (reglas, apartado 7) entrena con todas las fotos con fallo y el 2 % de las sanas de cada mes, solo al ajustar cada pliegue; lo medido conserva la proporción real. La probabilidad del ganador se recalibra con la corrección del prior sobre el logit.
 En el reajuste final, la muestra tiene una tasa de fallo de 5,15 % y la construcción, de 0,1085 %; la recalibración devuelve la probabilidad a la escala real.
 
 ## Ranking
@@ -45,7 +45,7 @@ Hiperparámetros: {"min_samples_leaf": "hoja", "max_iter": 500, "max_depth": nul
 
 Frente a la regla de los cinco contadores, pliegue a pliegue, supera: encuentra de media 15,67 fallos más por mes en la lista de 100, con una desviación entre pliegues de 1,13.
 
-Falta que Juan apruebe el ganador: aprobado_por está escrito: Juan, 19/11/2026: «Sí, abre la validación», con el desvío de la probabilidad media en los bloques 1 y 2 (validación 12) aceptado como límite (R68-122).
+Falta que el responsable del caso apruebe el ganador: aprobado_por está escrito: El responsable del caso, 19/11/2026: «Sí, abre la validación», con el desvío de la probabilidad media en los bloques 1 y 2 (validación 12) aceptado como límite.
 
 ## Qué variables pesan
 
@@ -66,11 +66,11 @@ El peso de una variable dice que el modelo la usa para acertar, no que cause el 
 
 ## La validación
 
-La validación se abrió una vez, con el ganador aprobado por Juan, 19/11/2026: «Sí, abre la validación», con el desvío de la probabilidad media en los bloques 1 y 2 (validación 12) aceptado como límite (R68-122). En sus 12 meses el modelo encuentra de media 16,33 fallos más que la regla en la lista de 100, con un intervalo del 95 % de 14,00 a 18,92. Su AUC es 0,898.
+La validación se abrió una vez, con el ganador aprobado por el responsable del caso, 19/11/2026: «Sí, abre la validación», con el desvío de la probabilidad media en los bloques 1 y 2 (validación 12) aceptado como límite. En sus 12 meses el modelo encuentra de media 16,33 fallos más que la regla en la lista de 100, con un intervalo del 95 % de 14,00 a 18,92. Su AUC es 0,898.
 
 ## El corte
 
-El modelo no lleva un corte fijo: da una lista de los discos de más riesgo de cada mes, y su tamaño lo elige Backblaze según lo que puedan atender sus técnicos, que no consta (reglas §7, CP-010). Por eso se dan las listas de 20, 100, 500 y 1.000. El tamaño se puede cambiar sin reentrenar.
+El modelo no lleva un corte fijo: da una lista de los discos de más riesgo de cada mes, y su tamaño lo elige Backblaze según lo que puedan atender sus técnicos, que no consta (reglas, apartado 7, cuestión 010). Por eso se dan las listas de 20, 100, 500 y 1.000. El tamaño se puede cambiar sin reentrenar.
 
 ## ¿Se da por bueno?
 
@@ -78,8 +78,8 @@ Sí: frente a la regla, el intervalo va de 14,00 a 18,92, y el AUC es 0,898 fren
 
 ## Las tres vías de mejora
 
-1. Mejor modelo: se probaron tres algoritmos con su búsqueda (regresión logística, 12 candidatos; bosque aleatorio, 17 candidatos; HistGradientBoosting, 17 candidatos); quedan sin probar XGBoost y los castigos L1 y mezcla de la logística, que Juan dejó fuera (reglas §7).
-2. Crear variables con los datos que ya hay: las cuatro variables nuevas candidatas de la matriz (P-04), no se crean en este encargo; se crean si el modelo no supera a la regla, con la decisión de Juan y antes de abrir la validación (reglas §7).
+1. Mejor modelo: se probaron tres algoritmos con su búsqueda (regresión logística, 12 candidatos; bosque aleatorio, 17 candidatos; HistGradientBoosting, 17 candidatos); quedan sin probar XGBoost y los castigos L1 y mezcla de la logística, que el responsable del caso dejó fuera (reglas, apartado 7).
+2. Crear variables con los datos que ya hay: las cuatro variables nuevas candidatas de la matriz (P-04), no se crean en esta petición; se crean si el modelo no supera a la regla, con la decisión de el responsable del caso y antes de abrir la validación (reglas, apartado 7).
 3. Pedir más información: las lecturas SMART diarias, no solo la foto mensual, ver los fallos que avisan entre una foto y la siguiente (lo tiene Backblaze).
 
 ## Validaciones
@@ -100,21 +100,21 @@ Sí: frente a la regla, el intervalo va de 14,00 a 18,92, y el AUC es 0,898 fren
 
 ## Parámetros usados
 
-- Semilla: 42. Origen: parametros.md de las dos skills.
-- Pliegues: cinco bloques de tres meses, de 2023-04 a 2024-06, por fecha y sin barajar. Origen: skill §3; encargo 21.
-- Muestra de cada entrenamiento: todas las fotos con fallo y el 2 % de las sanas de cada mes, solo con el horizonte cerrado. Origen: reglas §7.
-- Medida de la búsqueda: media de los fallos en la lista de 100 de los meses del bloque. Origen: planteamientos 1.C; encargo 21.
-- Logística: LogisticRegression(solver="lbfgs", l1_ratio=0, max_iter=5000, random_state=42), C en logspace(-3, 2, 12). Origen: reglas §7, Juan, 18/11/2026.
-- Bosque: RandomForestClassifier(n_jobs=-1, random_state=42), 15 candidatos de ParameterSampler(random_state=42). Origen: algoritmos.md; reglas §7.
-- HistGradientBoosting: early_stopping=False, max_iter en 100, 200 y 500, categóricas nativas, 15 candidatos. Origen: algoritmos.md, con fecha; reglas §7.
+- Semilla: 42. Origen: parametros.md de las dos métodos.
+- Pliegues: cinco bloques de tres meses, de 2023-04 a 2024-06, por fecha y sin barajar. Origen: método §3; petición 21.
+- Muestra de cada entrenamiento: todas las fotos con fallo y el 2 % de las sanas de cada mes, solo con el horizonte cerrado. Origen: reglas, apartado 7.
+- Medida de la búsqueda: media de los fallos en la lista de 100 de los meses del bloque. Origen: planteamientos 1.C; petición 21.
+- Logística: LogisticRegression(solver="lbfgs", l1_ratio=0, max_iter=5000, random_state=42), C en logspace(-3, 2, 12). Origen: reglas, apartado 7, el responsable del caso, 18/11/2026.
+- Bosque: RandomForestClassifier(n_jobs=-1, random_state=42), 15 candidatos de ParameterSampler(random_state=42). Origen: algoritmos.md; reglas, apartado 7.
+- HistGradientBoosting: early_stopping=False, max_iter en 100, 200 y 500, categóricas nativas, 15 candidatos. Origen: algoritmos.md, con fecha; reglas, apartado 7.
 - Hoja: max(20, 1 % de las filas que entrenan en el pliegue). Origen: parametros.md.
-- Ampliación por el borde: hasta 2 rondas; se queda el valor nuevo si mejora pliegue a pliegue. Origen: skill §5.
-- Empate: la media de las diferencias en los cinco pliegues no pasa de su desviación típica (con n − 1). Origen: skill §6.
-- Sitio: datacenter entra solo si con él la lista de 100 encuentra más fallos en cada uno de los 12 meses de 2023-07 a 2024-06. Origen: guion §3; encargo 21.
-- Permutación: average_precision, 10 repeticiones sobre el 25 % de las fotos del bloque 5, sorteado una vez con la semilla 42. Origen: skill §7; parametros.md; la fracción, criterio del script por el tiempo.
-- Canario: barajado: como mucho el trivial más tres desviaciones de Poisson y un fallo; fuga: el 90 % de lo que cabe en la lista. Origen: skill §9, validación 11; los márgenes, criterio del script.
-- Tolerancia de la probabilidad media: 20 % relativo. Origen: encargo 21, validación 12.
-- Intervalo: 1000 remuestreos de los 12 meses, semilla 42, percentiles 2,5 y 97,5. Origen: skill §8; encargo 21.
+- Extensión por el borde: hasta 2 rondas; se queda el valor nuevo si mejora pliegue a pliegue. Origen: método §5.
+- Empate: la media de las diferencias en los cinco pliegues no pasa de su desviación típica (con n − 1). Origen: método §6.
+- Sitio: datacenter entra solo si con él la lista de 100 encuentra más fallos en cada uno de los 12 meses de 2023-07 a 2024-06. Origen: guion §3; petición 21.
+- Permutación: average_precision, 10 repeticiones sobre el 25 % de las fotos del bloque 5, sorteado una vez con la semilla 42. Origen: método §7; parametros.md; la fracción, criterio del script por el tiempo.
+- Canario: barajado: como mucho el trivial más tres desviaciones de Poisson y un fallo; fuga: el 90 % de lo que cabe en la lista. Origen: método §9, validación 11; los márgenes, criterio del script.
+- Tolerancia de la probabilidad media: 20 % relativo. Origen: petición 21, validación 12.
+- Intervalo: 1000 remuestreos de los 12 meses, semilla 42, percentiles 2,5 y 97,5. Origen: método §8; petición 21.
 
 Los apartados del manual aplicados:
 
@@ -128,12 +128,12 @@ Los apartados del manual aplicados:
 
 ## Datos personales
 
-Los datos son de discos: serial_number identifica un disco, no a una persona (reglas §9), y el modelo no lo lee. No usa ni deja ninguna columna de datos personales. No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.
+Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9), y el modelo no lo lee. No usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.
 
 ## Límites
 
 - El modelo vale para los discos de datos de Backblaze, con una foto al mes, en los periodos de construcción y validación; si cambian los modelos de disco o los centros, su rendimiento puede caer (deriva).
 - Detecta asociaciones, no causas: que un contador pese no dice que cause el fallo.
-- No ve los fallos que llegan sin aviso en la última foto mensual (reglas §7).
+- No ve los fallos que llegan sin aviso en la última foto mensual (reglas, apartado 7).
 - La preselección de la logística se hizo una vez y entra fija en cada pliegue: su validación cruzada sale algo optimista; cuánto, NO SE PUEDE SABER sin medirlo.
-- Las cuatro variables nuevas candidatas de la matriz (P-04) no se crearon en este encargo.
+- Las cuatro variables nuevas candidatas de la matriz (P-04) no se crearon en esta petición.

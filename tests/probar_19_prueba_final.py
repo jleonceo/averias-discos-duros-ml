@@ -1,4 +1,4 @@
-"""Prueba de scripts/19_prueba_final.py (encargo 23, segunda parte; skill preproduccion y programacion-del-caso).
+"""Prueba de scripts/19_prueba_final.py (petición 23, segunda parte; método preproduccion y programacion-del-caso).
 
 Monta en tests/tmp_prueba_final/ un caso pequeño con el de tests/probar_ejecutar.py (contrato, configuración, un modelo
 de juguete en uso, fotos en bruto de mayo a julio de 2024 y sus ventanas) y le añade:
@@ -264,11 +264,11 @@ def casos_de_modos(M):
     texto = md.read_text(encoding="utf-8") if md.exists() else ""
     primera = next((x for x in texto.splitlines() if x and not x.startswith("#")), "")
     comprobar("## Datos personales" in texto and ("no se da por bueno" in primera) == (not r["se_da_por_bueno"])
-              and ("Juan" in primera) == (not r["se_da_por_bueno"]), f"8 prueba_final.md abre con el veredicto ({primera[:200]})")
+              and ("responsable del caso" in primera) == (not r["se_da_por_bueno"]), f"8 prueba_final.md abre con el veredicto ({primera[:200]})")
     bueno = {**r, "se_da_por_bueno": not r["se_da_por_bueno"], "intervalo": {**r["intervalo"], "media": 2.0, "bajo": 1.0, "alto": 3.0},
              "auc": {**r["auc"], "modelo": {**r["auc"]["modelo"], "auc": 0.9}}}
     otra = M.informe_md(bueno).splitlines()[2]
-    comprobar(otra.startswith("El modelo se da por bueno") and "Juan" not in otra if bueno["se_da_por_bueno"] else "no se da por bueno" in otra,
+    comprobar(otra.startswith("El modelo se da por bueno") and "responsable del caso" not in otra if bueno["se_da_por_bueno"] else "no se da por bueno" in otra,
               f"8 el informe abre con el veredicto contrario cuando cambian las cifras ({otra[:120]})")
     print("\n--- informe del caso pequeño ---\n" + texto + "--- fin ---\n")
     t = pd.read_parquet(tabla) if tabla.exists() else None
@@ -286,7 +286,7 @@ def casos_de_modos(M):
 
 
 def casos_del_texto(M, j_res, md):
-    """Los casos 10 y 11: el texto del informe (R68-139) y rehacerlo desde el JSON sin volver a medir."""
+    """Los casos 10 y 11: el texto del informe y rehacerlo desde el JSON sin volver a medir."""
     r = leer(j_res)
     # 10. El texto: la regla con su nombre, recuentos sin decimales, lo no medido legible y los límites con su cifra
     texto = M.informe_md(r)
@@ -294,7 +294,7 @@ def casos_del_texto(M, j_res, md):
     comprobar(getattr(M, "cifra", None) is not None and M.cifra(27.0) == "27" and M.cifra(1157.0) == "1.157" and M.cifra(0.5) == "0,50",
               "10 un recuento entero sale sin decimales y un empate repartido, con dos")
     # Los dos motivos que deja ejecutar.py en el año real (el caso pequeño no tiene filas sin puntuar)
-    sin = [{"motivo": "disco de arranque: fuera del modelo (reglas §3 y §7)", "filas": 43512},
+    sin = [{"motivo": "disco de arranque: fuera del modelo (reglas, apartado 3 y §7)", "filas": 43512},
            {"motivo": "foto del día del fallo: el disco ya está marcado como fallado (reglas de transformación §3)", "filas": 123}]
     texto = M.informe_md({**r, "totales": {**r["totales"], "sin_puntuar": sin}})
     no_medido = texto.split("## Lo que no se midió")[1].split("##")[0]
@@ -308,8 +308,8 @@ def casos_del_texto(M, j_res, md):
               f"10 el límite de los tomos cita los fallos que mide, y un cero no se escribe ({lim[:200]})")
     falso["tomos_fallos"]["sin_ventana"] = 3
     comprobar("3 fallos" in " ".join(M.limites(falso, "reserva")), "10 los fallos sin ventana se dicen si los hay")
-    # 12. Auditor antes de entregar (20/11/2026, R68-153): el modelo en uso se aprobó después de medirlo en el año
-    # guardado, así que el límite no puede decir que no se eligió con él. La regla sencilla no se usa (Juan, R68-155)
+    # 12. Auditor antes de entregar (20/11/2026, una nota del caso): el modelo en uso se aprobó después de medirlo en el año
+    # guardado, así que el límite no puede decir que no se eligió con él. La regla sencilla no se usa (El responsable del caso, una nota del caso)
     lim = " ".join(M.limites(r, "reserva"))
     comprobar("El modelo en uso no se volvió a elegir" not in lim and "antes de aprobarlo" in lim,
               f"12 el límite dice que el modelo en uso se midió en el año guardado antes de aprobarlo ({lim[-300:]})")

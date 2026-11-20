@@ -1,4 +1,4 @@
-"""Prueba de produccion/ejecutar.py y de tests/comprobar_produccion_por_otro_camino.py (skill preproduccion §2.3,
+"""Prueba de produccion/ejecutar.py y de tests/comprobar_produccion_por_otro_camino.py (método preproduccion §2.3,
 §2.4 y validaciones 2, 3, 5, 6, 7 y 9).
 
 Monta en tests/tmp_produccion/ el caso pequeño de tests/probar_reentrenar.py (contrato, configuración y tabla de
@@ -109,7 +109,7 @@ def montar():
         print(salida[-1500:])
     modelo = TMP / "modelos" / "reentrenos" / HOY / "modelo_riesgo.joblib"
     (TMP / "produccion" / "configuracion.json").write_text(json.dumps(PR.configuracion(str(modelo)), ensure_ascii=False), encoding="utf-8")
-    shutil.copytree(CASO / "contexto-proyecto" / "modelo", TMP / "contexto-proyecto" / "modelo",
+    shutil.copytree(CASO / "config" / "modelo", TMP / "config" / "modelo",
                     ignore=shutil.ignore_patterns("*.md"))
     (POD / "fotos_mensuales").mkdir(parents=True)
     (POD / "ventanas_fallo").mkdir(parents=True)
@@ -249,7 +249,7 @@ def casos():
 
 
 def casos_de_validaciones_calculadas(s, julio):
-    """El caso 15: las validaciones 6 y 7 del lote se calculan y pueden dar «no» (R68-153: antes iba un True escrito)."""
+    """El caso 15: las validaciones 6 y 7 del lote se calculan y pueden dar «no» (una nota del caso: antes iba un True escrito)."""
     spec_e = importlib.util.spec_from_file_location("ejecutar_68", EJECUTAR)
     e = importlib.util.module_from_spec(spec_e)
     spec_e.loader.exec_module(e)

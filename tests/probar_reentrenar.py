@@ -1,4 +1,4 @@
-"""Prueba de produccion/reentrenar.py (skill preproduccion §2.2 y validaciones 2, 4, 7 y 8).
+"""Prueba de produccion/reentrenar.py (método preproduccion §2.2 y validaciones 2, 4, 7 y 8).
 
 Monta en tests/tmp_produccion/ un caso pequeño: una tabla de entrenamiento con la forma de fotos_riesgo (las 64
 columnas que lee el modelo, el identificador, el objetivo y su horizonte; un grupo de filas por mes, de octubre de 2023
@@ -11,7 +11,7 @@ escrita en la copia), un modelado.json de juguete y produccion/configuracion.jso
   4. con el modelado.json que dan esas cifras: OK e igual a lo guardado; se comprueba que las filas, las quitadas, la
      muestra (todos los fallos y el 2 % de las sanas de cada mes) y la tasa real salen como se cuentan aquí con pandas;
      que el Pipeline sin entrenar se guardó antes del fit; que la ficha trae versiones, semilla, huella de la tabla,
-     columnas, radiografía y que el modelo no guarda filas de entrenamiento;
+     columnas, registro del caso y que el modelo no guarda filas de entrenamiento;
   5. una fecha del entrenamiento que deja el horizonte de junio abierto: quita esas fotos y las cuenta con sus fallos;
   6. un disco de arranque colado en la tabla: se quita y se cuenta;
   7. con modelo en uso y la misma tabla: igual bit a bit;
@@ -44,7 +44,7 @@ TMP = CASO / "tests" / "tmp_produccion"
 ENT = "data/processed/fotos_riesgo_entrenamiento.parquet"
 VAL = "data/processed/fotos_riesgo_validacion.parquet"
 HOY = "2026-11-19"
-APROBADO = "Juan, 19/11/2026: «Sí, con el arreglo» (copia de prueba)"
+APROBADO = "El responsable del caso, 19/11/2026: «Sí, con el arreglo» (copia de prueba)"
 FALLOS = []
 MESES_ENT = pd.date_range("2023-10-01", "2024-06-01", freq="MS")
 MESES_VAL = pd.date_range("2024-07-01", "2024-08-01", freq="MS")
@@ -202,10 +202,10 @@ def casos():
     comprobar(sin.exists() and not hasattr(joblib.load(sin).named_steps["modelo"], "modelo_"),
               "4 el Pipeline sin entrenar se guardó antes del fit")
     ficha = json.loads((carpeta / "modelo_riesgo_versiones.json").read_text(encoding="utf-8"))
-    comprobar(all(k in ficha for k in ("versiones", "semilla", "huella_tabla", "columnas_entrada", "columnas_salida", "radiografia",
+    comprobar(all(k in ficha for k in ("versiones", "semilla", "huella_tabla", "columnas_entrada", "columnas_salida", "estructura",
                                        "lleva_filas_de_entrenamiento", "filas")) and ficha["semilla"] == 42
               and ficha["lleva_filas_de_entrenamiento"] == [] and ficha["columnas_entrada"] == variables(js)[0] + variables(js)[1],
-              "4 la ficha: versiones, semilla, huella, columnas, radiografía y sin filas de entrenamiento dentro")
+              "4 la ficha: versiones, semilla, huella, columnas, registro del caso y sin filas de entrenamiento dentro")
     pre = json.loads((TMP / "informes" / "preproduccion.json").read_text(encoding="utf-8"))
     comprobar(pre["reentreno"]["igual_bit_a_bit"] is True and pre["validaciones"]["bit_a_bit"] is True
               and pre["validaciones"]["columnas_del_contrato"] is True and (TMP / "informes" / "preproduccion.md").exists(),

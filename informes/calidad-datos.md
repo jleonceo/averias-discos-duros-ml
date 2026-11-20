@@ -117,10 +117,10 @@ Las filas con capacidad no válida de las fotos llegan sin ningún contador en 2
 
 ### Códigos de ausencia
 
-- `capacity_bytes` = -1 o 0,1 TB en fotos mensuales: 2.729 filas (0,02 %), documentado. 2.729 de ellas no traen ningún contador: es una ausencia de la fila. Reglas §3: la capacidad es la de su modelo.
-- `capacity_bytes` = -1 o 0,1 TB en ventanas de fallo: 165 filas (0,03 %), documentado. Reglas §3: la capacidad es la de su modelo.
+- `capacity_bytes` = -1 o 0,1 TB en fotos mensuales: 2.729 filas (0,02 %), documentado. 2.729 de ellas no traen ningún contador: es una ausencia de la fila. Reglas, apartado 3: la capacidad es la de su modelo.
+- `capacity_bytes` = -1 o 0,1 TB en ventanas de fallo: 165 filas (0,03 %), documentado. Reglas, apartado 3: la capacidad es la de su modelo.
 - `capacity_bytes` = -1 o 0,1 TB en recuento diario: 2.102 filas (1,04 %), documentado. Llevan 128.722 días de disco y 20 fallos.
-- `datacenter` = sin dato en recuento diario: 84.647 filas (42,01 %), documentado. 4.551 son desde el 01/07/2023. Reglas §4 y §5: el centro no consta y se cuenta.
+- `datacenter` = sin dato en recuento diario: 84.647 filas (42,01 %), documentado. 4.551 son desde el 01/07/2023. Reglas, apartado 4 y §5: el centro no consta y se cuenta.
 - `cluster_id` = 0 en fotos mensuales: 4.781.548 filas (69,44 %), sin documentar. Valor del mínimo con el 69,44 % de las filas que traen la columna. Por centro: sin centro 84.695, sac0 1.976.669, phx1 1.465.162, sac2 1.255.022.
 - `pod_id` = 0 en fotos mensuales: 380.858 filas (5,00 %), sin documentar. Valor del mínimo con el 5,00 % de las filas que traen la columna.
 - `smart_22_raw` = 6.553.700 en fotos mensuales: 356.870 filas (11,06 %), sin documentar. Valor del máximo con el 11,06 % de las filas que traen la columna.
@@ -189,7 +189,7 @@ El modelo tiene 98 valores en las fotos y el centro, 6. Columnas de texto libre:
   - «WDC  WUH721816ALE6L4» frente a «WDC WUH721816ALE6L4»: en las fotos, 117 filas de 112 discos; en las ventanas, 0 filas; en el recuento, 185 filas. Discos con los dos nombres: 112.
 - Modelos que no siguen el patrón de su fabricante: 25. De ellos, 25 son discos de arranque o una de las dos excepciones de las reglas.
 - Categorías raras del diccionario: 83 modelos de las fotos y 1 centro. Las que son un código de ausencia: 0.
-- El centro «sin dato» del recuento es un código documentado (reglas §4 y §5), no una categoría.
+- El centro «sin dato» del recuento es un código documentado (reglas, apartado 4 y §5), no una categoría.
 
 ## 10. Numéricas y outliers
 
@@ -231,17 +231,17 @@ Cada regla del caso se ha mirado con su medida, sin aplicarla a los datos. Las r
 
 ### Comprobaciones de las reglas
 
-- R-01, la capacidad de un disco es la de su modelo (reglas §3): ningún modelo trae dos capacidades válidas (0 con más de una). Filas con -1 o 0,1 TB: 2.729 en fotos, 165 en ventanas y 2.102 en el recuento; 20 fallos la traen el día del fallo.
-- R-02, el fabricante sale del nombre del modelo, con dos excepciones (reglas §3): 25 modelos no siguen el patrón; 0 no son ni de arranque ni una de las dos excepciones.
-- R-03, la edad son las horas encendido y, sin ellas, cuenta desde la primera aparición (reglas §3): discos de datos sin horas en ninguna foto, 1; con horas en unas fotos y no en otras, 2.736. Fallos con edad negativa por la primera aparición en las fotos: 67.
-- R-04, un disco puede fallar dos veces y seguir en servicio tras un fallo (reglas §3): 12 discos fallan dos veces. 161 discos salen en alguna foto después de su fallo, y 10 de ellos tienen dos fallos en la lista.
-- R-05, un disco que falta en una foto y vuelve no ha desaparecido (reglas §3): 7.798 discos de datos (1,94 %) faltan en alguna foto y vuelven; huecos de un mes: 6.113 de 8.298.
-- R-06, el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás (reglas §4): en las fotos, sin dato antes y desde el 01/07/2023: datacenter 100 % y 3,42 %; cluster_id 100 % y 0 %; vault_id 90,83 % y 0 %; pod_id 90,83 % y 0 %; pod_slot_num 100 % y 1,50 %.
-- R-07, un disco con dos registros el mismo día cuenta una vez (reglas §5): repeticiones de disco y día: 0 en las fotos y 0 en las ventanas.
-- R-08, un contador vacío quiere decir que ese modelo no lo apunta (reglas §5): sin las filas de capacidad no válida, 163 pares de modelo y contador tienen vacíos solo en parte de sus filas, en 33 contadores; suman 2.789.298 filas vacías. Son los que contradicen la regla.
-- R-09, un sitio vacío quiere decir que no consta (reglas §5): filas de fotos sin dato de sitio desde el 01/07/2023: datacenter 235.772; cluster_id 0; vault_id 0; pod_id 0; pod_slot_num 103.221. El reparto por centro y por grupo está en el JSON.
-- R-10, el sitio de un fallo es el del último día anterior que lo trae, dentro de su ventana (reglas §5): de 8.634 fallos de discos de datos desde el 01/07/2023, 2.010 no traen ranura el día del fallo; 1.997 la recuperan un día anterior y 13 no la tienen ningún día.
-- R-11, los valores en bruto de algunos contadores tienen formato de cada fabricante (reglas §5): rango y cifras por fabricante, con la construcción: smart_1_raw de 0 a 4.294.967.295; smart_7_raw de 0 a 281.471.670.783.244; smart_188_raw de 0 a 2.207.647.150.149; smart_195_raw de 0 a 244.140.504. El detalle por fabricante, en el JSON.
+- R-01, la capacidad de un disco es la de su modelo (reglas, apartado 3): ningún modelo trae dos capacidades válidas (0 con más de una). Filas con -1 o 0,1 TB: 2.729 en fotos, 165 en ventanas y 2.102 en el recuento; 20 fallos la traen el día del fallo.
+- R-02, el fabricante sale del nombre del modelo, con dos excepciones (reglas, apartado 3): 25 modelos no siguen el patrón; 0 no son ni de arranque ni una de las dos excepciones.
+- R-03, la edad son las horas encendido y, sin ellas, cuenta desde la primera aparición (reglas, apartado 3): discos de datos sin horas en ninguna foto, 1; con horas en unas fotos y no en otras, 2.736. Fallos con edad negativa por la primera aparición en las fotos: 67.
+- R-04, un disco puede fallar dos veces y seguir en servicio tras un fallo (reglas, apartado 3): 12 discos fallan dos veces. 161 discos salen en alguna foto después de su fallo, y 10 de ellos tienen dos fallos en la lista.
+- R-05, un disco que falta en una foto y vuelve no ha desaparecido (reglas, apartado 3): 7.798 discos de datos (1,94 %) faltan en alguna foto y vuelven; huecos de un mes: 6.113 de 8.298.
+- R-06, el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás (reglas, apartado 4): en las fotos, sin dato antes y desde el 01/07/2023: datacenter 100 % y 3,42 %; cluster_id 100 % y 0 %; vault_id 90,83 % y 0 %; pod_id 90,83 % y 0 %; pod_slot_num 100 % y 1,50 %.
+- R-07, un disco con dos registros el mismo día cuenta una vez (reglas, apartado 5): repeticiones de disco y día: 0 en las fotos y 0 en las ventanas.
+- R-08, un contador vacío quiere decir que ese modelo no lo apunta (reglas, apartado 5): sin las filas de capacidad no válida, 163 pares de modelo y contador tienen vacíos solo en parte de sus filas, en 33 contadores; suman 2.789.298 filas vacías. Son los que contradicen la regla.
+- R-09, un sitio vacío quiere decir que no consta (reglas, apartado 5): filas de fotos sin dato de sitio desde el 01/07/2023: datacenter 235.772; cluster_id 0; vault_id 0; pod_id 0; pod_slot_num 103.221. El reparto por centro y por grupo está en el JSON.
+- R-10, el sitio de un fallo es el del último día anterior que lo trae, dentro de su ventana (reglas, apartado 5): de 8.634 fallos de discos de datos desde el 01/07/2023, 2.010 no traen ranura el día del fallo; 1.997 la recuperan un día anterior y 13 no la tienen ningún día.
+- R-11, los valores en bruto de algunos contadores tienen formato de cada fabricante (reglas, apartado 5): rango y cifras por fabricante, con la construcción: smart_1_raw de 0 a 4.294.967.295; smart_7_raw de 0 a 281.471.670.783.244; smart_188_raw de 0 a 2.207.647.150.149; smart_195_raw de 0 a 244.140.504. El detalle por fabricante, en el JSON.
 
 ### Cuestiones del reconocimiento
 
@@ -287,7 +287,7 @@ Se revisaron las seis relaciones entre los cuatro datasets, sin guardar ninguna 
 
 ## 14. Reglas candidatas para aprobar
 
-Juan aprobó las ocho como comprobaciones el 17/11/2026. Aquí se cuentan las filas que las incumplen y no se cambia ni se quita ninguna. Pasarlas a las reglas de negocio va por la cascada.
+El responsable del caso aprobó las ocho como comprobaciones el 17/11/2026. Aquí se cuentan las filas que las incumplen y no se cambia ni se quita ninguna. Pasarlas a las reglas de negocio va por la cascada.
 
 - RC-01. Las horas encendido de un disco no bajan entre dos fotos. Columnas: `smart_9_raw`. Incumplen: 3.468 pares de fotos seguidas de un disco.
 - RC-02. El modelo y la capacidad de un disco no cambian entre fotos. Columnas: `model`, `capacity_bytes`. Incumplen: 11.226 pares de fotos seguidas de un disco.
@@ -313,7 +313,7 @@ Juan aprobó las ocho como comprobaciones el 17/11/2026. Aquí se cuentan las fi
 - **C-11** · bloque 3.4 · fotos mensuales · `cluster_id`: vale 0 en 4.781.548 de 6.885.677 filas que traen la columna. Cerrado el 2026-11-17 (D4): el 0 de cluster_id no se decide, porque ninguna pregunta usa esa columna: se cuenta y se dice.
 - **C-12** · bloque 3.4 · fotos mensuales y ventanas de fallo · `(varias)`: 82 variables con los vacíos concentrados en algún segmento.
 - **C-13** · bloque 3.5 · fotos mensuales, ventanas de fallo y recuento diario · `model`: 4 modelos escritos con dos espacios tras «WDC»; 3.285 discos salen con los dos nombres. Cerrado el 2026-11-17 (D1): los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo; los junta la corrección.
-- **C-14** · bloque 3.8 · fotos mensuales · `smart_188_raw`: 192.593 filas de discos de datos por encima de mil millones. Cerrado el 2026-11-17 (D2): el 188 cuenta como aviso cuando pasa de cero (reglas §3) y no entra en la suma de la regla de los contadores (reglas §7, CP-010).
+- **C-14** · bloque 3.8 · fotos mensuales · `smart_188_raw`: 192.593 filas de discos de datos por encima de mil millones. Cerrado el 2026-11-17 (D2): el 188 cuenta como aviso cuando pasa de cero (reglas, apartado 3) y no entra en la suma de la regla de los contadores (reglas, apartado 7, cuestión 010).
 - **C-15** · bloque 3.8 · fotos mensuales y ventanas de fallo · `smart_5_raw, smart_187_raw`: el 187 en 65.535 en 221 filas; el 5 llega a 65.529 en las fotos. Cerrado el 2026-11-17 (D3): el 5 y el 187 pegados a 65.535 son el tope del contador; el disco avisa igual.
 - **C-16** · bloque 3.8 · ventanas de fallo · `smart_194_raw`: 9 filas por encima de 70 grados, con máximo de 117.
 - **C-17** · bloque 3.9 · ventanas de fallo · `fecha, date`: 228 filas en que la fecha y su texto no coinciden: fecha 2022-12-10, texto 2022-12-11.
@@ -339,12 +339,12 @@ Ninguna se ha ejecutado. La corrección mide primero si quitar o arreglar cada c
 - C-02: nada en los datos; avisar al documentar las columnas
 - C-03: leer el centro como texto al juntar los ficheros
 - C-04: leerla como entero con vacíos
-- C-05: tomar la capacidad del modelo (reglas §3); la corrección mide si quitarlas cambia la respuesta a alguna pregunta del caso por no traer contadores
-- C-06: tomar la capacidad del modelo (reglas §3)
-- C-07: tomar la capacidad del modelo y sumar las filas que quedan con la misma clave (reglas §3)
+- C-05: tomar la capacidad del modelo (reglas, apartado 3); la corrección mide si quitarlas cambia la respuesta a alguna pregunta del caso por no traer contadores
+- C-06: tomar la capacidad del modelo (reglas, apartado 3)
+- C-07: tomar la capacidad del modelo y sumar las filas que quedan con la misma clave (reglas, apartado 3)
 - C-08: contarlas y decirlas en las tasas por centro; no se apartan en silencio
-- C-09: contarlas y decirlas en las cifras por centro y por tomo (reglas §7, población del análisis)
-- C-10: contarlas y decirlas en las cifras por centro y por tomo (reglas §7, población del análisis)
+- C-09: contarlas y decirlas en las cifras por centro y por tomo (reglas, apartado 7, población del análisis)
+- C-10: contarlas y decirlas en las cifras por centro y por tomo (reglas, apartado 7, población del análisis)
 - C-11: ninguna: ninguna pregunta usa la columna
 - C-12: tenerlo en cuenta al comparar fabricantes, modelos o periodos con esas columnas
 - C-13: la corrección junta cada variante con su modelo
@@ -355,14 +355,14 @@ Ninguna se ha ejecutado. La corrección mide primero si quitar o arreglar cada c
 - C-18: la corrección mide si quitarlas cambia la respuesta a alguna pregunta del caso
 - C-19: la corrección mide si quitarlas cambia la respuesta a alguna pregunta del caso
 - C-20: la corrección mide si quitarlas cambia la respuesta a alguna pregunta del caso
-- C-21: la edad sale de la primera aparición en esos discos (reglas §3)
+- C-21: la edad sale de la primera aparición en esos discos (reglas, apartado 3)
 - C-22: tomar la primera aparición también de las ventanas
 - C-23: la corrección mide si quitarlas cambia la respuesta a alguna pregunta del caso
 - C-24: ninguna en los días de disco; en la supervivencia la vida acaba en el primer fallo
 - C-25: no contarlos como desaparecidos; los meses que faltan no son días de disco
 - C-26: la corrección mide si cambian alguna respuesta; si cambian, preguntar cómo se lee un vacío en un modelo que sí apunta el contador
-- C-27: contarlos y decirlos en los fallos del mismo tomo (reglas §7)
-- C-28: contarlos y decirlos en los fallos del mismo tomo (reglas §7, población del análisis)
+- C-27: contarlos y decirlos en los fallos del mismo tomo (reglas, apartado 7)
+- C-28: contarlos y decirlos en los fallos del mismo tomo (reglas, apartado 7, población del análisis)
 - C-29: decir cuántos fallos no tienen día anterior al contar los fallos sin aviso
 - C-30: mirar si cambian alguna tasa diaria; en tasas por trimestre o año pesan poco
 
@@ -379,14 +379,14 @@ Ninguna se ha ejecutado. La corrección mide primero si quitar o arreglar cada c
 - Horizonte de fechas futuras: 2025-06-30 (reglas de negocio §5, fecha de referencia).
 - Columna casi vacía: más del 99 % de vacíos en las filas que traen la columna (plan aprobado, bloque 3.2).
 
-El plan lo aprobó Juan el 2026-11-17.
+El plan lo aprobó el responsable del caso el 2026-11-17.
 
 ## 18. Datos personales
 
-- No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.
-- No hay datos de personas (reglas §9): el paso de protección se saltó el 17/11/2026 con el sí de Juan.
+- No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.
+- No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí de el responsable del caso.
 - El número de serie identifica un disco, no a una persona. Ninguna columna es un dato personal.
-- Esta skill no usa ni deja columnas de datos personales.
+- Este método no usa ni deja columnas de datos personales.
 
 ## 19. Límites de esta revisión
 
@@ -394,13 +394,13 @@ El plan lo aprobó Juan el 2026-11-17.
 - Dimensiones del reparto de vacíos: el periodo, el fabricante, el año, disco de datos o de arranque y, en las columnas de sitio, antes y después del 01/07/2023; en los contadores, también el modelo. Un segmento que no se ha mirado puede esconder una concentración.
 - Forma de la tabla (comprobaciones §1): no hay periodos repartidos en columnas ni dos datos en una celda (plan aprobado).
 - Fecha de Excel: ninguna fecha llega como número: vienen como fecha o como texto ISO.
-- Atípicos en códigos, notas normalizadas e identificadores: no son magnitudes (SKILL §3.8); la ranura, el centro, el vault, el servidor y el cluster son códigos.
+- Atípicos en códigos, notas normalizadas e identificadores: no son magnitudes (método, apartado 3.8); la ranura, el centro, el vault, el servidor y el cluster son códigos.
 - Códigos de ausencia en las notas normalizadas: son notas ordinales de cada fabricante: un valor alto en el extremo es la nota sana, no una ausencia.
-- Cero como código de ausencia en los contadores en bruto: el cero es un valor del contador y el vacío es que el modelo no lo apunta (reglas §5).
-- Colas, atípicos y objetivo en validación: en validación solo se cuentan filas, vacíos y formatos; nada se mira contra el fallo (reglas §7 y encargo).
+- Cero como código de ausencia en los contadores en bruto: el cero es un valor del contador y el vacío es que el modelo no lo apunta (reglas, apartado 5).
+- Colas, atípicos y objetivo en validación: en validación solo se cuentan filas, vacíos y formatos; nada se mira contra el fallo (reglas, apartado 7 y petición).
 - Rangos de negocio de la tabla «Lo esperable»: las reglas del caso no traen esa tabla.
 - Texto libre: no hay columnas de texto libre; el modelo y el centro se miraron por si traían algo con forma de instrucción.
-- Correlación entre variables: no es un bloque de la skill; las columnas calculadas a partir de otras se señalan en los riesgos para un modelo.
+- Correlación entre variables: no es un bloque de el método; las columnas calculadas a partir de otras se señalan en los riesgos para un modelo.
 - Las 66 columnas del esquema que no traen los datasets: se quitaron al preparar los cuatro datasets; desde aquí no se puede saber si estaban vacías o eran constantes.
 - Seguimiento de un disco día a día: de los discos que no fallan solo hay una foto al mes: huecos, horas y contadores que bajan tienen un mes de margen.
 

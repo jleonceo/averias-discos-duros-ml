@@ -51,7 +51,7 @@ Cada mes se miró el 5 % de esas fotos con más riesgo, 2.030 fotos en total. En
 
 ## Datos personales
 
-No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque son de discos y no de personas (reglas §9). serial_number identifica un disco; esta prueba no usa ni deja ninguna columna de datos personales.
+No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque son de discos y no de personas (reglas, apartado 9). serial_number identifica un disco; esta prueba no usa ni deja ninguna columna de datos personales.
 
 ## Límites
 
@@ -63,4 +63,4 @@ No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron 
 
 ## Lo que se puede hacer ya
 
-- Medir el reentreno con el año guardado: `produccion/reentrenar.py` con `--medir` sobre la tabla de este año. El reentreno no sustituye al modelo en uso: eso lo decide Juan.
+- Medir el reentreno con el año guardado: `produccion/reentrenar.py` con `--medir` sobre la tabla de este año. El reentreno no sustituye al modelo en uso: eso lo decide el responsable del caso.

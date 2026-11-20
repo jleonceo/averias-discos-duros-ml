@@ -112,7 +112,7 @@ def parte_1():
 
     # 3.1 Ejecución completa
     modulo.main(raiz=TMP)
-    ruta_json = TMP / "contexto-proyecto" / "fuentes" / "diccionario-datos-origen.json"
+    ruta_json = TMP / "config" / "fuentes" / "diccionario-datos-origen.json"
     dic = json.loads(ruta_json.read_text(encoding="utf-8"))
     nombres_tablas = [t["tabla"] for t in dic["tablas"]]
     comprobar("estado AVISO", dic["resultado"]["estado"] == "AVISO", dic["resultado"]["estado"])
@@ -153,7 +153,7 @@ def parte_1():
     comprobar("suma de días de disco", r["suma_discos"] == 4 and r["dias"] == 3 and r["dias_que_faltan"] == 0, (r["suma_discos"], r["dias"], r["dias_que_faltan"]))
     e = tabla(dic, "esquema_backblaze")
     comprobar("líneas del esquema", e["filas"] == 14 and e["primera_linea"] == "Last Updated Q2 2024", (e["filas"], e.get("primera_linea")))
-    md = (TMP / "contexto-proyecto" / "fuentes" / "diccionario-datos-origen.md").read_text(encoding="utf-8")
+    md = (TMP / "config" / "fuentes" / "diccionario-datos-origen.md").read_text(encoding="utf-8")
     comprobar("Markdown con las filas del JSON", "| fotos_mensuales | 5 |" in md, "no está la fila del resumen")
     comprobar("Markdown con datos personales", "## 10. Datos personales" in md, "falta el apartado")
     texto = (md + json.dumps(dic, ensure_ascii=False)).replace("data/raw/podado", "")
@@ -197,7 +197,7 @@ def parte_1():
 # ---------------------------------------------------------------------------------------------------------------
 def parte_2():
     """Compara el diccionario real con las cifras de referencia y rehace tres cifras con pandas."""
-    ruta = CASO / "contexto-proyecto" / "fuentes" / "diccionario-datos-origen.json"
+    ruta = CASO / "config" / "fuentes" / "diccionario-datos-origen.json"
     if not ruta.exists():
         print("parte 2: no hay diccionario real todavía; no se compara")
         return

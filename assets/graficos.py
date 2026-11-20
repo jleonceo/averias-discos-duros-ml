@@ -28,7 +28,7 @@ Ningún texto pisa a otro (06/10, caso 04: 11 de 65 gráficos del exploratorio t
 del eje horizontal no caben, se deja uno de cada pocos, empezando por el primero; la cifra de un tramo apilado más
 bajo que la letra va al lado de su columna; y si aun así dos textos se pisan, la pieza para y dice qué pedir.
 
-Cada valor lleva su etiqueta al pasar el ratón (G20, Juan, 04/10; construido el 06/10): cada barra, tramo, punto o
+Cada valor lleva su etiqueta al pasar el ratón (G20, el responsable del caso, 04/10; construido el 06/10): cada barra, tramo, punto o
 marca va en un grupo `<g class="dato">` con su `<title>`, que dice el grupo, qué se mide (`medida=`) y la cifra exacta
 con su unidad («Sur: 3.402 €»). `informe.py` la enseña con el ratón y con el tabulador.
 """

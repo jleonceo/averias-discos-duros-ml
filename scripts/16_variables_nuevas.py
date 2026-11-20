@@ -1,10 +1,10 @@
 """Prueba de las cuatro variables nuevas candidatas (P-04) en el ganador de la competición del caso 68.
 
-Lo decidió Juan el 19/11/2026: las cuatro variables se prueban aunque el ganador supere a la regla, solo en el ganador,
+Lo decidió el responsable del caso el 19/11/2026: las cuatro variables se prueban aunque el ganador supere a la regla, solo en el ganador,
 con sus mismos hiperparámetros y sus mismos cinco pliegues, y se calculan aquí, sin tocar las tablas, la matriz ni los
 scripts 05, 12 y 13. Si mejoran, se llevan a la tabla por el guion aprobado; si no, solo se apunta el resultado.
 
-Las cuatro variables (encargo 20, segunda parte; definiciones técnicas de Claude, 19/11/2026):
+Las cuatro variables (petición 20, segunda parte; definiciones técnicas, 19/11/2026):
   1. contador entre edad: smart_5_raw, smart_187_raw, smart_197_raw y smart_198_raw divididos por edad_anos; vacío si
      falta la edad o es 0;
   2. discos que avisan en el vault: los demás discos de datos del mismo centro y vault en la misma foto con avisa, sin
@@ -72,7 +72,7 @@ ENTRENAMIENTO = M15.ENTRENAMIENTO
 FALLOS = "data/processed/fallos_detalle.parquet"
 DIAS = "data/processed/dias_por_tramo.parquet"
 SALIDA = "informes/variables_nuevas.json"
-CONTADORES_AVERIA = [5, 187, 197, 198]                       # los cuatro contadores de avería (reglas §7)
+CONTADORES_AVERIA = [5, 187, 197, 198]                       # los cuatro contadores de avería (reglas, apartado 7)
 VENTANA_DIAS = 30                                            # fallos del vault en los 30 días anteriores
 SITIO_DESDE = pd.Timestamp(M15.SITIO_DESDE)                  # el sitio consta desde el 01/07/2023
 DIAS_ANO = 365.25
@@ -241,7 +241,7 @@ def principal():
     """Lee lo necesario, mide los seis brazos en los cinco pliegues, comprueba el control y escribe el JSON."""
     inicio = time.time()
     res = {"script": SCRIPT, "fecha_datos": FECHA_DATOS, "fecha_ejecucion": dt.date.today().isoformat(),
-           "decidido_por": "Juan, 19/11/2026: probar las cuatro variables solo en el ganador, calculadas en este script"}
+           "decidido_por": "El responsable del caso, 19/11/2026: probar las cuatro variables solo en el ganador, calculadas en este script"}
     try:
         md = json.loads((CASO / MODELADO).read_text(encoding="utf-8"))
         g = md["ganador"]

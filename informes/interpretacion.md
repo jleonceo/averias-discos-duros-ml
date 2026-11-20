@@ -1,11 +1,11 @@
 ---
 titulo: Interpretación del caso 68 · qué permiten decidir las cuatro preguntas, con cuánta confianza y hasta dónde llegan
-estado: escrito por Claude el 19/11/2026 (paso 6, punto 2 del guion del informe final aprobado por Juan ese día); pendiente de que Juan lo lea
+estado: escrito por el analista el 19/11/2026 (paso 6, punto 2 del guion del informe final aprobado por el responsable del caso ese día); pendiente de que el responsable del caso lo lea
 fecha_documento: 2026-11-19
 fecha_datos: 2025-06-30
-dueno: Juan (decide) · Claude (redacta)
-destinatario: Juan, y quien redacte el informe final para la dirección de operaciones. Es la base del informe; la dirección no lo lee
-fuentes: `contexto-proyecto/negocio/01_ficha_del_caso.md` («El problema»); `contexto-proyecto/metodo/04_planteamientos.md`; `contexto-proyecto/metodo/06_borrador_de_hallazgos.md` (B1 a MC y MOD); los JSON y los informes de `informes/` citados en cada cifra
+dueno: El responsable del caso (decide)
+destinatario: El responsable del caso, y quien redacte el informe final para la dirección de operaciones. Es la base del informe; la dirección no lo lee
+fuentes: `config/negocio/01_ficha_del_caso.md` («El problema»); `config/metodo/04_planteamientos.md`; `config/metodo/06_borrador_de_hallazgos.md` (B1 a MC y MOD); los JSON y los informes de `informes/` citados en cada cifra
 ---
 
 # El coste por terabyte lo decide sobre todo el precio de compra, y el modelo de riesgo encuentra 32 fallos al mes en su lista de 100 discos frente a 16 de la regla de los cinco avisos SMART
@@ -70,7 +70,7 @@ anterior. Ninguna de sus cuatro variantes gana (B9). Para comprar repuestos se u
 **Pregunta 1, media.** A favor: 32 modelos pasan el mínimo de 50.000 días de disco al año, el orden casi no cambia a
 igual edad y los primeros puestos se mantienen con el precio inferido un 20 % más bajo (siguen los 10 primeros) y un 20 %
 más alto (siguen 8) (B4). En contra: el precio no está en los datos y desde 2023 es inferido; 5 de los 10 primeros lo
-tienen inferido. Si Backblaze reclama la garantía no consta, y por eso el coste se da con y sin ella (B4; CP-005).
+tienen inferido. Si Backblaze reclama la garantía no consta, y por eso el coste se da con y sin ella (B4; cuestión 005).
 
 **Pregunta 2, alta para el conjunto de discos de 0 a 5 años.** Más de 1.200 fallos en cada año de edad de 0 a 7 (ficha,
 veredicto), intervalos ensanchados con φ que siguen sin solaparse (B3). Baja para los años 8 y siguientes: contar como
@@ -88,7 +88,7 @@ la validación se queda entre un 13,7 % por debajo y un 35,6 % por encima de lo 
 (MOD). Sirve para ordenar discos, no para contar cuántos van a fallar.
 
 **Lo que no se pudo comprobar:** ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026, que se abre al
-cerrar el caso; y el auditor sin memoria del cierre de cada paso analítico no se lanzó, porque necesita el sí de Juan
+cerrar el caso; y el auditor sin memoria del cierre de cada paso analítico no se lanzó, porque necesita el sí de el responsable del caso
 (límites de los tres informes de indicadores).
 
 ## Lo que no se puede afirmar
@@ -118,7 +118,7 @@ cerrar el caso; y el auditor sin memoria del cierre de cada paso analítico no s
   coste por TB y año, y con la tasa de fallo de los modelos nuevos en su primer año (ficha, «La cifra que mide valor»).
   Antes de usar un puesto con precio inferido, conviene confirmar ese precio.
 - **Vigilar más los discos a partir de los 2 años y los de sac2,** sin cambiar ningún disco por la edad o el centro: no
-  hay cifra que diga que cambiarlos antes salga a cuenta (ficha: la secundaria no da dinero; CP-008).
+  hay cifra que diga que cambiarlos antes salga a cuenta (ficha: la secundaria no da dinero; cuestión 008).
 - **Usar la lista mensual del modelo en lugar de la regla de los cinco avisos SMART** para ordenar el trabajo de los
   técnicos. El tamaño de la lista lo elige Backblaze según lo que puedan atender sus técnicos, y se cambia sin
   reentrenar. Con lo medido en la validación, el modelo encuentra al mes 9,40 fallos en la lista de 20, 32,17 en la de
@@ -133,14 +133,14 @@ cerrar el caso; y el auditor sin memoria del cierre de cada paso analítico no s
 - **Fallos señalados en tomos donde acaba de fallar un disco,** del modelo frente a la regla, y la correlación de
   Matthews: los planteamientos (1.C) los piden al lado de la medida principal y no están en `modelado.json`. Los
   produciría el script del modelo (`aprendizaje-automatico`) o la preproducción.
-- **Las horas de técnico de cada tamaño de lista:** no constan (CP-010); sin ellas no se puede recomendar un tamaño.
+- **Las horas de técnico de cada tamaño de lista:** no constan (cuestión 010); sin ellas no se puede recomendar un tamaño.
 - **El precio real de cada modelo desde 2023:** no está en los datos.
 - **La reserva, del 01/07/2025 al 30/06/2026:** la prueba final del modelo y de la previsión, al cerrar el caso.
 
 ## Fuentes
 
-- `contexto-proyecto/negocio/01_ficha_del_caso.md` y `contexto-proyecto/metodo/04_planteamientos.md`
-- `contexto-proyecto/metodo/06_borrador_de_hallazgos.md`, bloques B2 a B9, MC y MOD
+- `config/negocio/01_ficha_del_caso.md` y `config/metodo/04_planteamientos.md`
+- `config/metodo/06_borrador_de_hallazgos.md`, bloques B2 a B9, MC y MOD
 - `informes/indicadores__discos_modelos_edad.json` y `.md`, de `scripts/09_indicadores_discos_modelos_edad.py`
 - `informes/indicadores__coste_prevision.json` y `.md`, de `scripts/10_indicadores_coste_prevision.py`
 - `informes/indicadores__centros_avisos_tomos.json` y `.md`, de `scripts/11_indicadores_centros_avisos_tomos.py`

@@ -1,4 +1,4 @@
-"""Prueba final del modelo de riesgo del caso 68 (encargo 23, segunda parte; skill preproduccion).
+"""Prueba final del modelo de riesgo del caso 68 (petición 23, segunda parte; método preproduccion).
 
 Dos modos, por argumento y sin valor por defecto:
   --ensayo-validacion  las fotos de data/raw/podado/fotos_mensuales/ de 2024-07 a 2025-06, los fallos de
@@ -27,7 +27,7 @@ No importa ningún script numerado: fallos_en_lista, claves_regla, rango_denso e
 scripts/15_modelado.py, letra a letra, y la prueba lo comprueba.
 
   --solo-informe       rehace informes/prueba_final.md, el resumen y los límites del JSON desde lo ya medido en el año
-                       guardado, sin medir ni cambiar ninguna cifra (R68-139: el texto se corrigió después del examen).
+                       guardado, sin medir ni cambiar ninguna cifra (una nota del caso: el texto se corrigió después del examen).
 
 Uso: python -W error scripts/19_prueba_final.py (--ensayo-validacion | --reserva | --solo-informe) [--raiz CARPETA_DEL_CASO] [--hoy AAAA-MM-DD]
 Sale con 0 si termina en OK o AVISO, con 1 si da ERROR y con 2 si para (PARADO). Escribe el JSON también si falla,
@@ -67,20 +67,20 @@ from graficos import numero  # noqa: E402  (pieza común: números a la español
 # =================================================================================================================
 # 2. Configuración
 # =================================================================================================================
-SKILL = "preproduccion"
-SKILL_MD = ".claude/skills/preproduccion/SKILL.md"
+METODO = "preproduccion"
+METODO_MD = "metodos/preproduccion/METODO.md"
 SCRIPT = "scripts/19_prueba_final.py"
-ENCARGO = "prompts/23_encargo_prueba_final_y_reentreno.md, segunda parte"
+PETICION = "peticiones/23_prueba_final_y_reentreno.md, segunda parte"
 CONFIGURACION = "produccion/configuracion.json"
 MODELADO = "informes/modelado.json"
-PROTECCION = "contexto-proyecto/fuentes/proteccion-datos.json"
+PROTECCION = "config/fuentes/proteccion-datos.json"
 RAW, RESERVA = "data/raw", "data/raw/reserva"
 TABLA_RESERVA = "data/processed/fotos_riesgo_reserva.parquet"
 INFORME_MD = "informes/prueba_final.md"
 OBJETIVO, FECHA, HORIZONTE = "falla_30d", "fecha", "horizonte_hasta"
 CONTADORES, SUMA = "contadores_que_avisan", "suma_contadores_sin_188"
 
-# Los dos modos (encargo 23, «Lo que ya está decidido»; guion §2). horizonte_recortado: qué se hace con la foto cuyo
+# Los dos modos (petición 23, «Lo que ya está decidido»; guion §2). horizonte_recortado: qué se hace con la foto cuyo
 # horizonte pasa del fin del periodo: se mide recortado (ensayo, como el modelado) o no se mide (año guardado)
 MODOS = {
     "ensayo": {"argumento": "--ensayo-validacion", "fotos": "data/raw/podado/fotos_mensuales", "fallos": "data/raw/podado/fallos.parquet",
@@ -90,8 +90,8 @@ MODOS = {
                 "fallos_tomos": ["data/raw/podado/fallos.parquet", "data/raw/reserva/fallos.parquet"], "desde": "2025-07",
                 "hasta": "2026-06", "fin": "2026-06-30", "medidos": 11, "horizonte_recortado": "no se mide", "json": "informes/prueba_final.json"},
 }
-REGLA = "la regla de los cinco avisos SMART"  # el nombre que fijó Juan (vocabulario del lector, R68-127)
-HORIZONTE_DIAS = 30            # reglas §7 y reglas de transformación §3: el objetivo mira 30 días
+REGLA = "la regla de los cinco avisos SMART"  # el nombre que fijó el responsable del caso (vocabulario del lector, una nota del caso)
+HORIZONTE_DIAS = 30            # reglas, apartado 7 y reglas de transformación §3: el objetivo mira 30 días
 AUC_MINIMO = 0.70              # guion §2; planteamientos 1.C
 SEMILLA, REMUESTREOS = 42, 1000  # el intervalo de la diferencia, remuestreando meses (como el modelado)
 PARTE_TOMOS = Decimal("0.05")  # de las fotos en tomos en peligro de cada mes, el 5 % de más riesgo, al menos 1
@@ -237,7 +237,7 @@ def parte_de(fotos):
 
 
 def clave_tomo(centro, vault, ranura):
-    """El tomo, centro + vault + ranura (reglas §4); vacío si falta alguno."""
+    """El tomo, centro + vault + ranura (reglas, apartado 4); vacío si falta alguno."""
     centro = pd.Series(centro, dtype=object).reset_index(drop=True)
     vault = pd.to_numeric(pd.Series(vault).reset_index(drop=True)).astype(float)
     ranura = pd.to_numeric(pd.Series(ranura).reset_index(drop=True)).astype(float)
@@ -293,8 +293,8 @@ def sitios_de_fallos(carpetas_ventanas, fallos, mapeo, minimo, desde, hasta):
     anterior a `hasta`.
 
     El sitio de un fallo es el de la última fila de su ventana hasta el día del fallo que trae centro, vault y ranura
-    (reglas §5; reglas de transformación §4); la capacidad, la única válida de su modelo (reglas §3); el plazo, un día
-    por TB más uno (reglas §5 y §7). Devuelve la tabla y lo que se queda fuera, contado.
+    (reglas, apartado 5; reglas de transformación §4); la capacidad, la única válida de su modelo (reglas, apartado 3); el plazo, un día
+    por TB más uno (reglas, apartado 5 y §7). Devuelve la tabla y lo que se queda fuera, contado.
     """
     columnas = ["serial_number", "fecha", "date", "dia_fallo", "model", "capacity_bytes", "datacenter", "vault_id", "pod_slot_num"]
     partes = []
@@ -332,7 +332,7 @@ def sitios_de_fallos(carpetas_ventanas, fallos, mapeo, minimo, desde, hasta):
 
 def tomos_en_peligro(sitios, fecha):
     """Los tomos donde un disco de datos falló antes de la foto y dentro de su plazo; el último día del plazo ya no
-    cuenta (reglas §7, «Fallos que coinciden en un tomo»)."""
+    cuenta (reglas, apartado 7, «Fallos que coinciden en un tomo»)."""
     dias = (pd.Timestamp(fecha) - sitios["dia_fallo"]) / pd.Timedelta(days=1)
     return set(sitios.loc[((dias > 0) & (dias < sitios["plazo_dias"])).to_numpy(), "tomo"])
 
@@ -464,9 +464,9 @@ def a_json(v):
     return v
 
 
-def version_skill(raiz):
-    """La fecha y el código de la última línea de versión del SKILL.md de la skill (bloque común)."""
-    texto = ruta_de(raiz, SKILL_MD).read_text(encoding="utf-8") if ruta_de(raiz, SKILL_MD).exists() else ""
+def version_metodo(raiz):
+    """La fecha y el código de la última línea de versión del METODO.md de el método (bloque común)."""
+    texto = ruta_de(raiz, METODO_MD).read_text(encoding="utf-8") if ruta_de(raiz, METODO_MD).exists() else ""
     v = re.findall(r"^Versión (\d{2}/\d{2}/\d{4} \([A-Z]+-\d+\))", texto, flags=re.M)
     return v[-1] if v else None
 
@@ -477,13 +477,13 @@ def datos_personales(raiz):
         js = json.loads(ruta_de(raiz, PROTECCION).read_text(encoding="utf-8"))
         return f"Protección de datos según {PROTECCION}: {json.dumps(js, ensure_ascii=False)[:500]}"
     return (f"No existe {PROTECCION}: los datos no pasaron por la protección porque son de discos y no de personas "
-            "(reglas §9). serial_number identifica un disco; esta prueba no usa ni deja ninguna columna de datos personales.")
+            "(reglas, apartado 9). serial_number identifica un disco; esta prueba no usa ni deja ninguna columna de datos personales.")
 
 
 def base(raiz, modo):
     """El diccionario del resultado, con el bloque común."""
     m = MODOS[modo]
-    return {"skill": SKILL, "version_skill": version_skill(raiz), "script": SCRIPT, "encargo": ENCARGO, "modo": m["argumento"],
+    return {"metodo": METODO, "version_metodo": version_metodo(raiz), "script": SCRIPT, "peticion": PETICION, "modo": m["argumento"],
             "fecha_datos": m["fin"], "fecha_ejecucion": dt.datetime.now().isoformat(timespec="seconds"), "entradas": [],
             "resultado": {"estado": "ERROR", "riesgo": "alto", "resumen": "sin terminar", "artefactos": [m["json"]], "siguiente": ""},
             "pendientes": [], "periodo": {"desde": m["desde"], "hasta": m["hasta"], "fin": m["fin"], "meses_esperados": m["medidos"],
@@ -537,7 +537,7 @@ def informe_md(res):
                            f"fallos al mes. Su intervalo, de {numero(i['bajo'], 2)} a {numero(i['alto'], 2)}, no queda por encima de cero.")
         if not a["modelo"]["auc"] >= AUC_MINIMO:
             motivos.append(f"Su AUC es {numero(a['modelo']['auc'], 3)}, por debajo del mínimo de {numero(AUC_MINIMO, 2)}.")
-        veredicto = "El modelo no se da por bueno en el año guardado y lo decide Juan en la puerta 5. " + " ".join(motivos)
+        veredicto = "El modelo no se da por bueno en el año guardado y lo decide el responsable del caso en la puerta 5. " + " ".join(motivos)
     L = ["# Prueba final del modelo de riesgo", "", veredicto, "",
          f"El listón era encontrar más fallos que la regla en la lista de {n100}, con el intervalo por encima de cero, y un AUC "
          f"de {numero(AUC_MINIMO, 2)} o más. Con todas las fotos medidas juntas, el AUC del modelo es "
@@ -575,9 +575,9 @@ def informe_md(res):
     L += [f"- {x}" for x in res["limites"]]
     L += ["", "## Lo que se puede hacer ya", ""]
     if not res["se_da_por_bueno"]:
-        L += ["- Juan decide en la puerta 5 qué se hace con el modelo."]
+        L += ["- el responsable del caso decide en la puerta 5 qué se hace con el modelo."]
     L += ["- Medir el reentreno con el año guardado: `produccion/reentrenar.py` con `--medir` sobre la tabla de este año. "
-          "El reentreno no sustituye al modelo en uso: eso lo decide Juan."]
+          "El reentreno no sustituye al modelo en uso: eso lo decide el responsable del caso."]
     return "\n".join(L) + "\n"
 
 
@@ -712,8 +712,8 @@ def limites(res, modo):
          "Las listas de cada mes reparten en proporción un empate en el último puesto, como en el modelado. Las marcas de la "
          "puntuación de cada mes lo deshacen por número de serie."]
     if modo == "reserva":
-        # Auditor antes de entregar (20/11/2026, R68-153): decía que el modelo en uso no se volvió a elegir con el año
-        # guardado, y el reentreno que se usa hoy se aprobó después de medirlo en él (R68-140 y R68-141)
+        # Auditor antes de entregar (20/11/2026, una nota del caso): decía que el modelo en uso no se volvió a elegir con el año
+        # guardado, y el reentreno que se usa hoy se aprobó después de medirlo en él
         L.append("El modelo examinado aquí no se volvió a elegir ni a ajustar con nada del año guardado. El que se usa hoy, "
                  "reentrenado con un año más de datos, se midió en este año antes de aprobarlo: para él no es una prueba "
                  "independiente.")
@@ -750,7 +750,7 @@ def principal(raiz, modo, hoy):
             if not res["se_da_por_bueno"]:
                 res["pendientes"] = [{"id": "P-01", "tabla": TABLA_RESERVA, "columna": "",
                                       "pregunta": "El modelo no se da por bueno en el año guardado: qué se hace con él (puerta 5)",
-                                      "opciones": ["lo decide Juan"]}]
+                                      "opciones": ["lo decide el responsable del caso"]}]
             ruta_de(raiz, INFORME_MD).write_text(informe_md(res), encoding="utf-8")
         else:
             res["resultado"] = {"estado": "OK", "riesgo": "bajo",
@@ -771,12 +771,12 @@ def principal(raiz, modo, hoy):
     if codigo != 0 and tabla_parcial is not None and tabla_parcial.exists():
         tabla_parcial.unlink()
     res["parametros"] = [{"nombre": "modo", "valor": m["argumento"], "origen": "argumento"},
-                         {"nombre": "periodo", "valor": f"{m['desde']} a {m['hasta']}, fin {m['fin']}", "origen": "encargo 23; guion §2"},
-                         {"nombre": "horizonte", "valor": HORIZONTE_DIAS, "origen": "reglas §7; reglas de transformación §3"},
+                         {"nombre": "periodo", "valor": f"{m['desde']} a {m['hasta']}, fin {m['fin']}", "origen": "petición 23; guion §2"},
+                         {"nombre": "horizonte", "valor": HORIZONTE_DIAS, "origen": "reglas, apartado 7; reglas de transformación §3"},
                          {"nombre": "listas", "valor": res.get("listas"), "origen": CONFIGURACION},
                          {"nombre": "AUC mínimo", "valor": AUC_MINIMO, "origen": "guion §2; planteamientos 1.C"},
-                         {"nombre": "remuestreos y semilla", "valor": f"{REMUESTREOS}, {SEMILLA}", "origen": "encargo 23; scripts/15_modelado.py"},
-                         {"nombre": "parte de las fotos en tomos en peligro", "valor": str(PARTE_TOMOS), "origen": "encargo 23"}]
+                         {"nombre": "remuestreos y semilla", "valor": f"{REMUESTREOS}, {SEMILLA}", "origen": "petición 23; scripts/15_modelado.py"},
+                         {"nombre": "parte de las fotos en tomos en peligro", "valor": str(PARTE_TOMOS), "origen": "petición 23"}]
     res["ejecucion"] = {"python": platform.python_version(), "ejecutable": sys.executable, "pandas": pd.__version__,
                         "pyarrow": pa.__version__, "scikit_learn": sklearn.__version__}
     escribir_json(raiz, modo, res)

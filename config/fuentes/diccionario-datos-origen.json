@@ -1,6 +1,6 @@
 {
- "skill": "diccionario-datos",
- "version_skill": "05/11/2026 (WF-54)",
+ "metodo": "diccionario-datos",
+ "version_metodo": "05/11/2026",
  "script": "scripts/01_diccionario_datos.py",
  "fecha_datos": "2025-06-30",
  "fecha_ejecucion": "2026-11-17T13:34:59",
@@ -555,10 +555,10 @@
  "resultado": {
   "estado": "AVISO",
   "riesgo": "medio",
-  "resumen": "Los cuatro datasets (fotos mensuales, ventanas de fallo, recuento diario y lista de fallos) y el esquema descritos enteros, sin muestra: 15.388.494 filas de fotos y ventanas, 201.502 del recuento y 17.960 fallos. 9 columnas quedan como decisión de negocio y hay 32 contradicciones con el esquema. No existe proteccion-datos.json: no hubo paso de protección (paso 2a saltado el 17/11/2026 con el sí de Juan, porque no hay datos personales).",
+  "resumen": "Los cuatro datasets (fotos mensuales, ventanas de fallo, recuento diario y lista de fallos) y el esquema descritos enteros, sin muestra: 15.388.494 filas de fotos y ventanas, 201.502 del recuento y 17.960 fallos. 9 columnas quedan como decisión de negocio y hay 32 contradicciones con el esquema. No existe proteccion-datos.json: no hubo paso de protección (paso 2a saltado el 17/11/2026 con el sí de el responsable del caso, porque no hay datos personales).",
   "artefactos": [
-   "contexto-proyecto/fuentes/diccionario-datos-origen.json",
-   "contexto-proyecto/fuentes/diccionario-datos-origen.md"
+   "config/fuentes/diccionario-datos-origen.json",
+   "config/fuentes/diccionario-datos-origen.md"
   ],
   "siguiente": "calidad-datos: el plan de calidad espera el visto bueno de la persona responsable antes del script"
  },
@@ -671,13 +671,13 @@
   "pyarrow": "24.0.0",
   "bytes_data_raw": 771173973,
   "contexto": [
-   "CLAUDE.md del caso",
+   "las instrucciones del caso",
    "negocio/reglas-negocio.md",
    "negocio/01_ficha_del_caso.md",
    "negocio/cuestiones-pendientes.md",
    "fuentes/ficha_de_los_datos.md (nombres de los contadores, sin confirmar)",
    "fuentes/proteccion-datos.md",
-   "encargo del usuario del 17/11/2026"
+   "petición del responsable del 17/11/2026"
   ],
   "teoria": "manual 6.5 y 6.6 para la lectura (se mira la fuente en bruto y se declara cada decisión); 3.3 para el rol (un código numérico no es una magnitud: las notas normalizadas y los identificadores de sitio van como código); 7.3 para los códigos de ausencia (-1 de capacidad y «sin dato» del centro se cuentan, no se convierten)."
  },
@@ -933,7 +933,7 @@
    "filas_clave_repetida": 0,
    "medidas": {
     "ficheros con más de una fecha": 0,
-    "filas anteriores al 01/07/2023, sin sitio por las reglas §4": 7965992
+    "filas anteriores al 01/07/2023, sin sitio por las reglas, apartado 4": 7965992
    },
    "clave_unica": true,
    "campos": [
@@ -991,7 +991,7 @@
      "clase": "resuelto",
      "motivos_clase": [],
      "significado": "día del registro, añadido como fecha al preparar los cuatro datasets",
-     "procedencia": "usuario 17/11/2026",
+     "procedencia": "responsable 17/11/2026",
      "proteccion": null,
      "significado_cero": null,
      "significado_sin_fila": null,
@@ -2767,7 +2767,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -2839,7 +2839,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -5990,7 +5990,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -6062,7 +6062,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -6126,7 +6126,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -6198,7 +6198,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -7304,7 +7304,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -7374,7 +7374,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -7438,7 +7438,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -7508,7 +7508,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -10651,7 +10651,7 @@
      "clase": "resuelto",
      "motivos_clase": [],
      "significado": "día del registro, añadido como fecha al preparar los cuatro datasets",
-     "procedencia": "usuario 17/11/2026",
+     "procedencia": "responsable 17/11/2026",
      "proteccion": null,
      "significado_cero": null,
      "significado_sin_fila": null,
@@ -10713,7 +10713,7 @@
      "clase": "resuelto",
      "motivos_clase": [],
      "significado": "día del fallo: en las ventanas, el fallo al que pertenece la fila; en la lista, el día del fallo",
-     "procedencia": "usuario 17/11/2026",
+     "procedencia": "responsable 17/11/2026",
      "proteccion": null,
      "significado_cero": null,
      "significado_sin_fila": null,
@@ -12339,7 +12339,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -12411,7 +12411,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -15624,7 +15624,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -15696,7 +15696,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -15760,7 +15760,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -15832,7 +15832,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -16938,7 +16938,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -17008,7 +17008,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -17072,7 +17072,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -17142,7 +17142,7 @@
      "variantes": [],
      "categorias_raras": [],
      "observaciones": [
-      "uno de los cinco contadores de avería de las reglas §3"
+      "uno de los cinco contadores de avería de las reglas, apartado 3"
      ]
     },
     {
@@ -20210,7 +20210,7 @@
      "clase": "resuelto",
      "motivos_clase": [],
      "significado": "día del registro, añadido como fecha al preparar los cuatro datasets",
-     "procedencia": "usuario 17/11/2026",
+     "procedencia": "responsable 17/11/2026",
      "proteccion": null,
      "significado_cero": null,
      "significado_sin_fila": null,
@@ -21010,7 +21010,7 @@
      "clase": "resuelto",
      "motivos_clase": [],
      "significado": "discos en servicio ese día con ese modelo, capacidad y centro: días de disco",
-     "procedencia": "usuario 17/11/2026",
+     "procedencia": "responsable 17/11/2026",
      "proteccion": null,
      "significado_cero": {
       "texto": "no hay ningún cero en la columna",
@@ -21078,7 +21078,7 @@
      "clase": "resuelto",
      "motivos_clase": [],
      "significado": "fallos de ese día, modelo, capacidad y centro",
-     "procedencia": "usuario 17/11/2026",
+     "procedencia": "responsable 17/11/2026",
      "proteccion": null,
      "significado_cero": {
       "texto": "ningún fallo ese día en esa combinación de modelo, capacidad y centro",
@@ -21242,7 +21242,7 @@
      "clase": "resuelto",
      "motivos_clase": [],
      "significado": "día del fallo: en las ventanas, el fallo al que pertenece la fila; en la lista, el día del fallo",
-     "procedencia": "usuario 17/11/2026",
+     "procedencia": "responsable 17/11/2026",
      "proteccion": null,
      "significado_cero": null,
      "significado_sin_fila": null,
@@ -21608,420 +21608,420 @@
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "is_legacy_format",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_15_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_15_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_16_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_17_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_18_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_18_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_23_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_23_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_24_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_27_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_71_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_71_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_82_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_82_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_90_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_160_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_160_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_161_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_161_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_163_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_163_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_164_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_164_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_165_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_166_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_167_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_168_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_169_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_171_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_174_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_175_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_175_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_176_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_176_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_178_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_178_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_179_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_181_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_182_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_182_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_201_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_206_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_210_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_210_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_218_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_224_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_224_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_226_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_231_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_232_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_233_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_234_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_244_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_246_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_247_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_248_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_250_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_250_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_251_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_251_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_252_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_252_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_254_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_255_normalized",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales y ventanas_fallo",
    "columna": "smart_255_raw",
-   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (usuario, 17/11/2026); no se puede comprobar con ellos"
+   "motivo": "la nombra el esquema y ni las fotos mensuales ni las ventanas de fallo la traen: se quitó al preparar los cuatro datasets, por vacía o constante (responsable, 17/11/2026); no se puede comprobar con ellos"
   },
   {
    "tabla": "fotos_mensuales",
    "columna": "fecha",
-   "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (usuario, 17/11/2026)"
+   "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (responsable, 17/11/2026)"
   },
   {
    "tabla": "ventanas_fallo",
    "columna": "fecha",
-   "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (usuario, 17/11/2026)"
+   "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (responsable, 17/11/2026)"
   },
   {
    "tabla": "ventanas_fallo",
    "columna": "dia_fallo",
-   "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (usuario, 17/11/2026)"
+   "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (responsable, 17/11/2026)"
   },
   {
    "tabla": "recuento_diario",
    "columna": "fecha",
-   "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (usuario, 17/11/2026)"
+   "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (responsable, 17/11/2026)"
   },
   {
    "tabla": "recuento_diario",
    "columna": "discos",
-   "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (usuario, 17/11/2026)"
+   "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (responsable, 17/11/2026)"
   },
   {
    "tabla": "recuento_diario",
    "columna": "fallos",
-   "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (usuario, 17/11/2026)"
+   "motivo": "no viene de Backblaze: se añadió al preparar los cuatro datasets (responsable, 17/11/2026)"
   },
   {
    "tabla": "recuento_diario",
    "columna": "(todas las del esquema salvo model, capacity_bytes y datacenter)",
-   "motivo": "el recuento agrega por día, modelo, capacidad y centro (usuario, 17/11/2026)"
+   "motivo": "el recuento agrega por día, modelo, capacidad y centro (responsable, 17/11/2026)"
   }
  ],
  "filtros_de_negocio": [
   {
-   "regla": "discos de arranque fuera de tasas, coste y modelo (reglas §3), en fotos_mensuales, contando las capacidades no válidas por su modelo",
+   "regla": "discos de arranque fuera de tasas, coste y modelo (reglas, apartado 3), en fotos_mensuales, contando las capacidades no válidas por su modelo",
    "filas_afectadas": 246280
   },
   {
-   "regla": "discos de arranque fuera de tasas, coste y modelo (reglas §3), en ventanas_fallo, contando las capacidades no válidas por su modelo",
+   "regla": "discos de arranque fuera de tasas, coste y modelo (reglas, apartado 3), en ventanas_fallo, contando las capacidades no válidas por su modelo",
    "filas_afectadas": 28558
   },
   {
-   "regla": "discos de arranque fuera de tasas, coste y modelo (reglas §3), en recuento_diario, contando las capacidades no válidas por su modelo",
+   "regla": "discos de arranque fuera de tasas, coste y modelo (reglas, apartado 3), en recuento_diario, contando las capacidades no válidas por su modelo",
    "filas_afectadas": 61775
   },
   {
-   "regla": "discos de arranque fuera de tasas, coste y modelo (reglas §3), en fallos, contando las capacidades no válidas por su modelo",
+   "regla": "discos de arranque fuera de tasas, coste y modelo (reglas, apartado 3), en fallos, contando las capacidades no válidas por su modelo",
    "filas_afectadas": 964
   },
   {
-   "regla": "validación del 01/07/2024 al 30/06/2025, que no se mira contra el fallo hasta medir el modelo (reglas §7), en fotos_mensuales",
+   "regla": "validación del 01/07/2024 al 30/06/2025, que no se mira contra el fallo hasta medir el modelo (reglas, apartado 7), en fotos_mensuales",
    "filas_afectadas": 3627928
   },
   {
-   "regla": "validación del 01/07/2024 al 30/06/2025, que no se mira contra el fallo hasta medir el modelo (reglas §7), en ventanas_fallo",
+   "regla": "validación del 01/07/2024 al 30/06/2025, que no se mira contra el fallo hasta medir el modelo (reglas, apartado 7), en ventanas_fallo",
    "filas_afectadas": 137855
   },
   {
-   "regla": "validación del 01/07/2024 al 30/06/2025, que no se mira contra el fallo hasta medir el modelo (reglas §7), en recuento_diario",
+   "regla": "validación del 01/07/2024 al 30/06/2025, que no se mira contra el fallo hasta medir el modelo (reglas, apartado 7), en recuento_diario",
    "filas_afectadas": 61141
   },
   {
-   "regla": "validación del 01/07/2024 al 30/06/2025, que no se mira contra el fallo hasta medir el modelo (reglas §7), en fallos",
+   "regla": "validación del 01/07/2024 al 30/06/2025, que no se mira contra el fallo hasta medir el modelo (reglas, apartado 7), en fallos",
    "filas_afectadas": 4584
   },
   {
-   "regla": "reserva, después del 30/06/2025, fuera del caso (reglas §5), en fotos_mensuales",
+   "regla": "reserva, después del 30/06/2025, fuera del caso (reglas, apartado 5), en fotos_mensuales",
    "filas_afectadas": 0
   },
   {
-   "regla": "reserva, después del 30/06/2025, fuera del caso (reglas §5), en ventanas_fallo",
+   "regla": "reserva, después del 30/06/2025, fuera del caso (reglas, apartado 5), en ventanas_fallo",
    "filas_afectadas": 0
   },
   {
-   "regla": "reserva, después del 30/06/2025, fuera del caso (reglas §5), en recuento_diario",
+   "regla": "reserva, después del 30/06/2025, fuera del caso (reglas, apartado 5), en recuento_diario",
    "filas_afectadas": 0
   },
   {
-   "regla": "reserva, después del 30/06/2025, fuera del caso (reglas §5), en fallos",
+   "regla": "reserva, después del 30/06/2025, fuera del caso (reglas, apartado 5), en fallos",
    "filas_afectadas": 0
   },
   {
-   "regla": "el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás (reglas §4): filas de fotos anteriores",
+   "regla": "el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás (reglas, apartado 4): filas de fotos anteriores",
    "filas_afectadas": 7965992
   }
  ],
@@ -22504,10 +22504,10 @@
   }
  ],
  "datos_personales": [
-  "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
-  "El paso 2a se saltó el 17/11/2026 con el sí de Juan porque no hay datos de personas (reglas §9; proteccion-datos.md).",
+  "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+  "El paso 2a se saltó el 17/11/2026 con el sí de el responsable del caso porque no hay datos de personas (reglas, apartado 9; proteccion-datos.md).",
   "Ninguna columna lleva rol dato_personal. El número de serie identifica un disco, no a una persona: su rol es identificador.",
-  "Esta skill no usa ni deja columnas de datos personales."
+  "Este método no usa ni deja columnas de datos personales."
  ],
  "limites": [
   "El diccionario describe una tabla cada vez; las claves huérfanas o repetidas entre tablas se ven primero en el apartado «Cruces entre tablas» de calidad-datos y se controlan al cruzarlas con integracion-datos. La única excepción es el grupo de cada fallo, que la lista no trae y se toma de la fila del día del fallo en su ventana, sin guardar el cruce.",
@@ -22517,6 +22517,6 @@
   "El día a día de los discos que no fallan no está en los cuatro datasets: de cada disco hay una foto al mes, y día a día solo los 30 días anteriores a cada fallo.",
   "Los valores distintos se cuentan exactos hasta 200.000; por encima, el diccionario dice «más de 200.000». El número de serie se cuenta exacto aparte. Ninguna cifra sale de una muestra: se leen todas las filas.",
   "Los números se comparan como decimales de 64 bits para contar distintos; un entero por encima de 2^53 podría juntarse con su vecino al contarlo.",
-  "Los grupos de discos de datos y de arranque se dan por la capacidad de cada fila y, aparte, las filas con capacidad no válida repartidas por la capacidad que su modelo trae en el resto de la tabla (reglas §3). No se corrige ninguna fila."
+  "Los grupos de discos de datos y de arranque se dan por la capacidad de cada fila y, aparte, las filas con capacidad no válida repartidas por la capacidad que su modelo trae en el resto de la tabla (reglas, apartado 3). No se corrige ninguna fila."
  ]
 }

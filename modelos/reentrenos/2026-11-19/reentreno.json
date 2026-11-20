@@ -58,5 +58,5 @@
   "de_donde": "modelos/en_uso/modelo_riesgo.joblib"
  },
  "estado": "OK",
- "resumen": "Reentreno hecho con 14604861 fotos que entrenan y una muestra de 308037; guardado en modelos\\reentrenos\\2026-11-19, aparte del modelo en uso, que aprueba Juan."
+ "resumen": "Reentreno hecho con 14604861 fotos que entrenan y una muestra de 308037; guardado en modelos\\reentrenos\\2026-11-19, aparte del modelo en uso, que aprueba el responsable del caso."
 }

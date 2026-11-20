@@ -44,7 +44,7 @@ Una foto es el estado de un disco el primer día de un mes: sus contadores SMART
 - `produccion/`: el proceso mensual de puntuación y el reentreno.
 - `modelos/`: el modelo en uso y su ficha.
 - `informes/`: el informe final, el cuadro de mando, los seis problemas y los informes de cada paso.
-- `contexto-proyecto/`: las reglas de negocio y de transformación, y las decisiones que leen los scripts.
+- `config/`: las reglas de negocio y de transformación, y las decisiones que leen los scripts.
 
 ## Los datos
 
@@ -56,6 +56,8 @@ Lo que se hizo con ellos:
 2. **El extracto:** `podar_datos.py` guarda una foto de todos los discos el día 1 de cada mes, los 30 días anteriores a cada fallo, la lista de fallos y un recuento diario de discos y fallos por modelo, capacidad y centro de datos. Quita las 68 columnas vacías o constantes. Tarda unas dos horas y media.
 3. **El año de la prueba final:** `apartar_reserva.py` separa lo que va del 01/07/2025 al 30/06/2026, que no se miró hasta el final. Quedan 17.960 fallos para el análisis y 4.751 para la prueba final.
 
+El script `10` lee además las tablas de ingresos del informe anual de Backblaze de 2025, el [10-K presentado ante la SEC](https://www.sec.gov/Archives/edgar/data/1462056/000162828026016395/blze-20251231.htm). Es un documento de terceros y tampoco se incluye: el script lo busca en `config/sector/documentos/16_backblaze_10k_2025_tablas_ingresos.txt`.
+
 ## Cómo se ejecuta
 
 Hace falta conda y el entorno de `environment.yml`:
@@ -66,7 +68,7 @@ conda env create -f environment.yml && conda activate 68_averias_discos_duros
 python -W error tests/probar_17_informe_final.py
 ```
 
-El último comando pasa la prueba del informe final, que no necesita los datos: lee los informes que trae el repositorio. Sin datos pasan 13 de las 27 pruebas de `tests/`; las demás leen el extracto de Backblaze. Para repetir el caso entero, con los ZIP descargados en una carpeta `zips/`:
+El último comando pasa la prueba del informe final, que no necesita los datos: lee los informes que trae el repositorio. Sin datos pasan 14 de las 28 pruebas de `tests/`; las demás leen el extracto de Backblaze. Para repetir el caso entero, con los ZIP descargados en una carpeta `zips/`:
 
 ```bash
 python preparacion_datos/podar_datos.py data/poda_entera zips/data_Q*.zip

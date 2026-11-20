@@ -1,6 +1,6 @@
 {
- "skill": "calidad-datos",
- "version_skill": "11/11/2026 (WF-87)",
+ "metodo": "calidad-datos",
+ "version_metodo": "11/11/2026",
  "script": "scripts/02_calidad_datos.py",
  "fecha_datos": "2025-06-30",
  "fecha_ejecucion": "2026-11-17T16:01:35",
@@ -560,7 +560,7 @@
    "informes/calidad-datos.json",
    "informes/calidad-datos.md"
   ],
-  "siguiente": "correccion-datos: medir si cada problema cambia la respuesta a alguna pregunta del caso, con su encargo"
+  "siguiente": "correccion-datos: medir si cada problema cambia la respuesta a alguna pregunta del caso, con su petición"
  },
  "pendientes": [
   {
@@ -2603,7 +2603,7 @@
    "pct_filas": null,
    "cifra": 42,
    "unidad": "ficheros",
-   "observacion": "es la forma de un centro vacío entero antes del 01/07/2023 (reglas §4)",
+   "observacion": "es la forma de un centro vacío entero antes del 01/07/2023 (reglas, apartado 4)",
    "posible_accion": "leer el centro como texto al juntar los ficheros",
    "decision_de_negocio": false,
    "principal": false
@@ -2634,7 +2634,7 @@
    "cifra": 2729,
    "unidad": "filas",
    "observacion": "ausencia de la fila: no traen horas ni contadores",
-   "posible_accion": "tomar la capacidad del modelo (reglas §3); la corrección mide si quitarlas cambia la respuesta a alguna pregunta del caso por no traer contadores",
+   "posible_accion": "tomar la capacidad del modelo (reglas, apartado 3); la corrección mide si quitarlas cambia la respuesta a alguna pregunta del caso por no traer contadores",
    "decision_de_negocio": false,
    "principal": true
   },
@@ -2649,7 +2649,7 @@
    "cifra": 165,
    "unidad": "filas",
    "observacion": "",
-   "posible_accion": "tomar la capacidad del modelo (reglas §3)",
+   "posible_accion": "tomar la capacidad del modelo (reglas, apartado 3)",
    "decision_de_negocio": false,
    "principal": false
   },
@@ -2664,7 +2664,7 @@
    "cifra": 2102,
    "unidad": "filas",
    "observacion": "parten una clave en dos: 2.095 filas repiten clave si se quita la capacidad",
-   "posible_accion": "tomar la capacidad del modelo y sumar las filas que quedan con la misma clave (reglas §3)",
+   "posible_accion": "tomar la capacidad del modelo y sumar las filas que quedan con la misma clave (reglas, apartado 3)",
    "decision_de_negocio": false,
    "principal": true
   },
@@ -2678,7 +2678,7 @@
    "pct_filas": 42.008,
    "cifra": 84647,
    "unidad": "filas",
-   "observacion": "código documentado (reglas §4 y §5)",
+   "observacion": "código documentado (reglas, apartado 4 y §5)",
    "posible_accion": "contarlas y decirlas en las tasas por centro; no se apartan en silencio",
    "decision_de_negocio": false,
    "principal": true
@@ -2693,8 +2693,8 @@
    "pct_filas": 3.4241,
    "cifra": 235772,
    "unidad": "filas",
-   "observacion": "el sitio vacío quiere decir que no consta (reglas §5); en la ranura, casi todas son discos de arranque, que no tienen ranura",
-   "posible_accion": "contarlas y decirlas en las cifras por centro y por tomo (reglas §7, población del análisis)",
+   "observacion": "el sitio vacío quiere decir que no consta (reglas, apartado 5); en la ranura, casi todas son discos de arranque, que no tienen ranura",
+   "posible_accion": "contarlas y decirlas en las cifras por centro y por tomo (reglas, apartado 7, población del análisis)",
    "decision_de_negocio": false,
    "principal": false
   },
@@ -2708,8 +2708,8 @@
    "pct_filas": 1.4991,
    "cifra": 103221,
    "unidad": "filas",
-   "observacion": "el sitio vacío quiere decir que no consta (reglas §5); en la ranura, casi todas son discos de arranque, que no tienen ranura",
-   "posible_accion": "contarlas y decirlas en las cifras por centro y por tomo (reglas §7, población del análisis)",
+   "observacion": "el sitio vacío quiere decir que no consta (reglas, apartado 5); en la ranura, casi todas son discos de arranque, que no tienen ranura",
+   "posible_accion": "contarlas y decirlas en las cifras por centro y por tomo (reglas, apartado 7, población del análisis)",
    "decision_de_negocio": false,
    "principal": false
   },
@@ -2795,7 +2795,7 @@
      "P-04",
      "P-08"
     ],
-    "texto": "el 188 cuenta como aviso cuando pasa de cero (reglas §3) y no entra en la suma de la regla de los contadores (reglas §7, CP-010)"
+    "texto": "el 188 cuenta como aviso cuando pasa de cero (reglas, apartado 3) y no entra en la suma de la regla de los contadores (reglas, apartado 7, cuestión 010)"
    }
   },
   {
@@ -2910,7 +2910,7 @@
    "cifra": 2738,
    "unidad": "filas",
    "observacion": "2.725 son de capacidad no válida",
-   "posible_accion": "la edad sale de la primera aparición en esos discos (reglas §3)",
+   "posible_accion": "la edad sale de la primera aparición en esos discos (reglas, apartado 3)",
    "decision_de_negocio": false,
    "principal": false
   },
@@ -2954,7 +2954,7 @@
    "pct_filas": null,
    "cifra": 161,
    "unidad": "discos",
-   "observacion": "las reglas §3 lo admiten: sus días siguen contando",
+   "observacion": "las reglas, apartado 3 lo admiten: sus días siguen contando",
    "posible_accion": "ninguna en los días de disco; en la supervivencia la vida acaba en el primer fallo",
    "decision_de_negocio": false,
    "principal": false
@@ -2969,7 +2969,7 @@
    "pct_filas": null,
    "cifra": 7798,
    "unidad": "discos",
-   "observacion": "las reglas §3 dicen que no han desaparecido",
+   "observacion": "las reglas, apartado 3 dicen que no han desaparecido",
    "posible_accion": "no contarlos como desaparecidos; los meses que faltan no son días de disco",
    "decision_de_negocio": false,
    "principal": false
@@ -2984,7 +2984,7 @@
    "pct_filas": null,
    "cifra": 163,
    "unidad": "pares de modelo y contador",
-   "observacion": "contradicen la regla de que un contador vacío es que el modelo no lo apunta (reglas §5)",
+   "observacion": "contradicen la regla de que un contador vacío es que el modelo no lo apunta (reglas, apartado 5)",
    "posible_accion": "la corrección mide si cambian alguna respuesta; si cambian, preguntar cómo se lee un vacío en un modelo que sí apunta el contador",
    "decision_de_negocio": false,
    "principal": false
@@ -2999,8 +2999,8 @@
    "pct_filas": null,
    "cifra": 13,
    "unidad": "fallos",
-   "observacion": "1.997 más la recuperan un día anterior (reglas §5)",
-   "posible_accion": "contarlos y decirlos en los fallos del mismo tomo (reglas §7)",
+   "observacion": "1.997 más la recuperan un día anterior (reglas, apartado 5)",
+   "posible_accion": "contarlos y decirlos en los fallos del mismo tomo (reglas, apartado 7)",
    "decision_de_negocio": false,
    "principal": false
   },
@@ -3015,7 +3015,7 @@
    "cifra": 141,
    "unidad": "fallos",
    "observacion": "les falta el centro, el vault o la ranura; 2.134 no lo traen el día del fallo",
-   "posible_accion": "contarlos y decirlos en los fallos del mismo tomo (reglas §7, población del análisis)",
+   "posible_accion": "contarlos y decirlos en los fallos del mismo tomo (reglas, apartado 7, población del análisis)",
    "decision_de_negocio": false,
    "principal": false
   },
@@ -3029,7 +3029,7 @@
    "pct_filas": null,
    "cifra": 896,
    "unidad": "fallos",
-   "observacion": "el fallo sin aviso se mira el día anterior (reglas §6)",
+   "observacion": "el fallo sin aviso se mira el día anterior (reglas, apartado 6)",
    "posible_accion": "decir cuántos fallos no tienen día anterior al contar los fallos sin aviso",
    "decision_de_negocio": false,
    "principal": false
@@ -64240,7 +64240,7 @@
     "smart_9_raw",
     "todos los contadores en bruto"
    ],
-   "nota": "2.729 de ellas no traen ningún contador: es una ausencia de la fila. Reglas §3: la capacidad es la de su modelo."
+   "nota": "2.729 de ellas no traen ningún contador: es una ausencia de la fila. Reglas, apartado 3: la capacidad es la de su modelo."
   },
   {
    "tabla": "ventanas_fallo",
@@ -64252,7 +64252,7 @@
    "documentado": true,
    "coincide_con": "",
    "mismas_filas_que": [],
-   "nota": "Reglas §3: la capacidad es la de su modelo."
+   "nota": "Reglas, apartado 3: la capacidad es la de su modelo."
   },
   {
    "tabla": "recuento_diario",
@@ -64276,7 +64276,7 @@
    "documentado": true,
    "coincide_con": "fechas anteriores al 01/07/2023 en casi todas",
    "mismas_filas_que": [],
-   "nota": "4.551 son desde el 01/07/2023. Reglas §4 y §5: el centro no consta y se cuenta."
+   "nota": "4.551 son desde el 01/07/2023. Reglas, apartado 4 y §5: el centro no consta y se cuenta."
   },
   {
    "tabla": "fotos_mensuales",
@@ -89488,7 +89488,7 @@
   }
  ],
  "plan_aprobado": {
-  "por": "Juan",
+  "por": "El responsable del caso",
   "fecha": "2026-11-17"
  },
  "decisiones_cerradas": {
@@ -89507,7 +89507,7 @@
     "P-04",
     "P-08"
    ],
-   "texto": "el 188 cuenta como aviso cuando pasa de cero (reglas §3) y no entra en la suma de la regla de los contadores (reglas §7, CP-010)"
+   "texto": "el 188 cuenta como aviso cuando pasa de cero (reglas, apartado 3) y no entra en la suma de la regla de los contadores (reglas, apartado 7, cuestión 010)"
   },
   "D3": {
    "fecha": "2026-11-17",
@@ -92837,7 +92837,7 @@
   {
    "id": "R-01",
    "regla": "la capacidad de un disco es la de su modelo",
-   "seccion": "reglas §3",
+   "seccion": "reglas, apartado 3",
    "medidas": {
     "modelos_con_varias_capacidades_validas": [],
     "fotos_no_validas_por_modelo": {
@@ -92879,7 +92879,7 @@
   {
    "id": "R-02",
    "regla": "el fabricante sale del nombre del modelo, con dos excepciones",
-   "seccion": "reglas §3",
+   "seccion": "reglas, apartado 3",
    "medidas": {
     "sin_patron": [
      {
@@ -93015,7 +93015,7 @@
   {
    "id": "R-03",
    "regla": "la edad son las horas encendido y, sin ellas, cuenta desde la primera aparición",
-   "seccion": "reglas §3",
+   "seccion": "reglas, apartado 3",
    "medidas": {
     "sin_horas_en_ninguna_foto_datos": 1,
     "con_horas_en_unas_fotos_y_no_en_otras_datos": 2736,
@@ -93027,7 +93027,7 @@
   {
    "id": "R-04",
    "regla": "un disco puede fallar dos veces y seguir en servicio tras un fallo",
-   "seccion": "reglas §3",
+   "seccion": "reglas, apartado 3",
    "medidas": {
     "discos_con_mas_de_un_fallo": 12,
     "discos_que_siguen_tras_su_fallo": 161,
@@ -93038,7 +93038,7 @@
   {
    "id": "R-05",
    "regla": "un disco que falta en una foto y vuelve no ha desaparecido",
-   "seccion": "reglas §3",
+   "seccion": "reglas, apartado 3",
    "medidas": {
     "discos": 8067,
     "discos_datos": 7798,
@@ -93066,7 +93066,7 @@
   {
    "id": "R-06",
    "regla": "el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás",
-   "seccion": "reglas §4",
+   "seccion": "reglas, apartado 4",
    "medidas": {
     "fotos": {
      "datacenter": {
@@ -93198,7 +93198,7 @@
   {
    "id": "R-07",
    "regla": "un disco con dos registros el mismo día cuenta una vez",
-   "seccion": "reglas §5",
+   "seccion": "reglas, apartado 5",
    "medidas": {
     "fotos": 0,
     "ventanas": 0
@@ -93208,7 +93208,7 @@
   {
    "id": "R-08",
    "regla": "un contador vacío quiere decir que ese modelo no lo apunta",
-   "seccion": "reglas §5",
+   "seccion": "reglas, apartado 5",
    "medidas": {
     "contadores_con_modelos_parciales": 33,
     "pares_modelo_contador_parciales": 163,
@@ -93220,7 +93220,7 @@
   {
    "id": "R-09",
    "regla": "un sitio vacío quiere decir que no consta",
-   "seccion": "reglas §5",
+   "seccion": "reglas, apartado 5",
    "medidas": {
     "fotos": {
      "datacenter": {
@@ -93275,7 +93275,7 @@
   {
    "id": "R-10",
    "regla": "el sitio de un fallo es el del último día anterior que lo trae, dentro de su ventana",
-   "seccion": "reglas §5",
+   "seccion": "reglas, apartado 5",
    "medidas": {
     "pod_slot_num": {
      "fallos_datos_desde_sitio": 8634,
@@ -93328,7 +93328,7 @@
   {
    "id": "R-11",
    "regla": "los valores en bruto de algunos contadores tienen formato de cada fabricante",
-   "seccion": "reglas §5",
+   "seccion": "reglas, apartado 5",
    "medidas": {
     "smart_1_raw": {
      "Seagate": {
@@ -105259,10 +105259,10 @@
  "instrucciones_en_texto": [],
  "datos_personales": [],
  "datos_personales_texto": [
-  "No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
-  "No hay datos de personas (reglas §9): el paso de protección se saltó el 17/11/2026 con el sí de Juan.",
+  "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
+  "No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí de el responsable del caso.",
   "El número de serie identifica un disco, no a una persona. Ninguna columna es un dato personal.",
-  "Esta skill no usa ni deja columnas de datos personales."
+  "Este método no usa ni deja columnas de datos personales."
  ],
  "no_aplicado": [
   {
@@ -105275,7 +105275,7 @@
   },
   {
    "control": "atípicos en códigos, notas normalizadas e identificadores",
-   "motivo": "no son magnitudes (SKILL §3.8); la ranura, el centro, el vault, el servidor y el cluster son códigos."
+   "motivo": "no son magnitudes (método, apartado 3.8); la ranura, el centro, el vault, el servidor y el cluster son códigos."
   },
   {
    "control": "códigos de ausencia en las notas normalizadas",
@@ -105283,11 +105283,11 @@
   },
   {
    "control": "cero como código de ausencia en los contadores en bruto",
-   "motivo": "el cero es un valor del contador y el vacío es que el modelo no lo apunta (reglas §5)."
+   "motivo": "el cero es un valor del contador y el vacío es que el modelo no lo apunta (reglas, apartado 5)."
   },
   {
    "control": "colas, atípicos y objetivo en validación",
-   "motivo": "en validación solo se cuentan filas, vacíos y formatos; nada se mira contra el fallo (reglas §7 y encargo)."
+   "motivo": "en validación solo se cuentan filas, vacíos y formatos; nada se mira contra el fallo (reglas, apartado 7 y petición)."
   },
   {
    "control": "rangos de negocio de la tabla «Lo esperable»",
@@ -105299,7 +105299,7 @@
   },
   {
    "control": "correlación entre variables",
-   "motivo": "no es un bloque de la skill; las columnas calculadas a partir de otras se señalan en los riesgos para un modelo."
+   "motivo": "no es un bloque de el método; las columnas calculadas a partir de otras se señalan en los riesgos para un modelo."
   },
   {
    "control": "las 66 columnas del esquema que no traen los datasets",

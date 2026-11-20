@@ -1,4 +1,4 @@
-"""Prueba de scripts/pipeline_riesgo.py, el módulo de producción del caso 68 (skill preproduccion §2.1).
+"""Prueba de scripts/pipeline_riesgo.py, el módulo de producción del caso 68 (método preproduccion §2.1).
 
 Parte 1, el módulo, con datos pequeños escritos aquí:
   - importarlo no ejecuta nada (un proceso aparte lo importa y no escribe ni imprime nada);
@@ -13,13 +13,13 @@ Parte 1, el módulo, con datos pequeños escritos aquí:
   - las funciones de la foto, cada una con su caso que tiene que salir mal: el modelo con dos espacios, la capacidad no
     válida, un modelo sin ninguna capacidad válida, el fabricante y la garantía, el disco de arranque, la foto del día
     del fallo, la edad con y sin horas, la ventana de un fallo anterior (cuenta) y la de un fallo que aún no ha
-    ocurrido (no cuenta: el arreglo de Juan), la fila de ventana con la fecha distinta de su texto (no cuenta), los
+    ocurrido (no cuenta: el arreglo de el responsable del caso), la fila de ventana con la fecha distinta de su texto (no cuenta), los
     cambios contra la foto anterior de dos meses antes, el disco sin foto anterior y los avisos con un vacío.
 Parte 2, la medida que pidió la sesión principal (no decide nada): en data/raw/, cuántos modelos tienen una fila con
 capacidad no válida y su capacidad válida solo en el recuento diario, y cuántas filas de fotos con capacidad no válida
 no tienen ninguna capacidad válida de su modelo en fotos y ventanas hasta su fecha. Se imprime; no falla.
 Parte 3, solo con --real: la transformación del módulo sobre las fotos en bruto del 01/06/2025 y del 01/06/2024,
-frente a fotos_riesgo, columna a columna, con las cifras de control del encargo; la foto del arreglo se cuenta aparte.
+frente a fotos_riesgo, columna a columna, con las cifras de control de la petición; la foto del arreglo se cuenta aparte.
 
 Sale con 0 si todo pasa y con 1 si algo falla, e imprime qué caso falla. La carpeta temporal se borra siempre.
 """
@@ -79,10 +79,10 @@ def cargar(ruta, nombre):
 # ---------------------------------------------------------------------------------------------------------------
 def probar_import():
     """Importar el módulo en otro proceso no imprime ni escribe nada."""
-    antes = sorted(p.as_posix() for p in CASO.rglob("*") if p.is_file() and "tests" not in p.parts and ".claude" not in p.parts)
+    antes = sorted(p.as_posix() for p in CASO.rglob("*") if p.is_file() and "tests" not in p.parts and "metodos" not in p.parts)
     r = subprocess.run([sys.executable, "-W", "error", "-c", f"import sys; sys.path.insert(0, r'{MODULO.parent}'); import pipeline_riesgo"],
                        capture_output=True, text=True, encoding="utf-8", env={**os.environ, "PYTHONUTF8": "1"})
-    despues = sorted(p.as_posix() for p in CASO.rglob("*") if p.is_file() and "tests" not in p.parts and ".claude" not in p.parts)
+    despues = sorted(p.as_posix() for p in CASO.rglob("*") if p.is_file() and "tests" not in p.parts and "metodos" not in p.parts)
     comprobar(r.returncode == 0 and r.stdout == "" and r.stderr == "", f"importar el módulo no imprime nada ({r.stderr[-300:]})")
     comprobar(antes == despues, "importar el módulo no escribe ningún fichero")
 
@@ -234,7 +234,7 @@ def medir_capacidad_solo_en_recuento(m):
         print("nota  sin data/raw/podado: la medida no se hace")
         return
     t0 = time.time()
-    dec = json.loads((CASO / "contexto-proyecto" / "modelo" / "decisiones-correccion.json").read_text(encoding="utf-8"))
+    dec = json.loads((CASO / "config" / "modelo" / "decisiones-correccion.json").read_text(encoding="utf-8"))
     mapeo, minimo = dec["modelos"]["mapeo"], dec["capacidad"]["minimo_valido_bytes"]
     partes = []
     for tabla in ("fotos_mensuales", "ventanas_fallo"):
@@ -270,7 +270,7 @@ CONTROL_REAL = {"2025-06-01": {"filas": 318737, "columnas": 130, "arranque": 397
 def probar_real(m):
     """La transformación del módulo sobre la foto en bruto frente a fotos_riesgo, con las cifras de control."""
     c = m.leer_contrato(CASO)
-    dec = json.loads((CASO / "contexto-proyecto" / "modelo" / "decisiones-correccion.json").read_text(encoding="utf-8"))
+    dec = json.loads((CASO / "config" / "modelo" / "decisiones-correccion.json").read_text(encoding="utf-8"))
     mapeo, minimo = dec["modelos"]["mapeo"], dec["capacidad"]["minimo_valido_bytes"]
     pod = CASO / "data" / "raw" / "podado"
     for dia, ctl in CONTROL_REAL.items():

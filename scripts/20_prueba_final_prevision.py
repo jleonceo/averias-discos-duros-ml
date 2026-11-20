@@ -1,6 +1,6 @@
-"""Prueba final de la previsión de fallos del caso 68 en el año guardado (encargo 24; guion de la preproducción, paso 6).
+"""Prueba final de la previsión de fallos del caso 68 en el año guardado (petición 24; guion de la preproducción, paso 6).
 
-La previsión es la del bloque 9 (reglas §7, CP-011): para cada modelo y año de edad del primer día del trimestre,
+La previsión es la del bloque 9 (reglas, apartado 7, cuestión 011): para cada modelo y año de edad del primer día del trimestre,
 previsto = discos × días del trimestre × fallos / días de disco de su nivel de tasa, con los meses anteriores al primer
 día; frente a repetir los fallos reales del trimestre anterior, por capacidad. Gana la cuenta si su error absoluto
 ponderado de los cuatro trimestres juntos es menor que el de la referencia. Se calcula, nunca se escribe.
@@ -66,8 +66,8 @@ from graficos import numero  # noqa: E402  (pieza común: números a la español
 # 2. Configuración
 # =================================================================================================================
 SCRIPT = "scripts/20_prueba_final_prevision.py"
-ENCARGO = "prompts/24_encargo_prevision_en_el_ano_guardado.md"
-SKILL = "indicadores-y-analisis (método del bloque 9, copiado del script 10)"
+PETICION = "peticiones/24_prevision_en_el_ano_guardado.md"
+METODO = "indicadores-y-analisis (método del bloque 9, copiado del script 10)"
 CONFIGURACION = "produccion/configuracion.json"
 INDICADORES = "informes/indicadores__coste_prevision.json"
 DPT = "data/processed/dias_por_tramo.parquet"
@@ -77,19 +77,19 @@ RAW, RESERVA = "data/raw", "data/raw/reserva"
 INFORME_MD = "informes/prueba_final_prevision.md"
 FOTOS, RECUENTO, LISTA = "fotos_mensuales", "recuento_diario.parquet", "fallos.parquet"
 
-# Los dos modos (encargo 24; guion de la preproducción, paso 6): de dónde salen los datos del periodo y qué se escribe
+# Los dos modos (petición 24; guion de la preproducción, paso 6): de dónde salen los datos del periodo y qué se escribe
 MODOS = {
     "ensayo": {"argumento": "--ensayo-validacion", "datos": "data/raw/podado", "desde": "2024-07", "hasta": "2025-06",
                "fin": "2025-06-30", "json": "informes/prueba_final_prevision_ensayo.json"},
     "reserva": {"argumento": "--reserva", "datos": "data/raw/reserva", "desde": "2025-07", "hasta": "2026-06",
                 "fin": "2026-06-30", "json": "informes/prueba_final_prevision.json"},
 }
-# Mínimo de días de disco de un nivel de tasa, niveles en su orden y horas de técnico por cambio (reglas §5 y §7; los
+# Mínimo de días de disco de un nivel de tasa, niveles en su orden y horas de técnico por cambio (reglas, apartado 5 y §7; los
 # del script 10, que usan las funciones copiadas)
 MINIMO_DIAS_ANO = 50_000
 NIVELES = ("modelo", "capacidad", "edad")
 HORAS_POR_CAMBIO = 0.74
-# Diferencia que se admite en días y previstos, cifras con decimales (encargo 24)
+# Diferencia que se admite en días y previstos, cifras con decimales (petición 24)
 TOLERANCIA = 1e-6
 # El centro que no consta (reglas de transformación §6) y el año de edad (convención técnica 1)
 SIN_DATO = pr.SIN_DATO
@@ -120,7 +120,7 @@ def inicio_trimestre(ano, t):
 
 # Origen: scripts/10_indicadores_coste_prevision.py, prever_trimestre
 def prever_trimestre(ano, trimestre, it, dpt, meses_historia=None, minimo=MINIMO_DIAS_ANO, niveles=NIVELES):
-    """Fallos previstos de un trimestre con lo sabido hasta el día anterior a su primer día (reglas §7, CP-011).
+    """Fallos previstos de un trimestre con lo sabido hasta el día anterior a su primer día (reglas, apartado 7, cuestión 011).
 
     Para cada fila de inicio_trimestre del trimestre (modelo y año de edad del primer día): previsto = discos ×
     días del trimestre × fallos / días de disco de su nivel de tasa, con los meses de dias_por_tramo anteriores al
@@ -163,7 +163,7 @@ def prever_trimestre(ano, trimestre, it, dpt, meses_historia=None, minimo=MINIMO
 
 # Origen: scripts/10_indicadores_coste_prevision.py, error_ponderado
 def error_ponderado(previstos, reales):
-    """Error absoluto ponderado = suma de |previsto − real| / suma de reales; sesgo, lo mismo con signo (CP-011)."""
+    """Error absoluto ponderado = suma de |previsto − real| / suma de reales; sesgo, lo mismo con signo (cuestión 011)."""
     s = float(sum(reales))
     if s == 0:
         return None, None
@@ -173,7 +173,7 @@ def error_ponderado(previstos, reales):
 
 # Origen: scripts/10_indicadores_coste_prevision.py, montar_pares
 def montar_pares(previsiones, reales, prev_q, anterior):
-    """Pares de trimestre y capacidad: los que tienen discos el primer día, reales o referencia (encargo, B9.1)."""
+    """Pares de trimestre y capacidad: los que tienen discos el primer día, reales o referencia (petición, B9.1)."""
     pares = []
     for q in prev_q:
         p = previsiones[q["trimestre"]]
@@ -234,7 +234,7 @@ def comp_huellas(antes, despues):
 
 
 def admitidas_ok(admitidas):
-    """Solo se admite como diferencia la foto de un disco sin horas, y como mucho una (encargo 24)."""
+    """Solo se admite como diferencia la foto de un disco sin horas, y como mucho una (petición 24)."""
     return len(admitidas) <= 1 and all(a["tipo"] == "foto" for a in admitidas)
 
 
@@ -551,7 +551,7 @@ def rehacer_periodo(raiz, m, modo, carpetas, mapeo, minimo):
         piezas["tramos"].append(tramo)
         piezas["fallos"].append(fallos.assign(mes=f))
         # La capacidad de cada modelo de las fotos del mes: un modelo nuevo puede entrar a mitad de trimestre, sin salir
-        # en la foto del primer día ni entre los fallos (R68-145)
+        # en la foto del primer día ni entre los fallos
         piezas["capacidades"].append(d[["model", "capacidad_tb"]].drop_duplicates())
         # Las fotos y los fallos de discos sin horas cuya edad cambia entre la regla del contrato y la del análisis
         for _, x in d.loc[(d["edad_anos_cumplidos"] != d["edad_analisis"]).to_numpy()].iterrows():
@@ -709,7 +709,7 @@ def a_json(v):
 def base(modo):
     """El diccionario del resultado, con el bloque común."""
     m = MODOS[modo]
-    return {"skill": SKILL, "script": SCRIPT, "encargo": ENCARGO, "modo": m["argumento"], "fecha_datos": m["fin"],
+    return {"metodo": METODO, "script": SCRIPT, "peticion": PETICION, "modo": m["argumento"], "fecha_datos": m["fin"],
             "fecha_ejecucion": dt.datetime.now().isoformat(timespec="seconds"),
             "resultado": {"estado": "ERROR", "riesgo": "alto", "resumen": "sin terminar", "artefactos": [m["json"]],
                           "siguiente": ""},
@@ -777,7 +777,7 @@ def informe_md(res):
     L += ["", "## Lo que se puede hacer ya", "",
           "- Llevar el resultado al informe final, al cuadro de mando y al README."]
     if gana:
-        L.append("- Juan decide si la cuenta sustituye a la referencia: el resultado no lo cambia por sí solo.")
+        L.append("- el responsable del caso decide si la cuenta sustituye a la referencia: el resultado no lo cambia por sí solo.")
     return "\n".join(L) + "\n"
 
 
@@ -837,8 +837,8 @@ def medir(raiz, modo, res):
     res["pares"], res["total"], res["por_trimestre"], res["niveles"] = r["pares"], r["total"], r["por_trimestre"], r["niveles"]
     tot = r["total"]
     res["gana_la_cuenta"] = bool(tot["wape_cuenta"] is not None and tot["wape_cuenta"] < tot["wape_referencia"])
-    res["veredicto"] = ("la cuenta gana; que pase a usarse lo decide Juan" if res["gana_la_cuenta"]
-                        else "la cuenta no gana: no vale y se usa la referencia (reglas §7)")
+    res["veredicto"] = ("la cuenta gana; que pase a usarse lo decide el responsable del caso" if res["gana_la_cuenta"]
+                        else "la cuenta no gana: no vale y se usa la referencia (reglas, apartado 7)")
     res["diferencias_admitidas"] = piezas["admitidas"]
 
     # 10.2 Las validaciones, calculadas
@@ -913,10 +913,10 @@ def principal(raiz, modo):
         res["traza"] = traceback.format_exc()[-3000:]
         codigo = 1
     res["parametros"] = [{"nombre": "modo", "valor": m["argumento"], "origen": "argumento"},
-                         {"nombre": "periodo", "valor": f"{m['desde']} a {m['hasta']}", "origen": "encargo 24; guion, paso 6"},
-                         {"nombre": "mínimo de días de un nivel de tasa", "valor": MINIMO_DIAS_ANO, "origen": "reglas §7; script 10"},
-                         {"nombre": "niveles de tasa", "valor": list(NIVELES), "origen": "reglas §7; script 10"},
-                         {"nombre": "tolerancia en días y previstos", "valor": TOLERANCIA, "origen": "encargo 24"}]
+                         {"nombre": "periodo", "valor": f"{m['desde']} a {m['hasta']}", "origen": "petición 24; guion, paso 6"},
+                         {"nombre": "mínimo de días de un nivel de tasa", "valor": MINIMO_DIAS_ANO, "origen": "reglas, apartado 7; script 10"},
+                         {"nombre": "niveles de tasa", "valor": list(NIVELES), "origen": "reglas, apartado 7; script 10"},
+                         {"nombre": "tolerancia en días y previstos", "valor": TOLERANCIA, "origen": "petición 24"}]
     res["ejecucion"] = {"python": platform.python_version(), "ejecutable": sys.executable, "pandas": pd.__version__,
                         "pyarrow": pa.__version__}
     escribir_json(raiz, modo, res)

@@ -1,15 +1,15 @@
 {
- "skill": "aprendizaje-automatico",
- "version_skill": "16/11/2026 (WF-153)",
+ "metodo": "aprendizaje-automatico",
+ "version_metodo": "16/11/2026",
  "script": "scripts/15_modelado.py",
- "encargo": "prompts/21_encargo_preseleccion_competicion_y_ganador.md, segunda y tercera parte, con sus dos notas",
+ "peticion": "peticiones/21_preseleccion_competicion_y_ganador.md, segunda y tercera parte, con sus dos notas",
  "fecha_datos": "2025-06-30",
  "fecha_ejecucion": "2026-11-19T00:51:14",
  "entradas": [
   {
    "ruta": "informes/preseleccion.json",
    "estado": "AVISO",
-   "motivo": "en AVISO, con cada pendiente decidido por Juan: P-01, seguir con la lista de la semilla 42 (Juan, 18/11/2026, R-023)"
+   "motivo": "en AVISO, con cada pendiente decidido por el responsable del caso: P-01, seguir con la lista de la semilla 42 (El responsable del caso, 18/11/2026, R-023)"
   },
   {
    "ruta": "data/processed/fotos_riesgo_entrenamiento.parquet",
@@ -31,7 +31,7 @@
  "pendientes": [],
  "leidos": [
   "informes/preseleccion.json",
-  "contexto-proyecto/modelo/matriz_transformaciones.md",
+  "config/modelo/matriz_transformaciones.md",
   "data/processed/fotos_riesgo_entrenamiento.parquet",
   "data/processed/fotos_riesgo_validacion.parquet"
  ],
@@ -46,16 +46,16 @@
  },
  "aprobado_antes": {
   "medida_principal": "los fallos encontrados entre los 100 discos de más riesgo de cada mes",
-  "por_que": "Es lo que mide el negocio: de los N discos de más riesgo, cuántos fallan (reglas §7).",
+  "por_que": "Es lo que mide el negocio: de los N discos de más riesgo, cuántos fallan (reglas, apartado 7).",
   "referencias": [
-   "la regla de los cinco contadores (CP-010)",
+   "la regla de los cinco contadores (cuestión 010)",
    "el trivial, DummyClassifier(strategy=\"prior\")"
   ],
   "se_da_por_bueno": "en la validación el modelo encuentra en esa lista más fallos que la regla, con el intervalo de la diferencia por encima de cero, y su AUC es 0,70 o más.",
   "minimo_de_casos": 20,
-  "fuente": "contexto-proyecto/metodo/04_planteamientos.md, 1.C"
+  "fuente": "config/metodo/04_planteamientos.md, 1.C"
  },
- "preseleccion_estado": "en AVISO, con cada pendiente decidido por Juan: P-01, seguir con la lista de la semilla 42 (Juan, 18/11/2026, R-023)",
+ "preseleccion_estado": "en AVISO, con cada pendiente decidido por el responsable del caso: P-01, seguir con la lista de la semilla 42 (El responsable del caso, 18/11/2026, R-023)",
  "validacion_cruzada": {
   "tipo": "por fecha, bloques de tres meses, sin barajar",
   "pliegues": 5,
@@ -216,7 +216,7 @@
  },
  "desequilibrio": {
   "regla": "equilibrado",
-  "por_que": "La regla del caso (reglas §7) entrena con todas las fotos con fallo y el 2 % de las sanas de cada mes, solo al ajustar cada pliegue; lo medido conserva la proporción real. La probabilidad del ganador se recalibra con la corrección del prior sobre el logit.",
+  "por_que": "La regla del caso (reglas, apartado 7) entrena con todas las fotos con fallo y el 2 % de las sanas de cada mes, solo al ajustar cada pliegue; lo medido conserva la proporción real. La probabilidad del ganador se recalibra con la corrección del prior sobre el logit.",
   "metodo": "submuestreo de las sanas, semilla 42",
   "recalibracion": {
    "metodo": "corrección del prior sobre el logit (desequilibrio.md, «Recalibrar»)",
@@ -897,7 +897,7 @@
    "tasa_muestra": 0.05150639631765005,
    "tasa_real": 0.0010848851429323932
   },
-  "aprobado_por": "Juan, 19/11/2026: «Sí, abre la validación», con el desvío de la probabilidad media en los bloques 1 y 2 (validación 12) aceptado como límite (R68-122)"
+  "aprobado_por": "El responsable del caso, 19/11/2026: «Sí, abre la validación», con el desvío de la probabilidad media en los bloques 1 y 2 (validación 12) aceptado como límite"
  },
  "frente_a_la_regla_cv": {
   "veredicto": "supera",
@@ -1624,16 +1624,16 @@
   "preferencia": null,
   "minimo": null,
   "escenarios": [],
-  "por_que": "el tamaño de la lista lo elige Backblaze según lo que puedan atender sus técnicos, que no consta (reglas §7, CP-010): se dan las listas de 20, 100, 500 y 1.000",
+  "por_que": "el tamaño de la lista lo elige Backblaze según lo que puedan atender sus técnicos, que no consta (reglas, apartado 7, cuestión 010): se dan las listas de 20, 100, 500 y 1.000",
   "se_puede_cambiar_sin_reentrenar": true
  },
  "vias_de_mejora": {
-  "mejor_modelo": "se probaron tres algoritmos con su búsqueda (regresión logística, 12 candidatos; bosque aleatorio, 17 candidatos; HistGradientBoosting, 17 candidatos); quedan sin probar XGBoost y los castigos L1 y mezcla de la logística, que Juan dejó fuera (reglas §7).",
+  "mejor_modelo": "se probaron tres algoritmos con su búsqueda (regresión logística, 12 candidatos; bosque aleatorio, 17 candidatos; HistGradientBoosting, 17 candidatos); quedan sin probar XGBoost y los castigos L1 y mezcla de la logística, que el responsable del caso dejó fuera (reglas, apartado 7).",
   "variables_nuevas": [
    {
     "variable": "las cuatro variables nuevas candidatas de la matriz (P-04)",
     "probada": false,
-    "motivo": "no se crean en este encargo; se crean si el modelo no supera a la regla, con la decisión de Juan y antes de abrir la validación (reglas §7)"
+    "motivo": "no se crean en esta petición; se crean si el modelo no supera a la regla, con la decisión de el responsable del caso y antes de abrir la validación (reglas, apartado 7)"
    }
   ],
   "informacion_nueva": [
@@ -1668,37 +1668,37 @@
   {
    "nombre": "semilla",
    "valor": 42,
-   "origen": "parametros.md de las dos skills"
+   "origen": "parametros.md de las dos métodos"
   },
   {
    "nombre": "pliegues",
    "valor": "cinco bloques de tres meses, de 2023-04 a 2024-06, por fecha y sin barajar",
-   "origen": "skill §3; encargo 21"
+   "origen": "método §3; petición 21"
   },
   {
    "nombre": "muestra de cada entrenamiento",
    "valor": "todas las fotos con fallo y el 2 % de las sanas de cada mes, solo con el horizonte cerrado",
-   "origen": "reglas §7"
+   "origen": "reglas, apartado 7"
   },
   {
    "nombre": "medida de la búsqueda",
    "valor": "media de los fallos en la lista de 100 de los meses del bloque",
-   "origen": "planteamientos 1.C; encargo 21"
+   "origen": "planteamientos 1.C; petición 21"
   },
   {
    "nombre": "logística",
    "valor": "LogisticRegression(solver=\"lbfgs\", l1_ratio=0, max_iter=5000, random_state=42), C en logspace(-3, 2, 12)",
-   "origen": "reglas §7, Juan, 18/11/2026"
+   "origen": "reglas, apartado 7, el responsable del caso, 18/11/2026"
   },
   {
    "nombre": "bosque",
    "valor": "RandomForestClassifier(n_jobs=-1, random_state=42), 15 candidatos de ParameterSampler(random_state=42)",
-   "origen": "algoritmos.md; reglas §7"
+   "origen": "algoritmos.md; reglas, apartado 7"
   },
   {
    "nombre": "HistGradientBoosting",
    "valor": "early_stopping=False, max_iter en 100, 200 y 500, categóricas nativas, 15 candidatos",
-   "origen": "algoritmos.md, con fecha; reglas §7"
+   "origen": "algoritmos.md, con fecha; reglas, apartado 7"
   },
   {
    "nombre": "hoja",
@@ -1706,39 +1706,39 @@
    "origen": "parametros.md"
   },
   {
-   "nombre": "ampliación por el borde",
+   "nombre": "extensión por el borde",
    "valor": "hasta 2 rondas; se queda el valor nuevo si mejora pliegue a pliegue",
-   "origen": "skill §5"
+   "origen": "método §5"
   },
   {
    "nombre": "empate",
    "valor": "la media de las diferencias en los cinco pliegues no pasa de su desviación típica (con n − 1)",
-   "origen": "skill §6"
+   "origen": "método §6"
   },
   {
    "nombre": "sitio",
    "valor": "datacenter entra solo si con él la lista de 100 encuentra más fallos en cada uno de los 12 meses de 2023-07 a 2024-06",
-   "origen": "guion §3; encargo 21"
+   "origen": "guion §3; petición 21"
   },
   {
    "nombre": "permutación",
    "valor": "average_precision, 10 repeticiones sobre el 25 % de las fotos del bloque 5, sorteado una vez con la semilla 42",
-   "origen": "skill §7; parametros.md; la fracción, criterio del script por el tiempo"
+   "origen": "método §7; parametros.md; la fracción, criterio del script por el tiempo"
   },
   {
    "nombre": "canario",
    "valor": "barajado: como mucho el trivial más tres desviaciones de Poisson y un fallo; fuga: el 90 % de lo que cabe en la lista",
-   "origen": "skill §9, validación 11; los márgenes, criterio del script"
+   "origen": "método §9, validación 11; los márgenes, criterio del script"
   },
   {
    "nombre": "tolerancia de la probabilidad media",
    "valor": "20 % relativo",
-   "origen": "encargo 21, validación 12"
+   "origen": "petición 21, validación 12"
   },
   {
    "nombre": "intervalo",
    "valor": "1000 remuestreos de los 12 meses, semilla 42, percentiles 2,5 y 97,5",
-   "origen": "skill §8; encargo 21"
+   "origen": "método §8; petición 21"
   }
  ],
  "teoria": [
@@ -1750,13 +1750,13 @@
   "5.1: las tres vías de mejora si el modelo no supera a la regla.",
   "4.6 y 5.3: el intervalo de la diferencia remuestreando meses, que es la unidad de la medida."
  ],
- "datos_personales": "Los datos son de discos: serial_number identifica un disco, no a una persona (reglas §9), y el modelo no lo lee. No usa ni deja ninguna columna de datos personales. No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
+ "datos_personales": "Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9), y el modelo no lo lee. No usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
  "limites": [
   "El modelo vale para los discos de datos de Backblaze, con una foto al mes, en los periodos de construcción y validación; si cambian los modelos de disco o los centros, su rendimiento puede caer (deriva).",
   "Detecta asociaciones, no causas: que un contador pese no dice que cause el fallo.",
-  "No ve los fallos que llegan sin aviso en la última foto mensual (reglas §7).",
+  "No ve los fallos que llegan sin aviso en la última foto mensual (reglas, apartado 7).",
   "La preselección de la logística se hizo una vez y entra fija en cada pliegue: su validación cruzada sale algo optimista; cuánto, NO SE PUEDE SABER sin medirlo.",
-  "Las cuatro variables nuevas candidatas de la matriz (P-04) no se crearon en este encargo."
+  "Las cuatro variables nuevas candidatas de la matriz (P-04) no se crearon en esta petición."
  ],
  "ejecucion_parcial": {
   "segundos_busqueda": 3443.2,

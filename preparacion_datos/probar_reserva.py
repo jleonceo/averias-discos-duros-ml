@@ -1,4 +1,4 @@
-"""Prueba de que la reserva del caso 68 está apartada (permiso de Juan, 17/11/2026: «Sí, apártala»).
+"""Prueba de que la reserva del caso 68 está apartada (permiso de el responsable del caso, 17/11/2026: «Sí, apártala»).
 
 Uso: python -I probar_reserva.py <poda entera> <trabajo> <reserva>
 

@@ -1,9 +1,9 @@
 ---
 titulo: Plan de calidad de los datos del caso 68 · qué va a comprobar el script de calidad sobre los cuatro datasets, antes de escribirlo
-estado: propuesta del 17/11/2026; aprobada por Juan ese día («Sí, apruebo»), con las cuatro lecturas cerradas como dice «Lo aprobado» y las ocho reglas candidatas como comprobaciones. El script de calidad va en el encargo siguiente
+estado: opción del 17/11/2026; aprobada por el responsable del caso ese día («Sí, apruebo»), con las cuatro lecturas cerradas como dice «Lo aprobado» y las ocho reglas candidatas como comprobaciones. El script de calidad va en la petición siguiente
 fecha_documento: 2026-11-17
-dueno: Juan (decide) · Claude (redacta)
-fuente: contexto-proyecto/fuentes/diccionario-datos-origen.json (ejecución del 17/11/2026); negocio/reglas-negocio.md; informes/reconocimiento/reconocimiento_de_los_datos.ipynb, secciones 2, 9, 11, 12, 14 y 15; skill calidad-datos (SKILL.md, comprobaciones.md y parametros.md)
+dueno: El responsable del caso (decide)
+fuente: config/fuentes/diccionario-datos-origen.json (ejecución del 17/11/2026); negocio/reglas-negocio.md; informes/reconocimiento/reconocimiento_de_los_datos.ipynb, secciones 2, 9, 11, 12, 14 y 15; método calidad-datos (METODO.md, comprobaciones.md y parametros.md)
 ---
 
 # Plan de calidad de los datos
@@ -14,7 +14,7 @@ Este plan dice qué va a comprobar el script de calidad en los cuatro datasets d
 fallo, recuento diario y lista de fallos**. También dice con qué parámetros y sobre qué columnas trabaja. El esquema de
 Backblaze no es un dataset: se usa como diccionario de la organización y solo entra en la revisión de nombres.
 
-Hacen falta dos cosas de Juan antes de escribir el script:
+Hacen falta dos cosas de el responsable del caso antes de escribir el script:
 
 - **el visto bueno al plan**, o los cambios que quiera en los bloques, los parámetros o las comprobaciones;
 - **cuatro decisiones de lectura**, marcadas abajo como **[DECISIÓN]** y reunidas al final. Ninguna la fijan las reglas.
@@ -44,7 +44,7 @@ la fila o, en ventanas y fallos, por el día del fallo:
 - recuento: 140.361 y 61.141;
 - fallos: 13.376 y 4.584.
 
-Los discos de arranque se separan por la capacidad de su modelo (reglas §3). En las fotos son 246.280 filas; en las
+Los discos de arranque se separan por la capacidad de su modelo (reglas, apartado 3). En las fotos son 246.280 filas; en las
 ventanas, 28.558; en el recuento, 61.775; y en la lista, 964 fallos. Los fallos de discos de datos son 12.478 en
 construcción y 4.518 en validación.
 
@@ -101,15 +101,15 @@ Las ventanas tienen las mismas columnas que las fotos y, además, `dia_fallo`.
 | código de ausencia numérico candidato | un valor en un extremo del rango con el 5 % de las filas o más | por defecto; se fijó sin fuente y este caso es de los primeros que lo usan |
 | colas de cada magnitud | diez valores por cada lado | por defecto |
 | fecha de Excel candidata | no aplica | ninguna fecha llega como número: vienen como fecha o como texto ISO |
-| horizonte de fechas futuras | 30/06/2025 | reglas §5, fecha de referencia; no la fecha de ejecución |
+| horizonte de fechas futuras | 30/06/2025 | reglas, apartado 5, fecha de referencia; no la fecha de ejecución |
 
 **Las dimensiones del reparto de vacíos** son cinco:
 
-- el periodo, construcción o validación (reglas §7);
-- el fabricante, sacado del nombre del modelo con sus dos excepciones (reglas §3);
+- el periodo, construcción o validación (reglas, apartado 7);
+- el fabricante, sacado del nombre del modelo con sus dos excepciones (reglas, apartado 3);
 - el año de la fecha de la fila;
-- disco de datos o de arranque, por la capacidad del modelo (reglas §3);
-- en las columnas de sitio, antes y después del 01/07/2023 (reglas §4).
+- disco de datos o de arranque, por la capacidad del modelo (reglas, apartado 3);
+- en las columnas de sitio, antes y después del 01/07/2023 (reglas, apartado 4).
 
 Además, el modelo entra como dimensión en los contadores, porque es la que comprueba que un contador vacío quiere decir
 que ese modelo no lo apunta.
@@ -119,15 +119,15 @@ que ese modelo no lo apunta.
 El diccionario deja ver cinco. Cuatro tienen el significado fijado por las reglas, y el script los cuenta sin preguntar:
 
 - **Capacidad -1 o 0,1 TB.** Son 2.729 filas de fotos, 165 de ventanas y 2.102 del recuento. En las fotos, la capacidad de su
-  modelo las pone casi todas en discos de datos (2.725) y 4 en discos de arranque. Las reglas §3 las resuelven con la
+  modelo las pone casi todas en discos de datos (2.725) y 4 en discos de arranque. Las reglas, apartado 3 las resuelven con la
   capacidad del modelo, y ningún modelo trae dos capacidades válidas.
 - **Centro «sin dato» en el recuento.** Son 84.647 filas, con 249.886.684 días de disco; 4.551 de ellas son desde el
-  01/07/2023. En fotos y ventanas el centro viene vacío, no con texto. Las reglas §4 y §5 dicen que no consta y que se
+  01/07/2023. En fotos y ventanas el centro viene vacío, no con texto. Las reglas, apartado 4 y §5 dicen que no consta y que se
   cuenta.
-- **Centro vacío en fotos y ventanas.** Falta en todas las filas anteriores al 01/07/2023, como dicen las reglas §4. Desde
+- **Centro vacío en fotos y ventanas.** Falta en todas las filas anteriores al 01/07/2023, como dicen las reglas, apartado 4. Desde
   esa fecha falta en 76.954 filas de fotos de construcción y en 158.818 de validación; el script dirá cuántas son de
   discos de arranque.
-- **Ranura vacía.** Falta en todas las filas de discos de arranque (101.607 en fotos), que las reglas §3 describen sin
+- **Ranura vacía.** Falta en todas las filas de discos de arranque (101.607 en fotos), que las reglas, apartado 3 describen sin
   ranura, y en 1.608 filas de fotos de discos de datos.
 
 El quinto no lo fija ninguna regla:
@@ -146,7 +146,7 @@ dirá como ausencia de la fila. Así se explican casi todas las 2.738 filas de d
 
 Cada regla se mira en los datos con una medida concreta. Ninguna se aplica a los datos en esta fase.
 
-- **La capacidad de un disco es la de su modelo (reglas §3).** Capacidades válidas por modelo en cada tabla, y filas con -1
+- **La capacidad de un disco es la de su modelo (reglas, apartado 3).** Capacidades válidas por modelo en cada tabla, y filas con -1
   o 0,1 TB por modelo y por fallo afectado.
 - **El fabricante sale del nombre del modelo, con las dos excepciones (§3).** Lista de los modelos que no siguen el patrón
   de su fabricante. Se espera que salgan los dos de la regla y los de los discos de arranque; cualquier otro se dice.
@@ -204,12 +204,12 @@ El diccionario añade una que el reconocimiento no vio, porque miró la temperat
 ## Reglas candidatas
 
 Son reglas que se ven en los datos y que ningún documento fija. El script cuenta las filas que incumpliría cada una y no
-la aplica. Si Juan aprueba alguna, pasa a las reglas de negocio y se comprueba en la ejecución siguiente.
+la aplica. Si el responsable del caso aprueba alguna, pasa a las reglas de negocio y se comprueba en la ejecución siguiente.
 
 - **RC-01 · Las horas encendido de un disco no bajan entre dos fotos.** Columna `smart_9_raw`; el reconocimiento contó 3.468
   bajadas de más de un día.
 - **RC-02 · El modelo y la capacidad de un disco no cambian entre fotos.** Columnas `model` y `capacity_bytes`.
-- **RC-03 · Los cinco contadores de avería no bajan con el tiempo en un mismo disco.** Las reglas §3 lo dan como supuesto
+- **RC-03 · Los cinco contadores de avería no bajan con el tiempo en un mismo disco.** Las reglas, apartado 3 lo dan como supuesto
   («casi nunca vuelven a cero»); el script cuenta las bajadas.
 - **RC-04 · La temperatura está entre 10 y 70 grados.** Columna `smart_194_raw`; en las ventanas hay valores de hasta 117.
 - **RC-05 · Toda foto con `failure = 1` está en la lista de fallos, el mismo disco y el mismo día.** El reconocimiento casó
@@ -229,7 +229,7 @@ ellos:
 - **Los contadores 187 y 188 solo los traen los Seagate.** Su vacío pasa del 48 % de la construcción al 64 % de la
   validación, porque cambia la mezcla de fabricantes.
 - **La variable objetivo está muy desequilibrada.** Con el fallo a 90 días, la construcción tiene 34.001 casos frente a
-  10.428.469 no casos (reconocimiento, sección 14). El objetivo aprobado es a 30 días (CP-004), y el script dará también
+  10.428.469 no casos (reconocimiento, sección 14). El objetivo aprobado es a 30 días (cuestión 004), y el script dará también
   esa cuenta.
 - **Las ventanas solo existen para discos que fallan.** Usar sus columnas día a día para el modelo mezclaría con el objetivo
   información que solo tienen los que fallan.
@@ -237,7 +237,7 @@ ellos:
 - **Columnas calculadas a partir de otras.** Cada nota normalizada sale del valor en bruto de su contador, y la capacidad
   sale del modelo.
 
-## Las decisiones de Juan
+## Las decisiones de el responsable del caso
 
 Las cuatro son lecturas con más de una opción legítima que las reglas no fijan. El script diagnostica igual las columnas
 afectadas y deja su posible acción como pregunta.
@@ -258,19 +258,19 @@ afectadas y deja su posible acción como pregunta.
   margen.
 - El esquema se compara con las columnas de las fotos y las ventanas. Las 66 columnas que nombra y que esos datasets no
   traen se quitaron al preparar los cuatro datasets; desde aquí no se puede comprobar si estaban vacías o eran constantes.
-- No existe `contexto-proyecto/fuentes/proteccion-datos.json`: los datos no pasaron por la protección. El paso 2a se
-  saltó el 17/11/2026 con el sí de Juan porque no hay datos de personas (reglas §9), y ninguna columna es un dato personal.
+- No existe `config/fuentes/proteccion-datos.json`: los datos no pasaron por la protección. El paso 2a se
+  saltó el 17/11/2026 con el sí de el responsable del caso porque no hay datos de personas (reglas, apartado 9), y ninguna columna es un dato personal.
 - No se miran los datos de validación contra el fallo: en validación el script solo cuenta filas, vacíos y formatos.
 
 ## Lo aprobado
 
-Juan aprobó el plan el 17/11/2026 («Sí, apruebo»). Las cuatro lecturas no eran decisiones de negocio, y quedaron
+El responsable del caso aprobó el plan el 17/11/2026 («Sí, apruebo»). Las cuatro lecturas no eran decisiones de negocio, y quedaron
 cerradas así, como criterio técnico:
 
 - **D1:** los modelos que solo se distinguen por los espacios tras «WDC» son el mismo modelo, porque son los mismos
   discos, con el mismo número de serie, escritos de dos formas. La corrección los junta.
 - **D2:** el 188 ya lo deciden las reglas: cuenta como aviso cuando pasa de cero (§3) y no entra en la suma de la regla
-  de los contadores (§7, CP-010). Su valor como variable del modelo se mira en la preselección del paso 5.
+  de los contadores (§7, cuestión 010). Su valor como variable del modelo se mira en la preselección del paso 5.
 - **D3:** el 5 y el 187 pegados a 65.535 se tratan como el tope del contador. No cambian nada: el disco avisa igual.
 - **D4:** el 0 de `cluster_id` no se decide, porque ninguna pregunta usa esa columna. Se cuenta y se dice.
 

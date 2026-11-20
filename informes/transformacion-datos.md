@@ -10,7 +10,7 @@
 - **Entrada:** `data/processed/fallos_corregido.parquet`, 17.960 filas y 2 columnas, huella `59e45676a6a7…`.
 - **Entrada:** `data/processed/calendario.parquet`, 2.008 filas y 7 columnas, huella `e76a8d082426…`.
 - **Salida:** las nueve tablas de `data/processed/` que lista «Dataset generado».
-- **Contexto:** `contexto-proyecto/negocio/reglas-transformacion.md` (aprobado el 17/11/2026), `reglas-negocio.md`, `modelo/modelo-datos.md`, el plan de cruces de `informes/modelado-datos.json` y `sector/precios_de_coste_discos.md`.
+- **Contexto:** `config/negocio/reglas-transformacion.md` (aprobado el 17/11/2026), `reglas-negocio.md`, `modelo/modelo-datos.md`, el plan de cruces de `informes/modelado-datos.json` y `sector/precios_de_coste_discos.md`.
 - **Ejecución:** 2026-11-17T20:06:35, con Python 3.13.15, pandas 3.0.6 y pyarrow 24.0.0. Fecha de los datos: 2025-06-30.
 
 ## Objetivo
@@ -36,8 +36,8 @@ Marcas: (P) usa información posterior a la fila; (O) sale del objetivo; (S) es 
 
 - `capacidad_tb`: capacity_bytes / 10^12, a un decimal. De `capacity_bytes`.
 - `tipo_disco`: arranque hasta 2.048.408.248.320 bytes; datos por encima. De `capacity_bytes`.
-- `fabricante`: prefijo del modelo y dos excepciones (reglas §3). De `model`.
-- `garantia_anos`: familia del modelo (reglas §6). De `model`.
+- `fabricante`: prefijo del modelo y dos excepciones (reglas, apartado 3). De `model`.
+- `garantia_anos`: familia del modelo (reglas, apartado 6). De `model`.
 - `fecha_compra` (P): media de (primera foto - horas encendido) de los discos del modelo; ficha de hoy. De `fecha`, `smart_9_raw`.
 - `coste_gb_compra` (P): coste por GB de su capacidad en su fecha de compra (curva, inferido o vecinas). De `capacidad_tb`, `fecha_compra`.
 - `precio_usd` (P): coste_gb_compra × capacidad_tb × 1.000; ficha de hoy. De `coste_gb_compra`, `capacidad_tb`.
@@ -200,8 +200,8 @@ Los modelos que no llegan al mínimo y los años de edad con menos de 20 fallos 
 
 ## Datos personales
 
-- No existe contexto-proyecto/fuentes/proteccion-datos.json: los datos no pasaron por la protección.
-- No hay datos de personas (reglas §9): el número de serie identifica un disco, no a una persona.
+- No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.
+- No hay datos de personas (reglas, apartado 9): el número de serie identifica un disco, no a una persona.
 - Esta transformación no usa ni deja ninguna columna de datos personales.
 
 ## Pendiente para el modelo
@@ -224,13 +224,13 @@ Los modelos que no llegan al mínimo y los años de edad con menos de 20 fallos 
 - 13.9, primero y último de cada grupo: la primera aparición, la última foto y el último día de la ventana con sitio se toman de la fila real, ordenada por fecha, no con first(), que salta los vacíos.
 - 14.7, tiempo transcurrido: la edad, los días entre fallos del mismo tomo y los meses entre fotos se miden en unidades totales (horas entre 8.766, días entre 365,25), no con las partes de la fecha.
 - 12.6 y 11.14, cambiar el nivel: los días de disco y los fallos son flujos y se suman; cada agregación cuadra sus sumas antes y después, y las variables que usan información posterior quedan marcadas.
-- Skill, «Agregar por tiempo»: en un flujo, una celda sin registros vale cero solo si se sabe que no hubo nada; las filas de dias_por_tramo que solo tienen fallos dejan sus días de disco vacíos.
+- Método, «Agregar por tiempo»: en un flujo, una celda sin registros vale cero solo si se sabe que no hubo nada; las filas de dias_por_tramo que solo tienen fallos dejan sus días de disco vacíos.
 
 ## Límites
 
 - La fecha de compra y el precio de dim_modelo son una ficha de hoy, calculada con todo el periodo: no entran en fotos_riesgo.
 - En las tablas agregadas, «mes» es el primer día del mes y la clave de trimestre lleva el año al lado («ano» y «trimestre» del Calendario), porque el trimestre del Calendario va de 1 a 4.
-- suma_contadores_sin_188 queda vacía cuando los cuatro contadores lo están: un contador vacío no es un cero (reglas §5).
+- suma_contadores_sin_188 queda vacía cuando los cuatro contadores lo están: un contador vacío no es un cero (reglas, apartado 5).
 - coincide_con_anterior queda vacía cuando no hay días desde el anterior del tomo (el primero de su tomo o sin tomo), como dias_desde_anterior_del_tomo.
 - En dias_por_tramo, las filas que solo tienen fallos dejan sus días de disco vacíos: hubo discos, pero ninguna foto con que repartir sus días.
 - Las fotos de dias_por_tramo e inicio_trimestre son todas las de discos de datos, también la del día del fallo, porque ese día el disco está en servicio y cuenta como día de disco.
