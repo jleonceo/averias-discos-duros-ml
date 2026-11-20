@@ -4,7 +4,7 @@ La logística queda con 25 de sus 62 variables (169 columnas en el ajuste con la
 
 ## ¿Hacía falta?
 
-En la regresión logística sí. Es un modelo lineal: scikit-learn no da la significación de cada coeficiente y el tope de columnas obliga (método §1), y el responsable del caso lo fijó en las reglas, apartado 7 el 18/11/2026. El bosque y el HistGradientBoosting no se preseleccionan por votación y reciben las 64 columnas de la matriz.
+En la regresión logística sí. Es un modelo lineal: scikit-learn no da la significación de cada coeficiente y el tope de columnas obliga (método §1). El responsable del caso lo fijó en las reglas, apartado 7 el 18/11/2026. El bosque y el HistGradientBoosting no se preseleccionan por votación y reciben las 64 columnas de la matriz.
 
 La muestra de partida tiene 232.243 fotos: las 11.962 con fallo y 220.281 sanas, el 2 % de cada mes.
 La preselección usó 232.243 de ellas, de 2020-01-01 a 2024-06-01, la muestra entera.
@@ -21,7 +21,7 @@ Ninguna variable sola llega a |2·AUC − 1| de 0,90, el umbral de posible fuga 
 
 ## Cómo se votó
 
-Modo comparativo y escenario de consenso amplio, fijado por el responsable del caso antes de ver el resultado: entra una variable si la marcan dos o más de los tres métodos. La unidad de voto es la variable de origen: recibe el voto de un método si alguna de sus columnas pasa su corte, y entra o sale con todas.
+Modo comparativo y escenario de consenso amplio, fijado por el responsable del caso antes de ver el resultado: entra una variable si la marcan dos o más de los tres métodos. La unidad de voto es la variable de origen: recibe el voto de un método si alguna de sus columnas pasa su corte y entra o sale con todas.
 
 Entran siempre, sin votar: smart_5_raw, smart_187_raw, smart_197_raw, smart_198_raw, para poder explicar la lista a los técnicos con lo que ya vigilan.
 
@@ -291,7 +291,7 @@ Con 11.962 fotos con fallo en entrenamiento, la logística admite como mucho 1.1
 
 Entran 25 variables, con 169 columnas en el ajuste con la muestra: cambio_smart_197, datacenter, meses_desde_foto_anterior, smart_183_raw, smart_184_raw, smart_187_raw, smart_188_no_cero, smart_189_raw, smart_192_normalized, smart_195_normalized, smart_197_raw, smart_198_raw, smart_199_raw, smart_200_normalized, smart_220_raw, smart_223_raw, smart_226_raw, smart_22_normalized, smart_240_raw, smart_241_raw, smart_24_normalized, smart_2_normalized, smart_4_raw, smart_5_normalized, smart_5_raw.
 
-El modelado guarda la lista de variables, no la de columnas: los tramos se aprenden en cada ajuste y sus nombres cambian de un pliegue a otro. El preprocesador se monta entero y después se quedan las columnas cuyo origen está en la lista. Por eso fabricante sigue sirviendo de clave a los tramos de smart_1_raw y smart_7_raw aunque no entre, y sus columnas propias solo salen si entra.
+El modelado guarda la lista de variables, no la de columnas: los tramos se aprenden en cada ajuste y sus nombres cambian de un pliegue a otro. El preprocesador se monta entero y después se quedan las columnas cuyo origen está en la lista. Por eso fabricante sigue sirviendo de clave a los tramos de smart_1_raw y smart_7_raw aunque no entre. Sus columnas propias solo salen si entra.
 
 ## Validaciones
 
@@ -320,7 +320,7 @@ Los apartados del manual aplicados:
 
 - 36.2 y 36.3: la selección aprende de los datos, así que se hace solo con entrenamiento y sobre una muestra, porque detectar qué variables predicen pide menos filas que ajustar el modelo final.
 - 36.5: información mutua con semilla y la máscara de discretas, porque todas las columnas de la logística son 0 y 1.
-- 36.6: RFECV con un bosque, que expone importancias, y pliegues por fecha; el paso del 5 % porque con cientos de columnas quitar de una en una es lento.
+- 36.6: RFECV con un bosque, que expone importancias y pliegues por fecha; el paso del 5 % porque con cientos de columnas quitar de una en una es lento.
 - 36.7: importancia por permutación sobre filas que el modelo auxiliar no vio, la reserva más reciente de entrenamiento.
 - 36.8: votación de los tres métodos, con el corte de los dos que dan un valor por salto natural.
 - 36.9 y 5.2: entre las que pasaron, Spearman y V de Cramér para no dejar dos variables que dicen lo mismo en una regresión, donde se reparten el efecto y pueden salir con el signo al revés.
@@ -331,7 +331,7 @@ Los datos son de discos: serial_number identifica un disco, no a una persona (re
 
 ## Límites
 
-- La preselección se hizo una vez, sobre una muestra de entrenamiento, y su lista entra fija en cada pliegue del modelado: la validación cruzada del modelado sale algo optimista (método §9). Cuánto, NO SE PUEDE SABER sin medirlo.
+- La preselección se hizo una vez, sobre una muestra de entrenamiento. Su lista entra fija en cada pliegue del modelado: la validación cruzada del modelado sale algo optimista (método §9). Cuánto, NO SE PUEDE SABER sin medirlo.
 - Los modelos auxiliares van sin búsqueda y solo ordenan; sus cifras no son rendimiento.
 - El AUC de cada variable sola se mide en la misma muestra, con el valor en bruto y con cada tramo puntuado por su tasa de fallo: sirve para la alarma, no como medida del modelo.
 - El parecido entre dos variables se mide solo con las fotos que tienen dato en las dos, para que el vacío de los contadores que solo registra algún modelo no fabrique parecidos; cada par dice con cuántas filas se midió.

@@ -24,11 +24,11 @@ pregunta.
 
 ## Lo que ya se sabe de los cuatro datasets
 
-El diccionario del origen leyó los cuatro datasets enteros, sin muestra, y el script de calidad parte de él sin volver a
+El diccionario del origen leyó los cuatro datasets enteros, sin muestra. El script de calidad parte de él sin volver a
 contar lo que ya trae: filas, tipos, roles, vacíos y valores distintos de cada columna.
 
 - Fotos mensuales: 14.851.669 filas en 66 ficheros, de 101 a 130 columnas; 408.208 discos. Una fila es un disco el día 1
-  de un mes, y la clave disco y fecha no se repite.
+  de un mes. La clave disco y fecha no se repite.
 - Ventanas de fallo: 536.825 filas en 22 ficheros, de 102 a 131 columnas; 17.960 ventanas. Una fila es un disco en uno
   de los 30 días anteriores a su fallo o en el del fallo. Hay 3.542 ventanas de menos de 31 filas y ninguna fila fuera de
   su ventana.
@@ -62,7 +62,7 @@ y no trae tipos ni valores.
   decimal, el centro sin tipo en las fotos anteriores a julio de 2023 y la fecha que viene dos veces, como texto (`date`) y
   como fecha (`fecha`).
 - 3.4 Valores ausentes. Sí, con el reparto por segmento, los códigos de ausencia (§4) y los vacíos por fila (§8).
-- 3.5 Duplicados. Sí: exactos, sin el número de serie (§5), por clave, y lógicos (un mismo modelo escrito de dos formas).
+- 3.5 Duplicados. Sí: exactos, sin el número de serie (§5), por clave y lógicos (un mismo modelo escrito de dos formas).
 - 3.6 Claves y granularidad. Sí, en las cuatro tablas, con la clave que fija el diccionario.
 - 3.7 Categóricas y texto. Sí, en modelo y centro, con las categorías raras (§10). No hay texto libre.
 - 3.8 Numéricas y atípicos. Solo en las magnitudes: los valores en bruto de los contadores, la capacidad y, en el
@@ -82,7 +82,7 @@ El rol sale del diccionario. Decide qué comprobaciones se aplican a cada column
 - Identificador: `serial_number`, en fotos, ventanas y lista de fallos. Identifica un disco, no a una persona.
 - Categóricas: `model` en fotos, ventanas y recuento; `datacenter` en las tres.
 - Binaria: `failure`, en fotos y ventanas.
-- Códigos: `cluster_id`, `vault_id`, `pod_id` y `pod_slot_num`, y las 48 notas normalizadas de los contadores
+- Códigos: `cluster_id`, `vault_id`, `pod_id` y `pod_slot_num`; las 48 notas normalizadas de los contadores
   que traen las fotos (`smart_N_normalized`). Son notas ordinales que pone cada fabricante. No se suman ni se comparan como cantidades.
 - Magnitudes: `capacity_bytes`; los 71 valores en bruto de los contadores que traen las fotos (`smart_N_raw`); y, en el recuento, `discos`
   y `fallos`.
@@ -116,11 +116,11 @@ que ese modelo no lo apunta.
 
 ## Los códigos de ausencia que ya se ven
 
-El diccionario deja ver cinco. Cuatro tienen el significado fijado por las reglas, y el script los cuenta sin preguntar:
+El diccionario deja ver cinco. Cuatro tienen el significado fijado por las reglas. El script los cuenta sin preguntar:
 
 - Capacidad -1 o 0,1 TB. Son 2.729 filas de fotos, 165 de ventanas y 2.102 del recuento. En las fotos, la capacidad de su
   modelo las pone casi todas en discos de datos (2.725) y 4 en discos de arranque. Las reglas, apartado 3 las resuelven con la
-  capacidad del modelo, y ningún modelo trae dos capacidades válidas.
+  capacidad del modelo. Ningún modelo trae dos capacidades válidas.
 - Centro «sin dato» en el recuento. Son 84.647 filas, con 249.886.684 días de disco; 4.551 de ellas son desde el
   01/07/2023. En fotos y ventanas el centro viene vacío, no con texto. Las reglas, apartado 4 y §5 dicen que no consta y que se
   cuenta.
@@ -128,13 +128,13 @@ El diccionario deja ver cinco. Cuatro tienen el significado fijado por las regla
   esa fecha falta en 76.954 filas de fotos de construcción y en 158.818 de validación; el script dirá cuántas son de
   discos de arranque.
 - Ranura vacía. Falta en todas las filas de discos de arranque (101.607 en fotos), que las reglas, apartado 3 describen sin
-  ranura, y en 1.608 filas de fotos de discos de datos.
+  ranura y en 1.608 filas de fotos de discos de datos.
 
 El quinto no lo fija ninguna regla:
 
-- [DECISIÓN] `cluster_id` vale 0 en 4.781.548 de las 6.885.677 filas de fotos que traen la columna, y en 213.090 filas de
+- [DECISIÓN] `cluster_id` vale 0 en 4.781.548 de las 6.885.677 filas de fotos que traen la columna; en 213.090 filas de
   ventanas. El 0 está en el extremo del rango y pasa del 5 %, así que es un código de ausencia candidato. Puede leerse como
-  un grupo de servidores más o como «sin grupo». Ninguna pregunta del caso usa esta columna, y el diccionario la deja como
+  un grupo de servidores más o como «sin grupo». Ninguna pregunta del caso usa esta columna. El diccionario la deja como
   «no se puede saber».
 
 Hay además una ausencia que es de la fila entera. Las 2.729 filas de fotos con capacidad no válida no traen horas
@@ -146,12 +146,12 @@ dirá como ausencia de la fila. Así se explican casi todas las 2.738 filas de d
 
 Cada regla se mira en los datos con una medida concreta. Ninguna se aplica a los datos en esta fase.
 
-- La capacidad de un disco es la de su modelo (reglas, apartado 3). Capacidades válidas por modelo en cada tabla, y filas con -1
+- La capacidad de un disco es la de su modelo (reglas, apartado 3). Capacidades válidas por modelo en cada tabla y filas con -1
   o 0,1 TB por modelo y por fallo afectado.
 - El fabricante sale del nombre del modelo, con las dos excepciones (§3). Lista de los modelos que no siguen el patrón
   de su fabricante. Se espera que salgan los dos de la regla y los de los discos de arranque; cualquier otro se dice.
 - La edad son las horas encendido y, sin ellas, cuenta desde la primera aparición (§3). Discos sin horas en ninguna
-  foto, discos con horas en unas fotos y no en otras, y fallos con edad negativa por la primera aparición.
+  foto, discos con horas en unas fotos y no en otras y fallos con edad negativa por la primera aparición.
 - Un disco puede fallar dos veces y seguir en servicio tras un fallo (§3). Discos con más de un fallo, discos que
   vuelven a salir en las fotos después de su fallo y si vuelven a fallar.
 - Un disco que falta en una foto y vuelve no ha desaparecido (§3). Discos con huecos entre su primera y su última foto,
@@ -178,7 +178,7 @@ alguna respuesta lo medirá la corrección, no este diagnóstico.
   contará discos y filas de cada variante en cada tabla. Va con la decisión de lectura del modelo.
 - Capacidad -1 o 0,1 TB. Las 2.102 filas del recuento, con las de fotos y ventanas, por modelo y por periodo.
 - Centro «sin dato». Las 84.647 filas del recuento, 4.551 de ellas desde el 01/07/2023, con sus días de disco.
-- Horas encendido. Las 2.738 filas de fotos de discos de datos sin horas, y el fallo que con la primera aparición
+- Horas encendido. Las 2.738 filas de fotos de discos de datos sin horas y el fallo que con la primera aparición
   sale con edad negativa.
 - El 188 por encima de mil millones. 192.593 filas de fotos de discos de datos, por fabricante y modelo. Va con su
   decisión de lectura.
@@ -229,12 +229,12 @@ ellos:
 - Los contadores 187 y 188 solo los traen los Seagate. Su vacío pasa del 48 % de la construcción al 64 % de la
   validación, porque cambia la mezcla de fabricantes.
 - La variable objetivo está muy desequilibrada. Con el fallo a 90 días, la construcción tiene 34.001 casos frente a
-  10.428.469 no casos (reconocimiento, sección 14). El objetivo aprobado es a 30 días (cuestión 004), y el script dará también
+  10.428.469 no casos (reconocimiento, sección 14). El objetivo aprobado es a 30 días (cuestión 004). El script dará también
   esa cuenta.
 - Las ventanas solo existen para discos que fallan. Usar sus columnas día a día para el modelo mezclaría con el objetivo
   información que solo tienen los que fallan.
 - El modelo tiene 98 valores en las fotos, 83 de ellos por debajo del umbral de categoría rara.
-- Columnas calculadas a partir de otras. Cada nota normalizada sale del valor en bruto de su contador, y la capacidad
+- Columnas calculadas a partir de otras. Cada nota normalizada sale del valor en bruto de su contador. La capacidad
   sale del modelo.
 
 ## Las decisiones del responsable del caso
@@ -244,7 +244,7 @@ afectadas y deja su posible acción como pregunta.
 
 | Decisión | Columnas | Lecturas posibles |
 |---|---|---|
-| **D1 · Modelos que solo se distinguen por los espacios** | `model` en fotos, ventanas y recuento (P-01, P-05 y P-09 del diccionario) | son el mismo modelo escrito de dos formas y se cuentan juntos; o son modelos distintos, como los publica Backblaze, y se cuentan aparte |
+| **D1 · Modelos que solo se distinguen por los espacios** | `model` en fotos, ventanas y recuento (P-01, P-05 y P-09 del diccionario) | son el mismo modelo escrito de dos formas y se cuentan juntos; o son modelos distintos, como los publica Backblaze; se cuentan aparte |
 | **D2 · Cómo se lee el 188** | `smart_188_raw` en fotos y ventanas (P-04 y P-08) | recuento de órdenes abortadas que se usa por su valor; formato propio del fabricante que solo vale como cero o no cero; no se usa ni como recuento ni como aviso |
 | **D3 · Los valores del 5 y del 187 pegados a 65.535** | `smart_5_raw` y `smart_187_raw` en fotos y ventanas (P-02, P-03, P-06 y P-07) | son el tope del contador y el valor real es ese o mayor; o son un recuento real del disco |
 | **D4 · El 0 de `cluster_id`** | `cluster_id` en fotos y ventanas | es un grupo de servidores más; o quiere decir «sin grupo» y es una ausencia |
@@ -253,18 +253,18 @@ afectadas y deja su posible acción como pregunta.
 
 - El plan describe lo que hará el script. Las cifras que trae salen del diccionario y del reconocimiento; las del script
   de calidad saldrán de su propia ejecución.
-- Los cuatro datasets traen de cada disco una foto al mes, y día a día solo los 30 días anteriores a cada fallo. Las
+- Los cuatro datasets traen de cada disco una foto al mes; día a día solo los 30 días anteriores a cada fallo. Las
   comprobaciones que siguen a un disco en el tiempo (horas que bajan, contadores que bajan, huecos) tienen un mes de
   margen.
 - El esquema se compara con las columnas de las fotos y las ventanas. Las 66 columnas que nombra y que esos datasets no
   traen se quitaron al preparar los cuatro datasets; desde aquí no se puede comprobar si estaban vacías o eran constantes.
 - No existe `config/fuentes/proteccion-datos.json`: los datos no pasaron por la protección. El paso 2a se
-  saltó el 17/11/2026 con el sí del responsable del caso porque no hay datos de personas (reglas, apartado 9), y ninguna columna es un dato personal.
+  saltó el 17/11/2026 con el sí del responsable del caso porque no hay datos de personas (reglas, apartado 9). Ninguna columna es un dato personal.
 - No se miran los datos de validación contra el fallo: en validación el script solo cuenta filas, vacíos y formatos.
 
 ## Lo aprobado
 
-El responsable del caso aprobó el plan el 17/11/2026 («Sí, apruebo»). Las cuatro lecturas no eran decisiones de negocio, y quedaron
+El responsable del caso aprobó el plan el 17/11/2026 («Sí, apruebo»). Las cuatro lecturas no eran decisiones de negocio. Quedaron
 cerradas así, como criterio técnico:
 
 - D1: los modelos que solo se distinguen por los espacios tras «WDC» son el mismo modelo, porque son los mismos

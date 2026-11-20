@@ -2,11 +2,11 @@
 
 Caso 68, paso 5, bloques 4 y 9 del plan de la analítica. Datos hasta el 30/06/2025; ejecutado el 18/11/2026. Estado: **AVISO**, riesgo medio.
 
-Dos bloques calculados con 143 cifras, todas con su segunda vía, y las nueve validaciones en verde. La cuenta no gana: no vale y se usa la referencia (reglas, apartado 7), con un error absoluto ponderado de 0,2670 frente a 0,2504. Quedan 20 grupos sin conclusión por el mínimo o por falta de precio, y el coste depende de precios inferidos.
+Dos bloques calculados con 143 cifras, todas con su segunda vía y las nueve validaciones en verde. La cuenta no gana: no vale y se usa la referencia (reglas, apartado 7), con un error absoluto ponderado de 0,2670 frente a 0,2504. Quedan 20 grupos sin conclusión por el mínimo o por falta de precio. El coste depende de precios inferidos.
 
 ## Las preguntas y su planteamiento
 
-Las dos preguntas salen del plan de la analítica, aprobado por el responsable del caso el 16/11/2026, y de los planteamientos 1.A y 1.B. Entran los discos de datos, sin los de arranque, del 01/01/2020 al 30/06/2025. La tasa anual de fallo es 100 × 365 × fallos / días de disco.
+Las dos preguntas salen del plan de la analítica, aprobado por el responsable del caso el 16/11/2026 y de los planteamientos 1.A y 1.B. Entran los discos de datos, sin los de arranque, del 01/01/2020 al 30/06/2025. La tasa anual de fallo es 100 × 365 × fallos / días de disco.
 
 - **B4.** Cuánto cuesta cada modelo de disco por terabyte y año, contando los que se rompen.
   - Decisión que apoya: qué modelos comprar: un disco barato que falla mucho puede salir más caro (plan, bloque 4).
@@ -15,17 +15,17 @@ Las dos preguntas salen del plan de la analítica, aprobado por el responsable d
   - Referencia: el coste por TB y año del conjunto de discos en las mismas celdas del ranking; para el mejor modelo, el coste real de todos los modelos con precio de su capacidad y año.
 - **B9.** Cuántos discos fallarán el próximo trimestre, por capacidad.
   - Decisión que apoya: cuántos discos de repuesto comprar y cuántas horas de técnico hacen falta (plan, bloque 9).
-  - Medida: previstos = suma de discos del primer día × días del trimestre × tasa diaria de su modelo y año de edad, con los meses anteriores al primer día; error absoluto ponderado = suma de |previsto − real| / suma de reales, y el sesgo con signo (reglas, apartado 7, cuestión 011).
+  - Medida: previstos = suma de discos del primer día × días del trimestre × tasa diaria de su modelo y año de edad, con los meses anteriores al primer día; error absoluto ponderado = suma de |previsto − real| / suma de reales; el sesgo con signo (reglas, apartado 7, cuestión 011).
   - Mínimo: 50.000 días de disco en la celda de modelo y edad, o de capacidad y edad (reglas, apartado 7; criterio 5).
   - Referencia: repetir los fallos reales del trimestre anterior de la misma capacidad.
 
 La teoría del manual que se aplicó:
 
-- 42.1: elegir la función por la pregunta: ninguna del capítulo calcula un coste con averías ni prevé un recuento, y se usan la fórmula de las reglas y una cuenta.
+- 42.1: elegir la función por la pregunta: ninguna del capítulo calcula un coste con averías ni prevé un recuento. Se usan la fórmula de las reglas y una cuenta.
 - 38.1: el objetivo de negocio, reducir costes y alargar la vida útil, da la decisión de cada bloque.
 - 11.10: ranking de coste con empates por el método «min».
 - 13.6 y 13.7: consultas agrupadas por modelo y año, por año y capacidad y por trimestre y capacidad.
-- 5.5: el coste del conjunto de discos es suma de costes entre suma de terabytes-año, no la media de los costes, y cada cifra va con su base.
+- 5.5: el coste del conjunto de discos es suma de costes entre suma de terabytes-año, no la media de los costes. Cada cifra va con su base.
 - 5.6: el ranking mezcla capacidades y años de compra; el mejor modelo se busca dentro de cada capacidad y año.
 - 4.5 y 4.7: intervalo al 95 % de la tasa; el mínimo de casos lo fijan las reglas del caso, no el manual.
 - 4.11 y 4.12: no se contrastan proporciones: el intervalo de la tasa es el exacto de Poisson, como en la petición 13.
@@ -33,11 +33,11 @@ La teoría del manual que se aplicó:
 
 ## B4 · Cuánto cuesta cada modelo
 
-El modelo más barato por terabyte y año es el TOSHIBA MG10ACA20TE, con 1,8758 dólares, y el más caro el ST8000DM002, con 6,0234 dólares. Entran 32 modelos, con los 152 años de modelo que pasan el mínimo de 50.000 días de disco. 27 llevan puesto; los 5 con menos de 20 fallos salen con su coste, sin puesto y al final de la tabla (reglas, apartado 7, cuestión 012).
+El modelo más barato por terabyte y año es el TOSHIBA MG10ACA20TE, con 1,8758 dólares; el más caro el ST8000DM002, con 6,0234 dólares. Entran 32 modelos, con los 152 años de modelo que pasan el mínimo de 50.000 días de disco. 27 llevan puesto; los 5 con menos de 20 fallos salen con su coste, sin puesto y al final de la tabla (reglas, apartado 7, cuestión 012).
 
-Los fallos pesan poco en el coste: su parte tiene una mediana del 6,44 % entre los 27 modelos con puesto, y el resto es la amortización del precio de compra. El orden por coste se parece poco al orden por tasa de fallo: la correlación de Spearman entre los dos es de 0,495. Además, 5 de los 10 primeros tienen el precio inferido, así que su puesto vale lo que valga ese precio.
+Los fallos pesan poco en el coste: su parte tiene una mediana del 6,44 % entre los 27 modelos con puesto. El resto es la amortización del precio de compra. El orden por coste se parece poco al orden por tasa de fallo: la correlación de Spearman entre los dos es de 0,495. Además, 5 de los 10 primeros tienen el precio inferido, así que su puesto vale lo que valga ese precio.
 
-El puesto se da dentro de cada capacidad y año de compra, que es donde la tasa de fallo decide: entre años de compra, el orden lo pone el precio de cada año (reglas, apartado 7). Hay 19 grupos con algún modelo con puesto, y 7 con dos o más, que son los únicos donde el puesto compara modelos:
+El puesto se da dentro de cada capacidad y año de compra, que es donde la tasa de fallo decide: entre años de compra, el orden lo pone el precio de cada año (reglas, apartado 7). Hay 19 grupos con algún modelo con puesto y 7 con dos o más, que son los únicos donde el puesto compara modelos:
 
 - 4 TB comprados en 2016: 1.º HGST HMS5C4040BLE640, 4,0303 dólares; 2.º HGST HMS5C4040ALE640, 4,3286 dólares.
 - 12 TB comprados en 2019: 1.º HGST HUH721212ALE600, 3,0510 dólares; 2.º HGST HUH721212ALN604, 3,6937 dólares.
@@ -95,7 +95,7 @@ Si los precios inferidos estuvieran un 20 % por debajo o por encima, los diez pr
 
 El conjunto de discos de esas mismas celdas cuesta 3,0760 dólares por TB y año. La serie del gráfico de dispersión, con la tasa, el coste y los discos medios de cada modelo, está en el JSON.
 
-Fuera del ranking quedan 147 años de modelo por debajo del mínimo, con 1.282.168 días de disco y 101 fallos. Los 4 modelos sin precio suman 18.840 días de disco y 0 fallos, y ninguno de sus años llega al mínimo.
+Fuera del ranking quedan 147 años de modelo por debajo del mínimo, con 1.282.168 días de disco y 101 fallos. Los 4 modelos sin precio suman 18.840 días de disco y 0 fallos. Ninguno de sus años llega al mínimo.
 
 La vida real no se puede medir: ningún modelo baja del 50 % de discos vivos en su curva con base. De los 61 modelos de datos, 19 tienen algún año de edad con 20 fallos o más. La curva que más baja es la del ST14000NM0138, que se queda en el 73,72 % a 5 años. El coste usa la vida contable de 6 años.
 
@@ -116,10 +116,10 @@ En 6 combinaciones de año y capacidad la diferencia sale negativa (2020 con 10 
 
 9 combinaciones de año y capacidad no tienen ningún modelo que pase el mínimo y quedan fuera de esta tabla; van en el JSON con su coste real.
 
-El ingreso de Backblaze por terabyte de disco es un orden de magnitud: la capacidad incluye la paridad y el espacio libre, y lo que guardan los clientes no se publica.
+El ingreso de Backblaze por terabyte de disco es un orden de magnitud: la capacidad incluye la paridad y el espacio libre. Lo que guardan los clientes no se publica.
 
-- 2023: 34,05 dólares de ingreso por TB, con 2.995.811 TB de media. El coste por TB y año de todos los discos con precio fue de 3,097 dólares, y de 2,940 dólares con garantía.
-- 2024: 32,66 dólares de ingreso por TB, con 3.907.527 TB de media. El coste por TB y año de todos los discos con precio fue de 2,836 dólares, y de 2,701 dólares con garantía.
+- 2023: 34,05 dólares de ingreso por TB, con 2.995.811 TB de media. El coste por TB y año de todos los discos con precio fue de 3,097 dólares; de 2,940 dólares con garantía.
+- 2024: 32,66 dólares de ingreso por TB, con 3.907.527 TB de media. El coste por TB y año de todos los discos con precio fue de 2,836 dólares; de 2,701 dólares con garantía.
 - 2025: no se calcula: necesita la capacidad de julio a diciembre de 2025, que es reserva (reglas, apartado 6).
 
 Las comprobaciones de B4:
@@ -140,7 +140,7 @@ Las comprobaciones de B4:
 
 La cuenta no gana a la referencia: su error absoluto ponderado es 0,2670, frente a 0,2504 de repetir los fallos del trimestre anterior. Con la regla del caso (reglas, apartado 7), la cuenta no vale y se usa la referencia.
 
-La cuenta prevé de más: su sesgo es de +0,0507, y el de la referencia, de −0,0439. En los 18 trimestres prevé 16.484,0 fallos, y hubo 15.689.
+La cuenta prevé de más: su sesgo es de +0,0507; el de la referencia, de −0,0439. En los 18 trimestres prevé 16.484,0 fallos. Hubo 15.689.
 
 Cada trimestre se prevé con los discos del primer día y las tasas medidas hasta el día anterior. La serie de las tres líneas del gráfico es esta, en fallos:
 
@@ -192,7 +192,7 @@ La sensibilidad, solo para leer, cambia la regla de la tasa. El veredicto lo da 
 - Mínimo de 1 día, 12 meses de historia: error de 0,3313, sesgo de +0,1495; no gana a la referencia.
 - Solo capacidad y año de edad: error de 0,2774, sesgo de +0,0609; no gana a la referencia.
 
-La cuenta no puede ver 413 de los 15.689 fallos reales, el 2,63 %: son de discos que aparecen después del primer día de su trimestre, y la regla de la previsión solo cuenta los discos de ese día (reglas, apartado 7). La referencia sí los cuenta.
+La cuenta no puede ver 413 de los 15.689 fallos reales, el 2,63 %: son de discos que aparecen después del primer día de su trimestre. La regla de la previsión solo cuenta los discos de ese día (reglas, apartado 7). La referencia sí los cuenta.
 
 Las comprobaciones de B9:
 
@@ -237,7 +237,7 @@ Las comprobaciones de B9:
 |---|---|
 | Cada pregunta tiene su planteamiento completo | sí |
 | Cada cifra dice su población, sus filas y su periodo | sí |
-| Cada cifra tiene su segunda vía, y coinciden | sí |
+| Cada cifra tiene su segunda vía y coinciden | sí |
 | Ninguna conclusión sale de un grupo por debajo del mínimo | sí |
 | Cada resultado lleva su referencia, con las mismas filas | sí |
 | Las comprobaciones tienen su resultado o su motivo | sí |
@@ -280,12 +280,12 @@ Cada cifra se rehízo por otro camino. Las segundas vías:
 - mejor modelo de una capacidad y año: el de menor coste por TB y año entre los que pasan el mínimo; empates, por nombre (criterio técnico 3, en la petición).
 - ingreso por TB: «Total revenue» del doc. 16 / capacidad media del año (días × capacidad / días del año en los datos) (criterio técnico 4, en la petición; reglas, apartado 6).
 - tasa de la previsión: modelo y edad, capacidad y edad, o edad, con los meses anteriores al primer día del trimestre y toda la historia (criterio técnico 5, en la petición; reglas, apartado 7).
-- filas de dias_por_tramo sin días de disco: cuentan 0 días, y sus fallos entran en la tasa (reglas de transformación §6 (los fallos de una fila sin días están en «fallos»); criterio, el mismo de las sumas por grupo de pandas, que dejan fuera el vacío).
+- filas de dias_por_tramo sin días de disco: cuentan 0 días. Sus fallos entran en la tasa (reglas de transformación §6 (los fallos de una fila sin días están en «fallos»); criterio, el mismo de las sumas por grupo de pandas, que dejan fuera el vacío).
 - primer trimestre previsto: 2021T1 (plan, bloque 9; petición: tiene al menos un año de tasas detrás).
 - medida de la previsión: error absoluto ponderado de todos los trimestres y capacidades a la vez, con el sesgo al lado (reglas-negocio §7, cuestión 011).
 - confianza de los intervalos: 0,95 (parametros.md de el método y 42.6 del manual).
 - tolerancia de las segundas vías en importes y cifras con decimales: 1e-06 (petición, «SEGUNDA VÍA»; en los años de exposición de la tabla de vida, 0,001 años, por el redondeo de sumar cientos de miles de discos en distinto orden (criterio).
-- mínimo de fallos para tener puesto en el ranking de coste: 20 (reglas-negocio §7, cuestión 012; petición 17: con menos, el modelo sale con su coste y sin puesto, y el resumen del ranking se calcula sin él).
+- mínimo de fallos para tener puesto en el ranking de coste: 20 (reglas-negocio §7, cuestión 012; petición 17: con menos, el modelo sale con su coste y sin puesto; el resumen del ranking se calcula sin él).
 - coste a igual edad: amortización + tasa a igual edad / 100 × coste medio de un fallo del modelo × días de disco / 365 / terabytes-año, con la tasa a igual edad del ranking de B2 de informes/indicadores__discos_modelos_edad.json (petición 17, B4.2; reglas, apartado 7, «Una tasa por modelo se compara a igual edad»).
 - sensibilidad al precio inferido: el precio de los modelos con origen «inferido» × 0,8 y × 1,2; cambia solo la amortización (el disco nuevo de un fallo sale de dim_precio_gb); con los modelos con puesto, cuántos de los 10 primeros siguen y cuál es el primero (criterio técnico, en la petición 17 (B4.3)).
 - puesto del ranking de coste: dentro de cada capacidad y año de compra (el año de fecha_compra de dim_modelo), con cuestión 012; el puesto de todos juntos, al lado, con su resumen (reglas-negocio §7 («El coste por TB y año se ordena dentro de cada capacidad y año de compra», el responsable del caso, 18/11/2026); petición 19).
@@ -301,14 +301,14 @@ Cada cifra se rehízo por otro camino. Las segundas vías:
 ## Límites
 
 - Las cifras describen el periodo del 01/01/2020 al 30/06/2025. Ninguna dice por qué un modelo cuesta más o por qué la previsión falla: solo valen verbos de asociación.
-- El precio no está en los datos. Sale de la tabla de precios por capacidad y año de compra, inferida desde 2023, y 5 de los diez primeros del ranking lo tienen inferido. El coste y el mejor modelo valen lo que valgan esos precios.
+- El precio no está en los datos. Sale de la tabla de precios por capacidad y año de compra, inferida desde 2023; 5 de los diez primeros del ranking lo tienen inferido. El coste y el mejor modelo valen lo que valgan esos precios.
 - Dos modelos de la misma capacidad comprados el mismo año tienen el mismo precio, así que entre ellos el orden lo pone solo la tasa de fallo.
 - 5 modelos tienen menos de 20 fallos y salen sin puesto (cuestión 012); su coste está en la tabla, pero no se ordena.
 - El coste a igual edad depende de la tasa a igual edad del 09: si el 09 cambia, este coste cambia con él. La sensibilidad al precio inferido solo mueve la amortización.
 - La cifra con garantía usa la garantía de la ficha de cada fabricante y la edad al fallar por horas encendido; si Backblaze reclama la garantía no consta (cuestión 005).
 - 2025 tiene seis meses: su fila del mejor modelo no se compara con un año entero.
 - El ingreso por TB es un orden de magnitud: la capacidad incluye paridad y espacio libre. El de 2025 necesita la reserva.
-- La previsión no ve 413 fallos de 15.689 (2,63 %), de discos que entran después del primer día de su trimestre; es la regla de las reglas, apartado 7, y la referencia sí los cuenta.
+- La previsión no ve 413 fallos de 15.689 (2,63 %), de discos que entran después del primer día de su trimestre; es la regla de las reglas, apartado 7. La referencia sí los cuenta.
 - La sensibilidad es solo para leer: cambiar la regla de la tasa después de ver el resultado sería elegir la regla para que salga bien.
 - Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas, apartado 5). La prueba final de la previsión usará la misma función, prever_trimestre, en esos cuatro trimestres.
 - Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí del responsable del caso, porque es un agente.

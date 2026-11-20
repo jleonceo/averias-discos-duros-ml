@@ -9,10 +9,10 @@ fuentes: `reglas-negocio.md` §3 a §7; `01_ficha_del_caso.md`; `cuestiones-pend
 # Reglas de transformación del proyecto
 
 > Este fichero lo lee el método `transformacion-datos`. Dice qué tablas se construyen para el análisis y de dónde sale
-> cada columna. Los criterios no se definen aquí: vienen de `reglas-negocio.md`, que se cita por apartado, y del diseño
+> cada columna. Los criterios no se definen aquí: vienen de `reglas-negocio.md`, que se cita por apartado y del diseño
 > aprobado en `../modelo/modelo-datos.md`. El responsable del caso no ha decidido ningún criterio en este fichero. Hay siete convenciones
 > técnicas que las reglas no fijan, decididas por el analista porque ninguna cambia la respuesta a una pregunta del caso. Van
-> junto a la columna que aclaran, marcadas «(criterio técnico)», y con su medida:
+> junto a la columna que aclaran, marcadas «(criterio técnico)» y con su medida:
 >
 > 1. el año de edad son 8.766 horas (§1);
 > 2. las «capacidades vecinas» del precio son las dos más cercanas con curva ese día (§1);
@@ -26,9 +26,9 @@ fuentes: `reglas-negocio.md` §3 a §7; `01_ficha_del_caso.md`; `cuestiones-pend
 
 ### De qué se parte
 
-De las cuatro tablas corregidas de `data/processed/`, que no se modifican, y del Calendario, siguiendo el diseño
+De las cuatro tablas corregidas de `data/processed/`, que no se modifican y del Calendario, siguiendo el diseño
 aprobado. No hubo integración antes: todos los cruces del plan piden una dimensión o el Calendario, o filtrar o agregar
-antes con una regla, y los hace esta transformación con los controles de `integracion-datos` (`modelo-datos.md` §7).
+antes con una regla. Los hace esta transformación con los controles de `integracion-datos` (`modelo-datos.md` §7).
 Solo se cruza lo que está en el plan de cruces aprobado (cruces 1 a 15 de `informes/modelado-datos.json`).
 
 - `fotos_mensuales_corregido.parquet`: un disco el día 1 de cada mes, 14.851.669 filas de enero de 2020 a junio de
@@ -46,10 +46,10 @@ Cada tabla nueva se guarda aparte en `data/processed/`. La reserva, del 01/07/20
 no se lee (reglas, apartado 5).
 
 La fecha de referencia es el 30/06/2025 (reglas, apartado 5). No hay una sola fecha de corte por fila: cada foto se mira en su
-propio día, y su objetivo se conoce 30 días después (reglas, apartado 7).
+propio día. Su objetivo se conoce 30 días después (reglas, apartado 7).
 
 **Antes de cruzar**, la transformación iguala dos cosas, sin guardarlas en las tablas corregidas (`modelo-datos.md`
-§4): `dia_fallo` pasa de nanosegundos a milisegundos, como `fecha`, y el centro vacío de las fotos y las ventanas pasa a
+§4): `dia_fallo` pasa de nanosegundos a milisegundos, como `fecha`. El centro vacío de las fotos y las ventanas pasa a
 «sin dato», como en el recuento.
 
 **La población.** Todo cálculo usa solo los discos de datos (reglas, apartado 3 y §7). Los de arranque se quedan en dos tablas,
@@ -80,7 +80,7 @@ ventanas.
   los Seagate con «DM» (reglas, apartado 6). Queda vacío en ocho modelos de datos sin garantía comprobada, que suman 35 fallos y
   cuentan como fuera de garantía.
 - `fecha_compra`: la entrada media de los discos del modelo: para cada disco, el día de su primera foto menos sus horas
-  encendido de esa foto, y de ahí la media (reglas, apartado 6). Los discos sin horas en su primera foto no entran en la media.
+  encendido de esa foto; de ahí la media (reglas, apartado 6). Los discos sin horas en su primera foto no entran en la media.
   Vacía en los de arranque.
 - `coste_gb_compra`, en dólares por GB: el de su capacidad en su `fecha_compra`, de `precios_de_coste_discos.md`:
   - si su capacidad tiene curva ese día, la recta entre el valor de principio y el de final de cada año de la tabla;
@@ -100,12 +100,12 @@ fecha (`modelo-datos.md` §3). Por eso no entran en la tabla de la pregunta 4.
 dice cómo se lee un día intermedio. La recta entre los dos es la del reconocimiento, donde se midieron las cifras que
 citan las reglas. «Las capacidades vecinas» se lee como las dos más cercanas con curva ese día, que es lo que hace la
 tabla con 10 TB (8 y 12) y con 18 TB (14 y 16). La otra lectura posible, la más cercana por arriba y por abajo, cambia el
-precio de 17 modelos. Ninguno cambia de puesto en el ranking de todo el periodo, y en el de cada año cambian 2 de las
+precio de 17 modelos. Ninguno cambia de puesto en el ranking de todo el periodo. En el de cada año cambian 2 de las
 152 celdas de modelo y año. La diferencia mayor es de 0,06 dólares por TB y año, en el ST12000NM001G. Medido por el analista
 el 17/11/2026.
 
-**Comprobación.** Los 61 modelos de datos tienen fecha de compra. 57 tienen precio, y los cuatro sin precio suman 18.840
-días de disco, como dice la tabla de precios. El ST6000DX000 sale comprado en abril de 2015, a 198,35 dólares, y la tabla
+**Comprobación.** Los 61 modelos de datos tienen fecha de compra. 57 tienen precio. Los cuatro sin precio suman 18.840
+días de disco, como dice la tabla de precios. El ST6000DX000 sale comprado en abril de 2015, a 198,35 dólares. La tabla
 da abril de 2015 y 200 dólares. El ST4000DM000 sale en noviembre de 2015, la fecha que citan las reglas, apartado 6. Medido por
 el analista con el intérprete del caso el 17/11/2026.
 
@@ -122,14 +122,14 @@ del fallo (reglas, apartado 6).
 
 Para la prueba final hará falta añadir 2026, con el 0,0151 de la tabla de precios.
 
-**Comprobación.** Con estos precios, los 4.538 fallos de discos de datos de 2024 cuestan 832.698 dólares, y 305.124 si
+**Comprobación.** Con estos precios, los 4.538 fallos de discos de datos de 2024 cuestan 832.698 dólares; 305.124 si
 la garantía pagara los que estaban dentro, el 72 % de ellos. Las reglas, apartado 6 dan unos 833.000 y unos 310.000. Medido el
 17/11/2026.
 
 ### 2. Calendario
 
 Ya existe (`calendario.parquet`, del diseño aprobado). Esta transformación no lo cambia: lo une a las demás tablas por
-`fecha`, y a los fallos por `dia_fallo` (cruces 6, 8 y 10).
+`fecha` y a los fallos por `dia_fallo` (cruces 6, 8 y 10).
 
 ### 3. `fotos_riesgo`: una fila por disco de datos y foto mensual
 
@@ -185,11 +185,11 @@ filas para contar fallos:** los fallos se cuentan en `fallos_detalle`.
 
 **Lo que pasa de las fotos sin cambios.** Las demás columnas de la tabla corregida, todas `smart_*`, pasan sin
 cambios. En el grupo de lo que se conoce el día de la foto van los contadores de avería y las candidatas del plan
-(temperatura, 194; errores de cable, 199; encendidos, 12; apagados de emergencia, 192; errores de lectura, 1, y de
+(temperatura, 194; errores de cable, 199; encendidos, 12; apagados de emergencia, 192; errores de lectura, 1; de
 colocación del cabezal, 7). Las demás quedan como «no previstas». Cuáles entran al modelo lo decide la preselección del
 paso 5.
 
-**Lo que sale de la tabla.** Salen tres columnas de la tabla corregida, y ninguna cambia una respuesta:
+**Lo que sale de la tabla.** Salen tres columnas de la tabla corregida. Ninguna cambia una respuesta:
 
 - `failure`, que vale 0 en todas las filas que quedan;
 - `date`, que repite `fecha` (0 valores distintos, `modelo-datos.md` §3);
@@ -235,7 +235,7 @@ para contarlos aparte. Cada fallo toma una sola fila de su ventana, elegida por 
 - `dias_desde_anterior_del_tomo`: los días desde el fallo anterior del mismo tomo, con la tabla ordenada por tomo y
   día. Vacío si es el primero de su tomo o no tiene tomo.
 - `coincide_con_anterior`: verdadero si esos días son menos que el plazo del fallo anterior de su tomo. El plazo cuenta
-  con la capacidad del primero, y su último día ya no coincide (reglas, apartado 7, «Fallos que coinciden en un tomo»). No es un
+  con la capacidad del primero. Su último día ya no coincide (reglas, apartado 7, «Fallos que coinciden en un tomo»). No es un
   cruce: se calcula dentro de la tabla (`modelo-datos.md` §5).
 
 **Del valor** (cruce 5):
@@ -259,14 +259,14 @@ para contarlos aparte. Cada fallo toma una sola fila de su ventana, elegida por 
 
 **Comprobación.** Medido por el analista el 17/11/2026:
 
-- Los fallos: 17.960 en total. 16.996 son de discos de datos, 12.478 en construcción y 4.518 en validación, y 964 de
+- Los fallos: 17.960 en total. 16.996 son de discos de datos, 12.478 en construcción y 4.518 en validación; 964 de
   discos de arranque. Todos tienen la fila del día del fallo.
-- La edad: 82 fallos no traen horas ni el día del fallo ni el anterior, y su edad sale de la primera aparición.
+- La edad: 82 fallos no traen horas ni el día del fallo ni el anterior. Su edad sale de la primera aparición.
 - El aviso: de los 16.996 fallos de discos de datos, 903 no tienen el día anterior. De los 16.093 que lo tienen, 4.046
   llegan sin aviso, el 25,1 %. La corrección dio 16.101 y 4.049 (R-009, C-26). La diferencia, 8 fallos, no la explica
   ninguna medida de hoy: la transformación da las dos cifras y dice cuál vale.
 - El sitio: desde el 01/07/2023 hay 8.634 fallos de discos de datos. 128 no tienen centro y 141 no tienen tomo. Los 8.493
-  con tomo están en 5.404 tomos, y 262 coinciden con el anterior de su tomo.
+  con tomo están en 5.404 tomos; 262 coinciden con el anterior de su tomo.
 - El cuadre por centro: los fallos de cada centro desde el 01/07/2023 son los mismos en esta tabla y en el recuento.
   Son 476 en ams5, 512 en iad1, 2.160 en phx1, 2.806 en sac0, 2.546 en sac2, 6 en yyz1 y 128 sin dato.
 - La garantía: el 66,6 % de los fallos de discos de datos cae dentro.
@@ -297,7 +297,7 @@ de su primera foto. Es un disco entre 402.643.
 
 **Comprobación.** 402.643 discos: 402.450 con foto y 193 que solo salen en la ventana de su fallo. 16.984 acaban en
 fallo, 71.328 desaparecen y 314.331 siguen. Desaparecen avisando 6.557. 16.517 entran con 4 años o más, 9 de ellos entre
-los 193 que solo salen en su ventana, y 66 fallan antes de su primera foto. Medido por el analista el 17/11/2026 y corregido
+los 193 que solo salen en su ventana; 66 fallan antes de su primera foto. Medido por el analista el 17/11/2026 y corregido
 ese día con la transformación (historial). El reconocimiento contó 71.373 discos que dejan de salir sin un
 fallo después de su última foto. Aquí acaban en «desaparece» 71.328: los otros 45 fallaron antes de irse, su vida acaba
 en ese primer fallo y su `evento` es «fallo».
@@ -325,12 +325,12 @@ paso 1 que citan las reglas (en los años 2 y 3 de edad, la tasa pasa del 1,22 y
 **Los días sin foto (criterio técnico).** Si un modelo tiene días en un centro y un mes del recuento y ninguna foto
 ahí, esos días no tienen con qué repartirse. Quedan fuera de esta tabla y se cuentan en el registro de exclusiones. Son
 919.192 días de disco en 110 celdas, el 0,21 % de los días de discos de datos, con 26 fallos del recuento. Repartirlos
-con las fotos del mismo modelo en otro centro mezclaría centros, y la tabla sirve para comparar centros. Al revés, 140
+con las fotos del mismo modelo en otro centro mezclaría centros. La tabla sirve para comparar centros. Al revés, 140
 fallos caen en una fila sin días, porque el disco falló en un modelo, centro, mes y edad sin ninguna foto. Están en
 `fallos` y el script los cuenta.
 
 **Comprobación.** 13.275 filas, 64 de ellas solo con fallos. Se reparten 445.189.491 días de disco de los 446.108.683
-del recuento, y están los 16.996 fallos. La tasa anual del conjunto de discos por año de edad sale del 0,79 % el primer año al
+del recuento. Están los 16.996 fallos. La tasa anual del conjunto de discos por año de edad sale del 0,79 % el primer año al
 2,58 % a los 5. La ficha da 0,78 % y 2,58 %, con los días repartidos por modelo y mes, sin
 separar centros. Los años de edad van de 0 a 10; los años 9 y 10 no tienen ningún fallo. Medido por el analista
 el 17/11/2026.
@@ -376,7 +376,7 @@ Sale solo del recuento, de discos de datos (cruce 8).
 
 - `datacenter`, `mes`: la clave; «sin dato» es el centro que no consta.
 - `dias_disco`, `fallos`: las sumas del recuento.
-- `periodo`, del Calendario, y `con_sitio`: verdadero desde julio de 2023, cuando el centro empieza a constar (reglas
+- `periodo`, del Calendario y `con_sitio`: verdadero desde julio de 2023, cuando el centro empieza a constar (reglas
   §4).
 
 **Comprobación.** 186 filas, 144 desde julio de 2023. En esos dos años, los días de disco y los fallos por centro son:
@@ -418,8 +418,8 @@ cálculo, con sus días de disco, sus fallos y sus fotos, que salen del código 
 - **modelos de 6 TB sin precio:** 4 modelos con 18.840 días de disco, fuera del coste por TB y año. No llegan al
   mínimo del ranking.
 
-Los modelos que no llegan al mínimo y los años de edad con menos de 20 fallos no salen de ninguna tabla. Se marcan, y
-el análisis los enseña aparte (reglas, apartado 7). Las 228 filas que quitó la corrección ya están en R-007 y no se repiten aquí.
+Los modelos que no llegan al mínimo y los años de edad con menos de 20 fallos no salen de ninguna tabla. Se marcan.
+El análisis los enseña aparte (reglas, apartado 7). Las 228 filas que quitó la corrección ya están en R-007 y no se repiten aquí.
 
 ### Lo que no se hace en esta fase
 
@@ -431,7 +431,7 @@ el análisis los enseña aparte (reglas, apartado 7). Las 228 filas que quitó l
   por categoría, ni otros plazos del cambio de un contador. Es el paso 5.
 - No se imputa ningún vacío: un contador vacío quiere decir que el modelo no lo apunta (reglas, apartado 5).
 - Los bloques 1, 5, 6 y 8 se consultan en el análisis sobre estas tablas y las corregidas. Los tramos de temperatura,
-  de datos escritos y leídos y de arranques del bloque 8 no están en las reglas, y los propone el análisis de ese
+  de datos escritos y leídos y de arranques del bloque 8 no están en las reglas. Los propone el análisis de ese
   bloque.
 
 ### Lo que los pasos siguientes necesitan de estas tablas
@@ -440,8 +440,8 @@ el análisis los enseña aparte (reglas, apartado 7). Las 228 filas que quitó l
   Las tasas del conjunto de discos usan los dos periodos, porque describen el conjunto de discos y no ajustan el modelo (reglas, apartado 7).
 - **Modelado (paso 5).** El objetivo de una foto se conoce en su `horizonte_hasta`. Al empezar la validación, el
   01/07/2024, todos los horizontes de construcción ya han acabado, porque el recorte los cierra el 30/06/2024. Dentro de
-  la construcción, cada pliegue por tiempo deja fuera las fotos cuyo horizonte acaba después del primer día que mide, y
-  las cuenta (`aprendizaje-automatico` §3).
+  la construcción, cada pliegue por tiempo deja fuera las fotos cuyo horizonte acaba después del primer día que mide.
+  Las cuenta (`aprendizaje-automatico` §3).
 - **El puesto en la lista.** Para medir los fallos señalados en tomos en peligro, cada fallo de `fallos_detalle` busca
   su `ultima_foto_anterior` en la lista de ese mes.
 - **Producción (paso 7).** El script separa en dos bloques lo que se calcula con la foto tal como está ese día (la

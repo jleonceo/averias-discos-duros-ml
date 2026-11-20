@@ -2,21 +2,21 @@
 
 Caso 68, paso 5, bloques 1 a 3 del plan de la analítica. Datos hasta el 30/06/2025; ejecutado el 18/11/2026. Estado: **AVISO**, riesgo medio.
 
-Tres bloques calculados con 85 cifras, todas con su segunda vía, y las nueve validaciones en verde. B2 compara cada modelo a igual edad y en los mismos trimestres, con φ en el intervalo, y ordena el ranking por la razón (peticiones 17 y 19). Sin conclusión por el mínimo: 147 años de modelo (29 modelos sin ningún año en el ranking), 5 modelos con menos de 20 fallos sin puesto (cuestión 012), 20 años de edad de algún grupo con menos de 20 fallos y 7 curvas de supervivencia cortadas; contar a los que desaparecen avisando cambia la lectura en los años de edad 1, 4 y 8.
+Tres bloques calculados con 85 cifras, todas con su segunda vía y las nueve validaciones en verde. B2 compara cada modelo a igual edad y en los mismos trimestres, con φ en el intervalo y ordena el ranking por la razón (peticiones 17 y 19). Sin conclusión por el mínimo: 147 años de modelo (29 modelos sin ningún año en el ranking), 5 modelos con menos de 20 fallos sin puesto (cuestión 012), 20 años de edad de algún grupo con menos de 20 fallos y 7 curvas de supervivencia cortadas; contar a los que desaparecen avisando cambia la lectura en los años de edad 1, 4 y 8.
 
 ## Las preguntas y su planteamiento
 
-Las tres preguntas salen del plan de la analítica, aprobado por el responsable del caso el 16/11/2026, y del planteamiento 1.A. La población es la misma en las tres: los discos de datos, sin los de arranque, del 01/01/2020 al 30/06/2025. La tasa anual de fallo es 100 × 365 × fallos / días de disco, siempre con sus fallos y sus días.
+Las tres preguntas salen del plan de la analítica, aprobado por el responsable del caso el 16/11/2026 y del planteamiento 1.A. La población es la misma en las tres: los discos de datos, sin los de arranque, del 01/01/2020 al 30/06/2025. La tasa anual de fallo es 100 × 365 × fallos / días de disco, siempre con sus fallos y sus días.
 
 - **B1.** Qué discos de datos tiene Backblaze, cuánta capacidad suman y cómo ha cambiado el conjunto de discos de enero de 2020 a junio de 2025: altas, bajas, modelos principales y centros.
   - Decisión que apoya: ninguna por sí sola; da los discos y los días de disco sobre los que se leen el ranking de B2 y la edad de B3, que son los que deciden compras y renovaciones.
   - Medida: discos el día 1 de cada mes y capacidad = discos × capacidad del modelo / 1.000, en PB; altas = discos con su primera aparición en el trimestre; bajas = fallos y discos que desaparecen sin fallo; discos medios del año = días de disco / días del año en los datos; parte de cada centro en los días del año.
   - Mínimo: 50.000 días de disco en el año para entrar entre los diez de cada año (reglas, apartado 7).
   - Referencia: el total del conjunto de discos de cada mes y de cada año, frente al que se leen las partes por capacidad, fabricante y centro.
-- **B2.** Qué modelos de disco fallan más, por tasa anual de fallo, y si el ranking se mantiene de un año a otro.
+- **B2.** Qué modelos de disco fallan más, por tasa anual de fallo y si el ranking se mantiene de un año a otro.
   - Decisión que apoya: qué modelos comprar y cuáles evitar, porque es la base de la decisión de compra (plan, bloque 2).
-  - Medida: tasa anual de fallo = 100 × 365 × fallos / días de disco (reglas, apartado 6), con su intervalo exacto de Poisson al 95 %; a igual edad, razón = fallos observados / esperados con la tasa de cada año de edad, con el intervalo de Poisson de los observados, y tasa a igual edad = razón × tasa de todas las celdas.
-  - Mínimo: 50.000 días de disco del modelo en el año, y 20 fallos en sus años que pasan el mínimo para llevar puesto y sacar conclusión (reglas, apartado 7, cuestión 012).
+  - Medida: tasa anual de fallo = 100 × 365 × fallos / días de disco (reglas, apartado 6), con su intervalo exacto de Poisson al 95 %; a igual edad, razón = fallos observados / esperados con la tasa de cada año de edad, con el intervalo de Poisson de los observados y tasa a igual edad = razón × tasa de todas las celdas.
+  - Mínimo: 50.000 días de disco del modelo en el año y 20 fallos en sus años que pasan el mínimo para llevar puesto y sacar conclusión (reglas, apartado 7, cuestión 012).
   - Referencia: razón 1: los fallos que tendría el modelo con la tasa de cada año de edad de todos los modelos del ranking juntos, en sus mismas celdas; la tasa de todas esas celdas.
 - **B3.** A qué edad empiezan a fallar los discos y qué parte sigue funcionando a los 1, 3 y 5 años.
   - Decisión que apoya: cuándo renovar, por el año de vida en que sube el riesgo de cada modelo (plan, bloque 3).
@@ -81,7 +81,7 @@ El modelo con más discos de cada año, en discos medios (días de disco del añ
 - 2024: TOSHIBA MG08ACA16TA, 38.497 discos medios; con días de disco de 2020T1 a 2025T2.
 - 2025, con 181 días: TOSHIBA MG08ACA16TA, 40.146 discos medios; con días de disco de 2020T1 a 2025T2.
 
-Los diez de cada año, con su primer y su último trimestre, están en el JSON. Un primer trimestre 2020T1 quiere decir que el modelo ya estaba antes de los datos, y un último 2025T2, que sigue.
+Los diez de cada año, con su primer y su último trimestre, están en el JSON. Un primer trimestre 2020T1 quiere decir que el modelo ya estaba antes de los datos. Un último 2025T2, que sigue.
 
 Reparto de los días de disco por centro desde julio de 2023, cuando el centro empieza a constar:
 
@@ -111,17 +111,17 @@ Las comprobaciones de B1:
 
 De los 299 años de modelo con días de disco, 152 pasan el mínimo de 50.000 días, de 32 modelos. Con esos años, la tasa bruta va del 0,33 % del HGST HMS5C4040BLE640 al 5,90 % del ST14000NM0138.
 
-Cada modelo se compara a igual edad y en los mismos trimestres (reglas, apartado 7): sus fallos frente a los que tendría con la tasa de cada año de edad y trimestre de todos los modelos del ranking juntos. La razón entre los dos dice cuánto falla por encima o por debajo de lo esperado a su edad, y el ranking se ordena por ella. 27 modelos tienen 20 fallos o más y llevan puesto; 5 no llegan y salen con su tasa, sin puesto y sin conclusión (cuestión 012).
+Cada modelo se compara a igual edad y en los mismos trimestres (reglas, apartado 7): sus fallos frente a los que tendría con la tasa de cada año de edad y trimestre de todos los modelos del ranking juntos. La razón entre los dos dice cuánto falla por encima o por debajo de lo esperado a su edad. El ranking se ordena por ella. 27 modelos tienen 20 fallos o más y llevan puesto; 5 no llegan y salen con su tasa, sin puesto y sin conclusión (cuestión 012).
 
-Los fallos de un modelo varían de un trimestre a otro más de lo que supone el intervalo de Poisson. Esa variación de más, φ, vale 3,3668 (medida en 536 celdas de modelo y trimestre, con 504 grados de libertad), y cada intervalo de la razón la lleva dentro: observados y esperados entre φ. La razón no cambia; el intervalo se ensancha.
+Los fallos de un modelo varían de un trimestre a otro más de lo que supone el intervalo de Poisson. Esa variación de más, φ, vale 3,3668 (medida en 536 celdas de modelo y trimestre, con 504 grados de libertad). Cada intervalo de la razón la lleva dentro: observados y esperados entre φ. La razón no cambia; el intervalo se ensancha.
 
 Frente a la comparación de antes, solo a igual edad y sin φ, cambian de veredicto 3 modelos: WDC WUH721816ALE6L0 (de por debajo a no se distingue), HGST HUH721212ALN604 (de por encima a no se distingue) y ST8000DM002 (de por debajo a por encima). La correlación de orden de Spearman entre las dos razones es de 0,9516.
 
 La comparación usa 443.929.499 días de disco y 16.895 fallos, con una tasa del 1,3891 %. Son 897.016 días menos que los del ranking (444.826.515), porque la tabla por año de edad deja fuera los días sin foto.
 
-A igual edad, 13 modelos fallan por encima de lo esperado, 9 por debajo y 5 no se distinguen. Solo por azar saldrían distintos unos 1,4 de los 27, y salen 22.
+A igual edad, 13 modelos fallan por encima de lo esperado, 9 por debajo y 5 no se distinguen. Solo por azar saldrían distintos unos 1,4 de los 27. Salen 22.
 
-Con la tasa bruta, el conjunto de discos de las mismas celdas falla al 1,39 % (16.895 fallos en 444.826.515 días de disco). 10 modelos cambian de lectura entre esa comparación y la de igual edad. Las dos difieren por la edad media de cada modelo: la tasa bruta de un modelo joven se compara con discos más viejos, que fallan más, y la de uno viejo con discos más jóvenes.
+Con la tasa bruta, el conjunto de discos de las mismas celdas falla al 1,39 % (16.895 fallos en 444.826.515 días de disco). 10 modelos cambian de lectura entre esa comparación y la de igual edad. Las dos difieren por la edad media de cada modelo: la tasa bruta de un modelo joven se compara con discos más viejos, que fallan más; la de uno viejo con discos más jóvenes.
 
 - HGST HUH728080ALE600: edad media 4,53 años; con la tasa bruta, no se distingue; a igual edad, por debajo.
 - WDC WUH721816ALE6L0: edad media 1,82 años; con la tasa bruta, por debajo; a igual edad, no se distingue.
@@ -175,7 +175,7 @@ Si se quita cada modelo uno a uno y se rehacen las tasas por año de edad sin é
 
 Lo que no llega al mínimo se da aparte: 147 años de modelo con 1.282.168 días de disco y 101 fallos; 29 modelos no llegan ningún año. La tabla de modelo por año, con la tasa de cada celda que pasa y el recuento de las que no, está en el JSON para el mapa de calor.
 
-Por fabricante y por capacidad entran todos los discos de datos, y todos los discos juntos fallan al 1,39 % (16.996 fallos en 446.108.683 días de disco). Cada grupo mezcla modelos de edades distintas, y por eso va con la edad media de sus días de disco al lado.
+Por fabricante y por capacidad entran todos los discos de datos. Todos los discos juntos fallan al 1,39 % (16.996 fallos en 446.108.683 días de disco). Cada grupo mezcla modelos de edades distintas. Por eso va con la edad media de sus días de disco al lado.
 
 | Fabricante | Días de disco | Fallos | Tasa | Intervalo al 95 % | Edad media | Frente al conjunto de discos |
 |---|---:|---:|---:|---|---:|---|
@@ -281,7 +281,7 @@ La supervivencia sale de una tabla de vida: cada disco cuenta desde la edad que 
 | ST8000NM0055 | 15.231 | 95,39 % | 91,71 % | 88,74 % | el año de edad 9 tiene 0 fallos, menos de 20: la curva se corta después de S(9) |
 | ST4000DM000 | 19.506 | sin dato | sin dato | sin dato | el año de edad 0 tiene 0 fallos, menos de 20: la curva se corta después de S(0) |
 
-Por la otra vía, con las tasas por edad de los días de disco, el conjunto de discos da 99,21 %, 97,19 % y 93,83 % a 1, 3 y 5 años. La diferencia con la tabla de vida queda por debajo de 0,5 puntos: una cuenta usa los días de las fotos y el primer fallo, y la otra los días del recuento y todos los fallos.
+Por la otra vía, con las tasas por edad de los días de disco, el conjunto de discos da 99,21 %, 97,19 % y 93,83 % a 1, 3 y 5 años. La diferencia con la tabla de vida queda por debajo de 0,5 puntos: una cuenta usa los días de las fotos y el primer fallo; la otra los días del recuento y todos los fallos.
 
 El 01/04/2025 había 11.038 discos de 8 años o más, el 3,6 % de 308.836. La tasa del conjunto de discos en esas edades:
 
@@ -335,7 +335,7 @@ Estos grupos se enseñan con su recuento y no se comparan. Los años de edad sin
 |---|---|
 | Cada pregunta tiene su planteamiento completo | sí |
 | Cada cifra dice su población, sus filas y su periodo | sí |
-| Cada cifra tiene su segunda vía, y coinciden | sí |
+| Cada cifra tiene su segunda vía y coinciden | sí |
 | Ninguna conclusión sale de un grupo por debajo del mínimo | sí |
 | Cada resultado lleva su referencia, con las mismas filas | sí |
 | Las comprobaciones tienen su resultado o su motivo | sí |
@@ -375,8 +375,8 @@ Cada cifra se rehízo desde otra tabla. Las segundas vías:
 - veredicto a igual edad: por encima o por debajo si el intervalo de la razón con φ queda entero a un lado de 1; si no, no se distingue (peticiones 17 y 19).
 - comparación con el método anterior: la razón solo a igual edad y sin φ, al lado: los veredictos que cambian y la Spearman de las razones (criterio, para que se vea qué mueve la petición 19).
 - edad media de un modelo: años cumplidos + 0,5, ponderados por días de disco, en sus celdas (criterio: la misma edad media de fabricantes y capacidades de la petición 13).
-- estabilidad de los veredictos a igual edad: quitando cada modelo uno a uno, con las tasas por edad rehechas sin él, y sin el año parcial (directriz 37 del auditor del cierre analítico; petición 17).
-- correlación de Spearman entre la tasa bruta y la razón: con todos los modelos que tienen razón y con los que llevan puesto (criterio: la petición 17 no dice con cuáles, y se dan las dos).
+- estabilidad de los veredictos a igual edad: quitando cada modelo uno a uno, con las tasas por edad rehechas sin él y sin el año parcial (directriz 37 del auditor del cierre analítico; petición 17).
+- correlación de Spearman entre la tasa bruta y la razón: con todos los modelos que tienen razón y con los que llevan puesto (criterio: la petición 17 no dice con cuáles; se dan las dos).
 - confianza de los intervalos: 0,95 (parametros.md de el método y 42.6 del manual).
 - intervalo de una tasa: exacto de Poisson con scipy.stats.chi2 (criterio técnico, fijado en la petición).
 - supervivencia: tabla de vida con entrada tardía, años de edad 0 a 10 (criterio técnico, fijado en la petición).
@@ -400,12 +400,12 @@ Cada cifra se rehízo desde otra tabla. Las segundas vías:
 - 5 modelos tienen menos de 20 fallos en sus años que pasan el mínimo: salen con su tasa, sus fallos y sus días, pero sin puesto y sin conclusión (cuestión 012).
 - Las cifras describen el periodo del 01/01/2020 al 30/06/2025. Ninguna dice por qué un modelo, un fabricante o una edad falla más: solo valen verbos de asociación.
 - 2025 tiene seis meses. Sus discos medios, su columna del mapa y sus días por centro no se comparan con un año entero.
-- Las bajas sin fallo de 2025T2 están incompletas: la última foto de los datos es del 01/06/2025, y un disco que la tiene cuenta como que sigue aunque se vaya en junio.
+- Las bajas sin fallo de 2025T2 están incompletas: la última foto de los datos es del 01/06/2025. Un disco que la tiene cuenta como que sigue aunque se vaya en junio.
 - Comparar fabricantes o capacidades mezcla modelos de edades distintas (reglas, apartado 7). La edad media al lado lo deja ver, pero no lo corrige.
 - El centro solo consta desde el 01/07/2023. Desde entonces, 6.621.213 días de disco de 207.297.278 vienen sin centro y se cuentan aparte.
 - La tasa por edad sale de dias_por_tramo, que reparte los días del recuento con las fotos de cada mes: deja fuera 919.192 días de disco sin foto, el 0,21 % del recuento. Los días por año de edad no tienen otra fuente exacta: se contrastan a través de la supervivencia.
 - En la supervivencia, 3.359 discos tienen la edad final por debajo de la de entrada (horas encendido que bajan, R-009) y no aportan exposición.
-- Un disco que desaparece se cuenta como censurado: se sabe que llegó vivo a su última foto, no si se migró, se retiró sano o falló fuera de los datos. Eso no se puede saber. Contándolos como fallo cuando avisaban, la supervivencia a 5 años pasa del 93,62 % al 91,54 %, y la lectura frente al año anterior cambia en los años de edad 1, 4 y 8.
+- Un disco que desaparece se cuenta como censurado: se sabe que llegó vivo a su última foto, no si se migró, se retiró sano o falló fuera de los datos. Eso no se puede saber. Contándolos como fallo cuando avisaban, la supervivencia a 5 años pasa del 93,62 % al 91,54 %. La lectura frente al año anterior cambia en los años de edad 1, 4 y 8.
 - Si la tasa de los discos más viejos baja porque son los que han aguantado no se puede saber con estos datos: la tasa describe a los que quedan. Los datos no dicen por qué salieron los demás.
 - Ninguna cifra se ha medido hacia adelante: la reserva, del 01/07/2025 al 30/06/2026, no se mira (reglas, apartado 5).
 - Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí del responsable del caso, porque es un agente.

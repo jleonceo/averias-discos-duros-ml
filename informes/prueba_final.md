@@ -2,7 +2,7 @@
 
 El modelo se da por bueno en el año guardado: en la lista de los 100 discos de más riesgo de cada mes encuentra de media 7,73 fallos más que la regla de los cinco avisos SMART. El intervalo de esa diferencia va de 4,82 a 11,45, por encima de cero.
 
-El listón era encontrar más fallos que la regla en la lista de 100, con el intervalo por encima de cero, y un AUC de 0,70 o más. Con todas las fotos medidas juntas, el AUC del modelo es 0,873. El de la regla es 0,816.
+El listón era encontrar más fallos que la regla en la lista de 100, con el intervalo por encima de cero y un AUC de 0,70 o más. Con todas las fotos medidas juntas, el AUC del modelo es 0,873. El de la regla es 0,816.
 
 ## Lo que lo sostiene
 

@@ -8,7 +8,7 @@ fuente: informes/modelado.json; config/modelo/registro-transformaciones.md; conf
 
 # Contrato de producción
 
-Este contrato fija qué hace producción con cada foto mensual de un disco para darle su probabilidad de fallo a 30 días con el modelo aprobado, un HistGradientBoostingClassifier. Cada columna que entra al modelo tiene su cadena de pasos desde el dato en bruto, y cada paso, su clase. Con él aprobado se escribe el código de producción; sin aprobar, no.
+Este contrato fija qué hace producción con cada foto mensual de un disco para darle su probabilidad de fallo a 30 días con el modelo aprobado, un HistGradientBoostingClassifier. Cada columna que entra al modelo tiene su cadena de pasos desde el dato en bruto; cada paso, su clase. Con él aprobado se escribe el código de producción; sin aprobar, no.
 
 ## Lo que se aprueba
 
@@ -109,7 +109,7 @@ Cada paso cita la ficha del registro de transformaciones que lo hizo y, cuando l
 | 3 | P03 · el nombre del modelo | R-004 | no aprende | Los modelos escritos con dos espacios tras «WDC» pasan a su nombre con el mapeo cerrado de decisiones-correccion.json; lo que no está en el mapeo se queda como está. | Ya está aplicado en la tabla de entrenamiento. | Se aplica a la foto y a su historia. |
 | 4 | P04 · la capacidad del modelo | R-005 | necesita otras filas | Una capacidad no válida (-1 o 0,1 TB, por debajo del mínimo de decisiones-correccion.json) pasa a la única capacidad válida de su modelo. | Ya está aplicado en la tabla de entrenamiento. | Se calcula con la foto y su historia, modelo a modelo. |
 | 5 | P05 · los contadores vacíos se quedan vacíos | R-009 | no aprende | Un contador vacío quiere decir que el modelo no lo apunta: no se rellena (C-12). | Ya está así en la tabla de entrenamiento. | No se rellena ningún vacío. |
-| 6 | P06 · la historia de las ventanas sin los días copiados | R-007 | necesita otras filas | De la historia de ventanas salen las filas cuya fecha no es la de su texto (date), que son copia del día siguiente, y las ventanas de fallos que no han ocurrido antes del día de la foto (dia_fallo igual o posterior a su fecha). | Ya está aplicado en la tabla de entrenamiento. | Se aplica a la historia de ventanas antes de usarla. |
+| 6 | P06 · la historia de las ventanas sin los días copiados | R-007 | necesita otras filas | De la historia de ventanas salen las filas cuya fecha no es la de su texto (date), que son copia del día siguiente; salen también las ventanas de fallos que no han ocurrido antes del día de la foto (dia_fallo igual o posterior a su fecha). | Ya está aplicado en la tabla de entrenamiento. | Se aplica a la historia de ventanas antes de usarla. |
 | 7 | P07 · capacidad en TB | R-011; reglas de transformación, «`dim_modelo`» | no aprende | capacidad_tb es la capacidad del modelo entre 10^12, redondeada a un decimal, con el medio hacia arriba. | Llega hecha en la tabla de entrenamiento. | Se calcula en la foto. |
 | 8 | P08 · disco de arranque o de datos | R-011; reglas de transformación, «`dim_modelo`» | no aprende | tipo_disco es «arranque» si la capacidad del modelo no pasa del límite de las reglas, apartado 3 y §7 y «datos» si lo pasa. | Decide la población, ya aplicada en la tabla. | Se calcula en la foto para el motivo de P11. |
 | 9 | P09 · el fabricante | R-011; reglas de transformación, «`dim_modelo`» | no aprende | fabricante sale del nombre del modelo: «ST» es Seagate; TOSHIBA, WDC y HGST delante dan su nombre; dos excepciones escritas en las reglas, apartado 3. | Llega hecho en la tabla de entrenamiento. | Se calcula en la foto. |
@@ -132,7 +132,7 @@ Cada paso cita la ficha del registro de transformaciones que lo hizo y, cuando l
 
 **Por qué va cada paso en su clase**, cuando no es evidente:
 
-- P04, la capacidad del modelo (necesita otras filas). No aprende nada de la tabla de entrenamiento: aplica la regla, apartado 3, la capacidad de un disco es la de su modelo, y para saberla mira otras filas del mismo modelo con capacidad válida. En el desarrollo se miró todo el periodo y cada modelo tenía una sola; al ejecutar se mira solo lo que hay hasta el día de la foto, la propia foto incluida. Si un modelo no tiene ninguna capacidad válida hasta ese día, su fila sale sin puntuar y con su motivo.
+- P04, la capacidad del modelo (necesita otras filas). No aprende nada de la tabla de entrenamiento: aplica la regla, apartado 3, la capacidad de un disco es la de su modelo. Para saberla mira otras filas del mismo modelo con capacidad válida. En el desarrollo se miró todo el periodo y cada modelo tenía una sola; al ejecutar se mira solo lo que hay hasta el día de la foto, la propia foto incluida. Si un modelo no tiene ninguna capacidad válida hasta ese día, su fila sale sin puntuar y con su motivo.
 - P06, la historia de las ventanas sin los días copiados (necesita otras filas). Quita filas de la tabla de historia, nunca de la foto que se puntúa; por eso no es de la clase que quita filas. Sirve para la primera aparición de la edad y para la capacidad del modelo. Una ventana son los 30 días anteriores a un fallo: que exista una fila de ventana el día de la foto anuncia un fallo que ese día no se conoce (arreglo aprobado por el responsable del caso el 19/11/2026).
 - P09, el fabricante (no aprende). Es una regla fija sobre el nombre. En el desarrollo se guardó en dim_modelo, una tabla por modelo, pero esa tabla solo repite la regla: un modelo nuevo la cumple igual. Un modelo que no sigue ningún patrón queda vacío.
 - P10, la garantía (no aprende). Igual que el fabricante: una regla fija sobre el nombre, que la tabla dim_modelo solo guarda.
@@ -159,7 +159,7 @@ El reentreno rehace el modelo con esta receta, leída de informes/modelado.json.
 
 ## El corte
 
-El modelo no decide con un umbral. Cada foto mensual se ordena por la probabilidad, de mayor a menor, y a igual probabilidad por serial_number. La salida lleva una marca por cada lista: los 20, 100, 500 y 1.000 primeros de la foto. La lista principal es la de 100.
+El modelo no decide con un umbral. Cada foto mensual se ordena por la probabilidad, de mayor a menor y a igual probabilidad por serial_number. La salida lleva una marca por cada lista: los 20, 100, 500 y 1.000 primeros de la foto. La lista principal es la de 100.
 
 No se elige un solo tamaño porque el tamaño de la lista lo elige Backblaze según lo que puedan atender sus técnicos, que no consta (reglas, apartado 7, cuestión 010): se dan las listas de 20, 100, 500 y 1.000. Los tamaños se leen de produccion/configuracion.json, que escribe la parte 2.
 
@@ -179,7 +179,7 @@ Los datos son de discos: serial_number identifica un disco y no a una persona (r
 
 - El contrato describe la parte 2, que todavía no existe: nada de él se ha ejecutado sobre los datos.
 - La capacidad del modelo se toma al ejecutar de la historia de fotos y ventanas hasta el día de la foto. En el desarrollo salió de todo el periodo, también del recuento diario. Si algún modelo tiene su única capacidad válida solo en el recuento, NO SE PUEDE SABER sin medirlo; lo mide la parte 2 con las fotos de control.
-- La primera aparición de un disco sin horas encendido solo usa las ventanas de fallos ocurridos antes del día de la foto. El desarrollo usó también las de fallos posteriores: en una de las 2.735 fotos sin horas de fotos_riesgo la edad puede salir distinta, y la prueba del módulo la cuenta aparte.
+- La primera aparición de un disco sin horas encendido solo usa las ventanas de fallos ocurridos antes del día de la foto. El desarrollo usó también las de fallos posteriores: en una de las 2.735 fotos sin horas de fotos_riesgo la edad puede salir distinta. La prueba del módulo la cuenta aparte.
 - En la validación, dos discos con la misma probabilidad cerca del borde de una lista se contaron con su valor esperado (por eso hay cifras con decimales); producción desempata por serial_number. Las listas pueden diferir en esos empates.
 
 ## La aprobación

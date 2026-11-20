@@ -15,7 +15,7 @@ Aprobación: El responsable del caso, 19/11/2026: «Sí, con el arreglo». Está
 - `scripts/pipeline_riesgo.py`: pasa la foto en bruto a las columnas del modelo y construye el Pipeline nuevo cada vez.
 - `produccion/reentrenar.py`: rehace el modelo con la receta fija y lo deja aparte, con su ficha; no sustituye el modelo en uso.
 - `produccion/ejecutar.py`: puntúa una foto mensual sin quitar ninguna fila; lo que no puntúa sale con su motivo.
-- `tests/comprobar_produccion_por_otro_camino.py`: rehace la puntuación por otro camino, sin cargar el modelo, y la compara fila a fila.
+- `tests/comprobar_produccion_por_otro_camino.py`: rehace la puntuación por otro camino, sin cargar el modelo y la compara fila a fila.
 
 ## El reentreno
 
@@ -61,5 +61,5 @@ Los datos son de discos: serial_number identifica un disco, no a una persona (re
 
 - El contrato describe la parte 2, que todavía no existe: nada de él se ha ejecutado sobre los datos.
 - La capacidad del modelo se toma al ejecutar de la historia de fotos y ventanas hasta el día de la foto. En el desarrollo salió de todo el periodo, también del recuento diario. Si algún modelo tiene su única capacidad válida solo en el recuento, NO SE PUEDE SABER sin medirlo; lo mide la parte 2 con las fotos de control.
-- La primera aparición de un disco sin horas encendido solo usa las ventanas de fallos ocurridos antes del día de la foto. El desarrollo usó también las de fallos posteriores: en una de las 2.735 fotos sin horas de fotos_riesgo la edad puede salir distinta, y la prueba del módulo la cuenta aparte.
+- La primera aparición de un disco sin horas encendido solo usa las ventanas de fallos ocurridos antes del día de la foto. El desarrollo usó también las de fallos posteriores: en una de las 2.735 fotos sin horas de fotos_riesgo la edad puede salir distinta. La prueba del módulo la cuenta aparte.
 - En la validación, dos discos con la misma probabilidad cerca del borde de una lista se contaron con su valor esperado (por eso hay cifras con decimales); producción desempata por serial_number. Las listas pueden diferir en esos empates.

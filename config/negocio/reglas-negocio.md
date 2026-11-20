@@ -19,7 +19,7 @@ contestan son las que se aprueben en el paso 1, en «El problema» de `01_ficha_
 
 ## 2. Contexto del negocio
 
-Backblaze vende almacenamiento en la nube (B2), desde 6,95 dólares por terabyte al mes (doc. 15), y copias de seguridad
+Backblaze vende almacenamiento en la nube (B2), desde 6,95 dólares por terabyte al mes (doc. 15) y copias de seguridad
 de ordenadores (doc. 14). En 2025 ingresó 145,8 millones de dólares: 77,2 por contratos de consumo, 68,2 por suscripciones y 0,4 por ventas
 puntuales (doc. 16, que da también 2023 y 2024). Tiene más de 500.000 clientes en más de 175 países.
 
@@ -71,7 +71,7 @@ Un **disco de arranque** es el disco pequeño con el que arranca cada servidor. 
 Un **modelo** es el número de modelo del disco. Es la unidad de compra: Backblaze compra en bloque, por modelo (doc. 9).
 
 - El **fabricante** sale del nombre del modelo: Toshiba, WDC y HGST lo llevan delante; en Seagate el modelo empieza por
-  «ST». Dos modelos no siguen el patrón: el Hitachi HDS5C4040ALE630 cuenta como HGST, la marca que sucedió a Hitachi, y
+  «ST». Dos modelos no siguen el patrón: el Hitachi HDS5C4040ALE630 cuenta como HGST, la marca que sucedió a Hitachi;
   el WUH721816ALE6L4 como WDC, porque los demás discos WUH llevan «WDC» delante. Suman 51.526 días de disco y 7 fallos
   (medido el 17/11/2026).
 - No implica fiabilidad pareja: dos modelos del mismo fabricante y capacidad pueden fallar muy distinto, un HGST de
@@ -87,7 +87,7 @@ La **capacidad** es lo que cabe en el disco, en terabytes. Incluye la parte que 
 - **La capacidad de un disco es la de su modelo**, la que trae casi siempre. En los datos de trabajo, 2.096 filas del
   recuento diario traen -1 y siete días de disco traen 0,1 TB, que son lecturas malas de un modelo de 4 TB y otro de
   6 TB; afectan a 20 fallos. Los 59 modelos con alguna capacidad -1 tienen una capacidad conocida: la misma siempre en
-  57 de ellos, y en los otros dos, la que no es 0,1 TB. Medido el 17/11/2026.
+  57 de ellos; en los otros dos, la que no es 0,1 TB. Medido el 17/11/2026.
 
 ### La edad
 
@@ -97,8 +97,8 @@ que aparece.
 - Cambiado el 17/11/2026. La regla anterior era la de la consulta de Backblaze (doc. 9): horas encendido para los
   discos que ya estaban el 01/01/2020 y primera aparición para los demás. Medido en los datos de trabajo, de los
   279.754 discos que entran después, 2.699 llegan con más de un año de horas y 1.314 con más de tres: son discos
-  usados, y la primera aparición los contaría como nuevos. Además, los datos podados solo dan la primera aparición con
-  un mes de margen. Las horas faltan en el 0,1 % de los discos, y avanzan como el calendario: en un año suman las horas
+  usados. La primera aparición los contaría como nuevos. Además, los datos podados solo dan la primera aparición con
+  un mes de margen. Las horas faltan en el 0,1 % de los discos. Avanzan como el calendario: en un año suman las horas
   del año, con un margen del 3 %, en el 98,9 % al 99,96 % de los discos (medido en tres pares de fotos).
 
 - La edad va con cada día de disco: un disco que cumple 5 años a mitad de un trimestre cuenta en el tramo de 4 a 5 años
@@ -117,7 +117,7 @@ Un disco pasa por estos estados:
   Stats Indicate Hard Drive Failures», sin guardar en la base; los cinco, también en el doc. 10). Empieza el primer día que alguno pasa de cero.
   Esos contadores se acumulan y casi nunca vuelven a cero, así que avisar no tiene final dentro de la vida del disco
   (supuesto). Dos de los cinco, errores sin corregir y órdenes abortadas, solo los traen los Seagate: en los demás
-  fabricantes avisar depende de tres contadores, y el porcentaje de discos que avisan no se compara entre fabricantes.
+  fabricantes avisar depende de tres contadores. El porcentaje de discos que avisan no se compara entre fabricantes.
   De un disco que no falla solo hay una foto al mes, así que el primer día de aviso se sabe con un mes de margen.
 - **Falla:** el día que Backblaze lo marca como fallado. Ver «El fallo».
 - **Desaparece sin fallo:** deja de aparecer en los datos sin haber fallado. Ver «Los discos que desaparecen».
@@ -132,10 +132,10 @@ Un **fallo** es el día en que Backblaze da un disco por fallado: el disco «has
 
 - Incluye: los discos que dejan de funcionar y los que Backblaze retira porque han mostrado que van a fallar pronto
   («Hard Drive SMART Stats», sin guardar en la base).
-- Excluye: los discos que se migran a otro vault, que «are not marked as failed» (doc. 13), y los que se retiran sanos
+- Excluye: los discos que se migran a otro vault, que «are not marked as failed» (doc. 13) y los que se retiran sanos
   por gestión de riesgo, que salen de servicio «without ever having failed» (doc. 9). Ni unos ni otros llevan la marca
   de fallo: en los datos son discos que desaparecen. No hay que quitarlos a mano.
-- No implica una avería del disco: la marca la pone Backblaze a mano, y una parte son retiradas que decide la empresa.
+- No implica una avería del disco: la marca la pone Backblaze a mano. Una parte son retiradas que decide la empresa.
   Qué parte no se puede saber con los datos.
 - No implica la fecha de la avería: si el día marcado es el de la avería o el de la retirada no consta. En 2020, 2023
   y 2024 el fin de semana tiene el 22 al 23 % de los fallos frente al 28 al 29 % esperado, lo que apunta a que a veces
@@ -205,7 +205,7 @@ tiene un registro por cada día que está en servicio.
   cuenta como día de disco, como en la consulta de Backblaze (doc. 9).
 - **Con qué se cuentan.** El total de días de disco de cada modelo, cada día, está completo en los datos de trabajo.
   De cada disco, en cambio, solo se guarda una foto al mes, salvo los 30 días antes de un fallo, que van día a día. Lo
-  que depende del disco (edad, temperatura, si avisa) se toma de la foto de su mes, y los días de ese mes se reparten
+  que depende del disco (edad, temperatura, si avisa) se toma de la foto de su mes. Los días de ese mes se reparten
   con ella (`../metodo/plan_de_la_analitica.md`, «Antes de la primera consulta»).
 
 ### Los cambios de disco
@@ -218,7 +218,7 @@ Cada cambio lleva 0,74 horas de técnico (doc. 12b).
 ### La renovación
 
 Backblaze renueva por vaults enteros: migra un vault a discos más grandes cuando su tasa de fallo amenaza la
-durabilidad o cuando conviene ganar capacidad, y lo desmonta a los tres meses (doc. 13). Un disco que se va en una
+durabilidad o cuando conviene ganar capacidad. Lo desmonta a los tres meses (doc. 13). Un disco que se va en una
 migración no ha fallado.
 
 ### Fechas
@@ -231,7 +231,7 @@ migración no ha fallado.
 - **Reserva:** del 01/07/2025 al 30/06/2026 no se mira nada hasta la prueba final del modelo y de la previsión. Vale
   para todo el caso (el responsable del caso, 16/11/2026).
 - **La reserva no es del todo desconocida.** Los informes de Backblaze de 2025 y del 2.º trimestre de 2026 (docs. 8a y
-  8b) dan tasas de fallo de ese periodo, y el caso los cita como contexto. Ninguna cifra suya de julio de 2025 en
+  8b) dan tasas de fallo de ese periodo. El caso los cita como contexto. Ninguna cifra suya de julio de 2025 en
   adelante se usa para ajustar el modelo, la previsión ni un umbral.
 - Un trimestre o un año sin todos sus días es **parcial** y no se compara con uno completo.
 - Una tasa de un trimestre se compara con la del mismo trimestre de otro año mientras no se sepa si hay época del año.
@@ -243,7 +243,7 @@ migración no ha fallado.
   cuenta y se dice.
 - **El sitio de un fallo** (centro, vault, servidor y ranura) es el del último día anterior que lo trae, dentro de sus
   30 días de ventana. Desde 2025 el
-  día del fallo suele venir sin ranura (861 de 1.067 fallos en el 1.er trimestre), y el día antes la trae en 841 de esos
+  día del fallo suele venir sin ranura (861 de 1.067 fallos en el 1.er trimestre). El día antes la trae en 841 de esos
   861. Quedan sin ranura de 20 a 36 fallos en cada trimestre medido, del 4.º de 2024 al 2.º de 2025; se cuentan y se
   dicen. Medido el 17/11/2026.
 - Los valores en bruto de algunos contadores tienen un formato propio de cada fabricante y no se comparan entre
@@ -292,7 +292,7 @@ El **precio de un disco** es lo que pagó Backblaze por él, su precio de coste.
   de sus horas encendido. Con eso, el 66 % de los fallos de los datos de trabajo cae dentro de garantía (72 % en 2024).
   Si la garantía pagara esos discos, los fallos de 2024 costarían 305.124 dólares en lugar de 832.698 (medido con las
   tablas transformadas el 17/11/2026, `reglas-transformacion.md` §6; el reconocimiento daba 71 % y unos 310.000).
-  La edad por horas encendido es aproximada: la garantía cuenta desde la venta, y el disco pasa unas semanas guardado.
+  La edad por horas encendido es aproximada: la garantía cuenta desde la venta. El disco pasa unas semanas guardado.
 
 ### Las métricas
 
@@ -301,7 +301,7 @@ El **precio de un disco** es lo que pagó Backblaze por él, su precio de coste.
 - **Coste por terabyte y año, contando las averías:** el precio del disco repartido en su vida y en su capacidad, más
   lo que cuestan sus fallos. Por disco y año: precio / capacidad / 6 años, la vida contable, más tasa anual de fallo ×
   (precio de un disco nuevo + 37 dólares) / capacidad, con la tasa en tanto por uno (un 1,5 % es 0,015). Al lado, la vida real de cada modelo cuando los datos permitan
-  medirla, y la cifra con garantía, en la que un fallo dentro de garantía cuesta solo los 37 dólares del cambio (el responsable del caso,
+  medirla; la cifra con garantía, en la que un fallo dentro de garantía cuesta solo los 37 dólares del cambio (el responsable del caso,
   17/11/2026; cuestión 001, cuestión 002 y cuestión 005).
 - **Lo que mide el modelo:** los fallos que señala, no dólares. De los fallos que llegan en un tomo donde acaba de
   fallar un disco, cuántos estaban entre los que el modelo puso primero; y de los N discos de más riesgo, cuántos
@@ -310,27 +310,27 @@ El **precio de un disco** es lo que pagó Backblaze por él, su precio de coste.
   días que se guardan antes de cada fallo. Un contador vacío no cuenta como aviso. En 903 de los 16.996 fallos de
   discos de datos la ventana no trae el día anterior (medido el 17/11/2026, 7 de ellos por las filas quitadas del
   10/12/2022): esos fallos quedan fuera del indicador y se cuentan aparte. Se da también año a año, porque cambia:
-  del 40,3 % en 2020 al 17,9 % en 2025, y los fallos sin día anterior, del 2,1 % al 10,3 % (medido el 18/11/2026,
+  del 40,3 % en 2020 al 17,9 % en 2025; los fallos sin día anterior, del 2,1 % al 10,3 % (medido el 18/11/2026,
   una nota del caso).
 - **Ingreso por terabyte de disco** = ingresos del año / capacidad total de los discos de datos, en terabytes, media del
   año. Es un orden de magnitud:
   la capacidad incluye paridad y espacio libre (el responsable del caso, 16/11/2026). Se da para 2023 y 2024; el de 2025 necesita la
-  capacidad de julio a diciembre, que es reserva, y se calcula en la prueba final.
+  capacidad de julio a diciembre, que es reserva. Se calcula en la prueba final.
 
 ### Lo que no se puede calcular
 
 - El coste real de cada disco de 2023 a 2026: Backblaze no lo publica.
 - El coste real de la hora de técnico.
-- Cuántos terabytes guardan los clientes, y por tanto el margen por terabyte guardado.
+- Cuántos terabytes guardan los clientes y por tanto el margen por terabyte guardado.
 - Si Backblaze reclama la garantía de los discos que fallan.
 
 ## 7. Criterios analíticos acordados
 
 - **La tasa siempre con su base:** cada tasa va con sus fallos y sus días de disco, «2,3 %, 52 fallos en 2,3 millones de
-  días de disco», y con su intervalo cuando se comparan grupos (el responsable del caso aprobó el plan de la analítica el 16/11/2026).
+  días de disco» y con su intervalo cuando se comparan grupos (el responsable del caso aprobó el plan de la analítica el 16/11/2026).
 - **El intervalo cuenta con que los fallos no son independientes.** Los fallos de un grupo varían de un trimestre a otro
   más de lo que supone el intervalo de Poisson. Esa variación de más, φ, se mide en cada bloque con la misma mezcla con
-  que se calcula su cifra (lo que cambia entre trimestres dentro de un mismo modelo y año de edad), y el intervalo es el
+  que se calcula su cifra (lo que cambia entre trimestres dentro de un mismo modelo y año de edad). El intervalo es el
   exacto de Poisson con los fallos divididos por φ; si φ sale menor que 1, vale 1. Medido el 18/11/2026: 3,37 en los
   modelos, 5,02 en la edad y el minicubo, 1,01 en los centros. El responsable del caso aprobó la tabla del segundo auditor el
   18/11/2026; el método es criterio técnico.
@@ -341,7 +341,7 @@ El **precio de un disco** es lo que pagó Backblaze por él, su precio de coste.
   18/11/2026, cuestión 012).
 - **Una tasa por modelo se compara a igual edad y en el mismo trimestre:** sus fallos frente a los que tendrían los
   discos de su edad en los mismos trimestres (el responsable del caso, 18/11/2026: «Vale, déjalo así»; antes, solo a igual edad).
-  Comparar fabricantes o capacidades mezcla discos de edades distintas, y se avisa siempre.
+  Comparar fabricantes o capacidades mezcla discos de edades distintas. Se avisa siempre.
 - **Un centro de datos falla más «por sí mismo»** solo si su tasa sigue más alta con la misma mezcla de modelos,
   edades y trimestres que los demás (el responsable del caso, 18/11/2026; antes, modelos y edades).
 - **El coste por TB y año se ordena dentro de cada capacidad y año de compra,** que es donde la tasa de fallo decide:
@@ -355,13 +355,13 @@ El **precio de un disco** es lo que pagó Backblaze por él, su precio de coste.
   diferencias entre fallos previstos y reales, sin signo, entre la suma de los fallos reales, de todos los trimestres y
   capacidades a la vez. Al lado va el sesgo, la misma cuenta con signo, que dice si prevé de más o de menos (el responsable del caso,
   17/11/2026, cuestión 011). Se hace con lo que se sabe el primer día del trimestre: los discos
-  que hay ese día, con su edad, y las tasas medidas hasta el día anterior.
+  que hay ese día, con su edad y las tasas medidas hasta el día anterior.
 - **El modelo da el riesgo de fallo de cada disco** y se usa para la lista de los técnicos y el aviso de tomos en
   peligro; cambiar un disco antes no ahorra dinero (`matriz_de_impacto.md`). Lo decidido en el paso 1 (17/11/2026):
   - aprende con todos los fallos, los que se rompen y los que Backblaze retira (el responsable del caso, cuestión 003). El 39,7 % de los fallos
     a 90 días llega de discos **sin aviso en su última foto mensual** y el modelo no los ve: el informe lo dice. No es
     el 25,1 % «sin aviso el día anterior» de los fallos con día anterior (B6): son dos medidas distintas;
-  - la lista avisa a 30 días, y el tomo está en peligro mientras se rehace el disco que falló, un día por TB más uno
+  - la lista avisa a 30 días. El tomo está en peligro mientras se rehace el disco que falló, un día por TB más uno
     (el responsable del caso, cuestión 004);
   - se compara con la regla de los cinco contadores ordenada por cuántos contadores avisan y, a igualdad, por su suma
     sin el 188, en listas de 20, 100, 500 y 1.000 discos al mes. El tamaño de la lista lo elige Backblaze según lo que
@@ -395,7 +395,7 @@ El **precio de un disco** es lo que pagó Backblaze por él, su precio de coste.
   - la búsqueda del bosque y del `HistGradientBoosting` es de nivel equilibrado, 15 combinaciones por algoritmo y 5
     pliegues. La logística prueba solo el castigo L2, con el resolvedor `lbfgs`, en los 12 valores de `C` de la rejilla
     de el método. Medido el 18/11/2026 con la muestra de partida: con `saga`, un ajuste con castigo flojo tarda de 15 a 55
-    minutos, y el nivel equilibrado con los tres castigos pasaría de 12 horas; con `lbfgs`, de 4 a 7 segundos. Los
+    minutos. El nivel equilibrado con los tres castigos pasaría de 12 horas; con `lbfgs`, de 4 a 7 segundos. Los
     castigos L1 y mezcla sirven sobre todo para quitar variables. Eso lo hace la preselección (el responsable del caso: «si»). Toda la
     competición, alrededor de hora y media;
   - las cuatro variables nuevas candidatas de la matriz (P-04) solo se crean si el modelo no supera a la regla en la
@@ -411,7 +411,7 @@ El **precio de un disco** es lo que pagó Backblaze por él, su precio de coste.
 | Tasas de fallo y previsión | los discos de datos, todos los modelos, del 01/01/2020 al 30/06/2025 | los discos de arranque y la reserva |
 | Rankings de modelos o centros | los que pasan el mínimo de días de disco | los que no llegan, que se enseñan aparte |
 | Coste por terabyte | los discos de datos, que son todos de 4 TB o más (no hay ninguno entre 2 y 4 TB; medido el 17/11/2026) | los de arranque, que no tienen precio |
-| Tasas por centro | los fallos y días de disco del 01/07/2023 al 30/06/2025 con su centro | los anteriores, sin sitio, y los que no traen centro, contados y dichos |
+| Tasas por centro | los fallos y días de disco del 01/07/2023 al 30/06/2025 con su centro | los anteriores, sin sitio y los que no traen centro, contados y dichos |
 | Fallos del mismo tomo | los fallos del 01/07/2023 al 30/06/2025 con su centro, vault y ranura | los anteriores y los que no traen ranura, contados y dichos |
 
 ## 8. Criterios específicos del análisis
@@ -424,7 +424,7 @@ Esas definiciones no se aplican a otros análisis.
 ## 9. Datos personales
 
 No aplica: los datos son de los discos de Backblaze y no traen nada de personas. El número de serie identifica un disco,
-no a quien guarda datos en él, y ningún campo es un dato personal.
+no a quien guarda datos en él. Ningún campo es un dato personal.
 
 Si en los datos aparece un dato personal en claro, el trabajo para y se avisa.
 
@@ -441,7 +441,7 @@ Debe distinguirse especialmente entre:
 - la tasa anual de fallo y el porcentaje de discos que fallan: la tasa se calcula sobre días de disco;
 - la vida útil contable y lo que dura un disco;
 - la capacidad de los discos y lo que guardan los clientes;
-- el vault y el tomo: el vault son 20 servidores, y el tomo, 20 discos de la misma ranura.
+- el vault y el tomo: el vault son 20 servidores; el tomo, 20 discos de la misma ranura.
 
 No deben inferirse estructuras de datos, relaciones, fórmulas o criterios de exclusión que no estén confirmados por el
 contexto disponible.
@@ -452,7 +452,7 @@ pendiente antes de adoptar un criterio.
 ## 11. Información adicional del proyecto
 
 Estas reglas se complementan con lo que Backblaze publica sobre sus datos y su forma de trabajar, guardado en
-`../sector/documentos/`, y con la ficha de los datos, en `../fuentes/`.
+`../sector/documentos/` y con la ficha de los datos, en `../fuentes/`.
 
 La documentación técnica que se genere durante el proyecto se mantiene separada de estas reglas.
 
@@ -486,7 +486,7 @@ La documentación técnica que se genere durante el proyecto se mantiene separad
 | 17/11/2026 | Revisión del diseño contra los datos: la edad pasa a ser las horas encendido; un disco que vuelve no ha desaparecido; un disco puede seguir tras un fallo; avisar depende de tres contadores fuera de Seagate; la reserva y los informes de Backblaze; el ingreso por terabyte de 2025; con qué se hace la previsión | el analista, en la tercera revisión pedida por el responsable del caso («coherencia entre los datos, las reglas y lo que resolverá el caso»); pendiente del responsable del caso | plan de la analítica, ficha del caso, datos necesarios, cuestiones pendientes |
 | 17/11/2026 | §7: la previsión gana a repetir el trimestre anterior si su error absoluto ponderado es menor, con el sesgo al lado (antes no decía con qué medida). §6: el día anterior a un fallo no siempre está en su ventana; los 903 fallos sin él salen del indicador de fallos sin aviso y se cuentan aparte (antes decía que siempre estaba) | el responsable del caso: cuestión 011 («Sí, ciérrala así») y la tabla de la cascada («Sí, apruébala») | `../modelo/modelo-datos.md`, `../metodo/plan_de_la_analitica.md`, `informes/modelado-datos.json` y `.md`; la ficha, sin cambios |
 | 18/11/2026 | §7: un modelo con menos de 20 fallos sale del ranking sin puesto y «sin conclusión» (cuestión 012); el 39,7 % se llama «sin aviso en su última foto mensual», distinto del 25,1 % «sin aviso el día anterior» | el responsable del caso: «Vale, me parece bien» y «Apruebo la tabla» (auditor del cierre analítico, una nota del caso) | `../metodo/plan_de_la_analitica.md`, `../metodo/04_planteamientos.md`, `../modelo/modelo-datos.md`, `01_ficha_del_caso.md`, `cuestiones-pendientes.md`; los scripts 09 y 10, por la petición 17 |
-| 18/11/2026 | §7: los modelos se comparan a igual edad y en el mismo trimestre (antes, a igual edad), y los centros con la mezcla de modelos, edades y trimestres (antes, modelos y edades); el intervalo se ensancha con φ, la variación entre trimestres de más; el coste se ordena dentro de cada capacidad y año de compra. §6: la garantía de 2024 con las tablas transformadas (72 % y 305.124, antes 71 % y unos 310.000); el fallo sin aviso, también año a año | el responsable del caso: «Apruebo la tabla» y «Vale, déjalo así» (segundo auditor, una nota del caso a una nota del caso) | `../metodo/plan_de_la_analitica.md`, `../modelo/modelo-datos.md`, `matriz_de_impacto.md`, `01_ficha_del_caso.md`, el borrador de hallazgos; los scripts 09, 10 y 11, por la petición 19 |
+| 18/11/2026 | §7: los modelos se comparan a igual edad y en el mismo trimestre (antes, a igual edad); los centros con la mezcla de modelos, edades y trimestres (antes, modelos y edades); el intervalo se ensancha con φ, la variación entre trimestres de más; el coste se ordena dentro de cada capacidad y año de compra. §6: la garantía de 2024 con las tablas transformadas (72 % y 305.124, antes 71 % y unos 310.000); el fallo sin aviso, también año a año | el responsable del caso: «Apruebo la tabla» y «Vale, déjalo así» (segundo auditor, una nota del caso a una nota del caso) | `../metodo/plan_de_la_analitica.md`, `../modelo/modelo-datos.md`, `matriz_de_impacto.md`, `01_ficha_del_caso.md`, el borrador de hallazgos; los scripts 09, 10 y 11, por la petición 19 |
 | 18/11/2026 | §7: cómo se trata el desequilibrio en el modelo, decidido el 16/11 (antes solo estaba en el plan y en los planteamientos); la muestra de partida, el 2 % de las sanas | el responsable del caso: «Sí, apruebo» (guion del modelo, una nota del caso y una nota del caso) | `../metodo/plan_de_la_analitica.md` y `../metodo/04_planteamientos.md`, sin cambios: ya lo decían |
 | 18/11/2026 | §7: cómo se eligen las variables (consenso amplio en la logística, con los contadores 5, 187, 197 y 198 siempre dentro) y la búsqueda de nivel equilibrado (antes no constaba) | el responsable del caso: «Equilibrado», «Vale, si es lo más idóneo, me parece bien», «si es que sí, es que sí» y la tabla de la cascada («Venga, sí, adelante») | `../metodo/04_planteamientos.md`, sin cambios: remite a el método; la matriz y el script 13 no seleccionan variables |
 | 18/11/2026 | §7: las variables nuevas de P-04 se deciden con la competición dentro de construcción, antes de abrir la validación (antes la matriz no decía dónde se ve si el modelo supera a la regla) | el responsable del caso: «Vale, continuamos» | `../modelo/matriz_transformaciones.md`, P-04: no cambia lo decidido, se precisa aquí |

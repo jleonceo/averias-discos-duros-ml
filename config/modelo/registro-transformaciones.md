@@ -94,7 +94,7 @@ Escrita el 2026-11-17 por scripts/03_correccion_datos.py.
 
 1. Tabla y columna: fotos mensuales, ventanas de fallo y recuento diario · capacity_bytes.
 2. Cómo estaba: algunas filas traen -1 o 0,1 TB.
-3. Problema: C-05, C-06 y C-07: son lecturas malas, y en el recuento parten una clave en dos.
+3. Problema: C-05, C-06 y C-07: son lecturas malas. En el recuento parten una clave en dos.
 4. Decisión: reglas de negocio §3: la capacidad de un disco es la de su modelo; -1 y 0,1 TB son lecturas malas.
 5. Qué se hizo:
 
@@ -192,7 +192,7 @@ Escrita el 2026-11-17 por scripts/03_correccion_datos.py.
 Escrita el 2026-11-17 por scripts/05_transformacion_datos.py.
 
 1. Tabla y columna: igualación antes de cruzar · dia_fallo y centro vacío.
-2. Cómo estaba: dia_fallo llega en nanosegundos en la lista de fallos y en las ventanas, y fecha en milisegundos; el centro que no consta está vacío en las fotos y las ventanas y es «sin dato» en el recuento.
+2. Cómo estaba: dia_fallo llega en nanosegundos en la lista de fallos y en las ventanas; fecha en milisegundos; el centro que no consta está vacío en las fotos y las ventanas y es «sin dato» en el recuento.
 3. Problema o finalidad: las claves tienen que tener el mismo tipo y el mismo valor para lo que no consta a los dos lados de un cruce (modelo-datos.md §4).
 4. Decisión: reglas de transformación, «De qué se parte»: se igualan antes de cruzar y no se guardan en las tablas corregidas.
 5. Qué se hizo:
@@ -242,7 +242,7 @@ coste_gb(cap, pd.Timestamp(year=ano, month=7, day=1))
 ```
 
 6. Quién y con qué permiso: el analista, con la petición peticiones/09_transformacion.md y las reglas de transformación aprobadas por el responsable del caso el 17/11/2026 («Sí, las apruebo»).
-7. Comprobación: 66 filas; los fallos de discos de datos de 2024 cuestan 832.698 dólares, y 305.124 con garantía.
+7. Comprobación: 66 filas; los fallos de discos de datos de 2024 cuestan 832.698 dólares; 305.124 con garantía.
 8. Cómo quedó: data/processed/dim_precio_gb.parquet, una fila por capacidad y año.
 9. Cómo deshacer: borrar data/processed/dim_precio_gb.parquet. Las tablas corregidas no se tocan, así que basta con borrar la tabla nueva o volver a ejecutar el script sin la regla.
 
@@ -479,7 +479,7 @@ no cambia ningún dato: fija qué variables de la matriz entran en la regresión
 2. Cómo estaba: las 62 entraban en la logística, con 496 columnas tras el preprocesador.
 3. Problema o finalidad: el método preseleccion-variables pide preseleccionar un modelo lineal: tope de columnas y
    variables que dicen lo mismo, que en una regresión se reparten el efecto.
-4. Decisión: reglas de negocio §7 (el responsable del caso, 18/11/2026): modo comparativo, consenso amplio, y smart_5_raw,
+4. Decisión: reglas de negocio §7 (el responsable del caso, 18/11/2026): modo comparativo, consenso amplio; smart_5_raw,
    smart_187_raw, smart_197_raw y smart_198_raw siempre dentro; los árboles reciben sus 64 columnas sin votar. El
    parecido entre dos variables se mide solo con las fotos que tienen dato en las dos (el responsable del caso, «adelante», 18/11/2026;
    método §6, último punto), porque en la primera ejecución el vacío de los contadores que solo registra algún modelo

@@ -4,13 +4,13 @@ La validación, abierta una vez, da por bueno el modelo: en la lista de 100 encu
 
 ## Lo aprobado antes de entrenar
 
-La medida principal son los fallos encontrados entre los 100 discos de más riesgo de cada mes. Es lo que mide el negocio: de los N discos de más riesgo, cuántos fallan (reglas, apartado 7). Se da por bueno si en la validación el modelo encuentra en esa lista más fallos que la regla, con el intervalo de la diferencia por encima de cero, y su AUC es 0,70 o más.
+La medida principal son los fallos encontrados entre los 100 discos de más riesgo de cada mes. Es lo que mide el negocio: de los N discos de más riesgo, cuántos fallan (reglas, apartado 7). Se da por bueno si en la validación el modelo encuentra en esa lista más fallos que la regla, con el intervalo de la diferencia por encima de cero y su AUC es 0,70 o más.
 
 Las referencias son la regla de los cinco contadores (cuestión 010), el trivial, DummyClassifier(strategy="prior"). La preselección llegó así: en AVISO, con cada pendiente decidido por el responsable del caso: P-01, seguir con la lista de la semilla 42 (el responsable del caso, 18/11/2026, R-023).
 
 ## Qué se probó y cuánto costó
 
-Una búsqueda por algoritmo con los mismos cinco pliegues por fecha. Cada búsqueda usa ParameterGrid o ParameterSampler de scikit-learn y los cinco pliegues por fecha, y puntúa cada bloque por trozos; no usa RandomizedSearchCV porque la muestra se toma solo en la parte que entrena de cada pliegue y el bloque medido no cabe en memoria transformado.
+Una búsqueda por algoritmo con los mismos cinco pliegues por fecha. Cada búsqueda usa ParameterGrid o ParameterSampler de scikit-learn y los cinco pliegues por fecha y puntúa cada bloque por trozos; no usa RandomizedSearchCV porque la muestra se toma solo en la parte que entrena de cada pliegue y el bloque medido no cabe en memoria transformado.
 
 - regresión logística: 12 candidatos de 12 combinaciones posibles.
 - bosque aleatorio: 17 candidatos de 54 combinaciones posibles.
@@ -70,11 +70,11 @@ La validación se abrió una vez, con el ganador aprobado por el responsable del
 
 ## El corte
 
-El modelo no lleva un corte fijo: da una lista de los discos de más riesgo de cada mes, y su tamaño lo elige Backblaze según lo que puedan atender sus técnicos, que no consta (reglas, apartado 7, cuestión 010). Por eso se dan las listas de 20, 100, 500 y 1.000. El tamaño se puede cambiar sin reentrenar.
+El modelo no lleva un corte fijo: da una lista de los discos de más riesgo de cada mes. Su tamaño lo elige Backblaze según lo que puedan atender sus técnicos, que no consta (reglas, apartado 7, cuestión 010). Por eso se dan las listas de 20, 100, 500 y 1.000. El tamaño se puede cambiar sin reentrenar.
 
 ## ¿Se da por bueno?
 
-Sí: frente a la regla, el intervalo va de 14,00 a 18,92, y el AUC es 0,898 frente al mínimo de 0,70. Frente al trivial, supera.
+Sí: frente a la regla, el intervalo va de 14,00 a 18,92; el AUC es 0,898 frente al mínimo de 0,70. Frente al trivial, supera.
 
 ## Las tres vías de mejora
 
@@ -119,7 +119,7 @@ Sí: frente a la regla, el intervalo va de 14,00 a 18,92, y el AUC es 0,898 fren
 Los apartados del manual aplicados:
 
 - 20.3 y 31.6: validación cruzada temporal, con bloques de meses enteros y sin barajar, porque el modelo se usa hacia adelante y barajar mezclaría meses.
-- 32.6 y 32.7: rejilla en la logística, que solo busca C, y búsqueda aleatoria en los árboles, una por algoritmo.
+- 32.6 y 32.7: rejilla en la logística, que solo busca C; búsqueda aleatoria en los árboles, una por algoritmo.
 - 37.4 y 37.8: submuestreo de las sanas solo al entrenar y recalibración por la corrección del prior, porque la probabilidad se usa para esperar fallos.
 - 21.1 y 21.8: todo con la probabilidad; AUC y PR-AUC del mes al lado de la lista de 100, que es la medida del negocio.
 - 19.3: la distancia entre entrenamiento y fuera de pliegue, en AUC, para ver el sobreajuste.

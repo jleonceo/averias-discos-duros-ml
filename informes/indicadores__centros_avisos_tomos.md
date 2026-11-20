@@ -2,21 +2,21 @@
 
 Caso 68, paso 5, bloques 5 a 8 del plan de la analítica, el minicubo y lo que falta en los datos. Datos hasta el 30/06/2025; ejecutado el 18/11/2026. Estado: **AVISO**, riesgo medio.
 
-Cinco preguntas calculadas con 47 cifras, todas con su segunda vía, y las nueve validaciones en verde. Quedan 8 grupos sin conclusión o aparte, y el centro y el tomo solo constan desde el 01/07/2023.
+Cinco preguntas calculadas con 47 cifras, todas con su segunda vía y las nueve validaciones en verde. Quedan 8 grupos sin conclusión o aparte. El centro y el tomo solo constan desde el 01/07/2023.
 
 ## Las preguntas y su planteamiento
 
-Las cinco preguntas salen del plan de la analítica, aprobado por el responsable del caso el 16/11/2026, y del planteamiento 1.A. Entran los discos de datos, sin los de arranque. Lo que va por centro y por tomo cubre del 01/07/2023 al 30/06/2025, porque antes el sitio no consta; lo demás, del 01/01/2020 al 30/06/2025. La tasa anual de fallo es 100 × 365 × fallos / días de disco. Cuando el corte no está en el recuento, los días de cada modelo, centro y mes se reparten entre sus fotos.
+Las cinco preguntas salen del plan de la analítica, aprobado por el responsable del caso el 16/11/2026 y del planteamiento 1.A. Entran los discos de datos, sin los de arranque. Lo que va por centro y por tomo cubre del 01/07/2023 al 30/06/2025, porque antes el sitio no consta; lo demás, del 01/01/2020 al 30/06/2025. La tasa anual de fallo es 100 × 365 × fallos / días de disco. Cuando el corte no está en el recuento, los días de cada modelo, centro y mes se reparten entre sus fotos.
 
 - **B5.** Si algún centro de datos tiene más fallos que los demás con los mismos discos. Mínimo: 50.000 días de disco al año y 20 fallos (reglas, apartado 7; petición, comprobación 1).
 - **B6.** Cuántos discos avisan, qué aviso anticipa más fallos y cuánto siguen funcionando. Mínimo: 30 fotos por grupo (método, parametros.md).
-- **B7.** Cuántas veces caen varios discos del mismo tomo cerca en el tiempo, y si pasa más que por azar. Mínimo: no aplica: se cuentan todos los tomos y se comparan con el azar.
+- **B7.** Cuántas veces caen varios discos del mismo tomo cerca en el tiempo y si pasa más que por azar. Mínimo: no aplica: se cuentan todos los tomos y se comparan con el azar.
 - **B8.** Si la temperatura, la carga de trabajo o los arranques acompañan a más fallos. Mínimo: 20 fallos en cada uno de los tres tramos de un grupo (petición, criterio 8).
 - **MC.** Qué perfiles de disco tienen más riesgo, por fabricante, capacidad, edad, centro y aviso. Mínimo: 50.000 días de disco y 20 fallos por valor o celda (petición, criterio 9).
 
 ## B5 · Si un centro falla más por sí mismo
 
-Con la misma mezcla de modelo, año de edad y trimestre, 1 centros fallan más que los demás (sac2) y 1 fallan menos (sac0). Por azar saldrían distintos 0,25 de los 5 centros con conclusión, y salen 2. La tasa de todos los centros juntos es del 1,5262 % anual.
+Con la misma mezcla de modelo, año de edad y trimestre, 1 centros fallan más que los demás (sac2) y 1 fallan menos (sac0). Por azar saldrían distintos 0,25 de los 5 centros con conclusión. Salen 2. La tasa de todos los centros juntos es del 1,5262 % anual.
 
 El intervalo de cada razón lleva φ = 1,0196, lo que varían los fallos de un trimestre a otro más de lo que supone Poisson, medido en 42 celdas de centro y trimestre con 36 grados de libertad (sin «sin dato»). Con φ = 1 no hay variación de más y el intervalo es el exacto de Poisson.
 
@@ -125,7 +125,7 @@ Con tres fallos o más en 7 días hay 8 tomos, frente a 2,91 de media (percentil
 
 Barajando solo dentro de cada centro, como antes de la petición 19: 2 fallos o más en 30 días, media 352,87 y percentil 95 377,0, por encima; 3 fallos o más en 7 días, media 1,11 y percentil 95 3,0, por encima.
 
-Desde el 01/07/2023 hay 8.634 fallos; 8.493 tienen tomo, en 5.404 tomos, y 262 llegan antes de que acabe de rehacerse el anterior de su tomo. La paridad supuesta se alcanza 2 veces.
+Desde el 01/07/2023 hay 8.634 fallos; 8.493 tienen tomo, en 5.404 tomos; 262 llegan antes de que acabe de rehacerse el anterior de su tomo. La paridad supuesta se alcanza 2 veces.
 
 - 2 fallos o más en 7 días: 151 tomos.
 - 2 fallos o más en 30 días: 489 tomos.
@@ -206,10 +206,10 @@ Las celdas de tasa más alta de cada par de dimensiones, con 50.000 días o más
 
 Lo que falta en los datos:
 
-- 2024T3: 60 de 1.389 fallos sin ranura el día del fallo, y 59 sin tomo después de tomarla del día anterior.
-- 2024T4: 67 de 1.001 fallos sin ranura el día del fallo, y 40 sin tomo después de tomarla del día anterior.
-- 2025T1: 861 de 1.067 fallos sin ranura el día del fallo, y 2 sin tomo después de tomarla del día anterior.
-- 2025T2: 840 de 1.061 fallos sin ranura el día del fallo, y 2 sin tomo después de tomarla del día anterior.
+- 2024T3: 60 de 1.389 fallos sin ranura el día del fallo; 59 sin tomo después de tomarla del día anterior.
+- 2024T4: 67 de 1.001 fallos sin ranura el día del fallo; 40 sin tomo después de tomarla del día anterior.
+- 2025T1: 861 de 1.067 fallos sin ranura el día del fallo; 2 sin tomo después de tomarla del día anterior.
+- 2025T2: 840 de 1.061 fallos sin ranura el día del fallo; 2 sin tomo después de tomarla del día anterior.
 - Las reglas dicen de 20 a 36 fallos sin ranura por trimestre, medido en el reconocimiento con otros datos; las cifras de los fallos sin tomo no coinciden con ese rango.
 - 71.328 discos desaparecen sin fallo; 8.362 fallos son anteriores al 01/07/2023 y no tienen sitio; 344.969 fotos traen el contador 90, cuyo significado no se conoce.
 
@@ -243,7 +243,7 @@ Las comprobaciones de MC:
 |---|---|
 | Cada pregunta tiene su planteamiento completo | sí |
 | Cada cifra dice su población, sus filas y su periodo | sí |
-| Cada cifra tiene su segunda vía, y coinciden | sí |
+| Cada cifra tiene su segunda vía y coinciden | sí |
 | Ninguna conclusión sale de un grupo por debajo del mínimo | sí |
 | Cada resultado lleva su referencia, con las mismas filas | sí |
 | Las comprobaciones tienen su resultado o su motivo | sí |
@@ -284,7 +284,7 @@ Las segundas vías:
 - intervalo con φ: exacto de Poisson con observados y esperados (o fallos y días) entre φ; Clopper-Pearson con fallan/φ y fotos/φ en el desenlace (petición 19).
 - desenlace a 90 días: falla, desaparece o sigue, por foto (criterio técnico 2).
 - tomos con k fallos en d días: k = 2, 3 y 4; d = 7 y 30 (criterio técnico 3).
-- azar de los tomos: 200 repeticiones, semilla 68, días barajados dentro de cada centro y trimestre del fallo, y al lado dentro de cada centro; media y percentil 95 (interpolación lineal de numpy) (criterio técnico 4; el trimestre, petición 19).
+- azar de los tomos: 200 repeticiones, semilla 68, días barajados dentro de cada centro y trimestre del fallo; al lado dentro de cada centro; media y percentil 95 (interpolación lineal de numpy) (criterio técnico 4; el trimestre, petición 19).
 - discos a la vez: fallos anteriores del tomo con día + plazo posterior al día del fallo, más uno; paridad supuesta 3, 4 y 5 (criterio técnico 5; reglas, apartado 4).
 - riesgo vivo: binomial de 2 o más y de 3 o más con los discos del tomo y la proporción del mes (criterio técnico 6).
 - reparto de los días: días de la celda de modelo, mes y centro entre sus fotos (criterio técnico 7).
@@ -317,9 +317,9 @@ Apartados del manual aplicados:
 - Las cifras describen el periodo de trabajo. Ninguna dice por qué un centro, un aviso o un tramo falla más: solo valen verbos de asociación.
 - El centro y el tomo solo constan desde el 01/07/2023; lo anterior no se rellena. El centro «sin dato» y los fallos sin tomo van aparte, con su recuento.
 - Un centro que falla más con la misma mezcla de modelo y edad puede deberse a lo que no está en los datos, como su operación o sus retiradas: no se puede saber.
-- El aviso es acumulado y casi nunca vuelve a cero, así que el desenlace a 90 días cuenta fotos, no discos, y el riesgo vivo se compara con el azar.
+- El aviso es acumulado y casi nunca vuelve a cero, así que el desenlace a 90 días cuenta fotos, no discos. El riesgo vivo se compara con el azar.
 - La ventana da 16.093 fallos con día anterior y 4.046 sin aviso; fallos_detalle da 16.093 y 4.046. Se dan las de fallos_detalle, que son las de las reglas.
-- Los contadores 187 y 188 solo los traen los Seagate, y los datos escritos y leídos solo se miden en Seagate: el porcentaje que avisa no se compara entre fabricantes.
+- Los contadores 187 y 188 solo los traen los Seagate. Los datos escritos y leídos solo se miden en Seagate: el porcentaje que avisa no se compara entre fabricantes.
 - La paridad de cada vault no está en los datos: se usa la supuesta de las reglas, apartado 4. El tiempo de reconstrucción es la regla de Backblaze, un día por TB más uno.
 - La tasa del minicubo usa los días repartidos por las fotos, que dejan fuera los días de las celdas sin foto: la del recuento por fabricante y capacidad va al lado, con su diferencia.
 - Las reglas, apartado 5 dicen de 20 a 36 fallos sin ranura por trimestre, medido en el reconocimiento con otros datos; las cifras de fallos_detalle no coinciden con ese rango.

@@ -89,7 +89,7 @@ Marcas: (P) usa información posterior a la fila; (O) sale del objetivo; (S) es 
 
 - De «un disco el día 1 de un mes (fotos)» a «un disco de datos en una foto mensual, sin la foto del día en que falla»:
   - filas: fotos de datos menos las del día del fallo: 14.604.861 antes y 14.604.861 después; coinciden.
-- De «un disco un día de la ventana de un fallo, y la lista de fallos» a «un fallo de la lista: un disco el día que Backblaze lo da por fallado»:
+- De «un disco un día de la ventana de un fallo y la lista de fallos» a «un fallo de la lista: un disco el día que Backblaze lo da por fallado»:
   - fallos de la lista: 17.960 antes y 17.960 después; coinciden.
 - De «fotos y ventanas» a «un disco de datos que sale en alguna foto o en alguna ventana»:
   - discos de datos distintos: 402.643 antes y 402.643 después; coinciden.
@@ -216,14 +216,14 @@ Los modelos que no llegan al mínimo y los años de edad con menos de 20 fallos 
 - `edad_de_horas` (binaria, grupo conocidas el dia de la foto): dos valores, sin orden real.
 - `avisa` (binaria, grupo conocidas el dia de la foto): dos valores, sin orden real.
 - `smart_188_no_cero` (binaria, grupo conocidas el dia de la foto): dos valores, sin orden real.
-- 130 magnitudes, con su unidad y su rango en `pendiente_modelo` del JSON; las de la foto que no están en las reglas van en el grupo «no previstas», y la preselección del paso 5 decide cuáles entran.
+- 130 magnitudes, con su unidad y su rango en `pendiente_modelo` del JSON; las de la foto que no están en las reglas van en el grupo «no previstas». La preselección del paso 5 decide cuáles entran.
 
 ## Teoría aplicada
 
 - 11.9, retardos: el cambio de un contador y los meses desde la foto anterior se calculan dentro de cada disco, con las fotos en orden de fecha; la foto anterior se guarda de un bloque al siguiente.
 - 13.9, primero y último de cada grupo: la primera aparición, la última foto y el último día de la ventana con sitio se toman de la fila real, ordenada por fecha, no con first(), que salta los vacíos.
 - 14.7, tiempo transcurrido: la edad, los días entre fallos del mismo tomo y los meses entre fotos se miden en unidades totales (horas entre 8.766, días entre 365,25), no con las partes de la fecha.
-- 12.6 y 11.14, cambiar el nivel: los días de disco y los fallos son flujos y se suman; cada agregación cuadra sus sumas antes y después, y las variables que usan información posterior quedan marcadas.
+- 12.6 y 11.14, cambiar el nivel: los días de disco y los fallos son flujos y se suman; cada agregación cuadra sus sumas antes y después. Las variables que usan información posterior quedan marcadas.
 - Método, «Agregar por tiempo»: en un flujo, una celda sin registros vale cero solo si se sabe que no hubo nada; las filas de dias_por_tramo que solo tienen fallos dejan sus días de disco vacíos.
 
 ## Límites

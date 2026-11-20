@@ -4,7 +4,7 @@ Diagnóstico de los cuatro datasets del caso, generado por `scripts/02_calidad_d
 
 ## 1. Fuente analizada
 
-Se leyeron enteros los cuatro datasets de `data/raw/podado/`, sin muestra, y el esquema de Backblaze, que solo entra en la revisión de nombres. La huella de los 91 ficheros de `data/raw/` es la misma al empezar y al acabar.
+Se leyeron enteros los cuatro datasets de `data/raw/podado/`, sin muestra; el esquema de Backblaze, que solo entra en la revisión de nombres. La huella de los 91 ficheros de `data/raw/` es la misma al empezar y al acabar.
 
 - **fotos mensuales** (`data/raw/podado/fotos_mensuales`): 66 ficheros que pesan 731.506.906 bytes.
 - **ventanas de fallo** (`data/raw/podado/ventanas_fallo`): 22 ficheros que pesan 39.116.051 bytes.
@@ -34,7 +34,7 @@ Los problemas principales, con su identificador para la corrección:
 - C-23, lista de fallos, `serial_number`: 210 fallos de 210 discos que no salen en ninguna foto.
 
 Hay 30 problemas en total y una cuestión pendiente:
-- P-01 (C-17): ¿Las filas cuya fecha no coincide con su texto son una copia del día que dice el texto, o son de su fecha con el texto mal? Opciones: son una copia del día que dice el texto: su fecha no tiene datos propios y sus filas sobran; son de su fecha y solo el texto está mal: se quedan como están. Cifra: 228 filas de ventanas; 228 traen las mismas horas que la fila del día del texto. No estaba en el plan; la corrección mide si quitarlas cambia alguna respuesta, y solo si cambia se lleva a la persona responsable.
+- P-01 (C-17): ¿Las filas cuya fecha no coincide con su texto son una copia del día que dice el texto, o son de su fecha con el texto mal? Opciones: son una copia del día que dice el texto: su fecha no tiene datos propios y sus filas sobran; son de su fecha y solo el texto está mal: se quedan como están. Cifra: 228 filas de ventanas; 228 traen las mismas horas que la fila del día del texto. No estaba en el plan; la corrección mide si quitarlas cambia alguna respuesta. Solo si cambia se lleva a la persona responsable.
 
 ## 3. Inspección general
 
@@ -50,16 +50,16 @@ Los cuatro datasets cubren del 2020-01-01 al 2025-06-30. Ninguna fila cae en la 
 
 ## 4. Estructura
 
-En las fotos mensuales, 49 columnas están vacías en más del 99 % de las filas que las traen, y 0 lo están del todo.
+En las fotos mensuales, 49 columnas están vacías en más del 99 % de las filas que las traen; 0 lo están del todo.
 
 - Columnas constantes en todas sus filas: ninguna.
-- Columnas que no traen todos los ficheros: 29. Entran a mitad del periodo, entre 2020-10 y 2024-04, y en los ficheros anteriores no existen.
+- Columnas que no traen todos los ficheros: 29. Entran a mitad del periodo, entre 2020-10 y 2024-04. En los ficheros anteriores no existen.
 - Ficheros con alguna columna vacía entera: 47 de 66; con alguna columna constante: 66.
 
-En las ventanas de fallo, 48 columnas están vacías en más del 99 % de las filas que las traen, y 0 lo están del todo.
+En las ventanas de fallo, 48 columnas están vacías en más del 99 % de las filas que las traen; 0 lo están del todo.
 
 - Columnas constantes en todas sus filas: `smart_171_raw`, `smart_179_raw`, `smart_181_raw`, `smart_206_raw`, `smart_211_raw`, `smart_212_raw`, `smart_235_normalized`.
-- Columnas que no traen todos los ficheros: 29. Entran a mitad del periodo, entre data_Q1_2021 y data_Q1_2025, y en los ficheros anteriores no existen.
+- Columnas que no traen todos los ficheros: 29. Entran a mitad del periodo, entre data_Q1_2021 y data_Q1_2025. En los ficheros anteriores no existen.
 
 Nombres de columna de los cuatro datasets con algún aviso: 0. Colisiones al normalizarlos: 0. Nombres del esquema con aviso: 3.
 
@@ -71,7 +71,7 @@ Nombres de columna de los cuatro datasets con algún aviso: 0. Colisiones al nor
 
 Columnas con algún valor que no se convierte al tipo que les toca por su rol: 0.
 
-- La ranura (`pod_slot_num`) se lee como decimal en las fotos y en las ventanas, y el 0 % de sus valores no es entero.
+- La ranura (`pod_slot_num`) se lee como decimal en las fotos y en las ventanas. El 0 % de sus valores no es entero.
 - El centro viene sin tipo en 42 ficheros de fotos, del 2020-01 al 2023-06, porque está vacío entero.
 - La fecha llega dos veces, como texto (`date`) y como fecha (`fecha`). Filas en que no dicen lo mismo: 228. Textos que no siguen el formato ISO: 0.
 - Magnitudes con un salto de orden de magnitud sin valores en medio: 35. Lo que mide un contador en bruto explica casi siempre que vaya de 0 a miles de millones, así que el salto solo señala dónde mirar.
@@ -152,8 +152,8 @@ Las variables que más pesan en las preguntas, con su porcentaje global y el seg
 
 ### Vacíos por fila
 
-- fotos mensuales: la mediana de vacíos por fila es 73 contando todas las columnas, y 26 sin las 49 casi vacías. Filas sin ningún vacío: 0 y 0.
-- ventanas de fallo: la mediana de vacíos por fila es 72 contando todas las columnas, y 27 sin las 48 casi vacías. Filas sin ningún vacío: 0 y 0.
+- fotos mensuales: la mediana de vacíos por fila es 73 contando todas las columnas; 26 sin las 49 casi vacías. Filas sin ningún vacío: 0 y 0.
+- ventanas de fallo: la mediana de vacíos por fila es 72 contando todas las columnas; 27 sin las 48 casi vacías. Filas sin ningún vacío: 0 y 0.
 - recuento diario: ninguna fila tiene vacíos.
 - lista de fallos: ninguna fila tiene vacíos.
 
@@ -234,7 +234,7 @@ Cada regla del caso se ha mirado con su medida, sin aplicarla a los datos. Las r
 - R-01, la capacidad de un disco es la de su modelo (reglas, apartado 3): ningún modelo trae dos capacidades válidas (0 con más de una). Filas con -1 o 0,1 TB: 2.729 en fotos, 165 en ventanas y 2.102 en el recuento; 20 fallos la traen el día del fallo.
 - R-02, el fabricante sale del nombre del modelo, con dos excepciones (reglas, apartado 3): 25 modelos no siguen el patrón; 0 no son ni de arranque ni una de las dos excepciones.
 - R-03, la edad son las horas encendido y, sin ellas, cuenta desde la primera aparición (reglas, apartado 3): discos de datos sin horas en ninguna foto, 1; con horas en unas fotos y no en otras, 2.736. Fallos con edad negativa por la primera aparición en las fotos: 67.
-- R-04, un disco puede fallar dos veces y seguir en servicio tras un fallo (reglas, apartado 3): 12 discos fallan dos veces. 161 discos salen en alguna foto después de su fallo, y 10 de ellos tienen dos fallos en la lista.
+- R-04, un disco puede fallar dos veces y seguir en servicio tras un fallo (reglas, apartado 3): 12 discos fallan dos veces. 161 discos salen en alguna foto después de su fallo; 10 de ellos tienen dos fallos en la lista.
 - R-05, un disco que falta en una foto y vuelve no ha desaparecido (reglas, apartado 3): 7.798 discos de datos (1,94 %) faltan en alguna foto y vuelven; huecos de un mes: 6.113 de 8.298.
 - R-06, el sitio solo consta desde el 01/07/2023 y no se rellena hacia atrás (reglas, apartado 4): en las fotos, sin dato antes y desde el 01/07/2023: datacenter 100 % y 3,42 %; cluster_id 100 % y 0 %; vault_id 90,83 % y 0 %; pod_id 90,83 % y 0 %; pod_slot_num 100 % y 1,50 %.
 - R-07, un disco con dos registros el mismo día cuenta una vez (reglas, apartado 5): repeticiones de disco y día: 0 en las fotos y 0 en las ventanas.
@@ -265,7 +265,7 @@ Cada regla del caso se ha mirado con su medida, sin aplicarla a los datos. Las r
 - La variable objetivo está muy desequilibrada. Con el fallo a 30 días, la construcción tiene 11.577 casos frente a 10.732.277 no casos (0,1078 %). A 90 días, como el reconocimiento, 34.001 frente a 10.428.469.
 - Las ventanas solo existen para los 17.948 discos que fallan: usar sus columnas día a día mezclaría con el objetivo información que solo tienen los que fallan.
 - El modelo tiene 98 valores en las fotos, 83 de ellos por debajo del umbral de categoría rara.
-- Columnas calculadas a partir de otras: las 48 notas normalizadas salen del valor en bruto de su contador, y la capacidad sale del modelo.
+- Columnas calculadas a partir de otras: las 48 notas normalizadas salen del valor en bruto de su contador. La capacidad sale del modelo.
 
 ## 13. Cruces entre tablas
 
