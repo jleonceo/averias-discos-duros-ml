@@ -78,7 +78,7 @@
    "informes/indicadores__centros_avisos_tomos.json",
    "informes/indicadores__centros_avisos_tomos.md"
   ],
-  "siguiente": "el borrador de hallazgos (B5, B6, B7, B8 y MC) con este JSON; el informe final y el cuadro de mando leen sus series; antes, el auditor sin memoria del paso con el sí de el responsable del caso"
+  "siguiente": "el borrador de hallazgos (B5, B6, B7, B8 y MC) con este JSON; el informe final y el cuadro de mando leen sus series; antes, el auditor sin memoria del paso con el sí del responsable del caso"
  },
  "pendientes": [],
  "previos": {
@@ -12049,7 +12049,7 @@
  "datos_personales_texto": [
   "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección, porque no traen datos de personas.",
   "No hay datos de personas (reglas-negocio §9): el número de serie identifica un disco, no a una persona.",
-  "Este cálculo usa el número de serie solo para unir fotos, fallos y ventanas, y no deja ninguno en el JSON ni en el informe."
+  "Este cálculo usa el número de serie solo para unir fotos, fallos y ventanas. No deja ninguno en el JSON ni en el informe."
  ],
  "limites": [
   "Las cifras describen el periodo de trabajo. Ninguna dice por qué un centro, un aviso o un tramo falla más: solo valen verbos de asociación.",
@@ -12066,7 +12066,7 @@
   "Los intervalos de B5, B6 y el minicubo llevan φ: 1,0196 en B5 y 5,0189 en el minicubo; en B6, uno por grupo. φ mide la variación entre trimestres y no la que pueda haber dentro de un trimestre.",
   "El último año de los datos, 2025, llega hasta el 30/06: su «sin aviso» por año va marcado como incompleto.",
   "Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas, apartado 5).",
-  "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente."
+  "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí del responsable del caso, porque es un agente."
  ],
  "comprobaciones_salida": {
   "sin_palabra_vetada": true

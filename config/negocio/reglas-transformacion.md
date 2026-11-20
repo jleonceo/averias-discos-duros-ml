@@ -61,7 +61,7 @@ antes en una ventana, el primer día de esa ventana. La primera aparición nunca
 no usa nada del futuro. Si las horas de un disco bajan entre dos fotos, cada foto usa las suyas: pasa 3.468 veces, la
 regla, apartado 3 dice «sus horas encendido» y la corrección lo dejó como está (R-009, C-18).
 
-### 1. Las dos dimensiones, que se construyen antes porque las demás tablas las usan
+### 1. Las dos dimensiones van primero porque las demás tablas las usan
 
 #### `dim_modelo`: una fila por modelo
 
@@ -96,7 +96,7 @@ ventanas.
 La fecha de compra y el precio son una ficha de hoy: se calculan con todo el periodo, no con lo que se sabía en cada
 fecha (`modelo-datos.md` §3). Por eso no entran en la tabla de la pregunta 4.
 
-**La recta y las vecinas (criterio técnico).** La tabla de precios da el valor al empezar y al acabar cada año, y no
+**La recta y las vecinas (criterio técnico).** La tabla de precios da el valor al empezar y al acabar cada año. No
 dice cómo se lee un día intermedio. La recta entre los dos es la del reconocimiento, donde se midieron las cifras que
 citan las reglas. «Las capacidades vecinas» se lee como las dos más cercanas con curva ese día, que es lo que hace la
 tabla con 10 TB (8 y 12) y con 18 TB (14 y 16). La otra lectura posible, la más cercana por arriba y por abajo, cambia el
@@ -284,7 +284,7 @@ los discos de datos que salen en alguna foto o en alguna ventana.
 - `ultima_foto`: su última foto.
 - `primer_fallo`: el día de su primer fallo, vacío si no falla.
 - `evento`: «fallo» si tiene un fallo; «desaparece» si su última foto es anterior a la última de los datos, el
-  01/06/2025, y no tiene ningún fallo desde esa foto; «sigue» en los demás (reglas, apartado 3, «Los discos que desaparecen»).
+  01/06/2025, sin ningún fallo desde esa foto; «sigue» en los demás (reglas, apartado 3, «Los discos que desaparecen»).
   Un disco que falta unos meses y vuelve no desaparece.
 - `fecha_fin`: el día del primer fallo, o la última foto si desaparece o sigue. Desde la última foto, un disco que
   desaparece se va en algún día del mes siguiente, que no se sabe.
@@ -302,7 +302,7 @@ ese día con la transformación (historial). El reconocimiento contó 71.373 dis
 fallo después de su última foto. Aquí acaban en «desaparece» 71.328: los otros 45 fallaron antes de irse, su vida acaba
 en ese primer fallo y su `evento` es «fallo».
 
-### 6. `dias_por_tramo`: una fila por modelo, centro, mes y año de edad
+### 6. `dias_por_tramo` por modelo × centro × mes × año de edad
 
 Nueva tabla, `dias_por_tramo.parquet`, para la tasa por edad de la pregunta 2, la tasa ajustada por centro de la 3 y
 las tasas de la previsión del bloque 9. Junta los cruces 11 y 15.
@@ -335,7 +335,7 @@ del recuento, y están los 16.996 fallos. La tasa anual del conjunto de discos p
 separar centros. Los años de edad van de 0 a 10; los años 9 y 10 no tienen ningún fallo. Medido por el analista
 el 17/11/2026.
 
-### 7. `inicio_trimestre`: una fila por trimestre, modelo y año de edad
+### 7. `inicio_trimestre` por trimestre × modelo × año de edad
 
 Nueva tabla, `inicio_trimestre.parquet`, para la previsión del bloque 9. La previsión de cada trimestre se hace con lo
 que se sabe su primer día: los discos que hay ese día, con su edad (reglas, apartado 7, «Previsión de fallos»).
@@ -427,7 +427,7 @@ el análisis los enseña aparte (reglas, apartado 7). Las 228 filas que quitó l
   fallos esperados al azar en un tomo: es el análisis de las preguntas 1 a 3.
 - No se hace la previsión del bloque 9 ni su referencia.
 - No se calcula la curva de supervivencia.
-- No se ajusta ningún modelo ni se eligen variables, y no se crean variables para el modelo: ni escalado, ni columnas 0/1
+- No se ajusta ningún modelo ni se eligen variables. No se crean variables para el modelo: ni escalado, ni columnas 0/1
   por categoría, ni otros plazos del cambio de un contador. Es el paso 5.
 - No se imputa ningún vacío: un contador vacío quiere decir que el modelo no lo apunta (reglas, apartado 5).
 - Los bloques 1, 5, 6 y 8 se consultan en el análisis sobre estas tablas y las corregidas. Los tramos de temperatura,

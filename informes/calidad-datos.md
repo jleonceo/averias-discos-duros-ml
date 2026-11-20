@@ -312,7 +312,7 @@ El responsable del caso aprobó las ocho como comprobaciones el 17/11/2026. Aqu�
 - **C-10** · bloque 3.4 · fotos mensuales · `pod_slot_num`: 103.221 filas sin dato desde el 01/07/2023; de discos de datos, 1.613.
 - **C-11** · bloque 3.4 · fotos mensuales · `cluster_id`: vale 0 en 4.781.548 de 6.885.677 filas que traen la columna. Cerrado el 2026-11-17 (D4): el 0 de cluster_id no se decide, porque ninguna pregunta usa esa columna: se cuenta y se dice.
 - **C-12** · bloque 3.4 · fotos mensuales y ventanas de fallo · `(varias)`: 82 variables con los vacíos concentrados en algún segmento.
-- **C-13** · bloque 3.5 · fotos mensuales, ventanas de fallo y recuento diario · `model`: 4 modelos escritos con dos espacios tras «WDC»; 3.285 discos salen con los dos nombres. Cerrado el 2026-11-17 (D1): los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo; los junta la corrección.
+- **C-13** · bloque 3.5 · fotos mensuales con ventanas de fallo y recuento diario · `model`: 4 modelos escritos con dos espacios tras «WDC»; 3.285 discos salen con los dos nombres. Cerrado el 2026-11-17 (D1): los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo; los junta la corrección.
 - **C-14** · bloque 3.8 · fotos mensuales · `smart_188_raw`: 192.593 filas de discos de datos por encima de mil millones. Cerrado el 2026-11-17 (D2): el 188 cuenta como aviso cuando pasa de cero (reglas, apartado 3) y no entra en la suma de la regla de los contadores (reglas, apartado 7, cuestión 010).
 - **C-15** · bloque 3.8 · fotos mensuales y ventanas de fallo · `smart_5_raw, smart_187_raw`: el 187 en 65.535 en 221 filas; el 5 llega a 65.529 en las fotos. Cerrado el 2026-11-17 (D3): el 5 y el 187 pegados a 65.535 son el tope del contador; el disco avisa igual.
 - **C-16** · bloque 3.8 · ventanas de fallo · `smart_194_raw`: 9 filas por encima de 70 grados, con máximo de 117.
@@ -384,7 +384,7 @@ El plan lo aprobó el responsable del caso el 2026-11-17.
 ## 18. Datos personales
 
 - No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.
-- No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí de el responsable del caso.
+- No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí del responsable del caso.
 - El número de serie identifica un disco, no a una persona. Ninguna columna es un dato personal.
 - Este método no usa ni deja columnas de datos personales.
 

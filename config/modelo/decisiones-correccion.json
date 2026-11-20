@@ -5,7 +5,7 @@
   "modelos": {
     "decision": "D1",
     "problema_calidad": "C-13",
-    "texto": "los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo, porque son los mismos discos, con el mismo número de serie, escritos de dos formas; la corrección los junta (El responsable del caso, 17/11/2026, plan de calidad, «Lo aprobado»)",
+    "texto": "los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo, porque son los mismos discos, con el mismo número de serie, escritos de dos formas; la corrección los junta (el responsable del caso, 17/11/2026, plan de calidad, «Lo aprobado»)",
     "mapeo": {
       "WDC  WDS250G2B0A": "WDC WDS250G2B0A",
       "WDC  WUH721414ALE6L4": "WDC WUH721414ALE6L4",

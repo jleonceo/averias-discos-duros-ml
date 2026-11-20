@@ -86,7 +86,7 @@ Cada coste va en dólares por TB y año. El intervalo pone en la parte de los fa
 | sin puesto | sin puesto | ST16000NM002J | 16 | 2022 | 0,51 % | 235 (curva) | 2,4440 | 0,0789 | 2,5229 | 2,4729 a 2,6158 | 2,4559 | 2,5880 |
 | sin puesto | sin puesto | ST6000DX000 | 6 | 2015 | 0,39 % | 198 (vecinas) | 5,5097 | 0,0815 | 5,5913 | 5,5554 a 5,6442 | 5,5913 | 5,5698 |
 
-La última columna pone en la parte de los fallos la tasa a igual edad de cada modelo, la del bloque 2: la que tendría con la mezcla de edades de todos los discos. Con los 32 modelos, la correlación de Spearman entre el coste observado y el de igual edad es de 0,9960, y el mayor salto de puesto es de 3 (TOSHIBA MG07ACA14TA).
+La última columna pone en la parte de los fallos la tasa a igual edad de cada modelo, la del bloque 2: la que tendría con la mezcla de edades de todos los discos. Con los 32 modelos, la correlación de Spearman entre el coste observado y el de igual edad es de 0,9960. El mayor salto de puesto es de 3 (TOSHIBA MG07ACA14TA).
 
 Si los precios inferidos estuvieran un 20 % por debajo o por encima, los diez primeros con puesto quedarían así:
 
@@ -183,7 +183,7 @@ Por capacidad, en todos los trimestres juntos:
 
 Las horas de técnico previstas son 0,74 por fallo previsto; van por trimestre y capacidad en el JSON, con los 157 pares.
 
-La tasa de cada disco del primer día sale de su modelo y año de edad si esa celda tiene 50.000 días de disco o más; si no, de su capacidad y edad, y si tampoco, de su edad con todos los discos. Sumando los trimestres, el 96,8 % de los discos usó la de su modelo, 2,5 % la de su capacidad y 0,7 % la de su edad. El reparto por trimestre está en el JSON.
+La tasa de cada disco del primer día sale de su modelo y año de edad si esa celda tiene 50.000 días de disco o más; si no, de su capacidad y edad; si tampoco, de su edad con todos los discos. Sumando los trimestres, el 96,8 % de los discos usó la de su modelo, 2,5 % la de su capacidad y 0,7 % la de su edad. El reparto por trimestre está en el JSON.
 
 La sensibilidad, solo para leer, cambia la regla de la tasa. El veredicto lo da la cuenta principal:
 
@@ -311,5 +311,5 @@ Cada cifra se rehízo por otro camino. Las segundas vías:
 - La previsión no ve 413 fallos de 15.689 (2,63 %), de discos que entran después del primer día de su trimestre; es la regla de las reglas, apartado 7, y la referencia sí los cuenta.
 - La sensibilidad es solo para leer: cambiar la regla de la tasa después de ver el resultado sería elegir la regla para que salga bien.
 - Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas, apartado 5). La prueba final de la previsión usará la misma función, prever_trimestre, en esos cuatro trimestres.
-- Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente.
+- Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí del responsable del caso, porque es un agente.
 

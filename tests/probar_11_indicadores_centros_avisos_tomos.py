@@ -56,7 +56,7 @@ TMP = CASO / "tests" / "tmp_indicadores_centros"
 SALIDA = "informes/indicadores__centros_avisos_tomos.json"
 SALIDA_MD = "informes/indicadores__centros_avisos_tomos.md"
 PROCESADOS = CASO / "data" / "processed"
-# La palabra vetada para el conjunto de discos (El responsable del caso, 17/11; una nota del caso), partida para que esta prueba no la lleve
+# La palabra vetada para el conjunto de discos (el responsable del caso, 17/11; una nota del caso), partida para que esta prueba no la lleve
 VETADA = "flo" + "ta"
 FALLOS = []
 

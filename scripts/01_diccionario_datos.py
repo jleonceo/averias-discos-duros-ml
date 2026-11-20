@@ -1184,7 +1184,7 @@ def main(raiz=CASO):
         resumen = (f"Los cuatro datasets (fotos mensuales, ventanas de fallo, recuento diario y lista de fallos) y el esquema descritos enteros, sin muestra: {fmt(sum(t['filas'] for t in tablas_pod))} filas de fotos y ventanas, "
                    f"{fmt(t_rec['filas'])} del recuento y {fmt(t_fal['filas'])} fallos. {len(pendientes)} columnas quedan como decisión de negocio "
                    f"y hay {len(contradicciones)} contradicciones con el esquema. "
-                   + ("No existe proteccion-datos.json: no hubo paso de protección (paso 2a saltado el 17/11/2026 con el sí de el responsable del caso, porque no hay datos personales)."
+                   + ("No existe proteccion-datos.json: no hubo paso de protección (paso 2a saltado el 17/11/2026 con el sí del responsable del caso, porque no hay datos personales)."
                       if proteccion is None else "Los datos pasaron por la protección de proteccion-datos.json."))
         dic.update({
             "entradas": list(entradas.values()),
@@ -1227,7 +1227,7 @@ def main(raiz=CASO):
             "datos_personales": [
                 "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección." if proteccion is None
                 else "Los datos pasaron por la protección de proteccion-datos.json.",
-                "El paso 2a se saltó el 17/11/2026 con el sí de el responsable del caso porque no hay datos de personas (reglas, apartado 9; proteccion-datos.md).",
+                "El paso 2a se saltó el 17/11/2026 con el sí del responsable del caso porque no hay datos de personas (reglas, apartado 9; proteccion-datos.md).",
                 "Ninguna columna lleva rol dato_personal. El número de serie identifica un disco, no a una persona: su rol es identificador.",
                 "Este método no usa ni deja columnas de datos personales.",
             ],

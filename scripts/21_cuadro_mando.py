@@ -137,7 +137,7 @@ CIUDADES = {"ams5": "Ámsterdam", "iad1": "Virginia", "phx1": "Phoenix", "sac0":
 SITIO = ["datacenter", "vault_id", "pod_id", "pod_slot_num"]
 # Tolerancia al comparar con los JSON, que guardan las cifras con diez decimales
 TOLERANCIA = 1e-8
-# Nombre de la regla, siempre entero (El responsable del caso, 19/11/2026)
+# Nombre de la regla, siempre entero (el responsable del caso, 19/11/2026)
 REGLA = "regla de los cinco avisos SMART"
 # Palabras vetadas en todo el cuadro (las del informe final, scripts/17)
 PROHIBIDAS = [r"\bflota\b", r"\bparque\b", r"\bunidades\b", r"regla actual", r"gastar menos", r"\bbajar el coste",

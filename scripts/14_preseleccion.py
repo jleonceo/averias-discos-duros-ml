@@ -793,7 +793,7 @@ def base(raiz):
                for f, nombre in (("bosque", "bosque aleatorio"), ("hgb", "HistGradientBoosting"))}},
         "parametros": [
             {"nombre": "semillas", "valor": f"{SEMILLA} en la muestra y en los tres métodos; {SEMILLA_2} en la segunda muestra", "origen": "parametros.md y petición 21"},
-            {"nombre": "muestra", "valor": f"todas las fotos con fallo y el {numero(100 * FRACCION_SANAS)} % de las sanas de cada mes; de ella, los meses más recientes enteros hasta pasar de {numero(FILAS_MUESTRA)} filas; si la lista cambia con la segunda muestra se dobla, y si no cabe se usa entera", "origen": "reglas, apartado 7; parametros.md, «filas para muestrear»; nota de la petición 21, punto 5"},
+            {"nombre": "muestra", "valor": f"todas las fotos con fallo y el {numero(100 * FRACCION_SANAS)} % de las sanas de cada mes; de ella, los meses más recientes enteros hasta pasar de {numero(FILAS_MUESTRA)} filas; si la lista cambia con la segunda muestra se dobla; si no cabe, se usa entera", "origen": "reglas, apartado 7; parametros.md, «filas para muestrear»; nota de la petición 21, punto 5"},
             {"nombre": "escenario de votación", "valor": f"{ESCENARIO}, {VOTOS_MINIMOS} votos o más", "origen": "reglas, apartado 7, el responsable del caso, 18/11/2026"},
             {"nombre": "obligatorias", "valor": ", ".join(OBLIGATORIAS), "origen": "reglas, apartado 7, el responsable del caso, 18/11/2026"},
             {"nombre": "información mutua", "valor": f"mutual_info_classif con random_state={SEMILLA} y la máscara de discretas", "origen": "metodos.md; petición 21"},

@@ -29,7 +29,7 @@
  "resultado": {
   "estado": "OK",
   "riesgo": "medio",
-  "resumen": "Contrato aprobado (El responsable del caso, 19/11/2026: «Sí, con el arreglo»). Las 11 validaciones, en verde.",
+  "resumen": "Contrato aprobado (el responsable del caso, 19/11/2026: «Sí, con el arreglo»). Las 11 validaciones, en verde.",
   "artefactos": [
    "config/modelo/contrato_produccion.md",
    "informes/preproduccion.json"
@@ -4895,7 +4895,7 @@
    "fuente": "R-013; reglas de transformación, «3. `fotos_riesgo`»; «De qué se parte»",
    "clase": "necesita otras filas",
    "que": "edad_anos son las horas encendido entre 8.766; sin horas, los días desde la primera aparición del disco entre 365,25. Al ejecutar, la primera aparición solo usa las ventanas de fallos con dia_fallo anterior a la fecha de la foto.",
-   "por_que": "Con horas es la propia fila. Sin horas cuenta desde la primera aparición, que es su primera foto o, si sale antes, el primer día de una ventana suya: eso pide la historia del disco hasta el día de la foto, nunca después. La ventana de un fallo que aún no ha ocurrido no cuenta, porque anuncia ese fallo (arreglo de el responsable del caso, 19/11/2026). En el desarrollo sí contó: de las 2.735 fotos de fotos_riesgo sin horas, en una sola la primera aparición sale de una ventana, y esa foto puede salir distinta.",
+   "por_que": "Con horas es la propia fila. Sin horas cuenta desde la primera aparición, que es su primera foto o, si sale antes, el primer día de una ventana suya: eso pide la historia del disco hasta el día de la foto, nunca después. La ventana de un fallo que aún no ha ocurrido no cuenta, porque anuncia ese fallo (arreglo del responsable del caso, 19/11/2026). En el desarrollo sí contó: de las 2.735 fotos de fotos_riesgo sin horas, en una sola la primera aparición sale de una ventana. Esa foto puede salir distinta.",
    "reentrenar": "Llega hecha en la tabla de entrenamiento.",
    "ejecutar": "Se calcula con la foto y su historia.",
    "historia": [

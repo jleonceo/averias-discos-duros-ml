@@ -13,7 +13,7 @@ Parte 1, el módulo, con datos pequeños escritos aquí:
   - las funciones de la foto, cada una con su caso que tiene que salir mal: el modelo con dos espacios, la capacidad no
     válida, un modelo sin ninguna capacidad válida, el fabricante y la garantía, el disco de arranque, la foto del día
     del fallo, la edad con y sin horas, la ventana de un fallo anterior (cuenta) y la de un fallo que aún no ha
-    ocurrido (no cuenta: el arreglo de el responsable del caso), la fila de ventana con la fecha distinta de su texto (no cuenta), los
+    ocurrido (no cuenta: el arreglo del responsable del caso), la fila de ventana con la fecha distinta de su texto (no cuenta), los
     cambios contra la foto anterior de dos meses antes, el disco sin foto anterior y los avisos con un vacío.
 Parte 2, la medida que pidió la sesión principal (no decide nada): en data/raw/, cuántos modelos tienen una fila con
 capacidad no válida y su capacidad válida solo en el recuento diario, y cuántas filas de fotos con capacidad no válida

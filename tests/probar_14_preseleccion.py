@@ -400,7 +400,7 @@ def probar_caso_pequeno():
                   f"fuga: la alarma salta con smart_242_raw y queda sin decisión ({al})")
     # Las entradas que no están listas
     for nombre, montaje in (("preparacion.json sin OK", {"estado_preparacion": "PARADO"}),
-                            ("matriz sin aprobar", {"estado_matriz": "opción, pendiente de el responsable del caso"})):
+                            ("matriz sin aprobar", {"estado_matriz": "opción, pendiente del responsable del caso"})):
         montar(**montaje)
         codigo, js, _ = ejecutar()
         comprobar(codigo == 2 and js is not None and js["resultado"]["estado"] == "PARADO", f"{nombre}: PARADO (código {codigo})")

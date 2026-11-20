@@ -198,7 +198,7 @@ def main():
          para(m.sin_prohibidas, '<section id="p1"><p>Mejora a la regla actual.</p></section>'))
 
     # 7. Auditor sin memoria antes de entregar (20/11/2026, una nota del caso): el punto ciego medido igual que el modelo, el
-    # intervalo bien definido y el año guardado dicho como se usó. La regla sencilla que propuso no se usa (El responsable del caso,
+    # intervalo bien definido y el año guardado dicho como se usó. La regla sencilla que propuso no se usa (el responsable del caso,
     # 20/11/2026, una nota del caso): la referencia es solo la regla de los cinco avisos SMART
     anexo_html = "".join(b["html"] for p in anexo for b in p.bloques)
     caso("7. no queda nada de la regla sencilla", "sencilla" not in texto.lower() and "24,55" not in texto

@@ -88,7 +88,7 @@ la validación se queda entre un 13,7 % por debajo y un 35,6 % por encima de lo 
 (MOD). Sirve para ordenar discos, no para contar cuántos van a fallar.
 
 **Lo que no se pudo comprobar:** ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026, que se abre al
-cerrar el caso; y el auditor sin memoria del cierre de cada paso analítico no se lanzó, porque necesita el sí de el responsable del caso
+cerrar el caso; y el auditor sin memoria del cierre de cada paso analítico no se lanzó, porque necesita el sí del responsable del caso
 (límites de los tres informes de indicadores).
 
 ## Lo que no se puede afirmar
@@ -100,7 +100,7 @@ cerrar el caso; y el auditor sin memoria del cierre de cada paso analítico no s
   decidir. El coste se compara dentro de cada capacidad y año de compra; los centros, a igual mezcla.
 - **El precio.** El mejor modelo de cada grupo vale lo que valga el precio inferido desde 2023.
 - **El ahorro de 2024.** Los 2.044.860 dólares mezclan años de compra: salen sobre todo de comparar el precio de discos
-  comprados en años distintos. No miden lo que se ahorraría comprando hoy, y el informe final no los usa.
+  comprados en años distintos. No miden lo que se ahorraría comprando hoy. El informe final no los usa.
 - **Fallos sin aviso.** El modelo no ve los fallos que llegan sin aviso: el 25,1 % de los fallos con día anterior llega
   sin aviso ese día, aunque esa parte baja del 40,3 % en 2020 al 17,9 % en 2025 (B6).
 - **Generalización y deriva.** Todo vale para los discos de datos de Backblaze de enero de 2020 a junio de 2025. Si

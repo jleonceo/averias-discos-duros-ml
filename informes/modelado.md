@@ -6,7 +6,7 @@ La validación, abierta una vez, da por bueno el modelo: en la lista de 100 encu
 
 La medida principal son los fallos encontrados entre los 100 discos de más riesgo de cada mes. Es lo que mide el negocio: de los N discos de más riesgo, cuántos fallan (reglas, apartado 7). Se da por bueno si en la validación el modelo encuentra en esa lista más fallos que la regla, con el intervalo de la diferencia por encima de cero, y su AUC es 0,70 o más.
 
-Las referencias son la regla de los cinco contadores (cuestión 010), el trivial, DummyClassifier(strategy="prior"). La preselección llegó así: en AVISO, con cada pendiente decidido por el responsable del caso: P-01, seguir con la lista de la semilla 42 (El responsable del caso, 18/11/2026, R-023).
+Las referencias son la regla de los cinco contadores (cuestión 010), el trivial, DummyClassifier(strategy="prior"). La preselección llegó así: en AVISO, con cada pendiente decidido por el responsable del caso: P-01, seguir con la lista de la semilla 42 (el responsable del caso, 18/11/2026, R-023).
 
 ## Qué se probó y cuánto costó
 
@@ -79,7 +79,7 @@ Sí: frente a la regla, el intervalo va de 14,00 a 18,92, y el AUC es 0,898 fren
 ## Las tres vías de mejora
 
 1. Mejor modelo: se probaron tres algoritmos con su búsqueda (regresión logística, 12 candidatos; bosque aleatorio, 17 candidatos; HistGradientBoosting, 17 candidatos); quedan sin probar XGBoost y los castigos L1 y mezcla de la logística, que el responsable del caso dejó fuera (reglas, apartado 7).
-2. Crear variables con los datos que ya hay: las cuatro variables nuevas candidatas de la matriz (P-04), no se crean en esta petición; se crean si el modelo no supera a la regla, con la decisión de el responsable del caso y antes de abrir la validación (reglas, apartado 7).
+2. Crear variables con los datos que ya hay: las cuatro variables nuevas candidatas de la matriz (P-04), no se crean en esta petición; se crean si el modelo no supera a la regla, con la decisión del responsable del caso y antes de abrir la validación (reglas, apartado 7).
 3. Pedir más información: las lecturas SMART diarias, no solo la foto mensual, ver los fallos que avisan entre una foto y la siguiente (lo tiene Backblaze).
 
 ## Validaciones
@@ -128,7 +128,7 @@ Los apartados del manual aplicados:
 
 ## Datos personales
 
-Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9), y el modelo no lo lee. No usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.
+Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9). El modelo no lo lee. No usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.
 
 ## Límites
 

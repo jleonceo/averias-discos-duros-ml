@@ -4,7 +4,7 @@ Las cifras de referencia salen de los scripts anteriores del estudio previo:
 - discos distintos que fallan: 1.067 en el 1.er trimestre de 2025 y 1.423 en el 3.º de 2024 (1.424 filas de fallo);
 - 197 columnas de origen, menos 68 que no aportan, más `fecha`: 130.
 Cada comprobación imprime PASA o FALLA, y la prueba sale con código 1 si alguna falla.
-16/11/2026, con permiso de el responsable del caso («arreglado, claro»): un disco puede fallar más de una vez; se comprueba que la poda
+16/11/2026, con permiso del responsable del caso («arreglado, claro»): un disco puede fallar más de una vez; se comprueba que la poda
 guarda cada fallo, que cada fila de ventana lleva el día de su fallo y, con los 26 trimestres, los 22.711 fallos.
 Uso: python probar_poda.py <carpeta de salida de la poda>"""
 import sys
@@ -51,7 +51,7 @@ comprobar("cada fila de ventana dice a qué fallo pertenece", "dia_fallo" in v.c
 if "dia_fallo" in v.columns:
     d = (v.dia_fallo - v.fecha).dt.days
     comprobar("ninguna fila de ventana fuera de los 30 días", d.between(0, 30).all(), f"de {d.min()} a {d.max()} días")
-# CASOS QUE TIENEN QUE FALLAR (17/11/2026, con permiso de el responsable del caso; el control anterior comparaba una cifra consigo misma
+# CASOS QUE TIENEN QUE FALLAR (17/11/2026, con permiso del responsable del caso; el control anterior comparaba una cifra consigo misma
 # más uno y no podía fallar). Se estropea una copia de los datos y las mismas comprobaciones de arriba tienen que cazarlo.
 fallos_rotos = fallos.iloc[1:]
 comprobar("control: si falta un fallo, «cada fallo tiene su día» lo caza", len(dias) != len(fallos_rotos),

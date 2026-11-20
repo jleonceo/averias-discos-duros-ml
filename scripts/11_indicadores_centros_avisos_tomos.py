@@ -122,7 +122,7 @@ CENTROS_QUITAR = ("sac0", "sac2")
 N_MODELOS_REPARTO = 5
 N_TOMOS = 5
 N_NIVEL2 = 10
-# Tramos del bloque 8 (El responsable del caso, 18/11/2026, una nota del caso) y de la edad del minicubo (petición, criterio 9)
+# Tramos del bloque 8 (el responsable del caso, 18/11/2026, una nota del caso) y de la edad del minicubo (petición, criterio 9)
 TRAMOS = {"temperatura": ["01_frio", "02_medio", "03_caliente"],
           "arranques": ["01_hasta_mediana", "02_hasta_doble", "03_mas_del_doble"],
           "escritos": ["01_bajo", "02_medio", "03_alto"], "leidos": ["01_bajo", "02_medio", "03_alto"]}
@@ -135,7 +135,7 @@ TOLERANCIA = 1e-6
 # Base de las claves numéricas: meses y días caben por debajo
 BASE_MES = 10 ** 3
 BASE_DIA = 10 ** 5
-# La palabra vetada para el conjunto de discos (El responsable del caso, 17/11; una nota del caso), partida para que el código no la lleve
+# La palabra vetada para el conjunto de discos (el responsable del caso, 17/11; una nota del caso), partida para que el código no la lleve
 VETADA = "flo" + "ta"
 
 COMPROBACIONES = ["unidad", "minimo", "empates", "referencia", "azar_en_grupos", "pesos", "hacia_adelante",
@@ -1936,7 +1936,7 @@ def informe(j):
     """Texto Markdown del informe, con los apartados de resultado.md, a partir del JSON."""
     L = []
     est = j["resultado"]
-    L.append("# Centros de datos, avisos, tomos, otros factores y perfiles de riesgo")
+    L.append("# Centros de datos y otros factores de riesgo")
     L.append("")
     L.append(f"Caso 68, paso 5, bloques 5 a 8 del plan de la analítica, el minicubo y lo que falta en los datos. Datos "
              f"hasta el {fecha_es(j['fecha_datos'])}; ejecutado el {fecha_es(j['fecha_ejecucion'])}. Estado: "
@@ -2343,7 +2343,7 @@ def limites(res):
         f"El último año de los datos, {FECHA_DATOS.year}, llega hasta el {FECHA_DATOS:%d/%m}: su «sin aviso» por año va "
         "marcado como incompleto.",
         "Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas, apartado 5).",
-        "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente.",
+        "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí del responsable del caso, porque es un agente.",
     ]
 
 
@@ -2415,7 +2415,7 @@ def principal(raiz):
             ("Existe " + PROTECCION + ": lo que dice va en el informe de la protección." if (raiz / PROTECCION).exists()
              else f"No existe {PROTECCION}: los datos no pasaron por la protección, porque no traen datos de personas."),
             "No hay datos de personas (reglas-negocio §9): el número de serie identifica un disco, no a una persona.",
-            "Este cálculo usa el número de serie solo para unir fotos, fallos y ventanas, y no deja ninguno en el JSON "
+            "Este cálculo usa el número de serie solo para unir fotos, fallos y ventanas. No deja ninguno en el JSON "
             "ni en el informe.",
         ]
         j["limites"] = limites(res)
@@ -2429,7 +2429,7 @@ def principal(raiz):
                         "tomo solo constan desde el 01/07/2023."),
             "artefactos": [SALIDA_JSON, SALIDA_MD],
             "siguiente": ("el borrador de hallazgos (B5, B6, B7, B8 y MC) con este JSON; el informe final y el cuadro de "
-                          "mando leen sus series; antes, el auditor sin memoria del paso con el sí de el responsable del caso")}
+                          "mando leen sus series; antes, el auditor sin memoria del paso con el sí del responsable del caso")}
         j["comprobaciones_salida"] = {"sin_palabra_vetada": None}
         tj, tm = textos(j)
         j["comprobaciones_salida"]["sin_palabra_vetada"] = comp_sin_vetada([tj, tm])

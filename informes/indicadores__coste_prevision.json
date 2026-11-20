@@ -99,7 +99,7 @@
    "informes/indicadores__coste_prevision.json",
    "informes/indicadores__coste_prevision.md"
   ],
-  "siguiente": "bloques 5 a 8 del plan; el informe final y el cuadro de mando leen este JSON; antes, el auditor sin memoria del paso con el sí de el responsable del caso"
+  "siguiente": "bloques 5 a 8 del plan; el informe final y el cuadro de mando leen este JSON; antes, el auditor sin memoria del paso con el sí del responsable del caso"
  },
  "pendientes": [],
  "previos": {
@@ -13040,7 +13040,7 @@
   "La previsión no ve 413 fallos de 15.689 (2,63 %), de discos que entran después del primer día de su trimestre; es la regla de las reglas, apartado 7, y la referencia sí los cuenta.",
   "La sensibilidad es solo para leer: cambiar la regla de la tasa después de ver el resultado sería elegir la regla para que salga bien.",
   "Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas, apartado 5). La prueba final de la previsión usará la misma función, prever_trimestre, en esos cuatro trimestres.",
-  "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente."
+  "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí del responsable del caso, porque es un agente."
  ],
  "comprobaciones_salida": {
   "sin_palabra_vetada": true

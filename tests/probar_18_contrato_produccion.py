@@ -6,7 +6,7 @@ columnas y su preprocesador lee nueve, con datacenter. Los documentos se escribe
 escrito en la copia (programacion-del-caso §2 y error 31), y no se heredan de los del caso.
 
 Casos:
-  1. verde: el contrato se escribe aprobado (El responsable del caso, 19/11/2026), el JSON queda en AVISO con la aprobación y el arreglo
+  1. verde: el contrato se escribe aprobado (el responsable del caso, 19/11/2026), el JSON queda en AVISO con la aprobación y el arreglo
      de la historia de ventanas (fallos anteriores a la foto, con dia_fallo); cada finalista tiene su
      cadena con fichas que existen y cada paso una de las cuatro clases;
   2. modelado sin aprobar (ganador.aprobado_por vacío): PARADO y sin contrato;
@@ -89,7 +89,7 @@ FICHAS = [
     ("R-023", "fotos_riesgo_entrenamiento · preselección de variables de la logística", "Solo la logística."),
     ("R-024", "producción · contrato de producción aprobado", "El contrato aprobado; no cambia ningún dato."),
 ]
-# La aprobación que el script lleva en su configuración (El responsable del caso, 19/11/2026)
+# La aprobación que el script lleva en su configuración (el responsable del caso, 19/11/2026)
 APROBADO_POR = "El responsable del caso, 19/11/2026: «Sí, con el arreglo»"
 FECHA_APROBACION = "2026-11-19"
 
@@ -193,7 +193,7 @@ def ejecutar():
 # 3. Los casos
 # ---------------------------------------------------------------------------------------------------------------
 def caso_verde():
-    """El caso bueno: contrato escrito, PARADO a la espera de el responsable del caso, cadenas completas y cada paso con su clase."""
+    """El caso bueno: contrato escrito, PARADO a la espera del responsable del caso, cadenas completas y cada paso con su clase."""
     nombre = "1 verde"
     montar()
     codigo, salida, js = ejecutar()

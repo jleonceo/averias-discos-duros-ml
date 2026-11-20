@@ -555,7 +555,7 @@
  "resultado": {
   "estado": "AVISO",
   "riesgo": "medio",
-  "resumen": "Los cuatro datasets (fotos mensuales, ventanas de fallo, recuento diario y lista de fallos) y el esquema descritos enteros, sin muestra: 15.388.494 filas de fotos y ventanas, 201.502 del recuento y 17.960 fallos. 9 columnas quedan como decisión de negocio y hay 32 contradicciones con el esquema. No existe proteccion-datos.json: no hubo paso de protección (paso 2a saltado el 17/11/2026 con el sí de el responsable del caso, porque no hay datos personales).",
+  "resumen": "Los cuatro datasets (fotos mensuales, ventanas de fallo, recuento diario y lista de fallos) y el esquema descritos enteros, sin muestra: 15.388.494 filas de fotos y ventanas, 201.502 del recuento y 17.960 fallos. 9 columnas quedan como decisión de negocio y hay 32 contradicciones con el esquema. No existe proteccion-datos.json: no hubo paso de protección (paso 2a saltado el 17/11/2026 con el sí del responsable del caso, porque no hay datos personales).",
   "artefactos": [
    "config/fuentes/diccionario-datos-origen.json",
    "config/fuentes/diccionario-datos-origen.md"
@@ -22505,7 +22505,7 @@
  ],
  "datos_personales": [
   "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
-  "El paso 2a se saltó el 17/11/2026 con el sí de el responsable del caso porque no hay datos de personas (reglas, apartado 9; proteccion-datos.md).",
+  "El paso 2a se saltó el 17/11/2026 con el sí del responsable del caso porque no hay datos de personas (reglas, apartado 9; proteccion-datos.md).",
   "Ninguna columna lleva rol dato_personal. El número de serie identifica un disco, no a una persona: su rol es identificador.",
   "Este método no usa ni deja columnas de datos personales."
  ],

@@ -10,7 +10,7 @@ existen y una definición; cada ficha del registro está clasificada (en la cade
 ningún paso que aprende se ajustó antes de la partición; el contrato no tiene campos vacíos. Si el modelado no está en
 OK, el ganador no está aprobado o la validación no lo dio por bueno, para con PARADO sin escribir el contrato.
 
-Escribe config/modelo/contrato_produccion.md e informes/preproduccion.json, con la aprobación de el responsable del caso (19/11/2026,
+Escribe config/modelo/contrato_produccion.md e informes/preproduccion.json, con la aprobación del responsable del caso (19/11/2026,
 «Sí, con el arreglo», en APROBADO_POR). Solo lee JSON y Markdown: no abre ningún dato.
 
 Uso: python -W error scripts/18_contrato_produccion.py [--raiz CARPETA_DEL_CASO]
@@ -51,7 +51,7 @@ IDENTIFICADOR = ["serial_number", "fecha"]
 OBJETIVO = "falla_30d"
 HORIZONTE = "horizonte_hasta"
 GRUPO_DEL_CORTE = "fecha"
-# La aprobación del contrato (El responsable del caso, 19/11/2026), con el arreglo de la historia de ventanas en P06 y P12
+# La aprobación del contrato (el responsable del caso, 19/11/2026), con el arreglo de la historia de ventanas en P06 y P12
 APROBADO_POR = "El responsable del caso, 19/11/2026: «Sí, con el arreglo»"
 FECHA_APROBACION = "2026-11-19"
 DESEMPATE = "serial_number"
@@ -159,7 +159,7 @@ PASOS = [
      "lee": ["serial_number", "fecha", "smart_9_raw"], "define": ["edad_anos"],
      "historia": [HISTORIA_FOTOS_HASTA, HISTORIA_VENTANAS],
      "que": "edad_anos son las horas encendido entre 8.766; sin horas, los días desde la primera aparición del disco entre 365,25. Al ejecutar, la primera aparición solo usa las ventanas de fallos con dia_fallo anterior a la fecha de la foto.",
-     "por_que": "Con horas es la propia fila. Sin horas cuenta desde la primera aparición, que es su primera foto o, si sale antes, el primer día de una ventana suya: eso pide la historia del disco hasta el día de la foto, nunca después. La ventana de un fallo que aún no ha ocurrido no cuenta, porque anuncia ese fallo (arreglo de el responsable del caso, 19/11/2026). En el desarrollo sí contó: de las 2.735 fotos de fotos_riesgo sin horas, en una sola la primera aparición sale de una ventana, y esa foto puede salir distinta.",
+     "por_que": "Con horas es la propia fila. Sin horas cuenta desde la primera aparición, que es su primera foto o, si sale antes, el primer día de una ventana suya: eso pide la historia del disco hasta el día de la foto, nunca después. La ventana de un fallo que aún no ha ocurrido no cuenta, porque anuncia ese fallo (arreglo del responsable del caso, 19/11/2026). En el desarrollo sí contó: de las 2.735 fotos de fotos_riesgo sin horas, en una sola la primera aparición sale de una ventana. Esa foto puede salir distinta.",
      "reentrenar": "Llega hecha en la tabla de entrenamiento.", "ejecutar": "Se calcula con la foto y su historia."},
     {"id": "P13", "nombre": "los avisos", "fichas": ["R-013"], "apartado": "3. `fotos_riesgo`", "fuente": None,
      "clase": "no aprende", "lee": CONTADORES,

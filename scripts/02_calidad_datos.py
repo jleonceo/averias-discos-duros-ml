@@ -135,7 +135,7 @@ TEXTOS_DOCUMENTADOS = {("recuento_diario", "datacenter", "sin dato"): "reglas de
 PATRON_INSTRUCCION = re.compile(r"ignor|recalcul|instrucci|olvida|prompt", re.I)
 PATRON_ISO = r"\d{4}-\d{2}-\d{2}"
 
-# Lo que el plan aprobado cerró el 17/11/2026 como criterio técnico (El responsable del caso: «Sí, apruebo»)
+# Lo que el plan aprobado cerró el 17/11/2026 como criterio técnico (el responsable del caso: «Sí, apruebo»)
 LO_CERRADO = {
     "D1": {"fecha": "2026-11-17", "pendientes_del_diccionario": ["P-01", "P-05", "P-09"],
            "texto": "los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo; los junta la corrección"},
@@ -2114,7 +2114,7 @@ def main(raiz=CASO):
         datos_personales_texto = [
             "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección." if proteccion is None
             else "Los datos pasaron por la protección de proteccion-datos.json.",
-            "No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí de el responsable del caso.",
+            "No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí del responsable del caso.",
             "El número de serie identifica un disco, no a una persona. Ninguna columna es un dato personal.",
             "Este método no usa ni deja columnas de datos personales.",
         ]

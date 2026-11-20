@@ -105260,7 +105260,7 @@
  "datos_personales": [],
  "datos_personales_texto": [
   "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
-  "No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí de el responsable del caso.",
+  "No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí del responsable del caso.",
   "El número de serie identifica un disco, no a una persona. Ninguna columna es un dato personal.",
   "Este método no usa ni deja columnas de datos personales."
  ],

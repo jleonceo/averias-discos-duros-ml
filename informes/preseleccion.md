@@ -305,7 +305,7 @@ El modelado guarda la lista de variables, no la de columnas: los tramos se apren
 ## Parámetros usados
 
 - Semillas: 42 en la muestra y en los tres métodos; 43 en la segunda muestra. Origen: parametros.md y petición 21.
-- Muestra: todas las fotos con fallo y el 2 % de las sanas de cada mes; de ella, los meses más recientes enteros hasta pasar de 100.000 filas; si la lista cambia con la segunda muestra se dobla, y si no cabe se usa entera. Origen: reglas, apartado 7; parametros.md, «filas para muestrear»; nota de la petición 21, punto 5.
+- Muestra: todas las fotos con fallo y el 2 % de las sanas de cada mes; de ella, los meses más recientes enteros hasta pasar de 100.000 filas; si la lista cambia con la segunda muestra se dobla; si no cabe, se usa entera. Origen: reglas, apartado 7; parametros.md, «filas para muestrear»; nota de la petición 21, punto 5.
 - Escenario de votación: consenso amplio, 2 votos o más. Origen: reglas, apartado 7, el responsable del caso, 18/11/2026.
 - Obligatorias: smart_5_raw, smart_187_raw, smart_197_raw, smart_198_raw. Origen: reglas, apartado 7, el responsable del caso, 18/11/2026.
 - Información mutua: mutual_info_classif con random_state=42 y la máscara de discretas. Origen: metodos.md; petición 21.
@@ -327,7 +327,7 @@ Los apartados del manual aplicados:
 
 ## Datos personales
 
-Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9), y esta preselección no lo lee. No usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.
+Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9). Esta preselección no lo lee. No usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.
 
 ## Límites
 

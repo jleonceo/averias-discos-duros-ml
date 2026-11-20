@@ -1,4 +1,4 @@
-# Centros de datos, avisos, tomos, otros factores y perfiles de riesgo
+# Centros de datos y otros factores de riesgo
 
 Caso 68, paso 5, bloques 5 a 8 del plan de la analítica, el minicubo y lo que falta en los datos. Datos hasta el 30/06/2025; ejecutado el 18/11/2026. Estado: **AVISO**, riesgo medio.
 
@@ -85,7 +85,7 @@ En Seagate, el 197 y el 198 marcan las mismas fotos: 75.992 cada uno, así que s
 
 De los 16.996 fallos de discos de datos, 16.093 tienen el día anterior en su ventana y 4.046 de ellos llegan sin aviso; 903 no lo tienen y quedan aparte.
 
-Por año del fallo, los que llegan sin aviso el día anterior, entre los que tienen ese día, y los que no tienen día anterior, entre todos:
+Por año del fallo: los que llegan sin aviso el día anterior, entre los que tienen ese día; los que no tienen día anterior, entre todos:
 
 - 2020: 40,3 % sin aviso (516 de 1.279) y 2,1 % sin día anterior (28 de 1.307).
 - 2021: 36,8 % sin aviso (656 de 1.785) y 2,1 % sin día anterior (38 de 1.823).
@@ -310,7 +310,7 @@ Apartados del manual aplicados:
 
 - No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección, porque no traen datos de personas.
 - No hay datos de personas (reglas-negocio §9): el número de serie identifica un disco, no a una persona.
-- Este cálculo usa el número de serie solo para unir fotos, fallos y ventanas, y no deja ninguno en el JSON ni en el informe.
+- Este cálculo usa el número de serie solo para unir fotos, fallos y ventanas. No deja ninguno en el JSON ni en el informe.
 
 ## Límites
 
@@ -328,5 +328,5 @@ Apartados del manual aplicados:
 - Los intervalos de B5, B6 y el minicubo llevan φ: 1,0196 en B5 y 5,0189 en el minicubo; en B6, uno por grupo. φ mide la variación entre trimestres y no la que pueda haber dentro de un trimestre.
 - El último año de los datos, 2025, llega hasta el 30/06: su «sin aviso» por año va marcado como incompleto.
 - Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas, apartado 5).
-- Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente.
+- Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí del responsable del caso, porque es un agente.
 

@@ -309,7 +309,7 @@ def casos_del_texto(M, j_res, md):
     falso["tomos_fallos"]["sin_ventana"] = 3
     comprobar("3 fallos" in " ".join(M.limites(falso, "reserva")), "10 los fallos sin ventana se dicen si los hay")
     # 12. Auditor antes de entregar (20/11/2026, una nota del caso): el modelo en uso se aprobó después de medirlo en el año
-    # guardado, así que el límite no puede decir que no se eligió con él. La regla sencilla no se usa (El responsable del caso, una nota del caso)
+    # guardado, así que el límite no puede decir que no se eligió con él. La regla sencilla no se usa (el responsable del caso, una nota del caso)
     lim = " ".join(M.limites(r, "reserva"))
     comprobar("El modelo en uso no se volvió a elegir" not in lim and "antes de aprobarlo" in lim,
               f"12 el límite dice que el modelo en uso se midió en el año guardado antes de aprobarlo ({lim[-300:]})")

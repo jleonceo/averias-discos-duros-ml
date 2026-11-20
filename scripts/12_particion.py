@@ -67,7 +67,7 @@ COLUMNA_HORIZONTE = "horizonte_hasta"
 COLUMNA_OBJETIVO = "falla_30d"
 COLUMNA_DISCO = "serial_number"
 
-# Las dos partes, con las fechas de las reglas, apartado 7 (El responsable del caso, 17/11/2026: «Sí, apruebo»). Cada una: el valor de la columna
+# Las dos partes, con las fechas de las reglas, apartado 7 (el responsable del caso, 17/11/2026: «Sí, apruebo»). Cada una: el valor de la columna
 # periodo, el primer y el último día de la regla, y el fichero de salida.
 PARTES = [
     {"parte": "entrenamiento", "periodo": "construcción", "desde": dt.date(2020, 1, 1), "hasta": dt.date(2024, 6, 30),
@@ -82,7 +82,7 @@ CLAVE_EN_TRANSFORMACION = {"entrenamiento": "desarrollo", "validacion": "validac
 SEMILLA = 42                                                 # no se usa: la partición por fecha no sortea nada
 TOLERANCIA_PUNTOS = 2.0                                      # diferencia máxima de la tasa del objetivo entre partes
 
-POR_QUE = ("Por fecha, como manda reglas-negocio §7 (El responsable del caso, 17/11/2026): el modelo se usará hacia adelante, cada mes con "
+POR_QUE = ("Por fecha, como manda reglas-negocio §7 (el responsable del caso, 17/11/2026): el modelo se usará hacia adelante, cada mes con "
            "las fotos nuevas, así que la validación es el periodo más reciente, del 01/07/2024 al 30/06/2025, y la "
            "construcción va del 01/01/2020 al 30/06/2024. Un disco sigue en servicio de una parte a la otra, como "
            "seguirá en producción: no se parte por disco.")

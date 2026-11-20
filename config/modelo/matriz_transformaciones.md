@@ -16,24 +16,24 @@ categorías en columnas 0 y 1 y el HistGradientBoosting como categóricas nativa
 De las 144 columnas de la tabla, 135 están en la matriz y 9 se quedan fuera desde el principio.
 Entran 64 y no entran 71.
 
-**Decisiones de el responsable del caso (18/11/2026):**
-- **P-01:** aprueba la matriz tal como la propuso la petición 20 («Sí, siguiente pregunta»).
-- **P-04:** las cuatro variables nuevas candidatas no se crean ahora. Se prueban primero si el modelo no supera a la
+**Decisiones del responsable del caso (18/11/2026):**
+- P-01: aprueba la matriz tal como la propuso la petición 20 («Sí, siguiente pregunta»).
+- P-04: las cuatro variables nuevas candidatas no se crean ahora. Se prueban primero si el modelo no supera a la
   regla («Digo, vale, que se hacen luego, en la segunda pregunta»). El modelo superó a la regla y, aun así, se
-  probaron el 19/11/2026 por decisión de el responsable del caso, solo en el ganador (`scripts/16_variables_nuevas.py`): empatan y no
+  probaron el 19/11/2026 por decisión del responsable del caso, solo en el ganador (`scripts/16_variables_nuevas.py`): empatan y no
   entran (reglas, apartado 7).
-- **P-05:** seis variables que repetían a otra salen de la matriz (smart_190_raw, copia de smart_194_raw, y cinco normalizados que son función exacta de su bruto: 183, 184, 187, 189 y 222), y smart_197_normalized entra solo en los árboles («arréglalo y haz lo que tengas que hacer», una nota del caso).
+- P-05: seis variables que repetían a otra salen de la matriz (smart_190_raw, copia de smart_194_raw, y cinco normalizados que son función exacta de su bruto: 183, 184, 187, 189 y 222), y smart_197_normalized entra solo en los árboles («arréglalo y haz lo que tengas que hacer», una nota del caso).
 
 **Criterios técnicos que fijó el analista** (no son de negocio, una nota del caso):
-- **P-02:** las 2.539 fotos sin lectura SMART van, en la logística, al tramo de referencia de cada variable.
-- **P-03:** un modelo de disco que no estaba en entrenamiento va a «otras».
+- P-02: las 2.539 fotos sin lectura SMART van, en la logística, al tramo de referencia de cada variable.
+- P-03: un modelo de disco que no estaba en entrenamiento va a «otras».
 
 **Criterios de la matriz:**
-- **regular en la logistica:** la tasa por tramos no cambia de sentido y la asimetría está por debajo de 1 en valor absoluto; si no, por tramos (catálogo, J47)
-- **tramos:** el 0 y cada valor con al menos el 10 % de las fotos con dato van aparte; los trozos de en medio, por cuantiles aprendidos en entrenamiento, hasta 3 por debajo de 0 y hasta 10 por encima; fundidos con el de al lado hasta 30 fotos, 20 fallos y 20 sanas (ficha de la logística §4.2; parametros.md)
-- **categoria rara:** menos de 30 fotos, 20 fallos o 20 sanas, a «otras» (ficha de la logística §4.3)
-- **varia de verdad:** fuera de la matriz si está vacía entera; si fuera de su valor más frecuente, contando el vacío como un valor, quedan menos fotos que la hoja de partida en la muestra del 2 % (2.322) y menos de 20 fallos; si donde hay dato es constante, o casi (con la misma medida), y su vacío es, fila a fila, el de otra candidata que entra; o si es copia de otra o función exacta de otra con el mismo vacío (programacion-del-caso, error 33; la función exacta se añadió el 18/11, una nota del caso)
-- **hoja de partida:** max(20, 1 % de las filas) con la muestra de partida, el 2 % de las sanas más todos los fallos: unas 232.244 filas (ficha del bosque §6; reglas, apartado 7)
+- regular en la logistica: la tasa por tramos no cambia de sentido y la asimetría está por debajo de 1 en valor absoluto; si no, por tramos (catálogo, J47)
+- tramos: el 0 y cada valor con al menos el 10 % de las fotos con dato van aparte; los trozos de en medio, por cuantiles aprendidos en entrenamiento, hasta 3 por debajo de 0 y hasta 10 por encima; fundidos con el de al lado hasta 30 fotos, 20 fallos y 20 sanas (ficha de la logística §4.2; parametros.md)
+- categoria rara: menos de 30 fotos, 20 fallos o 20 sanas, a «otras» (ficha de la logística §4.3)
+- varia de verdad: fuera de la matriz si está vacía entera; si fuera de su valor más frecuente, contando el vacío como un valor, quedan menos fotos que la hoja de partida en la muestra del 2 % (2.322) y menos de 20 fallos; si donde hay dato es constante, o casi (con la misma medida), y su vacío es, fila a fila, el de otra candidata que entra; o si es copia de otra o función exacta de otra con el mismo vacío (programacion-del-caso, error 33; la función exacta se añadió el 18/11, una nota del caso)
+- hoja de partida: max(20, 1 % de las filas) con la muestra de partida, el 2 % de las sanas más todos los fallos: unas 232.244 filas (ficha del bosque §6; reglas, apartado 7)
 
 ## Columnas que entran (64)
 

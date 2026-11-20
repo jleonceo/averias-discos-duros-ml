@@ -161,7 +161,7 @@ def _fecha_de_texto(serie):
 
 def ventanas_utiles(ventanas, fecha):
     """Las filas de ventana que cuentan el día de la foto: fallos ya ocurridos (dia_fallo anterior a la foto, el arreglo
-    de el responsable del caso del 19/11/2026) y sin las filas cuya fecha no es la de su texto (R-007)."""
+    del responsable del caso del 19/11/2026) y sin las filas cuya fecha no es la de su texto (R-007)."""
     v = ventanas.loc[(ventanas["dia_fallo"] < fecha).to_numpy()]
     return v.loc[(_fecha_de_texto(v["date"]) == v["fecha"]).to_numpy()]
 

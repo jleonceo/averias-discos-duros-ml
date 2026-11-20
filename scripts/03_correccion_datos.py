@@ -677,7 +677,7 @@ def base_resultado(fecha_ejecucion):
             "nombres": [], "va_a_modelo": VA_A_MODELO, "parametros": PARAMETROS, "controles": {}, "validacion": [],
             "teoria": TEORIA,
             "datos_personales_texto": ["No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
-                                       "No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí de el responsable del caso."],
+                                       "No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí del responsable del caso."],
             "limites": ["La corrección mira una tabla cada vez. Una clave huérfana o repetida al otro lado de un cruce no se ve ni se corrige aquí."]}
 
 

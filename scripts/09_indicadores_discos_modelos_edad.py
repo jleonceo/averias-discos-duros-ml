@@ -1651,7 +1651,7 @@ def informe(j):
     """Texto Markdown del informe, con los apartados de resultado.md, a partir del JSON."""
     L = []
     est = j["resultado"]
-    L.append("# Indicadores del conjunto de discos, los modelos y la edad de los discos")
+    L.append("# Indicadores de los discos por modelo y edad")
     L.append("")
     L.append(f"Caso 68, paso 5, bloques 1 a 3 del plan de la analítica. Datos hasta el {fecha_es(j['fecha_datos'])}; "
              f"ejecutado el {fecha_es(j['fecha_ejecucion'])}. Estado: **{est['estado']}**, riesgo {est['riesgo']}.")
@@ -2045,7 +2045,7 @@ def parametros():
         {"nombre": "mínimo de fallos en un año de edad para sacar conclusión", "valor": numero(MINIMO_FALLOS_EDAD),
          "origen": "reglas-negocio §7, cuestión 009"},
         {"nombre": "mínimo de fallos de un modelo, en sus años que pasan el mínimo, para llevar puesto y sacar conclusión",
-         "valor": numero(MINIMO_FALLOS_MODELO), "origen": "reglas-negocio §7, cuestión 012 (El responsable del caso, 18/11/2026)"},
+         "valor": numero(MINIMO_FALLOS_MODELO), "origen": "reglas-negocio §7, cuestión 012 (el responsable del caso, 18/11/2026)"},
         {"nombre": "comparación a igual edad y en el mismo trimestre",
          "valor": ("razón = fallos observados / esperados con la tasa de cada año de edad y trimestre de calendario de "
                    "las celdas de dias_por_tramo cuyo modelo y año pasan el mínimo, con todos los modelos juntos; "
@@ -2135,14 +2135,14 @@ def limites(res):
         f"En la supervivencia, {numero(cob['discos_edad_fin_menor_que_entrada'])} discos tienen la edad final por debajo "
         "de la de entrada (horas encendido que bajan, R-009) y no aportan exposición.",
         "Un disco que desaparece se cuenta como censurado: se sabe que llegó vivo a su última foto, no si se migró, se "
-        "retiró sano o falló fuera de los datos, y eso no se puede saber. Contándolos como fallo cuando avisaban, la "
+        "retiró sano o falló fuera de los datos. Eso no se puede saber. Contándolos como fallo cuando avisaban, la "
         f"supervivencia a 5 años pasa del {pct(None if sv['5'] is None else 100 * sv['5'])} al "
         f"{pct(None if sens['5'] is None else 100 * sens['5'])}"
         + (f", y la lectura frente al año anterior cambia en los años de edad {lista_y(dif)}." if dif else "."),
         "Si la tasa de los discos más viejos baja porque son los que han aguantado no se puede saber con estos datos: "
-        "la tasa describe a los que quedan, y los datos no dicen por qué salieron los demás.",
+        "la tasa describe a los que quedan. Los datos no dicen por qué salieron los demás.",
         "Ninguna cifra se ha medido hacia adelante: la reserva, del 01/07/2025 al 30/06/2026, no se mira (reglas, apartado 5).",
-        "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente.",
+        "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí del responsable del caso, porque es un agente.",
     ]
 
 
@@ -2229,7 +2229,7 @@ def principal(raiz):
                            f"{lista_y(sens)}." if sens else ".")),
             "artefactos": [SALIDA_JSON, SALIDA_MD],
             "siguiente": ("bloques 4 a 9 del plan (coste, centros, avisos, tomos, otros factores y previsión), que leen "
-                          "este JSON; antes, el auditor sin memoria del paso con el sí de el responsable del caso")}
+                          "este JSON; antes, el auditor sin memoria del paso con el sí del responsable del caso")}
         codigo = 0
     except Parada as e:
         j["resultado"] = {"estado": e.estado, "riesgo": "alto", "resumen": f"Paró con {e.estado}: {e.motivo}",

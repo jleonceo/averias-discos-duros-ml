@@ -33,10 +33,10 @@
 
 ## Decisiones del responsable
 
-- **P-01:** son una copia del día que dice el texto: su fecha no tiene datos propios y sus filas sobran. Quitarlas no cambia ninguna respuesta (las instrucciones del caso, «Datos que no sirven o están mal»; criterios.md §2); el recuento de ese día se queda como está (El responsable del caso, con la petición 07, 2026-11-17; peticiones/07_correccion.md).
-- **D1:** los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo, porque son los mismos discos, con el mismo número de serie, escritos de dos formas; la corrección los junta (El responsable del caso, 17/11/2026, plan de calidad, «Lo aprobado») (El responsable del caso, 2026-11-17; informes/plan_calidad_datos.md, «Lo aprobado»).
-- **tipos de fecha:** las fechas como fecha: el texto date pasa a fecha (El responsable del caso, con la petición 07, 2026-11-17; peticiones/07_correccion.md).
-- **juntar las piezas:** las 66 fotos en un Parquet y las 22 ventanas en otro, con todas las columnas (El responsable del caso, con la petición 07, 2026-11-17; peticiones/07_correccion.md; config/metodo/como_estan_organizados_los_datos.md).
+- **P-01:** son una copia del día que dice el texto: su fecha no tiene datos propios y sus filas sobran. Quitarlas no cambia ninguna respuesta (las instrucciones del caso, «Datos que no sirven o están mal»; criterios.md §2); el recuento de ese día se queda como está (el responsable del caso, con la petición 07, 2026-11-17; peticiones/07_correccion.md).
+- **D1:** los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo, porque son los mismos discos, con el mismo número de serie, escritos de dos formas; la corrección los junta (el responsable del caso, 17/11/2026, plan de calidad, «Lo aprobado») (el responsable del caso, 2026-11-17; informes/plan_calidad_datos.md, «Lo aprobado»).
+- **tipos de fecha:** las fechas como fecha: el texto date pasa a fecha (el responsable del caso, con la petición 07, 2026-11-17; peticiones/07_correccion.md).
+- **juntar las piezas:** las 66 fotos en un Parquet y las 22 ventanas en otro, con todas las columnas (el responsable del caso, con la petición 07, 2026-11-17; peticiones/07_correccion.md; config/metodo/como_estan_organizados_los_datos.md).
 
 ## Elementos mantenidos sin cambios
 
@@ -123,7 +123,7 @@ Estado final: AVISO. Los datasets corregidos están en `data/processed/`, uno po
 ## Datos personales
 
 - No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.
-- No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí de el responsable del caso.
+- No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí del responsable del caso.
 - Ninguna columna de los datos tiene el papel de dato personal en el diccionario del origen. El número de serie identifica un disco, no a una persona.
 - Antes de corregir se buscaron correos, documentos de identidad, cuentas bancarias y teléfonos en los textos (número de serie, modelo y centro): 0 columnas con alguno.
 - Este método no usa ni deja ninguna columna de datos personales.

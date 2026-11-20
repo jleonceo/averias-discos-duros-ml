@@ -1,8 +1,8 @@
-"""Aparta la reserva del caso 68 (permiso de el responsable del caso, 17/11/2026: «Sí, apártala»).
+"""Aparta la reserva del caso 68 (permiso del responsable del caso, 17/11/2026: «Sí, apártala»).
 
 Uso: python -I apartar_reserva.py <poda entera> <trabajo> <reserva>
 
-La reserva es del 01/07/2025 al 30/06/2026 (El responsable del caso, 16/11/2026) y no se mira hasta la prueba final. Lee la poda entera
+La reserva es del 01/07/2025 al 30/06/2026 (el responsable del caso, 16/11/2026) y no se mira hasta la prueba final. Lee la poda entera
 sin tocarla y escribe dos carpetas nuevas, que no pueden existir antes:
 - fotos mensuales: cada fichero va entero a un lado, por su mes;
 - recuento diario: por su fecha;

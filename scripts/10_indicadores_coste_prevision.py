@@ -118,7 +118,7 @@ MINIMO_FALLOS_MODELO = 20
 FACTORES_PRECIO = (0.8, 1.2)
 # JSON del 09 del que sale la tasa a igual edad de cada modelo (petición 17, B4.2)
 JSON_09 = "informes/indicadores__discos_modelos_edad.json"
-# La palabra vetada para el conjunto de discos (El responsable del caso, 17/11; una nota del caso), partida para que el código no la lleve
+# La palabra vetada para el conjunto de discos (el responsable del caso, 17/11; una nota del caso), partida para que el código no la lleve
 VETADA = "flo" + "ta"
 
 COMPROBACIONES = ["unidad", "minimo", "empates", "referencia", "azar_en_grupos", "pesos", "hacia_adelante",
@@ -1807,7 +1807,7 @@ def informe(j):
     nv = b9["niveles"]
     tot_n = {k: sum(x[k] for x in nv) for k in ["modelo", "capacidad", "edad", "sin tasa", "discos"]}
     L.append(f"La tasa de cada disco del primer día sale de su modelo y año de edad si esa celda tiene 50.000 días de "
-             f"disco o más; si no, de su capacidad y edad, y si tampoco, de su edad con todos los discos. Sumando los "
+             f"disco o más; si no, de su capacidad y edad; si tampoco, de su edad con todos los discos. Sumando los "
              f"trimestres, el {pct(100 * tot_n['modelo'] / tot_n['discos'], 1)} de los discos usó la de su modelo, "
              f"{pct(100 * tot_n['capacidad'] / tot_n['discos'], 1)} la de su capacidad y "
              f"{pct(100 * tot_n['edad'] / tot_n['discos'], 1)} la de su edad. El reparto por trimestre está en el JSON.")
@@ -1997,7 +1997,7 @@ def limites(res):
         "regla para que salga bien.",
         "Ninguna cifra se ha medido en la reserva, del 01/07/2025 al 30/06/2026 (reglas, apartado 5). La prueba final de la "
         "previsión usará la misma función, prever_trimestre, en esos cuatro trimestres.",
-        "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente.",
+        "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí del responsable del caso, porque es un agente.",
     ]
 
 
@@ -2088,7 +2088,7 @@ def principal(raiz):
                         "por el mínimo o por falta de precio, y el coste depende de precios inferidos."),
             "artefactos": [SALIDA_JSON, SALIDA_MD],
             "siguiente": ("bloques 5 a 8 del plan; el informe final y el cuadro de mando leen este JSON; antes, el "
-                          "auditor sin memoria del paso con el sí de el responsable del caso")}
+                          "auditor sin memoria del paso con el sí del responsable del caso")}
         j["comprobaciones_salida"] = {"sin_palabra_vetada": None}
         tj, tm = textos(j)
         j["comprobaciones_salida"]["sin_palabra_vetada"] = comp_sin_vetada([tj, tm])

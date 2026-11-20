@@ -18,7 +18,7 @@ Sin argumentos, solo con construcción (del 01/01/2020 al 30/06/2024):
   - el ranking y el ganador pliegue a pliegue (método §6), el sitio (guion §3), el reajuste con toda la construcción y
     su recalibración, la importancia por permutación en el último bloque con el modelo del pliegue 5, el canario y las
     validaciones del método §9.
-  Escribe informes/modelado.json en PARADO, con ganador.aprobado_por vacío: es la puerta de el responsable del caso antes de abrir la
+  Escribe informes/modelado.json en PARADO, con ganador.aprobado_por vacío: es la puerta del responsable del caso antes de abrir la
   validación. Si el ganador no supera a la regla pliegue a pliegue, para también y lo dice en la primera frase.
 
 Con --abrir-validacion (tercera parte): comprueba que ganador.aprobado_por está escrito y que la validación no se abrió
@@ -31,7 +31,7 @@ Importa scripts/13_preparacion.py con importlib para montar los preprocesadores:
 
 Uso: python -W error scripts/15_modelado.py [--raiz CARPETA_DEL_CASO] [--abrir-validacion] [--candidatos N]
 (--candidatos limita los candidatos de cada búsqueda; solo lo usa la prueba con su caso pequeño.)
-Sale con 0 si termina o si para en una puerta de el responsable del caso, con 2 si para por otra causa y con 1 si falla; siempre escribe
+Sale con 0 si termina o si para en una puerta del responsable del caso, con 2 si para por otra causa y con 1 si falla; siempre escribe
 el JSON (en la tercera parte, si para, deja la competición como estaba y solo cambia el resultado).
 """
 
@@ -109,7 +109,7 @@ NOMBRE = {"logistica": "regresión logística", "bosque": "bosque aleatorio", "h
 CATEGORICAS_HGB = [f"{c}_oe" for c in P13.NOMINALES]
 
 # Lo que el responsable del caso ya decidió de los pendientes de la preselección (segunda nota de la petición 21)
-DECISIONES_DE_JUAN = {"P-01": "seguir con la lista de la semilla 42 (El responsable del caso, 18/11/2026, R-023)"}
+DECISIONES_DE_JUAN = {"P-01": "seguir con la lista de la semilla 42 (el responsable del caso, 18/11/2026, R-023)"}
 
 # La partición y los pliegues (reglas, apartado 7; petición 21)
 INICIO_VALIDACION = "2024-07-01"
@@ -260,14 +260,14 @@ def veredicto(modelo, referencia):
 
 
 def preseleccion_lista(js):
-    """Paso 1: OK sigue; AVISO sigue si cada pendiente tiene la decisión de el responsable del caso escrita aquí; lo demás para."""
+    """Paso 1: OK sigue; AVISO sigue si cada pendiente tiene la decisión del responsable del caso escrita aquí; lo demás para."""
     estado = (js.get("resultado") or {}).get("estado")
     if estado == "OK":
         return True, "en OK"
     if estado == "AVISO":
         sin = [p.get("id") for p in js.get("pendientes", []) if p.get("id") not in DECISIONES_DE_JUAN]
         if sin:
-            return False, f"en AVISO con pendientes sin decisión de el responsable del caso: {sin}"
+            return False, f"en AVISO con pendientes sin decisión del responsable del caso: {sin}"
         return True, "en AVISO, con cada pendiente decidido por el responsable del caso: " + "; ".join(
             f"{p['id']}, {DECISIONES_DE_JUAN[p['id']]}" for p in js.get("pendientes", []))
     return False, f"en estado {estado}"
@@ -947,7 +947,7 @@ def vias(res, ctx_busquedas):
                             "castigos L1 y mezcla de la logística, que el responsable del caso dejó fuera (reglas, apartado 7).",
             "variables_nuevas": [{"variable": "las cuatro variables nuevas candidatas de la matriz (P-04)", "probada": False,
                                   "motivo": "no se crean en esta petición; se crean si el modelo no supera a la regla, con la "
-                                            "decisión de el responsable del caso y antes de abrir la validación (reglas, apartado 7)"}],
+                                            "decisión del responsable del caso y antes de abrir la validación (reglas, apartado 7)"}],
             "informacion_nueva": [{"dato": "las lecturas SMART diarias, no solo la foto mensual",
                                    "para_que": "ver los fallos que avisan entre una foto y la siguiente", "quien_lo_tiene": "Backblaze"}]}
 
@@ -1192,14 +1192,14 @@ def competicion(raiz, res, n_candidatos):
     if not res["validaciones"]["probabilidad_media_cerca_de_la_tasa"]:
         lejos = [b["bloque"] for b in prob_bloques if not b["cerca"]]
         raise Parada(f"la probabilidad media recalibrada se aparta más de un 20 % de la tasa real en los bloques {lejos}", "PARADO")
-    # 12.10 La puerta: el ganador frente a la regla y la aprobación de el responsable del caso
+    # 12.10 La puerta: el ganador frente a la regla y la aprobación del responsable del caso
     vr = res["frente_a_la_regla_cv"]
     if vr["veredicto"] != "supera":
         resumen = (f"El ganador, {NOMBRE[ganador]}, {'no supera' if vr['veredicto'] == 'no supera' else 'no se puede afirmar que supere'} "
                    f"a la regla de los cinco contadores pliegue a pliegue ({numero(vr['media'], 2)} fallos de diferencia media en la "
                    f"lista de 100, desviación {numero(vr['desviacion'], 2)}). Para en la puerta 4: El responsable del caso decide si se crean las cuatro "
                    "variables nuevas; las tres vías de mejora van en el informe.")
-        siguiente = "decisión de el responsable del caso sobre las variables nuevas (reglas, apartado 7), antes de abrir la validación"
+        siguiente = "decisión del responsable del caso sobre las variables nuevas (reglas, apartado 7), antes de abrir la validación"
     else:
         resumen = (f"Gana {NOMBRE[ganador]}, que supera a la regla pliegue a pliegue: {numero(vr['media'], 2)} fallos más de media en "
                    f"la lista de 100 de cada mes. Para antes de abrir la validación: falta que el responsable del caso apruebe el ganador.")
@@ -1217,7 +1217,7 @@ def abrir_validacion(raiz, res):
     import evaluacion_binaria as eb  # pieza común de assets/, solo hace falta aquí
     g = res.get("ganador") or {}
     if not g.get("aprobado_por"):
-        raise Parada("ganador.aprobado_por está vacío: la validación no se abre sin el sí de el responsable del caso", "PARADO")
+        raise Parada("ganador.aprobado_por está vacío: la validación no se abre sin el sí del responsable del caso", "PARADO")
     if (res.get("validacion") or {}).get("abierta_una_vez"):
         raise Parada("la validación ya se abrió una vez: no se vuelve a abrir", "PARADO")
     pres = json.loads((raiz / PRESELECCION).read_text(encoding="utf-8"))

@@ -7,7 +7,7 @@ prueba con datos escritos aquí, cada pieza con un caso que tiene que salir bien
   - los cinco bloques de tres meses;
   - el empate pliegue a pliegue, el ganador (con empate, el más estable frente al trivial) y el veredicto;
   - la recalibración por la corrección del prior;
-  - el paso 1: OK sigue, AVISO sigue solo si cada pendiente tiene la decisión de el responsable del caso escrita en el script;
+  - el paso 1: OK sigue, AVISO sigue solo si cada pendiente tiene la decisión del responsable del caso escrita en el script;
   - la extensión de la rejilla por el borde;
   - el canario, la probabilidad media y el intervalo remuestreando meses;
   - la selección de la logística por variable de origen, después del preprocesador entero;
@@ -363,7 +363,7 @@ def probar_caso_pequeno():
             continue
         comprobar(val is True, f"pequeño: validación {v} en verde ({val})")
     # La validación 12 se calcula; si sale en rojo, para en PARADO, lo dice y conserva el ganador (su verde y su
-    # rojo, como pieza, están en probar_controles). Si sale en verde, para en la puerta de el responsable del caso con código 0.
+    # rojo, como pieza, están en probar_controles). Si sale en verde, para en la puerta del responsable del caso con código 0.
     v12 = js["validaciones"].get("probabilidad_media_cerca_de_la_tasa")
     comprobar(v12 in (True, False) and len(js["probabilidad_media_por_bloque"]) == 5, f"pequeño: la validación 12 se calcula por bloque ({v12})")
     if v12 is False:
@@ -435,7 +435,7 @@ def probar_entradas():
     """La preselección que no está lista para el script en PARADO."""
     for nombre, montaje in (("preselección en PARADO", {"estado": "PARADO", "pendientes": ()}),
                             ("preselección en ERROR", {"estado": "ERROR", "pendientes": ()}),
-                            ("un pendiente sin decisión de el responsable del caso", {"estado": "AVISO", "pendientes": ("P-01", "P-02")})):
+                            ("un pendiente sin decisión del responsable del caso", {"estado": "AVISO", "pendientes": ("P-01", "P-02")})):
         montar(**montaje)
         codigo, js, _ = ejecutar()
         comprobar(codigo == 2 and js is not None and js["resultado"]["estado"] == "PARADO", f"{nombre}: PARADO (código {codigo})")

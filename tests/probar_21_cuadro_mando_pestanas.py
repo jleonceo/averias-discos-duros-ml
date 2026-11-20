@@ -48,7 +48,7 @@ HTML = RAIZ / "informes" / "cuadro_mando.html"
 TMP = RAIZ / "tests" / "tmp_cuadro"
 EDGE = Path(os.environ.get("ProgramFiles(x86)", "")) / "Microsoft" / "Edge" / "Application" / "msedge.exe"
 PESTANAS = ["vision", "centros", "modelos", "edad", "lista"]
-# Los órdenes de lo general a lo particular (El responsable del caso, 20/11/2026; reglas, apartado 4 «La instalación»)
+# Los órdenes de lo general a lo particular (el responsable del caso, 20/11/2026; reglas, apartado 4 «La instalación»)
 ORDEN_FILTROS = ["f-centro", "f-fabricante", "f-capacidad", "f-edad"]
 ORDEN_COLUMNAS = ["Puesto", "Centro de datos", "Tomo en peligro", "Fabricante", "Modelo", "TB", "Años cumplidos",
                   "Número de serie", "Puntuación de riesgo, 0 a 100"]

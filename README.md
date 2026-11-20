@@ -24,11 +24,11 @@ Una foto es el estado de un disco el primer día de un mes: sus contadores SMART
 
 ## Límites
 
-- **Precios estimados:** desde 2023 el precio de los discos es una estimación, y el coste por terabyte vale lo que valga esa estimación.
-- **Fallos sin aviso:** el 32 % de los fallos del año de la prueba final no daba ningún aviso el primer día del mes. La regla de los cinco avisos SMART no puede marcarlos, y para la lista de riesgo son los más difíciles de anticipar.
-- **El último mes:** los datos llegan a junio de 2026, pero la prueba de la lista acaba en mayo. Para saber si un disco de junio falló en sus 30 días siguientes harían falta datos de julio, que no hay.
-- **Repuestos:** la previsión por modelo y edad no mejora a repetir los fallos del trimestre anterior. En el año de la prueba final, su error medio fue del 31,8 %, frente al 30,6 %.
-- **El modelo en uso:** se reentrenó con un año más de datos y se midió en el año de la prueba final antes de aprobarlo. Para él, ese año ya no es una prueba independiente.
+- Precios estimados: desde 2023 el precio de los discos es una estimación, y el coste por terabyte vale lo que valga esa estimación.
+- Fallos sin aviso: el 32 % de los fallos del año de la prueba final no daba ningún aviso el primer día del mes. La regla de los cinco avisos SMART no puede marcarlos, y para la lista de riesgo son los más difíciles de anticipar.
+- El último mes: los datos llegan a junio de 2026, pero la prueba de la lista acaba en mayo. Para saber si un disco de junio falló en sus 30 días siguientes harían falta datos de julio, que no hay.
+- Repuestos: la previsión por modelo y edad no mejora a repetir los fallos del trimestre anterior. En el año de la prueba final, su error medio fue del 31,8 %, frente al 30,6 %.
+- El modelo en uso: se reentrenó con un año más de datos y se midió en el año de la prueba final antes de aprobarlo. Para él, ese año ya no es una prueba independiente.
 
 ## Las salidas
 

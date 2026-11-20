@@ -1,6 +1,6 @@
 # Preproducción del caso 68
 
-**Estado: OK.** Contrato aprobado (El responsable del caso, 19/11/2026: «Sí, con el arreglo»). Las 11 validaciones, en verde.
+**Estado: OK.** Contrato aprobado (el responsable del caso, 19/11/2026: «Sí, con el arreglo»). Las 11 validaciones, en verde.
 
 ## Las finalistas y su cadena
 

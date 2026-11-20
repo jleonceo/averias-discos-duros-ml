@@ -1,5 +1,5 @@
 {
-  "fuente": "Controles de la petición del diccionario y del plan de calidad (peticiones/05_diccionario_y_plan_de_calidad.md), medidos en el reconocimiento de los datos (informes/reconocimiento/reconocimiento_de_los_datos.ipynb). Las de discos de datos usan la capacidad del modelo en las filas con -1 o 0,1 TB (reglas, apartado 3). Desde el 17/11/2026 el diccionario describe solo el dataset y el esquema (El responsable del caso): los controles de los ZIP ya no aplican y data/raw/ tiene 91 ficheros.",
+  "fuente": "Controles de la petición del diccionario y del plan de calidad (peticiones/05_diccionario_y_plan_de_calidad.md), medidos en el reconocimiento de los datos (informes/reconocimiento/reconocimiento_de_los_datos.ipynb). Las de discos de datos usan la capacidad del modelo en las filas con -1 o 0,1 TB (reglas, apartado 3). Desde el 17/11/2026 el diccionario describe solo el dataset y el esquema (el responsable del caso): los controles de los ZIP ya no aplican y data/raw/ tiene 91 ficheros.",
   "fecha": "2026-11-17",
   "cifras": {
     "fotos.ficheros": 66,

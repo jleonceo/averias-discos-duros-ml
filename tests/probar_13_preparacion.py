@@ -345,7 +345,7 @@ def probar_caso_pequeno():
         comprobar(f"## {ap}" in texto, f"pequeño: el informe tiene el apartado «{ap}»")
     # Los casos que tienen que parar
     for nombre, montaje, estado, val in (
-            ("matriz sin aprobar", {"estado_matriz": "opción, pendiente de el responsable del caso"}, "PARADO", None),
+            ("matriz sin aprobar", {"estado_matriz": "opción, pendiente del responsable del caso"}, "PARADO", None),
             ("huella de entrenamiento distinta", {"huella_buena": False}, "PARADO", None),
             ("una columna de más en la tabla", {"columna_de_mas": True}, "ERROR", "columnas_en_matriz"),
             ("las listas del script no son la matriz", {"matriz_cambiada": True}, "ERROR", "columnas_en_matriz"),

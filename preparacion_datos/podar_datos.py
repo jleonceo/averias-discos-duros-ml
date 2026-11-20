@@ -13,14 +13,14 @@ Deja tres cosas:
   Con él las tasas de fallo salen exactas aunque las fotos sean mensuales.
 Y `fallos.parquet`: un fallo por fila, con el disco y su día de fallo.
 
-16/11/2026, con permiso de el responsable del caso («arreglado, claro»): un disco puede fallar dos veces (43 en los 26 trimestres, de 7 a
+16/11/2026, con permiso del responsable del caso («arreglado, claro»): un disco puede fallar dos veces (43 en los 26 trimestres, de 7 a
 30 meses entre uno y otro). La versión anterior guardaba un solo fallo por disco, y además el primero que encontraba en
 el orden en que llegaban los ZIP, que no era el de las fechas. Ahora los ZIP se ordenan por año y trimestre, se guardan
 todos los fallos y cada fila de ventana lleva `dia_fallo`, el día del fallo al que pertenece (el más cercano por delante).
 
 Las columnas que Backblaze no publicaba un año no aparecen en los ficheros de ese año: las fotos y las ventanas pasan de
 101 a 130 columnas entre 2020 y 2024. Solo `datacenter` y `capacity_bytes` se crean vacías cuando faltan, porque el
-recuento diario agrupa por ellas (corregido el 17/11/2026, con permiso de el responsable del caso: decía que todas quedaban vacías)."""
+recuento diario agrupa por ellas (corregido el 17/11/2026, con permiso del responsable del caso: decía que todas quedaban vacías)."""
 import re
 import sys
 import time

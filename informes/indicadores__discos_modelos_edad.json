@@ -92,7 +92,7 @@
    "informes/indicadores__discos_modelos_edad.json",
    "informes/indicadores__discos_modelos_edad.md"
   ],
-  "siguiente": "bloques 4 a 9 del plan (coste, centros, avisos, tomos, otros factores y previsión), que leen este JSON; antes, el auditor sin memoria del paso con el sí de el responsable del caso"
+  "siguiente": "bloques 4 a 9 del plan (coste, centros, avisos, tomos, otros factores y previsión), que leen este JSON; antes, el auditor sin memoria del paso con el sí del responsable del caso"
  },
  "pendientes": [],
  "exploratorios": {
@@ -16030,7 +16030,7 @@
   {
    "nombre": "mínimo de fallos de un modelo, en sus años que pasan el mínimo, para llevar puesto y sacar conclusión",
    "valor": "20",
-   "origen": "reglas-negocio §7, cuestión 012 (El responsable del caso, 18/11/2026)"
+   "origen": "reglas-negocio §7, cuestión 012 (el responsable del caso, 18/11/2026)"
   },
   {
    "nombre": "comparación a igual edad y en el mismo trimestre",
@@ -16184,10 +16184,10 @@
   "El centro solo consta desde el 01/07/2023. Desde entonces, 6.621.213 días de disco de 207.297.278 vienen sin centro y se cuentan aparte.",
   "La tasa por edad sale de dias_por_tramo, que reparte los días del recuento con las fotos de cada mes: deja fuera 919.192 días de disco sin foto, el 0,21 % del recuento. Los días por año de edad no tienen otra fuente exacta: se contrastan a través de la supervivencia.",
   "En la supervivencia, 3.359 discos tienen la edad final por debajo de la de entrada (horas encendido que bajan, R-009) y no aportan exposición.",
-  "Un disco que desaparece se cuenta como censurado: se sabe que llegó vivo a su última foto, no si se migró, se retiró sano o falló fuera de los datos, y eso no se puede saber. Contándolos como fallo cuando avisaban, la supervivencia a 5 años pasa del 93,62 % al 91,54 %, y la lectura frente al año anterior cambia en los años de edad 1, 4 y 8.",
-  "Si la tasa de los discos más viejos baja porque son los que han aguantado no se puede saber con estos datos: la tasa describe a los que quedan, y los datos no dicen por qué salieron los demás.",
+  "Un disco que desaparece se cuenta como censurado: se sabe que llegó vivo a su última foto, no si se migró, se retiró sano o falló fuera de los datos. Eso no se puede saber. Contándolos como fallo cuando avisaban, la supervivencia a 5 años pasa del 93,62 % al 91,54 %, y la lectura frente al año anterior cambia en los años de edad 1, 4 y 8.",
+  "Si la tasa de los discos más viejos baja porque son los que han aguantado no se puede saber con estos datos: la tasa describe a los que quedan. Los datos no dicen por qué salieron los demás.",
   "Ninguna cifra se ha medido hacia adelante: la reserva, del 01/07/2025 al 30/06/2026, no se mira (reglas, apartado 5).",
-  "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente."
+  "Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí del responsable del caso, porque es un agente."
  ],
  "ejecucion": {
   "python": "python",

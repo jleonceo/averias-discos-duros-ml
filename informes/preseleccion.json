@@ -12403,7 +12403,7 @@
   },
   {
    "nombre": "muestra",
-   "valor": "todas las fotos con fallo y el 2 % de las sanas de cada mes; de ella, los meses más recientes enteros hasta pasar de 100.000 filas; si la lista cambia con la segunda muestra se dobla, y si no cabe se usa entera",
+   "valor": "todas las fotos con fallo y el 2 % de las sanas de cada mes; de ella, los meses más recientes enteros hasta pasar de 100.000 filas; si la lista cambia con la segunda muestra se dobla; si no cabe, se usa entera",
    "origen": "reglas, apartado 7; parametros.md, «filas para muestrear»; nota de la petición 21, punto 5"
   },
   {
@@ -12460,7 +12460,7 @@
   "36.8: votación de los tres métodos, con el corte de los dos que dan un valor por salto natural.",
   "36.9 y 5.2: entre las que pasaron, Spearman y V de Cramér para no dejar dos variables que dicen lo mismo en una regresión, donde se reparten el efecto y pueden salir con el signo al revés."
  ],
- "datos_personales": "Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9), y esta preselección no lo lee. No usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
+ "datos_personales": "Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9). Esta preselección no lo lee. No usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
  "limites": [
   "La preselección se hizo una vez, sobre una muestra de entrenamiento, y su lista entra fija en cada pliegue del modelado: la validación cruzada del modelado sale algo optimista (método §9). Cuánto, NO SE PUEDE SABER sin medirlo.",
   "Los modelos auxiliares van sin búsqueda y solo ordenan; sus cifras no son rendimiento.",

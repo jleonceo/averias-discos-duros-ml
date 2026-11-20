@@ -11,7 +11,7 @@ Las cuatro tablas corregidas son cuatro tablas de hechos con grano distinto. Se 
 dimensiones que todavía no existen como fichero (`dim_modelo`, `dim_precio_gb` y `Calendario`) y de ellas se saca un
 tablón por pregunta. El disco y el sitio no son tablas: van como atributos de cada fila de hechos. Las cuatro claves
 de grano son únicas en los datos, y ningún cruce del plan une dos tablas de hechos fila a fila sin llevarlas antes al
-mismo grano. cuestión 011 la cerró el responsable del caso el mismo día.
+mismo grano. Cuestión 011 la cerró el responsable del caso el mismo día.
 
 ## 1. Fuentes consultadas
 
@@ -68,7 +68,7 @@ datos en esos periodos.
 | `hechos_recuento` | `recuento_diario_corregido.parquet` | un día, un modelo, una capacidad y un centro | `fecha`, `model`, `capacity_bytes`, `datacenter`; «sin dato» es el centro que no consta | `discos` (cuántos había ese día; sumados por días son días de disco) y `fallos` |
 | `hechos_fallos` | `fallos_corregido.parquet` | un disco el día que Backblaze lo da por fallado | `serial_number`, `dia_fallo` | el fallo; no trae modelo |
 
-En las fotos y las ventanas, `date` repite `fecha` en todas las filas (0 distintas). El modelo usa `fecha`, y `date` no
+En las fotos y las ventanas, `date` repite `fecha` en todas las filas (0 distintas). El modelo usa `fecha`; `date` no
 entra en ningún cruce.
 
 El modelo de cada fila es el que trae esa fila. Un disco no se une a su modelo por el número de serie: el 5QJB76AB sale
@@ -236,7 +236,7 @@ por la izquierda desde la tabla de partida.
 | La lista de fallos toma el modelo de la fila del día del fallo de su ventana | La lista no trae modelo y el modelo de cada fila es el que trae esa fila | el analista, 17/11/2026, por la petición del diseño | los 17.960 fallos tienen esa fila |
 | `dim_precio_gb` como dimensión aparte de `dim_modelo` | El precio del disco nuevo va por el año del fallo, no por el año de compra del modelo (reglas, apartado 6) | el analista, 17/11/2026 | |
 
-El responsable del caso aprobó el diseño el 17/11/2026 («Sí, lo apruebo»); cuestión 011 la cerró después, con la cascada, y no cambia el diseño.
+El responsable del caso aprobó el diseño el 17/11/2026 («Sí, lo apruebo»); cuestión 011 la cerró después, con la cascada. El diseño no cambia.
 
 Aprobado: sí · el responsable del caso · 2026-11-17
 
@@ -288,13 +288,13 @@ Una fila por clase de registro que sale de algún cálculo. Los recuentos los sa
 - Las reglas (§6) decían que el día anterior a un fallo «siempre está en los 30 días que se guardan». En los datos
   falta en 903 fallos de discos de datos, 7 de ellos por las filas quitadas el 10/12/2022 (R-007). Corregido en las
   reglas el 17/11/2026 con la cascada: esos fallos salen del indicador y se cuentan aparte.
-- 210 fallos son de discos que no salen en ninguna foto. Cuentan en las tasas, porque el recuento los incluye, y no
+- 210 fallos son de discos que no salen en ninguna foto. Cuentan en las tasas, porque el recuento los incluye. No
   pueden ser objetivo de la pregunta 4, porque no tienen foto.
 - Del 01/07/2026 en adelante el Calendario no tiene periodo: las reglas no lo definen. Hoy no hay datos de esas fechas.
 
-### Pendiente de el responsable del caso
+### Pendiente del responsable del caso
 
-- Nada. cuestión 011 la cerró el responsable del caso el 17/11/2026 («Sí, ciérrala así»): la previsión del bloque 9 gana a repetir los fallos
+- Nada. Cuestión 011 la cerró el responsable del caso el 17/11/2026 («Sí, ciérrala así»): la previsión del bloque 9 gana a repetir los fallos
   del trimestre anterior si su error absoluto ponderado es menor, con el sesgo al lado (reglas, apartado 7).
 - **La aprobación de este diseño.** Hasta que esté, `informes/modelado-datos.json` queda en PARADO, el Calendario no se
   construye y no se escriben las reglas de transformación. (Cumplido: El responsable del caso aprobó el diseño el 17/11/2026, el

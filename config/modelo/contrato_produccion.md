@@ -12,10 +12,10 @@ Este contrato fija qué hace producción con cada foto mensual de un disco para 
 
 ## Lo que se aprueba
 
-- **El modelo:** el ganador de la validación, con su receta fija; usa 63 columnas y su preprocesador lee 64, porque lee también datacenter y lo vacía.
-- **Las finalistas:** 68 variables: las 64 que lee el preprocesador, el identificador (serial_number y fecha), el objetivo (falla_30d) y su horizonte (horizonte_hasta).
-- **Los pasos:** 25, de ellos 3 quitan filas, 13 no aprenden, 5 necesitan otras filas y 4 aprenden.
-- **El corte:** las listas de 20, 100, 500 y 1.000 discos de más riesgo de cada foto mensual, con la de 100 como principal.
+- El modelo: el ganador de la validación, con su receta fija; usa 63 columnas y su preprocesador lee 64, porque lee también datacenter y lo vacía.
+- Las finalistas: 68 variables: las 64 que lee el preprocesador, el identificador (serial_number y fecha), el objetivo (falla_30d) y su horizonte (horizonte_hasta).
+- Los pasos: 25, de ellos 3 quitan filas, 13 no aprenden, 5 necesitan otras filas y 4 aprenden.
+- El corte: las listas de 20, 100, 500 y 1.000 discos de más riesgo de cada foto mensual, con la de 100 como principal.
 
 ## El identificador y el objetivo
 
@@ -132,30 +132,30 @@ Cada paso cita la ficha del registro de transformaciones que lo hizo y, cuando l
 
 **Por qué va cada paso en su clase**, cuando no es evidente:
 
-- **P04, la capacidad del modelo (necesita otras filas).** No aprende nada de la tabla de entrenamiento: aplica la regla, apartado 3, la capacidad de un disco es la de su modelo, y para saberla mira otras filas del mismo modelo con capacidad válida. En el desarrollo se miró todo el periodo y cada modelo tenía una sola; al ejecutar se mira solo lo que hay hasta el día de la foto, la propia foto incluida. Si un modelo no tiene ninguna capacidad válida hasta ese día, su fila sale sin puntuar y con su motivo.
-- **P06, la historia de las ventanas sin los días copiados (necesita otras filas).** Quita filas de la tabla de historia, nunca de la foto que se puntúa; por eso no es de la clase que quita filas. Sirve para la primera aparición de la edad y para la capacidad del modelo. Una ventana son los 30 días anteriores a un fallo: que exista una fila de ventana el día de la foto anuncia un fallo que ese día no se conoce (arreglo aprobado por el responsable del caso el 19/11/2026).
-- **P09, el fabricante (no aprende).** Es una regla fija sobre el nombre. En el desarrollo se guardó en dim_modelo, una tabla por modelo, pero esa tabla solo repite la regla: un modelo nuevo la cumple igual. Un modelo que no sigue ningún patrón queda vacío.
-- **P10, la garantía (no aprende).** Igual que el fabricante: una regla fija sobre el nombre, que la tabla dim_modelo solo guarda.
-- **P11, la población (quita filas).** Son los discos del modelo (reglas, apartado 3 y §7); la foto del día del fallo ya está marcada como fallada.
-- **P12, la edad (necesita otras filas).** Con horas es la propia fila. Sin horas cuenta desde la primera aparición, que es su primera foto o, si sale antes, el primer día de una ventana suya: eso pide la historia del disco hasta el día de la foto, nunca después. La ventana de un fallo que aún no ha ocurrido no cuenta, porque anuncia ese fallo (arreglo de el responsable del caso, 19/11/2026). En el desarrollo sí contó: de las 2.735 fotos de fotos_riesgo sin horas, en una sola la primera aparición sale de una ventana, y esa foto puede salir distinta.
-- **P14, los cambios contra la foto anterior (necesita otras filas).** Necesitan la foto anterior del mismo disco, de cualquier mes anterior: una fila que no es la que se puntúa.
-- **P17, el objetivo (necesita otras filas).** Es el objetivo: mira los fallos posteriores a la foto, que al ejecutar no se conocen. Llega hecho en la tabla de entrenamiento; ejecutar no lo calcula ni lo usa.
-- **P22, las categorías raras (aprende).** Qué categorías son raras se aprende de la tabla de entrenamiento, con el objetivo: va con fit.
-- **P23, el código de categoría (aprende).** La lista de categorías se aprende en el entrenamiento: va con fit.
-- **P24, el modelo (aprende).** Es lo que se entrena.
-- **P25, la recalibración (aprende).** Las dos tasas se miden en cada reentreno, con su tabla: no se copian del modelado.
+- P04, la capacidad del modelo (necesita otras filas). No aprende nada de la tabla de entrenamiento: aplica la regla, apartado 3, la capacidad de un disco es la de su modelo, y para saberla mira otras filas del mismo modelo con capacidad válida. En el desarrollo se miró todo el periodo y cada modelo tenía una sola; al ejecutar se mira solo lo que hay hasta el día de la foto, la propia foto incluida. Si un modelo no tiene ninguna capacidad válida hasta ese día, su fila sale sin puntuar y con su motivo.
+- P06, la historia de las ventanas sin los días copiados (necesita otras filas). Quita filas de la tabla de historia, nunca de la foto que se puntúa; por eso no es de la clase que quita filas. Sirve para la primera aparición de la edad y para la capacidad del modelo. Una ventana son los 30 días anteriores a un fallo: que exista una fila de ventana el día de la foto anuncia un fallo que ese día no se conoce (arreglo aprobado por el responsable del caso el 19/11/2026).
+- P09, el fabricante (no aprende). Es una regla fija sobre el nombre. En el desarrollo se guardó en dim_modelo, una tabla por modelo, pero esa tabla solo repite la regla: un modelo nuevo la cumple igual. Un modelo que no sigue ningún patrón queda vacío.
+- P10, la garantía (no aprende). Igual que el fabricante: una regla fija sobre el nombre, que la tabla dim_modelo solo guarda.
+- P11, la población (quita filas). Son los discos del modelo (reglas, apartado 3 y §7); la foto del día del fallo ya está marcada como fallada.
+- P12, la edad (necesita otras filas). Con horas es la propia fila. Sin horas cuenta desde la primera aparición, que es su primera foto o, si sale antes, el primer día de una ventana suya: eso pide la historia del disco hasta el día de la foto, nunca después. La ventana de un fallo que aún no ha ocurrido no cuenta, porque anuncia ese fallo (arreglo del responsable del caso, 19/11/2026). En el desarrollo sí contó: de las 2.735 fotos de fotos_riesgo sin horas, en una sola la primera aparición sale de una ventana. Esa foto puede salir distinta.
+- P14, los cambios contra la foto anterior (necesita otras filas). Necesitan la foto anterior del mismo disco, de cualquier mes anterior: una fila que no es la que se puntúa.
+- P17, el objetivo (necesita otras filas). Es el objetivo: mira los fallos posteriores a la foto, que al ejecutar no se conocen. Llega hecho en la tabla de entrenamiento; ejecutar no lo calcula ni lo usa.
+- P22, las categorías raras (aprende). Qué categorías son raras se aprende de la tabla de entrenamiento, con el objetivo: va con fit.
+- P23, el código de categoría (aprende). La lista de categorías se aprende en el entrenamiento: va con fit.
+- P24, el modelo (aprende). Es lo que se entrena.
+- P25, la recalibración (aprende). Las dos tasas se miden en cada reentreno, con su tabla: no se copian del modelado.
 
 ## La receta del modelo
 
-El reentreno rehace el modelo con esta receta, leída de informes/modelado.json, y no vuelve a buscar algoritmo ni hiperparámetros.
+El reentreno rehace el modelo con esta receta, leída de informes/modelado.json. No vuelve a buscar algoritmo ni hiperparámetros.
 
-- **Algoritmo:** HistGradientBoostingClassifier, con early_stopping=False, random_state=42 y las categóricas nativas `model_oe`, `fabricante_oe`, `datacenter_oe`.
-- **Hiperparámetros:** {"min_samples_leaf": "hoja", "max_iter": 500, "max_depth": null, "learning_rate": 0.025, "l2_regularization": 0.5}.
-- **La hoja (min_samples_leaf):** max(20, 1 % de las filas que entrenan en el pliegue). Con la muestra del modelado, de 232.243 fotos, da 2.322, la del ajuste final.
-- **La muestra:** todas las fotos con fallo y el 2 % de las sanas de cada mes, semilla 42. En el modelado fueron 232.243 fotos, 11.962 con fallo.
-- **El objetivo conocido:** entrenan las fotos con fecha y horizonte_hasta anteriores a la fecha del entrenamiento. En el ajuste final la fecha fue el 2024-07-01, con 11.026.052 fotos y 11.962 con fallo.
-- **La recalibración:** corrección del prior sobre el logit (desequilibrio.md, «Recalibrar»), con odds = p/(1-p) · [real/(1-real)] / [muestra/(1-muestra)]; probabilidad = odds/(1+odds). Las dos tasas se miden en cada reentreno; en el modelado fueron 0,0515064 en la muestra y 0,0010849 la real.
-- **La semilla:** 42, en la muestra y en el modelo.
+- Algoritmo: HistGradientBoostingClassifier, con early_stopping=False, random_state=42 y las categóricas nativas `model_oe`, `fabricante_oe`, `datacenter_oe`.
+- Hiperparámetros: {"min_samples_leaf": "hoja", "max_iter": 500, "max_depth": null, "learning_rate": 0.025, "l2_regularization": 0.5}.
+- La hoja (min_samples_leaf): max(20, 1 % de las filas que entrenan en el pliegue). Con la muestra del modelado, de 232.243 fotos, da 2.322, la del ajuste final.
+- La muestra: todas las fotos con fallo y el 2 % de las sanas de cada mes, semilla 42. En el modelado fueron 232.243 fotos, 11.962 con fallo.
+- El objetivo conocido: entrenan las fotos con fecha y horizonte_hasta anteriores a la fecha del entrenamiento. En el ajuste final la fecha fue el 2024-07-01, con 11.026.052 fotos y 11.962 con fallo.
+- La recalibración: corrección del prior sobre el logit (desequilibrio.md, «Recalibrar»), con odds = p/(1-p) · [real/(1-real)] / [muestra/(1-muestra)]; probabilidad = odds/(1+odds). Las dos tasas se miden en cada reentreno; en el modelado fueron 0,0515064 en la muestra y 0,0010849 la real.
+- La semilla: 42, en la muestra y en el modelo.
 
 ## El corte
 
@@ -167,13 +167,13 @@ No se elige un solo tamaño porque el tamaño de la lista lo elige Backblaze seg
 
 La entrada de ejecutar es una foto mensual con las columnas de data/raw/podado/fotos_mensuales/. Antes de puntuar comprueba las columnas por nombre; los números no llegan como texto; la fecha de la foto es la del mes que se pide. Lee de la foto 57 columnas. Además necesita esta historia, que nunca pasa del día de la foto:
 
-- **fotos mensuales anteriores y la propia foto**, hasta la fecha de la foto, incluida: `serial_number`, `fecha`, `model`, `capacity_bytes`, `smart_9_raw`. La usan P04, P12.
-- **ventanas de fallo**, hasta las ventanas de fallos ocurridos antes del día de la foto (dia_fallo anterior a su fecha): `serial_number`, `fecha`, `date`, `dia_fallo`, `model`, `capacity_bytes`. La usan P04, P06, P12.
-- **fotos mensuales anteriores**, hasta el día anterior a la foto: la última foto del mismo disco, de cualquier mes anterior: `serial_number`, `fecha`, `smart_5_raw`, `smart_187_raw`, `smart_197_raw`, `smart_198_raw`. La usan P14.
+- fotos mensuales anteriores y la propia foto, hasta la fecha de la foto, incluida: `serial_number`, `fecha`, `model`, `capacity_bytes`, `smart_9_raw`. La usan P04, P12.
+- ventanas de fallo, hasta las ventanas de fallos ocurridos antes del día de la foto (dia_fallo anterior a su fecha): `serial_number`, `fecha`, `date`, `dia_fallo`, `model`, `capacity_bytes`. La usan P04, P06, P12.
+- fotos mensuales anteriores, hasta el día anterior a la foto: la última foto del mismo disco, de cualquier mes anterior: `serial_number`, `fecha`, `smart_5_raw`, `smart_187_raw`, `smart_197_raw`, `smart_198_raw`. La usan P14.
 
 ## Datos personales
 
-Los datos son de discos: serial_number identifica un disco y no a una persona (reglas, apartado 9), y el modelo no lo lee. El contrato no usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.
+Los datos son de discos: serial_number identifica un disco y no a una persona (reglas, apartado 9). El modelo no lo lee. El contrato no usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.
 
 ## Límites
 

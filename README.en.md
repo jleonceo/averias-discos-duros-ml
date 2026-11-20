@@ -24,11 +24,11 @@ A snapshot is the state of a drive on the first day of a month: its SMART counte
 
 ## Limitations
 
-- **Estimated prices:** drive prices from 2023 onwards are estimates, so the cost per terabyte is only as good as those estimates.
-- **Failures without warning:** 32% of the failures in the final-test year showed no warning at all on the first day of the month. The five SMART warnings rule cannot flag them, and they are the hardest cases for the risk list to anticipate.
-- **The last month:** the data run to June 2026, but the list's final test ends in May. Knowing whether a June drive failed within the next 30 days would require July data, which do not exist yet.
-- **Spare parts:** forecasting by model and age does not beat simply repeating the previous quarter's failures. In the final-test year, its mean error was 31.8%, against 30.6%.
-- **The model in use:** it was retrained with one more year of data and measured on the final-test year before being approved. For that model, the year is no longer an independent test.
+- Estimated prices: drive prices from 2023 onwards are estimates, so the cost per terabyte is only as good as those estimates.
+- Failures without warning: 32% of the failures in the final-test year showed no warning at all on the first day of the month. The five SMART warnings rule cannot flag them, and they are the hardest cases for the risk list to anticipate.
+- The last month: the data run to June 2026, but the list's final test ends in May. Knowing whether a June drive failed within the next 30 days would require July data, which do not exist yet.
+- Spare parts: forecasting by model and age does not beat simply repeating the previous quarter's failures. In the final-test year, its mean error was 31.8%, against 30.6%.
+- The model in use: it was retrained with one more year of data and measured on the final-test year before being approved. For that model, the year is no longer an independent test.
 
 ## Outputs
 

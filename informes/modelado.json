@@ -9,7 +9,7 @@
   {
    "ruta": "informes/preseleccion.json",
    "estado": "AVISO",
-   "motivo": "en AVISO, con cada pendiente decidido por el responsable del caso: P-01, seguir con la lista de la semilla 42 (El responsable del caso, 18/11/2026, R-023)"
+   "motivo": "en AVISO, con cada pendiente decidido por el responsable del caso: P-01, seguir con la lista de la semilla 42 (el responsable del caso, 18/11/2026, R-023)"
   },
   {
    "ruta": "data/processed/fotos_riesgo_entrenamiento.parquet",
@@ -55,7 +55,7 @@
   "minimo_de_casos": 20,
   "fuente": "config/metodo/04_planteamientos.md, 1.C"
  },
- "preseleccion_estado": "en AVISO, con cada pendiente decidido por el responsable del caso: P-01, seguir con la lista de la semilla 42 (El responsable del caso, 18/11/2026, R-023)",
+ "preseleccion_estado": "en AVISO, con cada pendiente decidido por el responsable del caso: P-01, seguir con la lista de la semilla 42 (el responsable del caso, 18/11/2026, R-023)",
  "validacion_cruzada": {
   "tipo": "por fecha, bloques de tres meses, sin barajar",
   "pliegues": 5,
@@ -1633,7 +1633,7 @@
    {
     "variable": "las cuatro variables nuevas candidatas de la matriz (P-04)",
     "probada": false,
-    "motivo": "no se crean en esta petición; se crean si el modelo no supera a la regla, con la decisión de el responsable del caso y antes de abrir la validación (reglas, apartado 7)"
+    "motivo": "no se crean en esta petición; se crean si el modelo no supera a la regla, con la decisión del responsable del caso y antes de abrir la validación (reglas, apartado 7)"
    }
   ],
   "informacion_nueva": [
@@ -1750,7 +1750,7 @@
   "5.1: las tres vías de mejora si el modelo no supera a la regla.",
   "4.6 y 5.3: el intervalo de la diferencia remuestreando meses, que es la unidad de la medida."
  ],
- "datos_personales": "Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9), y el modelo no lo lee. No usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
+ "datos_personales": "Los datos son de discos: serial_number identifica un disco, no a una persona (reglas, apartado 9). El modelo no lo lee. No usa ni deja ninguna columna de datos personales. No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección porque no hacía falta.",
  "limites": [
   "El modelo vale para los discos de datos de Backblaze, con una foto al mes, en los periodos de construcción y validación; si cambian los modelos de disco o los centros, su rendimiento puede caer (deriva).",
   "Detecta asociaciones, no causas: que un contador pese no dice que cause el fallo.",

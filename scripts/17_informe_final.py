@@ -112,7 +112,7 @@ DEFINICIONES_LISTA = [
     # incorrecta
     ["Intervalo de confianza", "Margen que, al repetir la medida muchas veces, contendría la cifra verdadera 95 de "
                                "cada 100."]]
-# Nombre de la regla, siempre entero (El responsable del caso, 19/11/2026: «la regla actual» no lo entiende quien lo lee)
+# Nombre de la regla, siempre entero (el responsable del caso, 19/11/2026: «la regla actual» no lo entiende quien lo lee)
 REGLA = "regla de los cinco avisos SMART"
 # Fuentes en palabras del lector (F1)
 FUENTE_TODO = "registro diario de los discos de Backblaze, enero de 2020 a junio de 2025"

@@ -841,7 +841,7 @@ def main():
                     res["calendario"]["fichero"] = "data/processed/calendario.parquet"
             grano_mal = [t["tabla"] for t in res["tablas"] if t["clave_unica"] is False]
             if not res["aprobado"]["aprobado"]:
-                estado, siguiente = "PARADO", "falta la aprobación de el responsable del caso del diseño (config/modelo/modelo-datos.md)"
+                estado, siguiente = "PARADO", "falta la aprobación del responsable del caso del diseño (config/modelo/modelo-datos.md)"
             else:
                 estado = "AVISO" if res["pendientes"] else "OK"
                 siguiente = "transformacion-datos, con el plan de cruces aprobado y los controles de integracion-datos"

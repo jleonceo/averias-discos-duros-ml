@@ -1,4 +1,4 @@
-# Indicadores del conjunto de discos, los modelos y la edad de los discos
+# Indicadores de los discos por modelo y edad
 
 Caso 68, paso 5, bloques 1 a 3 del plan de la analítica. Datos hasta el 30/06/2025; ejecutado el 18/11/2026. Estado: **AVISO**, riesgo medio.
 
@@ -368,7 +368,7 @@ Cada cifra se rehízo desde otra tabla. Las segundas vías:
 
 - mínimo de días de disco en el año para un ranking: 50.000 (reglas-negocio §7; sustituye al mínimo de 30 casos de el método, que cambian las reglas del caso).
 - mínimo de fallos en un año de edad para sacar conclusión: 20 (reglas-negocio §7, cuestión 009).
-- mínimo de fallos de un modelo, en sus años que pasan el mínimo, para llevar puesto y sacar conclusión: 20 (reglas-negocio §7, cuestión 012 (El responsable del caso, 18/11/2026)).
+- mínimo de fallos de un modelo, en sus años que pasan el mínimo, para llevar puesto y sacar conclusión: 20 (reglas-negocio §7, cuestión 012 (el responsable del caso, 18/11/2026)).
 - comparación a igual edad y en el mismo trimestre: razón = fallos observados / esperados con la tasa de cada año de edad y trimestre de calendario de las celdas de dias_por_tramo cuyo modelo y año pasan el mínimo, con todos los modelos juntos; intervalo exacto de Poisson con observados y esperados entre φ; tasa a igual edad = razón × tasa de todas las celdas (reglas-negocio §7 («Una tasa por modelo se compara a igual edad y en el mismo trimestre», el responsable del caso, 18/11/2026); peticiones 17 y 19).
 - φ de B2: chi2 de Pearson / grados de libertad en las celdas de modelo × trimestre, con los esperados de arriba reescalados para que cada modelo sume sus fallos; gl = celdas − modelos; si sale menor que 1, vale 1 (criterio técnico (reglas, apartado 7, una nota del caso y una nota del caso); petición 19).
 - φ de B3: el mismo cálculo en las celdas de modelo × año de edad × trimestre de dias_por_tramo, con el esperado = días × la tasa de su modelo y año de edad en todo el periodo; un solo φ para la tasa de cada año de edad de todos los grupos y su «sube» (criterio técnico (reglas, apartado 7, una nota del caso y una nota del caso); petición 19).
@@ -405,8 +405,8 @@ Cada cifra se rehízo desde otra tabla. Las segundas vías:
 - El centro solo consta desde el 01/07/2023. Desde entonces, 6.621.213 días de disco de 207.297.278 vienen sin centro y se cuentan aparte.
 - La tasa por edad sale de dias_por_tramo, que reparte los días del recuento con las fotos de cada mes: deja fuera 919.192 días de disco sin foto, el 0,21 % del recuento. Los días por año de edad no tienen otra fuente exacta: se contrastan a través de la supervivencia.
 - En la supervivencia, 3.359 discos tienen la edad final por debajo de la de entrada (horas encendido que bajan, R-009) y no aportan exposición.
-- Un disco que desaparece se cuenta como censurado: se sabe que llegó vivo a su última foto, no si se migró, se retiró sano o falló fuera de los datos, y eso no se puede saber. Contándolos como fallo cuando avisaban, la supervivencia a 5 años pasa del 93,62 % al 91,54 %, y la lectura frente al año anterior cambia en los años de edad 1, 4 y 8.
-- Si la tasa de los discos más viejos baja porque son los que han aguantado no se puede saber con estos datos: la tasa describe a los que quedan, y los datos no dicen por qué salieron los demás.
+- Un disco que desaparece se cuenta como censurado: se sabe que llegó vivo a su última foto, no si se migró, se retiró sano o falló fuera de los datos. Eso no se puede saber. Contándolos como fallo cuando avisaban, la supervivencia a 5 años pasa del 93,62 % al 91,54 %, y la lectura frente al año anterior cambia en los años de edad 1, 4 y 8.
+- Si la tasa de los discos más viejos baja porque son los que han aguantado no se puede saber con estos datos: la tasa describe a los que quedan. Los datos no dicen por qué salieron los demás.
 - Ninguna cifra se ha medido hacia adelante: la reserva, del 01/07/2025 al 30/06/2026, no se mira (reglas, apartado 5).
-- Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí de el responsable del caso, porque es un agente.
+- Pendiente: el auditor sin memoria del cierre del paso (método §8) necesita el sí del responsable del caso, porque es un agente.
 

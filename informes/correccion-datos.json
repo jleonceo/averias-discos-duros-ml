@@ -2843,7 +2843,7 @@
     },
     {
       "pendiente": "D1",
-      "decision": "los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo, porque son los mismos discos, con el mismo número de serie, escritos de dos formas; la corrección los junta (El responsable del caso, 17/11/2026, plan de calidad, «Lo aprobado»)",
+      "decision": "los modelos que solo se distinguen por los dos espacios tras «WDC» son el mismo modelo, porque son los mismos discos, con el mismo número de serie, escritos de dos formas; la corrección los junta (el responsable del caso, 17/11/2026, plan de calidad, «Lo aprobado»)",
       "quien": "El responsable del caso",
       "fecha": "2026-11-17",
       "fuente": "informes/plan_calidad_datos.md, «Lo aprobado»"
@@ -3111,7 +3111,7 @@
   "teoria": "Manual 8.1 antes de corregir (cada corrección responde a un problema diagnosticado, con su regla y su recuento); 8.3 para los tipos (la fecha del texto con el patrón explícito %Y-%m-%d, contando los vacíos que crea); 8.7 para el nombre del modelo (mapeo cerrado con replace, que deja como está lo que no encuentra); 8.6 para el recuento (se suman las filas con la misma clave porque la granularidad documentada da una fila por clave); 8.4 y 33.4 para las filas quitadas de las ventanas (se cuentan, y la regla se puede aplicar siempre); 8.10 para el cierre (filas, vacíos y sumas antes y después). Los apartados 4.5 y 4.6 no se aplican: las filas quitadas repiten el día siguiente y no tienen datos propios, así que no cambian ninguna comparación entre grupos.",
   "datos_personales_texto": [
     "No existe config/fuentes/proteccion-datos.json: los datos no pasaron por la protección.",
-    "No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí de el responsable del caso.",
+    "No hay datos de personas (reglas, apartado 9): el paso de protección se saltó el 17/11/2026 con el sí del responsable del caso.",
     "Ninguna columna de los datos tiene el papel de dato personal en el diccionario del origen. El número de serie identifica un disco, no a una persona.",
     "Antes de corregir se buscaron correos, documentos de identidad, cuentas bancarias y teléfonos en los textos (número de serie, modelo y centro): 0 columnas con alguno.",
     "Este método no usa ni deja ninguna columna de datos personales."
