@@ -1,0 +1,4 @@
+# Finales de línea LF en todos los sistemas: la ficha del modelo guarda la huella SHA-256 de scripts/pipeline_riesgo.py
+* text=auto eol=lf
+*.joblib binary
+*.png binary
