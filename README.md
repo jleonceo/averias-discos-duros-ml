@@ -32,8 +32,8 @@ Una foto es el estado de un disco el primer día de un mes: sus contadores SMART
 
 ## Las salidas
 
-- **Informe final:** diez páginas para la dirección de operaciones, con cinco decisiones que aprobar ([`informes/informe_final.html`](informes/informe_final.html)).
-- **Cuadro de mando:** cinco pestañas con filtros por centro de datos, fabricante, capacidad y edad, y la lista de riesgo del mes descargable en CSV ([`informes/cuadro_mando.html`](informes/cuadro_mando.html)).
+- **Informe final:** diez páginas para la dirección de operaciones, con cinco decisiones que aprobar ([`informes/informe_final.html`](https://jleonceo.github.io/averias-discos-duros-ml/informes/informe_final.html)).
+- **Cuadro de mando:** cinco pestañas con filtros por centro de datos, fabricante, capacidad y edad, y la lista de riesgo del mes descargable en CSV ([`informes/cuadro_mando.html`](https://jleonceo.github.io/averias-discos-duros-ml/informes/cuadro_mando.html)).
 - **Los seis problemas:** cómo se resolvieron en este caso los seis problemas típicos de un proyecto de datos ([`informes/los_seis_problemas.md`](informes/los_seis_problemas.md)).
 
 ## Estructura del repositorio

@@ -32,8 +32,8 @@ A snapshot is the state of a drive on the first day of a month: its SMART counte
 
 ## Outputs
 
-- **Final report:** ten pages for the head of operations, with five decisions for approval ([`informes/informe_final.html`](informes/informe_final.html)). In Spanish.
-- **Dashboard:** five tabs with filters by data center, manufacturer, capacity and age, plus the month's risk list as a CSV download ([`informes/cuadro_mando.html`](informes/cuadro_mando.html)). In Spanish.
+- **Final report:** ten pages for the head of operations, with five decisions for approval ([`informes/informe_final.html`](https://jleonceo.github.io/averias-discos-duros-ml/informes/informe_final.html)). In Spanish.
+- **Dashboard:** five tabs with filters by data center, manufacturer, capacity and age, plus the month's risk list as a CSV download ([`informes/cuadro_mando.html`](https://jleonceo.github.io/averias-discos-duros-ml/informes/cuadro_mando.html)). In Spanish.
 - **The six problems:** how this project dealt with the six problems that come up in every data project ([`informes/los_seis_problemas.md`](informes/los_seis_problemas.md)). In Spanish.
 
 ## Repository layout
